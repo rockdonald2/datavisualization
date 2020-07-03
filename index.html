@@ -1,18 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+    class="text-gray-900 antialiased leading-normal">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport"
             content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="A repo for studying a book.">
+        <meta name="keywords"
+            content="visualization,javascript,python,d3,flask,restful">
+        <meta name="author"
+            content="Lukács Zsolt">
+        <meta http-equiv="X-UA-Compatible"
+            content="ie=edge">
         <title>Data Visualization</title>
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet"
+            href="css/style.css">
+        <link rel="stylesheet"
+            href="css/compiled.css">
+        <!-- Safari-n az emoji favicon nem működik -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22
+                viewBox=%220
+                0
+                100
+                100%22><text y=%22.9em%22
+                    font-size=%2290%22>📕</text></svg>">
     </head>
 
     <body>
 
-        <main>
-            <p class="p-8">ASasdasD</p>
+        <main class="container p-4 max-w-6xl min-h-screen bg-white">
+            <p class="text-2xl my-8 text-gray-900">Utolsó módosítás: 2020 Július 7.</p>
+
+            <!-- első rész eleje -->
+
+            <section class="pb-8">
+                <h1 class="text-5xl py-8 font-bold text-teal-900">1 Bevezetés</h1>
+                <p class="text-4xl mt-8 mb-2">Lukács Zsolt</p>
+                <a href="mailto:rockdonald2@gmail.com"
+                    class="inline-block group font-bold text-2xl pb-8 hover:text-teal-900 opacity-75 hover:opacity-100 transition duration-100 ease-in">rockdonald2@gmail.com
+                    <span class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100
+                    ease-in">↗</span></a>
+                <p class="text-2xl font-normal">Alapvetően, ez a repo, illetőleg weboldal-szerűség a következő könyv
+                    tanulmányozására
+                    készült: <a href="https://www.oreilly.com/library/view/data-visualization-with/9781491920565/"
+                        class="group text-2xl pb-8
+                    hover:text-teal-900 opacity-75 hover:opacity-100 transition duration-100 ease-in">Data Visualization with
+                        Python and JavaScript <span class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100
+                    ease-in">↗</span></a> , a jegyzet során használt ábrák is ebből a könyvből származnak. A weboldal készítése
+                    során Visual Studio Code-ot használtam, NPM-et, a használt csomagok listája megtalálható a <span
+                        class="text-gray-600">'package.json'</span> config állományban, végül Python 3.8-at, és Chrome-ban
+                    futatott JavaScript-et. Az egész jegyzetet pedig GitHub-on tároltam és folyamatosan frissítettem.</p>
+            </section>
+
+            <!-- első rész vége -->
+
+            <!-- második része eleje -->
+
+            <section class="pb-8">
+                <h1 class="text-5xl py-8 font-bold text-teal-900">2 Első lépések az adatvizualizációban</h1>
+                <h2 class="text-4xl py-4 font-normal text-teal-700">Az adatvizualizáció folyamata</h2>
+                <p class="text-2xl font-normal">Az adatvizualizáció folyamata 5 lépésben összegezhető lépéssorozatként kerül
+                    végrehajtásra:</p>
+                <ol class="px-8 py-2 text-2xl list-decimal">
+                    <li class="pb-2"><span class="text-teal-700 font-bold">Scrape:</span> meg kell "szerezni" az adatot, amit
+                        ábrázolni akarunk, erre használjuk majd a Scrapy framework-ot;</li>
+                    <li class="pb-2"><span class="text-teal-700 font-bold">Clean:</span> meg kell tisztítatni az adatot,
+                        erre használjunk a Python Pandas-ot;</li>
+                    <li class="pb-2"><span class="text-teal-700 font-bold">Process:</span> az adatok feldolgozásának
+                        lépése, IPython, Pandas és Matplotlib alkalmazásával;</li>
+                    <li class="pb-2"><span class="text-teal-700 font-bold">Deliver:</span> miután megszerezted,
+                        megtisztítottad és fel is dolgoztad az adatot, amit ábrázolni akarsz el is kell jutattni a web böngészőbe,
+                        ahol azt megfogod jeleníteni, erre használjuk a Flask RESTful API-t;</li>
+                    <li class="pb-2"><span class="text-teal-700 font-bold">Transform:</span> létrehozzuk az interaktív
+                        vizualizációt D3 könyvtár használatával.</li>
+                </ol>
+                <img class="mx-auto"
+                    src="./img/fig1.png"
+                    alt="Figure 1">
+                <p class="text-center pt-2 pb-8 text-lg">1. Ábra: Adatvizualizáció folyamata</p>
+                <p class="text-2xl font-normal">Tehát, az adatvizualizációs folyamat során a Python és Javascript együttesét
+                    használjuk, különböző könyvtárak felhasználásával, a folyamat megkönnyítésének érdekében.</p>
+                <h3 class="text-3xl py-6">2.1 Az adatok megszerzése Scrapy-vel</h3>
+                <p class="text-2xl font-normal">Alapvetően, a legelső probléma amivel szembesülünk, amikor bármiféle adatot
+                    szeretnék valamilyen módon
+                    ábrázolni és vizualizálni az, hogy hogyan is szerezzük meg az adatot: akár lekérhetjük valamilyen
+                    kezelőfelületet használva, de akár saját magunk is összeállíthatjuk, ami nehézkes. Az adatok megszerzésekor
+                    jön képbe a web-scraping technika, web-scrape-nek hívjuk azt az eljárást, amely során weboldalakról adatokat
+                    szerzünk meg, általában valamilyen lekérdezés, illetőleg adatelemzés által. A Python Scrapy framework-ja pont
+                    ezt teszi lehetővé.</p>
+
+                <h3 class="text-3xl py-6">2.2 Az adatok tisztítása Pandas-val</h3>
+                <p class="text-2xl font-normal">Az adatvizualizáció önmagában nem egy bonyolúlt és időígényes feladat, de sokszor
+                    az adatok használhatatlansága mégis azzá teszi. A legtöbb időt az adatvizualizáció során az emészti fel, hogy
+                    a <span class="text-gray-600">'Dirty Data'</span>-ból valami használhatót hozzunk ki. A Pandas az egyik
+                    legismertebb és leghasználtabb framework, amely az adatok feldolgozására használható. A Pandas a Python Numpy
+                    könyvtárát egészíti ki, és mindazon információ feldolgozási folyamat elvégezhető vele, amelyekkel az adat
+                    ábrázolásához foglalkoznunk kell, ugyanakkor az adataink interaktív vizsgálatát is lehetővé teszi, a beépített
+                    Matplotlib plot-okkal. A Pandas alkalmazásával képesek vagyunk elvégezni a fent említett időígényes
+                    munkákakat, hiszen hatékonyan szabadulhatunk meg felesleges, duplikátum bejegyzésektől, elrontott és hiányos
+                    rekordoktól.</p>
+
+                <h3 class="text-3xl py-6">2.3 Az adatok feldolgozása Pandas-al és Matplotplib-el</h3>
+                <p class="text-2xl font-normal">Mielőtt elkezdenénk azt, hogy a már megtisztított adatainkat képernyőre vigyük,
+                    valamilyen módon meg is kell azokat értenünk. Mintákat, trendeket, anomáliákat kell az adatokból kinyernünk,
+                    gyakran ezek mélyen elvannak rejtve, minderre azért van szükség, hogy megfogalmazzuk azt a történetet és
+                    jelenséget, amelyet a vizualizációnkkal elszeretnénk mondani. Az IPython, a Pandas és Matplotlib hármasa
+                    lehetőséget nyújt arra, hogy interaktív fedezzük fel az adatokat, legenerálva segítségükkel plot-okat,
+                    egyenesen a parancssorról, majd a megismerések eredményét könnyen lementhetjük egy állományba, vagy egy
+                    adatbázisba, hogy könnyen átadhassuk a JavaScript vizualizációs felületnek.</p>
+
+                <h3 class="text-3xl py-6">2.4 Az adatok eljutattása a felületre Flask-al</h3>
+                <p class="text-2xl font-normal">Miután finomítottuk adatunkat és fel is dolgoztuk azokat, valahogyan elkell
+                    jutassuk a böngészőbe, ahol a lényeg fog történni, ahol egy JavaScript könyvtár, jelen esetben a D3, képes azt
+                    átalakítani interaktív vizualizációvá. A Flask framework a Python egyik legnépszerűbb szerverkliense, amely
+                    tökéletesen használható kisméretű RESTful API-kat, amelyeket a JavaScript elérhet ahhoz, hogy az adatokat
+                    megszerezze a szerverről, állományokból vagy egyenes egy adatbázisból, és megjelenítse a böngészőben.</p>
+
+                <h3 class="text-3xl py-6">2.5 A végső interaktív vizualizáció D3-al</h3>
+                <p class="text-2xl font-normal">Az előbb említett lépések végrehajtása után, végső soron meg is kell jelenítenünk
+                    az adatokat, ahol nem csak a készítő, de a felhasználó is megértheti a mögöttes tartalmat. A D3 a JavaScript
+                    egyik legfontosabb könyvtára, vitathatlanul a jelenleg piacon levő egyik legjobb vizualizációs eszköz, amely
+                    lehetővé teszi a fent említett célt.</p>
+
+                <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">A környezet amiben dolgozunk</h2>
+                <p class="text-2xl font-normal">Alapvetően, a legtöbb konyvtár, amit a könyv tanulmányozása során használni fogunk
+                    az Python-ból való. Python esetében már eredendően kiterjedt szabványfüggvény könyvtárkészlettel rendelkezik,
+                    amelyet még a harmadik személyek által készített publikus modulok is kiegészítenek. Ugyanakkor, mivel sok
+                    esetben az említett könyvtárok telepítése nehézkes feladat, az Anaconda framework-ot fogjuk segítségül hívni a
+                    probléma orvoslására. Minden dependencia ellenőrzést elvégez számunkra, és azok telepítését is lehetővé teszi.
+                    Alapvetően, ahhoz, hogy leellenőrízzük megfelelően telepítettük-e fel az Anaconda csomagot Windows rendszeren,
+                    a következő sort írhatjuk a parancssorba:</p>
+                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ ipython</p>
+                <p class="text-2xl font-normal">Amennyiben az helyesen működik a következőt kellene megnyissa a parancssorban:</p>
+                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ Python 3.7.6 (default, Jan 8 2020, 20:23:39) [MSC
+                    v.1916 64 bit (AMD64)]<br>
+                    Type 'copyright', 'credits' or 'license' for more information<br>
+                    IPython 7.12.0 -- An enhanced Interactive Python. Type '?' for help.<br>
+
+                    In [1]:</p>
+                <p class="text-2xl font-normal">Az Anaconda natívan tartalmazza a legtöbb olyan könyvtárt, amit használni fogunk a
+                    könyv tanulmányozása során, ugyanakkor amikor olyan könyvtárakat kell elérjünk, amelyeket nem tartalmaz az
+                    Anaconda, használhatjuk a Python pip-jét. Alapvetően, ahhoz, hogy pip segítségével telepítsünk valamit, a
+                    következőket kell írjuk a parancssorba:</p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ pip install <_könyvtár_elnevezése></pre>
+                <p class="text-2xl font-normal">Végül, beszélnünk kell az Anaconda virtuális környezeteiről, amelyeket a következő
+                    parancsal hozhatunk létre, a teljes Anaconda csomaggal jelenesetben:</p>
+                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ conda create --name pyjsviz anaconda</p>
+                <p class="text-2xl font-normal">Ahhoz, hogy ténylegesen használjuk az előző lépésben létrehozott virtuális
+                    környezetet aktiválnunk kell azt a következő paranccsal:</p>
+                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ source activate pyjsviz</p>
+                <p class="text-2xl font-normal">A D3 feltelepítéséhez természetesen használhatjuk a NPM eszközt a következő
+                    parancs segítségével:</p>
+                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ npm install d3</p>
+                <p class="text-2xl font-normal">A könyv tanulmányozása során adatbázist is fogunk készíteni, névszerint MongoDB-t és SQLite-ot, az előbbi egy noSQL eszköz, míg az utóbbi egy serverless SQL-adatbázis. Mindkét adatbázis-kliens telepítésének útmutatója megtalálható azok weboldalán.</p>
+                <p class="text-2xl font-normal">Végül, a programkódok megírásához, mivel VSCode-ot használtam, nem kellett bármiféle IDE-t telepítenem, de az IDE-k közül nagyszerű választás lenne a PyCharm.</p>
+
+                <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">A programozási nyelvek, amelyekkel dolgozunk</h2>
+                <p class="text-2xl font-normal">Alapvetően, a már említett két programozási nyelvet fogjuk a könyv tanulmányozása során használni: JavaScript és Python, az előbbi a böngészőben fut, míg az ú</p>
+            </section>
+
+            <!-- második része vége -->
+
+            <!-- harmadik része eleje -->
+
+
+
+            <!-- harmadik rész vége -->
         </main>
 
     </body>
