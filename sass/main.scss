@@ -1,4 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap');
+@font-face {
+    font-family: 'FiraGo';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src:
+        url('../fonts/FiraGO-SemiBold.latin.woff2') format('woff2');
+    unicode-range: U+0000-007F, U+0080-00FF;
+}
+
+@font-face {
+    font-family: 'FiraGo';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src:
+        url('../fonts/FiraGO-Bold.latin.woff2') format('woff2');
+    unicode-range: U+0000-007F, U+0080-00FF;
+}
+
+@font-face {
+    font-family: 'FiraGo';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src:
+        url('../fonts/FiraGO-Book.latin.woff2') format('woff2');
+    unicode-range: U+0000-007F, U+0080-00FF;
+}
+
+@font-face {
+    font-family: 'FiraGo';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src:
+        url('../fonts/FiraGO-Medium.latin.woff2') format('woff2');
+    unicode-range: U+0000-007F, U+0080-00FF;
+}
+
+@font-face {
+    font-family: 'FiraGo';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src:
+        url('../fonts/FiraGO-Regular.latin.woff2') format('woff2');
+    unicode-range: U+0000-007F, U+0080-00FF;
+}
 
 *,
 *::after,
@@ -10,7 +58,7 @@
 }
 
 body {
-    font-family: 'Ubuntu',
+    font-family: 'FiraGo',
     sans-serif;
 }
 

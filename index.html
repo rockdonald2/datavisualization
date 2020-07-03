@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-    class="text-gray-900 antialiased leading-normal">
+    class="text-gray-900 antialiased leading-relaxed">
 
     <head>
         <meta charset="UTF-8">
@@ -31,22 +31,24 @@
 
     <body>
 
-        <main class="container p-4 max-w-6xl min-h-screen bg-white">
-            <p class="text-2xl my-8 text-gray-900">Utolsó módosítás: 2020 Július 7.</p>
+        <main class="container p-6 max-w-6xl min-h-screen bg-white">
+
+            <p class="text-2xl my-8 text-gray-900 text-right">Utolsó módosítás: 2020 Július 7.</p>
+
+            <p class="text-4xl mt-8 mb-2">Lukács Zsolt</p>
+            <a href="mailto:rockdonald2@gmail.com"
+                class="inline-block group font-bold text-2xl pb-8 hover:text-teal-900 opacity-75 hover:opacity-100 transition duration-100 ease-in">rockdonald2@gmail.com
+                <span class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100
+                    ease-in">↗</span></a>
 
             <!-- első rész eleje -->
 
             <section class="pb-8">
-                <h1 class="text-5xl py-8 font-bold text-teal-900">1 Bevezetés</h1>
-                <p class="text-4xl mt-8 mb-2">Lukács Zsolt</p>
-                <a href="mailto:rockdonald2@gmail.com"
-                    class="inline-block group font-bold text-2xl pb-8 hover:text-teal-900 opacity-75 hover:opacity-100 transition duration-100 ease-in">rockdonald2@gmail.com
-                    <span class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100
-                    ease-in">↗</span></a>
+                <h1 class="text-5xl py-8 text-teal-900">1 Bevezetés</h1>
                 <p class="text-2xl font-normal">Alapvetően, ez a repo, illetőleg weboldal-szerűség a következő könyv
                     tanulmányozására
                     készült: <a href="https://www.oreilly.com/library/view/data-visualization-with/9781491920565/"
-                        class="group text-2xl pb-8
+                        class="group text-2xl pb-8 text-gray-600
                     hover:text-teal-900 opacity-75 hover:opacity-100 transition duration-100 ease-in">Data Visualization with
                         Python and JavaScript <span class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100
                     ease-in">↗</span></a> , a jegyzet során használt ábrák is ebből a könyvből származnak. A weboldal készítése
@@ -60,8 +62,8 @@
             <!-- második része eleje -->
 
             <section class="pb-8">
-                <h1 class="text-5xl py-8 font-bold text-teal-900">2 Első lépések az adatvizualizációban</h1>
-                <h2 class="text-4xl py-4 font-normal text-teal-700">Az adatvizualizáció folyamata</h2>
+                <h1 class="text-5xl py-8 text-teal-900">2 Első lépések az adatvizualizációban</h1>
+                <h2 class="text-4xl pb-4 font-normal text-teal-700">Az adatvizualizáció folyamata</h2>
                 <p class="text-2xl font-normal">Az adatvizualizáció folyamata 5 lépésben összegezhető lépéssorozatként kerül
                     végrehajtásra:</p>
                 <ol class="px-8 py-2 text-2xl list-decimal">
@@ -77,12 +79,15 @@
                     <li class="pb-2"><span class="text-teal-700 font-bold">Transform:</span> létrehozzuk az interaktív
                         vizualizációt D3 könyvtár használatával.</li>
                 </ol>
-                <img class="mx-auto"
-                    src="./img/fig1.png"
-                    alt="Figure 1">
-                <p class="text-center pt-2 pb-8 text-lg">1. Ábra: Adatvizualizáció folyamata</p>
+                <figure>
+                    <img class="mx-auto"
+                        src="./img/fig1.png"
+                        alt="Figure 1">
+                    <figcaption class="text-center pt-2 pb-4 text-xl">1. Ábra: Adatvizualizáció folyamata</figcaption>
+                </figure>
                 <p class="text-2xl font-normal">Tehát, az adatvizualizációs folyamat során a Python és Javascript együttesét
                     használjuk, különböző könyvtárak felhasználásával, a folyamat megkönnyítésének érdekében.</p>
+
                 <h3 class="text-3xl py-6">2.1 Az adatok megszerzése Scrapy-vel</h3>
                 <p class="text-2xl font-normal">Alapvetően, a legelső probléma amivel szembesülünk, amikor bármiféle adatot
                     szeretnék valamilyen módon
@@ -133,44 +138,452 @@
                     probléma orvoslására. Minden dependencia ellenőrzést elvégez számunkra, és azok telepítését is lehetővé teszi.
                     Alapvetően, ahhoz, hogy leellenőrízzük megfelelően telepítettük-e fel az Anaconda csomagot Windows rendszeren,
                     a következő sort írhatjuk a parancssorba:</p>
-                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ ipython</p>
+                <pre
+                    class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>$ ipython</code></pre>
                 <p class="text-2xl font-normal">Amennyiben az helyesen működik a következőt kellene megnyissa a parancssorban:</p>
-                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ Python 3.7.6 (default, Jan 8 2020, 20:23:39) [MSC
-                    v.1916 64 bit (AMD64)]<br>
-                    Type 'copyright', 'credits' or 'license' for more information<br>
-                    IPython 7.12.0 -- An enhanced Interactive Python. Type '?' for help.<br>
-
-                    In [1]:</p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto"><code>$ Python 3.7.6 (default, Jan 8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.12.0 -- An enhanced Interactive Python. Type '?' for help.
+In [1]:
+</code></pre>
                 <p class="text-2xl font-normal">Az Anaconda natívan tartalmazza a legtöbb olyan könyvtárt, amit használni fogunk a
                     könyv tanulmányozása során, ugyanakkor amikor olyan könyvtárakat kell elérjünk, amelyeket nem tartalmaz az
                     Anaconda, használhatjuk a Python pip-jét. Alapvetően, ahhoz, hogy pip segítségével telepítsünk valamit, a
                     következőket kell írjuk a parancssorba:</p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ pip install <_könyvtár_elnevezése></pre>
+                <pre
+                    class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>$ pip install <_könyvtár_elnevezése></code></pre>
                 <p class="text-2xl font-normal">Végül, beszélnünk kell az Anaconda virtuális környezeteiről, amelyeket a következő
                     parancsal hozhatunk létre, a teljes Anaconda csomaggal jelenesetben:</p>
-                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ conda create --name pyjsviz anaconda</p>
+                <pre
+                    class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>$ conda create --name pyjsviz anaconda</code></pre>
                 <p class="text-2xl font-normal">Ahhoz, hogy ténylegesen használjuk az előző lépésben létrehozott virtuális
                     környezetet aktiválnunk kell azt a következő paranccsal:</p>
-                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ source activate pyjsviz</p>
+                <pre
+                    class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>$ source activate pyjsviz</code></pre>
                 <p class="text-2xl font-normal">A D3 feltelepítéséhez természetesen használhatjuk a NPM eszközt a következő
                     parancs segítségével:</p>
-                <p class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md">$ npm install d3</p>
-                <p class="text-2xl font-normal">A könyv tanulmányozása során adatbázist is fogunk készíteni, névszerint MongoDB-t és SQLite-ot, az előbbi egy noSQL eszköz, míg az utóbbi egy serverless SQL-adatbázis. Mindkét adatbázis-kliens telepítésének útmutatója megtalálható azok weboldalán.</p>
-                <p class="text-2xl font-normal">Végül, a programkódok megírásához, mivel VSCode-ot használtam, nem kellett bármiféle IDE-t telepítenem, de az IDE-k közül nagyszerű választás lenne a PyCharm.</p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900">$ npm install d3</pre>
+                <p class="text-2xl font-normal">A könyv tanulmányozása során adatbázist is fogunk készíteni, névszerint MongoDB-t
+                    és SQLite-ot, az előbbi egy noSQL eszköz, míg az utóbbi egy serverless SQL-adatbázis. Mindkét adatbázis-kliens
+                    telepítésének útmutatója megtalálható azok weboldalán.</p>
+                <p class="text-2xl font-normal">Végül, a programkódok megírásához, mivel VSCode-ot használtam, nem kellett
+                    bármiféle IDE-t telepítenem, de az IDE-k közül nagyszerű választás lenne a PyCharm.</p>
 
                 <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">A programozási nyelvek, amelyekkel dolgozunk</h2>
-                <p class="text-2xl font-normal">Alapvetően, a már említett két programozási nyelvet fogjuk a könyv tanulmányozása során használni: JavaScript és Python, az előbbi a böngészőben fut, míg az ú</p>
+                <p class="text-2xl font-normal pb-3">Alapvetően, a már említett két programozási nyelvet fogjuk a könyv
+                    tanulmányozása
+                    során használni: JavaScript és Python, az előbbi a böngészőben fut, míg az utóbbi szinte bárhol, leginkább egy
+                    console-ban, ugyanakkor mindkét nyelv interpreted, tehát egy virtuális egység a beírt programsorokat, azonnal
+                    és közvetlenül értelmezni és végrehajtja.</p>
+                <p class="text-2xl font-normal pb-3">A programkódok megírása során Python esetében IPython qtconsole-t használunk,
+                    illetőleg a JavaScript-et Chrome böngészőben futtatjuk.</p>
+                <p class="text-2xl font-normal">Fontos megjegyezni a lényeges eltérést a Python és a JavaScript namespace
+                    között.
+                    Alapvetően mondva, a Python modulok által importált funkciók és változók zártak, tehát csakis kizárólag a
+                    modul nevén és a pont operátoron keresztül érhetők el, ez általánosságban véve egy jó dolog, és minden esetben
+                    ezt tiszteletben kell, hogy tartsuk, megőrízve azt, hogy a globális namespace túlfűttőtté váljon. Ezzel
+                    szemben, a JavaScript sokkal lazább namespace kezelést vállal. Nagyon könnyű zavarossá tehető a globális
+                    namespace ezért a modularitás konvencióját szükséges a kódba építenünk, amelyet úgy oldhatunk meg, hogy minden
+                    egyes funkció/modul amit létrehozunk, egy önhívó függvényen keresztül legyen elérhető, létrehozva a szükséges
+                    zártságot. Ezt mutatja be a következő kódrészlet:</p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>(function(nbviz) {
+    "use strict",
+    // ... 
+} (window.nbviz = windows.nbviz || {} ));
+
+// A fenti zárójel esetében, ha már létezik az nbviz objektum a globális namespaceben
+// akkor azt beadja a függvénybe, ellenkező esetben hozzáadja a globális namespacehez.
+</code></pre>
+                <p class="text-2xl font-normal">Egy jó megközelítés arra nézve, hogy megismerjük a két nyelv közötti
+                    különbségeket, hogy megírjuk ugyanazt a programot mindkét nyelvben. Egy egyszerű adatfeldolgozást mutat be a
+                    következő programrészlet:</p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>student_data = [
+    {'name': 'Bob', 'id': 0, 'scores':[68, 75, 56, 81]},
+    {'name': 'Alice', 'id': 1, 'scores':[75, 90, 64, 88]},
+    {'name': 'Carol', 'id': 2, 'scores':[59, 74, 71, 68]},
+    {'name': 'Dan', 'id': 3, 'scores':[64, 58, 53, 62]},
+]
+
+def process_student_data(data, pass_threshold=60, merit_threshold=75):
+    """ egy egyszerű statisztikát hoz létre a tanulók adataiból """
+    # a fenti doc-string automatikusan hozzárendelődik a __doc__ attribútumhoz.
+
+    for sdata in data:
+        av = sum(sdata['scores']) / float(len(sdata['scores']))
+        sdata['average'] = av
+
+        if av > merit_threshold:
+            sdata['assessment'] = 'passed with merit'
+        elif av > pass_threshold:
+            sdata['assessment'] = 'passed'
+        else:
+            sdata['assessment'] = 'failed'
+
+        print("{}'s (id: {}) final asessment is {}.".format(sdata['name'], sdata['id'], sdata['assessment'].upper()))
+
+
+if __name__ == '__main__':
+    process_student_data(student_data)
+
+# bármikor amikor a Python interpreterje értelmez egy forrásállományt,
+# két dolgoz tesz:
+#   - beállít néhány speciális változót, mint pl. a 'name',
+#   - lefuttatja a fájlban található összes utasítást.
+# a name speciális változó értéke akkor lesz 'main', ha elsődleges forrásként futtassuk.
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+logger.debug('Some useful debugging output')
+logger.info('Some general information')
+logger.warning('Some warning')</code></pre>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>"use strict"
+
+let studentData = [{
+        'name': 'Bob',
+        'id': 0,
+        'scores': [68, 75, 56, 81]
+    },
+    {
+        'name': 'Alice',
+        'id': 1,
+        'scores': [75, 90, 64, 88]
+    },
+    {
+        'name': 'Carol',
+        'id': 2,
+        'scores': [59, 74, 71, 68]
+    },
+    {
+        'name': 'Dan',
+        'id': 3,
+        'scores': [64, 58, 53, 62]
+    },
+]
+
+function processStudentData(data, passThreshold, meritThreshold) {
+    passThreshold = typeof passThreshold !== 'undefined' ? passThreshold : 60;
+    meritThreshold = typeof meritThreshold !== 'undefined' ? meritThreshold : 75;
+    /* A fenti kód esetében inicializálja a paramétereket, 
+    amennyiben azok nem kaptak kezdeti értéket a függvény hívásakor */
+
+    data.forEach((sdata) => {
+        let av = sdata.scores.reduce((prev, current) => prev + current, 0) / sdata.scores.length;
+        sdata.average = av;
+
+        if (av > meritThreshold) {
+            sdata.assessment = 'passed with merit';
+        } else if (av > passThreshold) {
+            sdata.assessment = 'passed';
+        } else {
+            sdata.assessment = 'failed';
+        }
+
+        console.log(sdata.name + "'s (id: " + sdata.id + ") final assessment is: " + sdata.assessment.toUpperCase());
+    });
+}
+
+processStudentData(studentData);</code></pre>
+                <p class="text-2xl font-normal">Ugyanakkor, a fenti Python kód során használt print utasítás akár
+                    helyettesíthető
+                    ugyancsak Python beépített modulnak tekinthető logging-al. Ezt a következő kódrészlet szemlélteti: </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>import logging
+
+logger = logging.getLogger(__name__)
+
+logger.debug('Some useful debugging output')
+logger.info('Some general information')
+logger.warning('Some warning')</code></pre>
+                <p class="text-2xl font-normal pb-3">Nagyon jó gyakorlat az, ha minden változót, amit a programkódunk használ a
+                    függvények elején deklarálunk, főleg JavaScript esetében igaz ez, hiszen a JavaScript interpreterje a
+                    változókat minden egyéb kód előtt értelmezi. Ez azt jelenti a gyakorlatban, hogy teljesen közömbös az, hogy
+                    hol hozzuk létre a változóinkat, mindig úgy értelmezi az interpreter, mintha a függvény elején lett volna. Ez
+                    főleg error-kezelés esetében egy előny.
+                </p>
+                <p class="text-2xl font-normal">A boolean adattípus esetében is érdekes dolgokat lehet felfedezni, miszerint
+                    amikor logikai kifejezéseket írunk, abban az esetben valójában nem egy boolean értéket fog a kifejezés
+                    téríteni, hanem valamelyik operándust, a következő logika szerint:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>x or y      Ha x hamis, akkor y, másképp x
+x and y     Ha x hamis, akkor x, másképp y
+not x       Ha x hamis, akkor Igaz, másképp Hamis</code></pre>
+                <p class="text-2xl font-normal pb-3">Durván szólva, a JavaScript objects-eket kvázi Python dicts-ként lehet
+                    használni,
+                    illetve Python lists-eket, pedig JavaScript array-ekként, lényeges és elhagyhatatlan különbség az említett
+                    összetett adattípusok esetében nincs. Továbbá, a Python rendelkezik még ún. tuple adattípussal is, ami nagyban
+                    hasonlít a list-hez, annyi különbséggel, hogy létrehozása után megváltoztathatlan.
+                </p>
+                <p class="text-2xl font-normal">Egy újabb hiba, amelybe relatíve könnyen bele lehet szaladni az a for ciklus
+                    esetében tükrőzödik, vegyük például a következő kódrészletet:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>foo = {'first_key': 1, 'second_key': 2}
+
+for item in foo:
+    print(item)
+
+# Ebben az esetben nem a dict itemet fogja kiírna, hanem annak kulcsát.
+
+for item in foo.items():
+    print(item)
+
+# Ebben az esetben már a dict itemet fogja kiírni key-value páronként, tuple típusban.</code></pre>
+                <p class="text-2xl font-normal">A fenti egyszerű Python esettel szemben, JavaScript-et használva korán sem
+                    ennyire
+                    könnyű objektumokkal dolgozni, hiszen a for ciklus nem ugyanúgy működik, mint Python esetében, a következő
+                    kódrészlet ezt szemlélteti:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let foo = {
+    'firstKey': 1,
+    'secondKey': 2
+};
+
+for (let item in foo) {
+    if (foo.hasOwnProperty(item)) {
+        console.log(item + " " + foo[item]);
+    }
+}</code></pre>
+                <p class="text-2xl font-normal pb-3">Az előbbi esetben, azért van szükség a for cikluson belül a hasOwnProperty
+                    metódus
+                    használatára, mert a Python dict-ekkel szemben, a JavaScript objektumjai tartalmazhatnak örökölt
+                    tulajdonságokat is a prototyping chainről, és a metódus pont ez ellen tesz, leellenőrízve azt, hogy
+                    rendelkezik-e az objektum a vizsgált tulajdonsággal, azonban mint saját tulajdonság és nem örökölt.
+                </p>
+                <p class="text-2xl font-normal pb-3">Ugyanakkor, a korábban ábrázolt problémákat a JavaScript többé-kevésbé már
+                    önmaga
+                    megoldotta, hiszen kiegészült olyan funkcionális elemekkel, amelyek megkönnyítik az adatok feldolgozását.
+                    Ilyen akár a forEach ciklus is, amely végigiterálva egy adatszerkezet elemein, végrehajtja a callback
+                    függvényt rajtuk.
+                </p>
+                <p class="text-2xl font-normal pb-3">Azonban, ezeket a korábban említett függvényeket nem használhatjuk objektumok
+                    esetében, így azok feldolgozásakor más megoldást kell találjunk.
+                </p>
+                <p class="text-2xl font-normal pb-3">A következő lényeges dolog, amit érdemes megvizsgálni a két programozási
+                    nyelv
+                    eltérése, ami az objektumorientált programozást illeti. A Python klasszikus OOP-t használ, ezzel szemben a
+                    JavaScript ún. prototype-okat.
+                </p>
+                <p class="text-2xl font-normal">A Python classok nagyon egyszerűek, és hatásosan valósítja meg maga a nyelv
+                    az
+                    objektumorientált programozást, amit a következő kódrészlet is szemléltet:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>class Citizen(object):
+    def __init__(self, name, country):
+        self.name = name
+        self.country = country
+
+    def print_details(self):
+        print('Citizen {} from {}.'.format(self.name, self.country))
+
+c = Citizen('Lukács Zs.', 'Hungary')
+c.print_details()</code></pre>
+                <p class="text-2xl font-normal pb-3">A Python classok központi eleme az __init__ függvény, amely az objektum
+                    példányok
+                    létrehozásakor kerülnek lehívásra. A classok metódusainak létrehozása során, elhagyhatatlan elem a self
+                    paraméter, amely a class példányra vonatkozik.
+                </p>
+                <p class="text-2xl font-normal">Továbbá, a Python egy eléggé klasszikus megközelítést alkalmaz az öröklődés
+                    megoldására, amelyet a következő kódrészlet is szemléltet:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>class Winner(Citizen):
+    def __init__(self, name, country, category, year):
+        super(Winner, self).__init__(name, country)
+        self.category = category
+        self.year = year
+
+    def print_details(self):
+        print('Nobel winner {} from {}, category {}, year {}'.format(self.name, self.country, self.category, self.year))
+
+w = Winner('Albert E.', 'Switzerland', 'Physics', 1921)
+w.print_details()</code></pre>
+                <p class="text-2xl font-normal pb-3">A fenti példa esetében, az ősosztályt, super-classnak nevezhetjük, és
+                    újrahasználhatjuk a super-class konstruktőrjét a super-el, felhasználva a Winner objektum példányt self-ként.
+                    Alapvetően, a super hívó ebben az esetben nem mást tesz, mint az öröklődési fán egy szintet felmegy, az első
+                    argumentumjától, és a jelenlegi példányt argumentumként adja tovább a class metódusnak.
+                </p>
+                <p class="text-2xl font-normal pb-3">Ahhoz, hogy megértsük a JavaScript prototípusok és a Python classok közötti
+                    különbséget, megkell értenünk azt, hogy amikor egy Python classot lehívunk, az úgy zajlódik le, hogy lehívjük
+                    a különböző konstruktörőket az öröklődési fában, így létrehozva a class példányt.
+                </p>
+                <p class="text-2xl font-normal">Ezzel szemben, amikor prototípusokkal foglalkozunk, olyan mintha már egy kész
+                    dolgot módosítgatnánk, ilyen értelemben véve nem teljesen új objektumokat hozunk létre, hanem adaptálunk egy
+                    meglévőt és azt bővítjük ki. A következő kódrészlet szemlélteti a JavaScript prototípusok működését:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let Citizen = function(name, country) {
+    this.name = name;
+    this.country = country;
+}
+
+Citizen.prototype = {
+    printDetails: function() {
+        console.log('Citizen ' + this.name + ' from ' + this.country);
+    }
+}
+
+let c = new Citizen('Lukács Zs.', 'Hungary');
+
+c.printDetails();</code></pre>
+                <p class="text-2xl font-normal pb-3">A fenti kódrészlet mutatja be azt, hogy JavaScript-ben nincsenek classok, és
+                    így
+                    az objektum-példányokat függvényekből, vagy objektumokból építjük fel. Alapvetően, ebben az esetben az
+                    örökölhető, és az objektum-példányokhoz tartozó metódusokat a prototype résznél hozzuk létre. A new-t pedig új
+                    objektum létrehozására használjuk fel.
+                </p>
+                <p class="text-2xl font-normal pb-3">Első ránézésre úgy tűnhet, mintha nem lenne különbség a Python self és a
+                    JavaScript this között, miközben ez korántsem igaz. A Python self-je egy változó, amit minden metódusnak
+                    bekell adni, mint paraméter, és ez jelöli a jelenlegi objektum példányt. Ezzel szemben, a this kulcsszó arra
+                    az objektumra vonatkozik, amely lehívja a metódust. Ilyen értelemben, a hívó objektum eltérhet attól az
+                    objektumtól, amelyhez a metódus tartozik.
+                </p>
+                <p class="text-2xl font-normal">Végül, a JavaScript öröklődést a következő kódrészlet szemlélteti:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let Citizen = {
+    setCitizen: function(name, country) {
+        this.name = name;
+        this.country = country;
+        return this;
+    },
+    printDetails: function() {
+        console.log('Citizen ' + this.name + ' from ' + this.country);
+    }
+}
+
+let Winner = Object.create(Citizen);
+
+Winner.setWinner = function(name, country, category, year) {
+    this.setCitizen(name, country);
+    this.category = category;
+    this.year = year;
+    return this;
+}
+
+Winner.printDetails = function() {
+    console.log('Nobel winner ' + this.name + ' from ' + this.country + ', category ' + this.category + ', year ' + this.year);
+}
+
+let a = Object.create(Winner).setWinner('Einstein A.', 'Switzerland', 'Physics', '1921');
+
+a.printDetails();</code></pre>
+
+                <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">Különbségeik a gyakorlati felhasználásban</h2>
+                <p class="text-2xl font-normal pb-3">Látszólag vannak eltérések a két nyelv között, de szerencsére többnyire
+                    szintaktikai eltérések, ahogyan azt az előző fejezet is szemlélteti. Az imperatív programozás lényege a két
+                    nyelvben majdhogynem azonos.
+                </p>
+                <p class="text-2xl font-normal pb-3">Azonban, imperatív eltérés például a metódusok láncolata, amely a JavaScript
+                    esetében gyakran megjelenik, ezzel szemben Python esetén kevésbé. A metódus láncolást a korábbi JavaScript
+                    öröklődési példa is szemlélteti, amikoris egy objektum metódusból a this-t visszatérítve képesek vagyunk
+                    láncolatot létrehozni, hiszen mindig az aktuális objektumot téríti vissza.
+                </p>
+                <p class="text-2xl font-normal">A következő jellegzetesség a listákon való végighaladásban érhető tetten.
+                    Mindkét
+                    programozási nyelv lehetőséget biztosít arra, hogy úgy haladjunk végig listákon, hogy mindeközben az elemek
+                    indexét is megőrízzük. Ilyen a Python enumerate-ja, vagy akár a JavaScript forEach, bár az utóbbi esetében
+                    valójában az elem indexét a callback függvénynek szolgáltatja. A következő kódrészletek ezt a két esetet
+                    szemléltetik:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>names = ['Alice', 'Bob', 'Carol']
+
+for i, n in enumerate(names):
+    print('{}: {}'.format(i, n))</code></pre>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let names = ['Alice', 'Bob', 'Carol']
+
+names.forEach(function(i, n) {
+    console.log(i + ': ' + n);
+})</code></pre>
+                <p class="text-2xl font-normal">Lényeges imperatív eltérés a tuple unpacking is, amely Python esetében
+                    jelenik
+                    meg. A Python tuple unpacking arra nyújt lehetőséget például, hogy változókat cseréljünk meg, csökkentve annak
+                    a szükségességét, hogy ideiglenes változókat hozzunk létre. A következő kódrészlet ezt szemlélteti:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>def fibonacci(n):
+    x, y = 0, 1
+
+    for i in range(n):
+        print(x)
+        x, y = y, x + y
+
+fibonacci(4)</code></pre>
+                <p class="text-2xl font-normal">Ugyancsak sajátossága a Python-nak a collections modul. A collections modul
+                    kiegészítő azon összetett adatszerkezetek listáját, amelyekkel a Python rendelkezik: deque, OrderedDict,
+                    defaultdict, stb. A collection funkcionalitását utánzó könyvtárak JavaScript-nél is megtalálhatók, bár ott
+                    kevésbé elterjedtek. Az egyik nagyon hasznos függvénye a collections modulnak a Counter, amelynek használatát
+                    a következő kódrészlet szemlélteti:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>from collections import Counter
+
+items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D']
+
+cntr = Counter(items)
+# a Counter függvény megszámolja az elemek gyakoriságát
+
+print(cntr)</code></pre>
+                <p class="text-2xl font-normal">Az egyik nagyon fontos könyvtár, amely a JavaScript funkcionalitását
+                    kiegészíti az
+                    Underscore. Az Underscore könyvtár lévén, vagy CDN-n keresztül kell elérni, vagy NPM-el fel kell telepíteni az
+                    aktuális NPM környezetbe. Ezt a szokásos npm install underscore-al megtehetjük. Az Underscore nagyon sok
+                    hasznos függvénnyel rendelkezik, amely megkönnyíti az életünket a JavaScript használata során. Ilyen akár a
+                    countBy metódus, amely a Python collections moduljában található Counter-et is helyettesítheti, ezt a
+                    következő kódrészlet mutatja be:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D'];
+
+_.countBy(items);</code></pre>
+                <p class="text-2xl font-normal">A következő dolog, amit mindenképp megkell említeni a JavaScript closure-je,
+                    vagy
+                    zártsága. Alapvetően, a closure ebben a kontextusban nem mást jelent, mint hogy lényegében egy fészkelt
+                    függvény deklarációja felhasznál egy olyan változót, amely egy külső scope-ban került deklarálásra, de nem a
+                    globális scopeban, azonban élettartama így globális módosul és értékét megőrzi a függvény terítése után is. A
+                    következő kódrészlet ezt szemlélteti:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>function Counter(inc) {
+    let count = 0;
+    let add = function() {
+        count += inc;
+        console.log('Current count: ' + count);
+    }
+    return add;
+}
+
+let cntr = Counter(2);
+
+cntr();
+
+cntr();</code></pre>
+                <p class="text-2xl font-normal pb-3">Hasonló technika a Python-ban is megfigyelhető, de ott kevésbé jelentős a
+                    használata.
+                </p>
+                <p class="text-2xl font-normal">Utolsó érdekesség a két nyelv imperatív eltérései között a closure-el
+                    kapcsolatos.
+                    A closure esetében megtörténhet az, hogy a külső scope this-jére szeretnél hivatkozni, egy belső függvényben,
+                    ebben az esetben egy proxy-t kell használj ahhoz, hogy ez megtörténhessen, ezt általában that-al jelöljük, és
+                    a következőképpen néz ki a gyakorlatban:
+                </p>
+                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>function outer(bar) {
+    this.bar = bar;
+    var that = this;
+    function inner(baz) {
+        this.baz = baz * that.bar;
+        // ...
+        // ebben az esetben a that a külső függvény this-jére vonatkozik.
+    }
+}</code></pre>
+
+                <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">Adatok írása és olvasása Python-al</h2>
             </section>
 
             <!-- második része vége -->
 
             <!-- harmadik része eleje -->
 
-
-
             <!-- harmadik rész vége -->
+
         </main>
 
+
+        <script src="node_modules/d3/dist/d3.min.js"></script>
+        <script src="node_modules/underscore/underscore-min.js"></script>
+        <script src="javascript/main.js"></script>
     </body>
 
 </html>
