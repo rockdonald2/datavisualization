@@ -1,0 +1,31 @@
+{
+  "name": "datavisualization",
+  "version": "1.0.0",
+  "description": "A repo for my data visualization studying.",
+  "main": "index.js",
+  "scripts": {
+    "watch:sass": "node-sass sass/main.scss css/style.css -w",
+    "devserver": "live-server",
+    "start": "npm-run-all --parallel watch:sass devserver",
+    "build": "postcss css/tailwind.css -o css/compiled.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rockdonald2/datavisualization.git"
+  },
+  "author": "rockdonald2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rockdonald2/datavisualization/issues"
+  },
+  "homepage": "https://github.com/rockdonald2/datavisualization#readme",
+  "devDependencies": {
+    "autoprefixer": "^9.8.4",
+    "live-server": "^1.2.1",
+    "node-sass": "^4.14.1",
+    "npm-run-all": "^4.1.5",
+    "postcss-cli": "^7.1.1",
+    "postcss-import": "^12.0.1",
+    "tailwindcss": "^1.4.6"
+  }
+}
