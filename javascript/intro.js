@@ -133,9 +133,10 @@ function Counter(inc) {
 
 let cntr = Counter(2);
 
-cntr();
+cntr(); // count = 2;
 
-cntr();
+cntr(); // count = 4;
+// tehát az értékét megőrzi a count
 
 ///////////////////////////////
 
@@ -148,3 +149,10 @@ function outer(bar) {
         // ebben az esetben a that a külső függvény this-jére vonatkozik.
     }
 }
+
+//////////////////////////////
+
+let d = new Date('2020-07-04T19:13:47.622017'); // output: Sat Jul 04 2020 19:13:47 GMT+0300 (Eastern European Summer Time)
+
+// akár vissza is alakíthatjuk ISO formátumba a kapott Date objektumot
+d.toISOString(); // output: 2020-07-04T16:13:47.622Z

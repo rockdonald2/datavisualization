@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-    class="text-gray-900 antialiased leading-relaxed">
+    class="text-black text-base antialiased leading-normal tracking-normal">
 
     <head>
         <meta charset="UTF-8">
@@ -19,6 +19,8 @@
             href="css/style.css">
         <link rel="stylesheet"
             href="css/compiled.css">
+        <link rel="stylesheet"
+            href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/androidstudio.min.css">
         <!-- Safari-n az emoji favicon nem működik -->
         <link rel="icon"
             href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22
@@ -31,29 +33,34 @@
 
     <body>
 
-        <main class="container p-6 max-w-6xl min-h-screen bg-white">
+        <main class="container p-8 md:p-6 max-w-2xl md:max-w-3xl min-h-screen bg-white">
 
-            <p class="text-2xl my-8 text-gray-900 text-right">Utolsó módosítás: 2020 Július 7.</p>
+            <!-- alapvető adatok -->
 
-            <p class="text-4xl mt-8 mb-2">Lukács Zsolt</p>
+            <p class="text-md my-8 text-gray-900 font-light text-right">Utolsó módosítás: 2020 Július 8.</p>
+
+            <hr>
+
+            <p class="text-2xl font-medium mt-8 text-gray-900">Lukács Zsolt</p>
             <a href="mailto:rockdonald2@gmail.com"
-                class="inline-block group font-bold text-2xl pb-8 hover:text-teal-900 opacity-75 hover:opacity-100 transition duration-100 ease-in">rockdonald2@gmail.com
-                <span class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100
+                class="inline-block group font-medium text-lg pb-8 text-gray-600 italic hover:text-gray-800 opacity-75 hover:opacity-100 transition duration-100 ease-in">rockdonald2@gmail.com
+                <span class="inline-block font-medium transform group-hover:translate-x-1 transition duration-100
                     ease-in">↗</span></a>
 
             <!-- első rész eleje -->
 
             <section class="pb-8">
-                <h1 class="text-5xl py-8 text-teal-900">1 Bevezetés</h1>
-                <p class="text-2xl font-normal">Alapvetően, ez a repo, illetőleg weboldal-szerűség a következő könyv
+                <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">1 Bevezetés</h1>
+                <p class="text-lg font-normal">Alapvetően, ez a repo, illetőleg weboldal-szerűség a következő könyv
                     tanulmányozására
                     készült: <a href="https://www.oreilly.com/library/view/data-visualization-with/9781491920565/"
-                        class="group text-2xl pb-8 text-gray-600
-                    hover:text-teal-900 opacity-75 hover:opacity-100 transition duration-100 ease-in">Data Visualization with
+                        class="group text-lg pb-8 text-gray-600
+                    hover:text-gray-800 opacity-75 italic hover:opacity-100 transition duration-100 ease-in">Data Visualization
+                        with
                         Python and JavaScript <span class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100
                     ease-in">↗</span></a> , a jegyzet során használt ábrák is ebből a könyvből származnak. A weboldal készítése
-                    során Visual Studio Code-ot használtam, NPM-et, a használt csomagok listája megtalálható a <span
-                        class="text-gray-600">'package.json'</span> config állományban, végül Python 3.8-at, és Chrome-ban
+                    során Visual Studio Code-ot használtam, NPM-et, a használt csomagok listája megtalálható a package.json config
+                    állományban, végül Python 3.8-at, és Chrome-ban
                     futatott JavaScript-et. Az egész jegyzetet pedig GitHub-on tároltam és folyamatosan frissítettem.</p>
             </section>
 
@@ -62,34 +69,34 @@
             <!-- második része eleje -->
 
             <section class="pb-8">
-                <h1 class="text-5xl py-8 text-teal-900">2 Első lépések az adatvizualizációban</h1>
-                <h2 class="text-4xl pb-4 font-normal text-teal-700">Az adatvizualizáció folyamata</h2>
-                <p class="text-2xl font-normal">Az adatvizualizáció folyamata 5 lépésben összegezhető lépéssorozatként kerül
+                <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">2 Első lépések az adatvizualizációban</h1>
+                <h2 class="text-2xl pb-4 font-semibold text-gray-800">Az adatvizualizáció folyamata</h2>
+                <p class="text-lg font-normal">Az adatvizualizáció folyamata 5 lépésben összegezhető lépéssorozatként kerül
                     végrehajtásra:</p>
-                <ol class="px-8 py-2 text-2xl list-decimal">
-                    <li class="pb-2"><span class="text-teal-700 font-bold">Scrape:</span> meg kell "szerezni" az adatot, amit
+                <ol class="px-8 py-2 text-lg list-decimal">
+                    <li class="pb-2"><span class="font-semibold">Scrape:</span> meg kell "szerezni" az adatot, amit
                         ábrázolni akarunk, erre használjuk majd a Scrapy framework-ot;</li>
-                    <li class="pb-2"><span class="text-teal-700 font-bold">Clean:</span> meg kell tisztítatni az adatot,
+                    <li class="pb-2"><span class="font-semibold">Clean:</span> meg kell tisztítatni az adatot,
                         erre használjunk a Python Pandas-ot;</li>
-                    <li class="pb-2"><span class="text-teal-700 font-bold">Process:</span> az adatok feldolgozásának
+                    <li class="pb-2"><span class="font-semibold">Process:</span> az adatok feldolgozásának
                         lépése, IPython, Pandas és Matplotlib alkalmazásával;</li>
-                    <li class="pb-2"><span class="text-teal-700 font-bold">Deliver:</span> miután megszerezted,
+                    <li class="pb-2"><span class="font-semibold">Deliver:</span> miután megszerezted,
                         megtisztítottad és fel is dolgoztad az adatot, amit ábrázolni akarsz el is kell jutattni a web böngészőbe,
                         ahol azt megfogod jeleníteni, erre használjuk a Flask RESTful API-t;</li>
-                    <li class="pb-2"><span class="text-teal-700 font-bold">Transform:</span> létrehozzuk az interaktív
+                    <li class="pb-2"><span class="font-semibold">Transform:</span> létrehozzuk az interaktív
                         vizualizációt D3 könyvtár használatával.</li>
                 </ol>
                 <figure>
                     <img class="mx-auto"
                         src="./img/fig1.png"
                         alt="Figure 1">
-                    <figcaption class="text-center pt-2 pb-4 text-xl">1. Ábra: Adatvizualizáció folyamata</figcaption>
+                    <figcaption class="text-center pt-2 pb-4 text-md">1. Ábra: Adatvizualizáció folyamata</figcaption>
                 </figure>
-                <p class="text-2xl font-normal">Tehát, az adatvizualizációs folyamat során a Python és Javascript együttesét
+                <p class="text-lg font-normal">Tehát, az adatvizualizációs folyamat során a Python és Javascript együttesét
                     használjuk, különböző könyvtárak felhasználásával, a folyamat megkönnyítésének érdekében.</p>
 
-                <h3 class="text-3xl py-6">2.1 Az adatok megszerzése Scrapy-vel</h3>
-                <p class="text-2xl font-normal">Alapvetően, a legelső probléma amivel szembesülünk, amikor bármiféle adatot
+                <h3 class="text-xl py-6 text-gray-900">2.1 Az adatok megszerzése Scrapy-vel</h3>
+                <p class="text-lg font-normal">Alapvetően, a legelső probléma amivel szembesülünk, amikor bármiféle adatot
                     szeretnék valamilyen módon
                     ábrázolni és vizualizálni az, hogy hogyan is szerezzük meg az adatot: akár lekérhetjük valamilyen
                     kezelőfelületet használva, de akár saját magunk is összeállíthatjuk, ami nehézkes. Az adatok megszerzésekor
@@ -97,10 +104,10 @@
                     szerzünk meg, általában valamilyen lekérdezés, illetőleg adatelemzés által. A Python Scrapy framework-ja pont
                     ezt teszi lehetővé.</p>
 
-                <h3 class="text-3xl py-6">2.2 Az adatok tisztítása Pandas-val</h3>
-                <p class="text-2xl font-normal">Az adatvizualizáció önmagában nem egy bonyolúlt és időígényes feladat, de sokszor
+                <h3 class="text-xl py-6 text-gray-900">2.2 Az adatok tisztítása Pandas-val</h3>
+                <p class="text-lg font-normal">Az adatvizualizáció önmagában nem egy bonyolúlt és időígényes feladat, de sokszor
                     az adatok használhatatlansága mégis azzá teszi. A legtöbb időt az adatvizualizáció során az emészti fel, hogy
-                    a <span class="text-gray-600">'Dirty Data'</span>-ból valami használhatót hozzunk ki. A Pandas az egyik
+                    a Dirty Data-ból valami használhatót hozzunk ki. A Pandas az egyik
                     legismertebb és leghasználtabb framework, amely az adatok feldolgozására használható. A Pandas a Python Numpy
                     könyvtárát egészíti ki, és mindazon információ feldolgozási folyamat elvégezhető vele, amelyekkel az adat
                     ábrázolásához foglalkoznunk kell, ugyanakkor az adataink interaktív vizsgálatát is lehetővé teszi, a beépített
@@ -108,8 +115,8 @@
                     munkákakat, hiszen hatékonyan szabadulhatunk meg felesleges, duplikátum bejegyzésektől, elrontott és hiányos
                     rekordoktól.</p>
 
-                <h3 class="text-3xl py-6">2.3 Az adatok feldolgozása Pandas-al és Matplotplib-el</h3>
-                <p class="text-2xl font-normal">Mielőtt elkezdenénk azt, hogy a már megtisztított adatainkat képernyőre vigyük,
+                <h3 class="text-xl py-6 text-gray-900">2.3 Az adatok feldolgozása Pandas-al és Matplotplib-el</h3>
+                <p class="text-lg font-normal">Mielőtt elkezdenénk azt, hogy a már megtisztított adatainkat képernyőre vigyük,
                     valamilyen módon meg is kell azokat értenünk. Mintákat, trendeket, anomáliákat kell az adatokból kinyernünk,
                     gyakran ezek mélyen elvannak rejtve, minderre azért van szükség, hogy megfogalmazzuk azt a történetet és
                     jelenséget, amelyet a vizualizációnkkal elszeretnénk mondani. Az IPython, a Pandas és Matplotlib hármasa
@@ -117,21 +124,21 @@
                     egyenesen a parancssorról, majd a megismerések eredményét könnyen lementhetjük egy állományba, vagy egy
                     adatbázisba, hogy könnyen átadhassuk a JavaScript vizualizációs felületnek.</p>
 
-                <h3 class="text-3xl py-6">2.4 Az adatok eljutattása a felületre Flask-al</h3>
-                <p class="text-2xl font-normal">Miután finomítottuk adatunkat és fel is dolgoztuk azokat, valahogyan elkell
+                <h3 class="text-xl py-6 text-gray-900">2.4 Az adatok eljutattása a felületre Flask-al</h3>
+                <p class="text-lg font-normal">Miután finomítottuk adatunkat és fel is dolgoztuk azokat, valahogyan elkell
                     jutassuk a böngészőbe, ahol a lényeg fog történni, ahol egy JavaScript könyvtár, jelen esetben a D3, képes azt
                     átalakítani interaktív vizualizációvá. A Flask framework a Python egyik legnépszerűbb szerverkliense, amely
                     tökéletesen használható kisméretű RESTful API-kat, amelyeket a JavaScript elérhet ahhoz, hogy az adatokat
                     megszerezze a szerverről, állományokból vagy egyenes egy adatbázisból, és megjelenítse a böngészőben.</p>
 
-                <h3 class="text-3xl py-6">2.5 A végső interaktív vizualizáció D3-al</h3>
-                <p class="text-2xl font-normal">Az előbb említett lépések végrehajtása után, végső soron meg is kell jelenítenünk
+                <h3 class="text-xl py-6 text-gray-900">2.5 A végső interaktív vizualizáció D3-al</h3>
+                <p class="text-lg font-normal">Az előbb említett lépések végrehajtása után, végső soron meg is kell jelenítenünk
                     az adatokat, ahol nem csak a készítő, de a felhasználó is megértheti a mögöttes tartalmat. A D3 a JavaScript
                     egyik legfontosabb könyvtára, vitathatlanul a jelenleg piacon levő egyik legjobb vizualizációs eszköz, amely
                     lehetővé teszi a fent említett célt.</p>
 
-                <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">A környezet amiben dolgozunk</h2>
-                <p class="text-2xl font-normal">Alapvetően, a legtöbb konyvtár, amit a könyv tanulmányozása során használni fogunk
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">A környezet amiben dolgozunk</h2>
+                <p class="text-lg font-normal">Alapvetően, a legtöbb konyvtár, amit a könyv tanulmányozása során használni fogunk
                     az Python-ból való. Python esetében már eredendően kiterjedt szabványfüggvény könyvtárkészlettel rendelkezik,
                     amelyet még a harmadik személyek által készített publikus modulok is kiegészítenek. Ugyanakkor, mivel sok
                     esetben az említett könyvtárok telepítése nehézkes feladat, az Anaconda framework-ot fogjuk segítségül hívni a
@@ -139,45 +146,46 @@
                     Alapvetően, ahhoz, hogy leellenőrízzük megfelelően telepítettük-e fel az Anaconda csomagot Windows rendszeren,
                     a következő sort írhatjuk a parancssorba:</p>
                 <pre
-                    class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>$ ipython</code></pre>
-                <p class="text-2xl font-normal">Amennyiben az helyesen működik a következőt kellene megnyissa a parancssorban:</p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto"><code>$ Python 3.7.6 (default, Jan 8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ ipython</code></pre>
+                <p class="text-lg font-normal">Amennyiben az helyesen működik a következőt kellene megnyissa a parancssorban:</p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ Python 3.7.6 (default, Jan 8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]
 Type 'copyright', 'credits' or 'license' for more information
 IPython 7.12.0 -- An enhanced Interactive Python. Type '?' for help.
 In [1]:
 </code></pre>
-                <p class="text-2xl font-normal">Az Anaconda natívan tartalmazza a legtöbb olyan könyvtárt, amit használni fogunk a
+                <p class="text-lg font-normal">Az Anaconda natívan tartalmazza a legtöbb olyan könyvtárt, amit használni fogunk a
                     könyv tanulmányozása során, ugyanakkor amikor olyan könyvtárakat kell elérjünk, amelyeket nem tartalmaz az
                     Anaconda, használhatjuk a Python pip-jét. Alapvetően, ahhoz, hogy pip segítségével telepítsünk valamit, a
                     következőket kell írjuk a parancssorba:</p>
                 <pre
-                    class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>$ pip install <_könyvtár_elnevezése></code></pre>
-                <p class="text-2xl font-normal">Végül, beszélnünk kell az Anaconda virtuális környezeteiről, amelyeket a következő
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ pip install <_könyvtár_elnevezése></code></pre>
+                <p class="text-lg font-normal">Végül, beszélnünk kell az Anaconda virtuális környezeteiről, amelyeket a következő
                     parancsal hozhatunk létre, a teljes Anaconda csomaggal jelenesetben:</p>
                 <pre
-                    class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>$ conda create --name pyjsviz anaconda</code></pre>
-                <p class="text-2xl font-normal">Ahhoz, hogy ténylegesen használjuk az előző lépésben létrehozott virtuális
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ conda create --name pyjsviz anaconda</code></pre>
+                <p class="text-lg font-normal">Ahhoz, hogy ténylegesen használjuk az előző lépésben létrehozott virtuális
                     környezetet aktiválnunk kell azt a következő paranccsal:</p>
                 <pre
-                    class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>$ source activate pyjsviz</code></pre>
-                <p class="text-2xl font-normal">A D3 feltelepítéséhez természetesen használhatjuk a NPM eszközt a következő
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ source activate pyjsviz</code></pre>
+                <p class="text-lg font-normal">A D3 feltelepítéséhez természetesen használhatjuk a NPM eszközt a következő
                     parancs segítségével:</p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900">$ npm install d3</pre>
-                <p class="text-2xl font-normal">A könyv tanulmányozása során adatbázist is fogunk készíteni, névszerint MongoDB-t
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ npm install d3</code></pre>
+                <p class="text-lg font-normal">A könyv tanulmányozása során adatbázist is fogunk készíteni, névszerint MongoDB-t
                     és SQLite-ot, az előbbi egy noSQL eszköz, míg az utóbbi egy serverless SQL-adatbázis. Mindkét adatbázis-kliens
                     telepítésének útmutatója megtalálható azok weboldalán.</p>
-                <p class="text-2xl font-normal">Végül, a programkódok megírásához, mivel VSCode-ot használtam, nem kellett
+                <p class="text-lg font-normal">Végül, a programkódok megírásához, mivel VSCode-ot használtam, nem kellett
                     bármiféle IDE-t telepítenem, de az IDE-k közül nagyszerű választás lenne a PyCharm.</p>
 
-                <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">A programozási nyelvek, amelyekkel dolgozunk</h2>
-                <p class="text-2xl font-normal pb-3">Alapvetően, a már említett két programozási nyelvet fogjuk a könyv
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">A programozási nyelvek, amelyekkel dolgozunk</h2>
+                <p class="text-lg font-normal pb-3">Alapvetően, a már említett két programozási nyelvet fogjuk a könyv
                     tanulmányozása
                     során használni: JavaScript és Python, az előbbi a böngészőben fut, míg az utóbbi szinte bárhol, leginkább egy
                     console-ban, ugyanakkor mindkét nyelv interpreted, tehát egy virtuális egység a beírt programsorokat, azonnal
                     és közvetlenül értelmezni és végrehajtja.</p>
-                <p class="text-2xl font-normal pb-3">A programkódok megírása során Python esetében IPython qtconsole-t használunk,
+                <p class="text-lg font-normal pb-3">A programkódok megírása során Python esetében IPython qtconsole-t használunk,
                     illetőleg a JavaScript-et Chrome böngészőben futtatjuk.</p>
-                <p class="text-2xl font-normal">Fontos megjegyezni a lényeges eltérést a Python és a JavaScript namespace
+                <p class="text-lg font-normal">Fontos megjegyezni a lényeges eltérést a Python és a JavaScript namespace
                     között.
                     Alapvetően mondva, a Python modulok által importált funkciók és változók zártak, tehát csakis kizárólag a
                     modul nevén és a pont operátoron keresztül érhetők el, ez általánosságban véve egy jó dolog, és minden esetben
@@ -186,7 +194,7 @@ In [1]:
                     namespace ezért a modularitás konvencióját szükséges a kódba építenünk, amelyet úgy oldhatunk meg, hogy minden
                     egyes funkció/modul amit létrehozunk, egy önhívó függvényen keresztül legyen elérhető, létrehozva a szükséges
                     zártságot. Ezt mutatja be a következő kódrészlet:</p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>(function(nbviz) {
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>(function(nbviz) {
     "use strict",
     // ... 
 } (window.nbviz = windows.nbviz || {} ));
@@ -194,10 +202,10 @@ In [1]:
 // A fenti zárójel esetében, ha már létezik az nbviz objektum a globális namespaceben
 // akkor azt beadja a függvénybe, ellenkező esetben hozzáadja a globális namespacehez.
 </code></pre>
-                <p class="text-2xl font-normal">Egy jó megközelítés arra nézve, hogy megismerjük a két nyelv közötti
+                <p class="text-lg font-normal">Egy jó megközelítés arra nézve, hogy megismerjük a két nyelv közötti
                     különbségeket, hogy megírjuk ugyanazt a programot mindkét nyelvben. Egy egyszerű adatfeldolgozást mutat be a
                     következő programrészlet:</p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>student_data = [
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>student_data = [
     {'name': 'Bob', 'id': 0, 'scores':[68, 75, 56, 81]},
     {'name': 'Alice', 'id': 1, 'scores':[75, 90, 64, 88]},
     {'name': 'Carol', 'id': 2, 'scores':[59, 74, 71, 68]},
@@ -238,7 +246,7 @@ logger = logging.getLogger(__name__)
 logger.debug('Some useful debugging output')
 logger.info('Some general information')
 logger.warning('Some warning')</code></pre>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>"use strict"
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>"use strict"
 
 let studentData = [{
         'name': 'Bob',
@@ -285,39 +293,39 @@ function processStudentData(data, passThreshold, meritThreshold) {
 }
 
 processStudentData(studentData);</code></pre>
-                <p class="text-2xl font-normal">Ugyanakkor, a fenti Python kód során használt print utasítás akár
+                <p class="text-lg font-normal">Ugyanakkor, a fenti Python kód során használt print utasítás akár
                     helyettesíthető
                     ugyancsak Python beépített modulnak tekinthető logging-al. Ezt a következő kódrészlet szemlélteti: </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>import logging
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>import logging
 
 logger = logging.getLogger(__name__)
 
 logger.debug('Some useful debugging output')
 logger.info('Some general information')
 logger.warning('Some warning')</code></pre>
-                <p class="text-2xl font-normal pb-3">Nagyon jó gyakorlat az, ha minden változót, amit a programkódunk használ a
+                <p class="text-lg font-normal pb-3">Nagyon jó gyakorlat az, ha minden változót, amit a programkódunk használ a
                     függvények elején deklarálunk, főleg JavaScript esetében igaz ez, hiszen a JavaScript interpreterje a
                     változókat minden egyéb kód előtt értelmezi. Ez azt jelenti a gyakorlatban, hogy teljesen közömbös az, hogy
                     hol hozzuk létre a változóinkat, mindig úgy értelmezi az interpreter, mintha a függvény elején lett volna. Ez
                     főleg error-kezelés esetében egy előny.
                 </p>
-                <p class="text-2xl font-normal">A boolean adattípus esetében is érdekes dolgokat lehet felfedezni, miszerint
+                <p class="text-lg font-normal">A boolean adattípus esetében is érdekes dolgokat lehet felfedezni, miszerint
                     amikor logikai kifejezéseket írunk, abban az esetben valójában nem egy boolean értéket fog a kifejezés
                     téríteni, hanem valamelyik operándust, a következő logika szerint:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>x or y      Ha x hamis, akkor y, másképp x
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="plaintext">x or y      Ha x hamis, akkor y, másképp x
 x and y     Ha x hamis, akkor x, másképp y
 not x       Ha x hamis, akkor Igaz, másképp Hamis</code></pre>
-                <p class="text-2xl font-normal pb-3">Durván szólva, a JavaScript objects-eket kvázi Python dicts-ként lehet
+                <p class="text-lg font-normal pb-3">Durván szólva, a JavaScript objects-eket kvázi Python dicts-ként lehet
                     használni,
                     illetve Python lists-eket, pedig JavaScript array-ekként, lényeges és elhagyhatatlan különbség az említett
                     összetett adattípusok esetében nincs. Továbbá, a Python rendelkezik még ún. tuple adattípussal is, ami nagyban
                     hasonlít a list-hez, annyi különbséggel, hogy létrehozása után megváltoztathatlan.
                 </p>
-                <p class="text-2xl font-normal">Egy újabb hiba, amelybe relatíve könnyen bele lehet szaladni az a for ciklus
+                <p class="text-lg font-normal">Egy újabb hiba, amelybe relatíve könnyen bele lehet szaladni az a for ciklus
                     esetében tükrőzödik, vegyük például a következő kódrészletet:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>foo = {'first_key': 1, 'second_key': 2}
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>foo = {'first_key': 1, 'second_key': 2}
 
 for item in foo:
     print(item)
@@ -328,12 +336,12 @@ for item in foo.items():
     print(item)
 
 # Ebben az esetben már a dict itemet fogja kiírni key-value páronként, tuple típusban.</code></pre>
-                <p class="text-2xl font-normal">A fenti egyszerű Python esettel szemben, JavaScript-et használva korán sem
+                <p class="text-lg font-normal">A fenti egyszerű Python esettel szemben, JavaScript-et használva korán sem
                     ennyire
                     könnyű objektumokkal dolgozni, hiszen a for ciklus nem ugyanúgy működik, mint Python esetében, a következő
                     kódrészlet ezt szemlélteti:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let foo = {
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let foo = {
     'firstKey': 1,
     'secondKey': 2
 };
@@ -343,31 +351,31 @@ for (let item in foo) {
         console.log(item + " " + foo[item]);
     }
 }</code></pre>
-                <p class="text-2xl font-normal pb-3">Az előbbi esetben, azért van szükség a for cikluson belül a hasOwnProperty
+                <p class="text-lg font-normal pb-3">Az előbbi esetben, azért van szükség a for cikluson belül a hasOwnProperty
                     metódus
                     használatára, mert a Python dict-ekkel szemben, a JavaScript objektumjai tartalmazhatnak örökölt
                     tulajdonságokat is a prototyping chainről, és a metódus pont ez ellen tesz, leellenőrízve azt, hogy
                     rendelkezik-e az objektum a vizsgált tulajdonsággal, azonban mint saját tulajdonság és nem örökölt.
                 </p>
-                <p class="text-2xl font-normal pb-3">Ugyanakkor, a korábban ábrázolt problémákat a JavaScript többé-kevésbé már
+                <p class="text-lg font-normal pb-3">Ugyanakkor, a korábban ábrázolt problémákat a JavaScript többé-kevésbé már
                     önmaga
                     megoldotta, hiszen kiegészült olyan funkcionális elemekkel, amelyek megkönnyítik az adatok feldolgozását.
                     Ilyen akár a forEach ciklus is, amely végigiterálva egy adatszerkezet elemein, végrehajtja a callback
                     függvényt rajtuk.
                 </p>
-                <p class="text-2xl font-normal pb-3">Azonban, ezeket a korábban említett függvényeket nem használhatjuk objektumok
+                <p class="text-lg font-normal pb-3">Azonban, ezeket a korábban említett függvényeket nem használhatjuk objektumok
                     esetében, így azok feldolgozásakor más megoldást kell találjunk.
                 </p>
-                <p class="text-2xl font-normal pb-3">A következő lényeges dolog, amit érdemes megvizsgálni a két programozási
+                <p class="text-lg font-normal pb-3">A következő lényeges dolog, amit érdemes megvizsgálni a két programozási
                     nyelv
                     eltérése, ami az objektumorientált programozást illeti. A Python klasszikus OOP-t használ, ezzel szemben a
                     JavaScript ún. prototype-okat.
                 </p>
-                <p class="text-2xl font-normal">A Python classok nagyon egyszerűek, és hatásosan valósítja meg maga a nyelv
+                <p class="text-lg font-normal">A Python classok nagyon egyszerűek, és hatásosan valósítja meg maga a nyelv
                     az
                     objektumorientált programozást, amit a következő kódrészlet is szemléltet:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>class Citizen(object):
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>class Citizen(object):
     def __init__(self, name, country):
         self.name = name
         self.country = country
@@ -377,15 +385,15 @@ for (let item in foo) {
 
 c = Citizen('Lukács Zs.', 'Hungary')
 c.print_details()</code></pre>
-                <p class="text-2xl font-normal pb-3">A Python classok központi eleme az __init__ függvény, amely az objektum
+                <p class="text-lg font-normal pb-3">A Python classok központi eleme az __init__ függvény, amely az objektum
                     példányok
                     létrehozásakor kerülnek lehívásra. A classok metódusainak létrehozása során, elhagyhatatlan elem a self
                     paraméter, amely a class példányra vonatkozik.
                 </p>
-                <p class="text-2xl font-normal">Továbbá, a Python egy eléggé klasszikus megközelítést alkalmaz az öröklődés
+                <p class="text-lg font-normal">Továbbá, a Python egy eléggé klasszikus megközelítést alkalmaz az öröklődés
                     megoldására, amelyet a következő kódrészlet is szemléltet:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>class Winner(Citizen):
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>class Winner(Citizen):
     def __init__(self, name, country, category, year):
         super(Winner, self).__init__(name, country)
         self.category = category
@@ -396,20 +404,20 @@ c.print_details()</code></pre>
 
 w = Winner('Albert E.', 'Switzerland', 'Physics', 1921)
 w.print_details()</code></pre>
-                <p class="text-2xl font-normal pb-3">A fenti példa esetében, az ősosztályt, super-classnak nevezhetjük, és
+                <p class="text-lg font-normal pb-3">A fenti példa esetében, az ősosztályt, super-classnak nevezhetjük, és
                     újrahasználhatjuk a super-class konstruktőrjét a super-el, felhasználva a Winner objektum példányt self-ként.
                     Alapvetően, a super hívó ebben az esetben nem mást tesz, mint az öröklődési fán egy szintet felmegy, az első
                     argumentumjától, és a jelenlegi példányt argumentumként adja tovább a class metódusnak.
                 </p>
-                <p class="text-2xl font-normal pb-3">Ahhoz, hogy megértsük a JavaScript prototípusok és a Python classok közötti
+                <p class="text-lg font-normal pb-3">Ahhoz, hogy megértsük a JavaScript prototípusok és a Python classok közötti
                     különbséget, megkell értenünk azt, hogy amikor egy Python classot lehívunk, az úgy zajlódik le, hogy lehívjük
                     a különböző konstruktörőket az öröklődési fában, így létrehozva a class példányt.
                 </p>
-                <p class="text-2xl font-normal">Ezzel szemben, amikor prototípusokkal foglalkozunk, olyan mintha már egy kész
+                <p class="text-lg font-normal">Ezzel szemben, amikor prototípusokkal foglalkozunk, olyan mintha már egy kész
                     dolgot módosítgatnánk, ilyen értelemben véve nem teljesen új objektumokat hozunk létre, hanem adaptálunk egy
                     meglévőt és azt bővítjük ki. A következő kódrészlet szemlélteti a JavaScript prototípusok működését:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let Citizen = function(name, country) {
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let Citizen = function(name, country) {
     this.name = name;
     this.country = country;
 }
@@ -423,21 +431,21 @@ Citizen.prototype = {
 let c = new Citizen('Lukács Zs.', 'Hungary');
 
 c.printDetails();</code></pre>
-                <p class="text-2xl font-normal pb-3">A fenti kódrészlet mutatja be azt, hogy JavaScript-ben nincsenek classok, és
+                <p class="text-lg font-normal pb-3">A fenti kódrészlet mutatja be azt, hogy JavaScript-ben nincsenek classok, és
                     így
                     az objektum-példányokat függvényekből, vagy objektumokból építjük fel. Alapvetően, ebben az esetben az
                     örökölhető, és az objektum-példányokhoz tartozó metódusokat a prototype résznél hozzuk létre. A new-t pedig új
                     objektum létrehozására használjuk fel.
                 </p>
-                <p class="text-2xl font-normal pb-3">Első ránézésre úgy tűnhet, mintha nem lenne különbség a Python self és a
+                <p class="text-lg font-normal pb-3">Első ránézésre úgy tűnhet, mintha nem lenne különbség a Python self és a
                     JavaScript this között, miközben ez korántsem igaz. A Python self-je egy változó, amit minden metódusnak
                     bekell adni, mint paraméter, és ez jelöli a jelenlegi objektum példányt. Ezzel szemben, a this kulcsszó arra
                     az objektumra vonatkozik, amely lehívja a metódust. Ilyen értelemben, a hívó objektum eltérhet attól az
                     objektumtól, amelyhez a metódus tartozik.
                 </p>
-                <p class="text-2xl font-normal">Végül, a JavaScript öröklődést a következő kódrészlet szemlélteti:
+                <p class="text-lg font-normal">Végül, a JavaScript öröklődést a következő kódrészlet szemlélteti:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let Citizen = {
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let Citizen = {
     setCitizen: function(name, country) {
         this.name = name;
         this.country = country;
@@ -465,38 +473,38 @@ let a = Object.create(Winner).setWinner('Einstein A.', 'Switzerland', 'Physics',
 
 a.printDetails();</code></pre>
 
-                <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">Különbségeik a gyakorlati felhasználásban</h2>
-                <p class="text-2xl font-normal pb-3">Látszólag vannak eltérések a két nyelv között, de szerencsére többnyire
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Különbségeik a gyakorlati felhasználásban</h2>
+                <p class="text-lg font-normal pb-3">Látszólag vannak eltérések a két nyelv között, de szerencsére többnyire
                     szintaktikai eltérések, ahogyan azt az előző fejezet is szemlélteti. Az imperatív programozás lényege a két
                     nyelvben majdhogynem azonos.
                 </p>
-                <p class="text-2xl font-normal pb-3">Azonban, imperatív eltérés például a metódusok láncolata, amely a JavaScript
+                <p class="text-lg font-normal pb-3">Azonban, imperatív eltérés például a metódusok láncolata, amely a JavaScript
                     esetében gyakran megjelenik, ezzel szemben Python esetén kevésbé. A metódus láncolást a korábbi JavaScript
                     öröklődési példa is szemlélteti, amikoris egy objektum metódusból a this-t visszatérítve képesek vagyunk
                     láncolatot létrehozni, hiszen mindig az aktuális objektumot téríti vissza.
                 </p>
-                <p class="text-2xl font-normal">A következő jellegzetesség a listákon való végighaladásban érhető tetten.
+                <p class="text-lg font-normal">A következő jellegzetesség a listákon való végighaladásban érhető tetten.
                     Mindkét
                     programozási nyelv lehetőséget biztosít arra, hogy úgy haladjunk végig listákon, hogy mindeközben az elemek
                     indexét is megőrízzük. Ilyen a Python enumerate-ja, vagy akár a JavaScript forEach, bár az utóbbi esetében
                     valójában az elem indexét a callback függvénynek szolgáltatja. A következő kódrészletek ezt a két esetet
                     szemléltetik:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>names = ['Alice', 'Bob', 'Carol']
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>names = ['Alice', 'Bob', 'Carol']
 
 for i, n in enumerate(names):
     print('{}: {}'.format(i, n))</code></pre>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let names = ['Alice', 'Bob', 'Carol']
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let names = ['Alice', 'Bob', 'Carol']
 
 names.forEach(function(i, n) {
     console.log(i + ': ' + n);
 })</code></pre>
-                <p class="text-2xl font-normal">Lényeges imperatív eltérés a tuple unpacking is, amely Python esetében
+                <p class="text-lg font-normal">Lényeges imperatív eltérés a tuple unpacking is, amely Python esetében
                     jelenik
                     meg. A Python tuple unpacking arra nyújt lehetőséget például, hogy változókat cseréljünk meg, csökkentve annak
                     a szükségességét, hogy ideiglenes változókat hozzunk létre. A következő kódrészlet ezt szemlélteti:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>def fibonacci(n):
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>def fibonacci(n):
     x, y = 0, 1
 
     for i in range(n):
@@ -504,13 +512,13 @@ names.forEach(function(i, n) {
         x, y = y, x + y
 
 fibonacci(4)</code></pre>
-                <p class="text-2xl font-normal">Ugyancsak sajátossága a Python-nak a collections modul. A collections modul
+                <p class="text-lg font-normal">Ugyancsak sajátossága a Python-nak a collections modul. A collections modul
                     kiegészítő azon összetett adatszerkezetek listáját, amelyekkel a Python rendelkezik: deque, OrderedDict,
                     defaultdict, stb. A collection funkcionalitását utánzó könyvtárak JavaScript-nél is megtalálhatók, bár ott
                     kevésbé elterjedtek. Az egyik nagyon hasznos függvénye a collections modulnak a Counter, amelynek használatát
                     a következő kódrészlet szemlélteti:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>from collections import Counter
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>from collections import Counter
 
 items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D']
 
@@ -518,7 +526,7 @@ cntr = Counter(items)
 # a Counter függvény megszámolja az elemek gyakoriságát
 
 print(cntr)</code></pre>
-                <p class="text-2xl font-normal">Az egyik nagyon fontos könyvtár, amely a JavaScript funkcionalitását
+                <p class="text-lg font-normal">Az egyik nagyon fontos könyvtár, amely a JavaScript funkcionalitását
                     kiegészíti az
                     Underscore. Az Underscore könyvtár lévén, vagy CDN-n keresztül kell elérni, vagy NPM-el fel kell telepíteni az
                     aktuális NPM környezetbe. Ezt a szokásos npm install underscore-al megtehetjük. Az Underscore nagyon sok
@@ -526,17 +534,17 @@ print(cntr)</code></pre>
                     countBy metódus, amely a Python collections moduljában található Counter-et is helyettesítheti, ezt a
                     következő kódrészlet mutatja be:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>let items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D'];
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D'];
 
 _.countBy(items);</code></pre>
-                <p class="text-2xl font-normal">A következő dolog, amit mindenképp megkell említeni a JavaScript closure-je,
+                <p class="text-lg font-normal">A következő dolog, amit mindenképp megkell említeni a JavaScript closure-je,
                     vagy
                     zártsága. Alapvetően, a closure ebben a kontextusban nem mást jelent, mint hogy lényegében egy fészkelt
                     függvény deklarációja felhasznál egy olyan változót, amely egy külső scope-ban került deklarálásra, de nem a
                     globális scopeban, azonban élettartama így globális módosul és értékét megőrzi a függvény terítése után is. A
                     következő kódrészlet ezt szemlélteti:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>function Counter(inc) {
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>function Counter(inc) {
     let count = 0;
     let add = function() {
         count += inc;
@@ -547,19 +555,20 @@ _.countBy(items);</code></pre>
 
 let cntr = Counter(2);
 
-cntr();
+cntr(); // count = 2;
 
-cntr();</code></pre>
-                <p class="text-2xl font-normal pb-3">Hasonló technika a Python-ban is megfigyelhető, de ott kevésbé jelentős a
+cntr(); // count = 4;
+// tehát az értékét megőrzi a count</code></pre>
+                <p class="text-lg font-normal pb-3">Hasonló technika a Python-ban is megfigyelhető, de ott kevésbé jelentős a
                     használata.
                 </p>
-                <p class="text-2xl font-normal">Utolsó érdekesség a két nyelv imperatív eltérései között a closure-el
+                <p class="text-lg font-normal">Utolsó érdekesség a két nyelv imperatív eltérései között a closure-el
                     kapcsolatos.
                     A closure esetében megtörténhet az, hogy a külső scope this-jére szeretnél hivatkozni, egy belső függvényben,
                     ebben az esetben egy proxy-t kell használj ahhoz, hogy ez megtörténhessen, ezt általában that-al jelöljük, és
                     a következőképpen néz ki a gyakorlatban:
                 </p>
-                <pre class="p-4 my-4 bg-gray-300 opacity-75 text-xl rounded-md overflow-auto text-teal-900"><code>function outer(bar) {
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>function outer(bar) {
     this.bar = bar;
     var that = this;
     function inner(baz) {
@@ -569,7 +578,521 @@ cntr();</code></pre>
     }
 }</code></pre>
 
-                <h2 class="text-4xl pt-8 pb-4 font-normal text-teal-700">Adatok írása és olvasása Python-al</h2>
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Adatok írása és olvasása Python-al</h2>
+                <p class="text-lg font-normal pb-3">Alapvetően, nagyon lényeges követelmény minden olyan személlyel szemben, aki
+                    adatvizualizációval szeretne foglalkozni, hogy megfelelően képes legyen az adatait manipulálni és alakítani,
+                    ahogy az szükséges. A Python erőssége az, hogy rendkívül egyszerűvé teszi ezt a folyamatot, könnyen
+                    olvashatunk be állományokat, érhetünk el adatbázisokat, és miután ezt megtettük kedvünk szerint tudjuk azokat
+                    alakítani ahhoz, hogy megfelelően megjeleníthessük.
+                </p>
+                <p class="text-lg font-normal">Python megnyitni állományt, annyira egyszerű, mint beírni a következő utasítást:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>all = open('data.txt') # megnyitja az állományt olvasásra alapértelmezetten
+
+print(all) # output: <_io.TextIOWrapper name='data.txt' mode='r' encoding='cp1252'></code></pre>
+                <p class="text-lg font-normal pb-3">Azonban, az adatvizualizációs munka során nem csak szöveges állományokat kell
+                    feldolgozzunk, de a Python kiterjedtsége a CSV és JSON állományok feldolgozását is nagyban megkönnyíti.
+                    Ugyanakkor, nagyszerű könyvtárakkal rendelkezik, ahhoz, hogy SQL-adatbázisokkal dolgozzunk, mint pl. az
+                    SQLAlchemy, illetve, ha noSQL kliensek után néznénk a MongoDB egy nagyszerű választás, amelyet a Python-on
+                    belül a pymongo könyvtárral érhetünk el.
+                </p>
+                <p class="text-lg font-normal pb-3">Az adatok feldolgozásának demonstrálására jó kezdés, ha megnézzük hogyan
+                    használhatjuk a kulcsfontosságú adattárolási könyvtárakat egy példán keresztül. Ez lehetőséget biztosít arra,
+                    hogy megfigyeljük működés közben az adatformátummokat és adatbázisokat, amelyekkel foglalkoznak az
+                    adat-megjelenítők.
+                </p>
+                <p class="text-lg font-normal">Az adat, amivel a példa során dolgozni fogunk az egyik leggyakoribb, ami az adatok
+                    ábrázolásakor megjelenhet, egy listányi dict objektum, ezt az adatot adnánk át a böngészőnek JSON formátumban,
+                    a formátumátalakítás viszonylag könnyen megvalósítható a Python dict objektumból:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>nobel_winners = [
+    {
+        'category': 'Physics',
+        'name': 'Albert Einstein',
+        'nationality': 'Swiss',
+        'sex': 'male',
+        'year': 1921
+    },
+    {
+        'category': 'Physics',
+        'name': 'Paul Dirac',
+        'nationality': 'British',
+        'sex': 'male',
+        'year': 1933
+    },
+    {
+        'category': 'Chemistry',
+        'name': 'Marie Curie',
+        'nationality': 'Polish',
+        'sex': 'female',
+        'year': 1911
+    }
+]</code></pre>
+                <p class="text-lg font-normal">Első lépésben a fenti Python listát átalakítsuk egy CSV fájllá, bemutatva azt, hogy
+                    hogyan is lehet rendszerfájlokat olvasni és írni. Könyvtárak használata nélkül hagyományos Python IO-val ez
+                    így nézne ki:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>f = open('nobel_winners.csv', 'w')
+
+print(f)
+
+cols = list(nobel_winners[0].keys()) # lekéri a lista első dict objektumának kulcsait: category, name, nationality, sex, year, azért alakítom listává, hogy sortolható legyen
+cols.sort() # rendezzük alfabetikusan
+
+with open('nobel_winners.csv', 'w') as f: # a with arra jó, hogy garantálja, ha esetleg hiba történik a feldolgozás során az állomány bezáródik, ugyanez történik, ha kilépünk a blokkból
+    f.write(','.join(cols) + '\n') # kiírjuk a kulcsokat az első sorba, vesszővel elválasztva
+
+    for o in nobel_winners:
+        row = [str(o[col]) for col in cols] # kiírjuk az adatokat a dict objektumokból
+        f.write(','.join(row) + '\n')
+
+
+with open('nobel_winners.csv', 'r') as f:
+    [print(line, end='') for line in f.readlines()] # kiírjuk a terminálba a csv állományban található adatokat</code></pre>
+                <p class="text-lg font-normal">Általánosságban beszélve, a leggyakrabban használt, mindenhol jelenlevő
+                    adatformátumok közé sorolhatók a TSV és CSV fájlok, a két formátum között lényeges különbség az, hogy az
+                    adatok hogyan kerülne elválasztásra, CSV esetén vesszővel, TSV esetén tab-al, tehát whitespacecel. A CSV
+                    fájlokkal való munkát könnyíti meg a csv könyvtár, figyeljük meg használatát a fenti példa megismétlésével:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>import csv
+
+with open('nobel_winners.csv', 'w') as f:
+    field_names = list(nobel_winners[0].keys()) # a writer-nek explicit módon megkell mondanunk milyen mezőnevekkel dolgozunk, ebben az esetben a category, stb..
+    field_names.sort()
+
+    writer = csv.DictWriter(f, fieldnames=field_names) # a DictWriter alakítsa át a dict objektumokat csv sorokká
+    writer.writeheader() # kiírjuk a mezőneveket a csv fájlba
+
+    for w in nobel_winners:
+        writer.writerow(w)</code></pre>
+                <p class="text-lg font-normal">Ugyanakkor, valószínűbb, hogy többet fogsz CSV fájlokat olvasni, mint létrehozni,
+                    tehát nézzük meg, hogy hogyan lehet csv könyvtár segítségével állományokat olvasni:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>with open('nobel_winners.csv', 'r') as f:
+    reader = csv.reader(f)
+
+    for row in reader:
+        print(row)</code></pre>
+                <p class="text-lg font-normal">Általában, kényelmesebb megoldás a CSV adat feldolgozására, ha átalakítsuk a
+                    sorokat vissza Python dict objektumokká:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>with open('nobel_winners.csv', 'r') as f:
+    reader = csv.DictReader(f)
+
+    nobel_winners = list(reader)</code></pre>
+                <p class="text-lg font-normal pb-3">Fontos megjegyezni a fenti két példa esetében, hogy a 'year' kulcsú adat
+                    minden esetben string típusú lesz, explicit átkell azt alakítani int-té, ha számként akarjuk felhasználni. Az
+                    állománykezelés minden adatot string-ként kezel. Erre a problémára azonban megoldást nyújt majd a Pandas,
+                    amely megpróbálja kikövetkeztetni a megfelelő adattípust, minden párhoz.
+                </p>
+                <p class="text-lg font-normal pb-3">Alapvetően, rendelkezik a csv könyvtár néhány olyan argumentummal, amely
+                    segítségével a CSV formátum-családba tartozó formátumokat értelmezni tudjuk, ezek listája megtalálható a
+                    Python dokumentációjában.
+                </p>
+                <p class="text-lg font-normal">Most nézzük meg hogyan lehet egy CSV-ből kinyert dict-et JSON-ná alakítani.
+                    Amennyiben, egyszerű, elemi adatszerkezetekkel dolgozunk, mint pl. stringekkel, integerekkel és floatokkal,
+                    abban az esetben nagyon könnyen át tudjuk alakítani a Python dict-eket JSON-fájlokká, használva a json
+                    könyvtárat. A dump metódus, amely a json könyvtár részét képzi, bevesz egy Python konténer típust és egy
+                    állománymutatót, egyszerűen belementi az első argumentumot a másodikba:
+                </p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>import json
+
+with open('nobel_winners.json', 'w') as f:
+    json.dump(nobel_winners, f) # egyszerűen létrehozza a fenti nobel_winners dict objektumokból álló listából a json állományt</code></pre>
+                <p class="text-lg font-normal">Írni vagy olvasni legalább ugyanannyira egyszerű a json modul segítségével,
+                    használva olvasásra a load metódust, amit az alábbi példa is szemléltet:
+                </p>
+                <pre class="my-4 bg-gray-600 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>with open('nobel_winners.json', 'r') as f:
+    nobel_winners = json.load(f)</code></pre>
+                <p class="text-lg font-normal pb-3">Azonban, a fenti módszer közel sem tökéletes, amennyiben egy datetime
+                    objektumot akarunk dump-el átalakítani, hibaüzenetet kapunk. A probléma a szerializációs folyamattal van,
+                    elemi típusok esetében az alapértelmezett json enkóder és dekóder jól működik, de speciális típusok esetében,
+                    mint amilyen a datatime is, szükség van arra, hogy létrehozzuk a saját enkóderünket és dekóderünket.
+                    Szerencsére, ez valójában közel sem annyira nehéz.
+                </p>
+                <p class="text-lg font-normal">Előszöris, vizsgáljuk meg azt hogyan tudjuk átalakítani, enkódolni a Python
+                    datetime típus JSON stringekké. Egy ilyen sajátos enkódert mutat be a következő kódrészlet is:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>import datetime
+from dateutil import parser
+import json
+
+class JSONDateTimeEncoder(json.JSONEncoder): # örökli az alapértelmezett JSON enkóder metódusait és tulajdonságait, ahhoz, hogy saját datetime-ra szakosodotatt készítsünk
+    def default(self, obj):
+        if isinstance(obj, (datetime.date, datetime.datetime)): # lellenőrzi azt, hogy datetime típusú-e az objektum
+            return obj.isoformat()
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+def dumps(obj):
+    return json.dumps(obj, cls=JSONDateTimeEncoder) # használjuk a szerializációs metódust, beállítva a cls argumentummal a saját enkóderünket
+
+now_str = dumps({'time': datetime.datetime.now()}) # átalakítja json formátumba a jelenlegi időt</code></pre>
+                <p class="text-lg font-normal pb-3">A fenti példa esetében dekódoláskor, a 'time' mezőnél könnyű dolgunk van,
+                    hiszen az
+                    alapból egy string, ugyanakkor a datestring valamilyen módon értelmezni kell először. Nem ajánlott, hogy olyan
+                    dekódolokat hozzunk létre, amelyek tetszőleges date-stringeket képesek értelmezni, hiszen a date-stringek
+                    nagyon sok félék lehetnek, így jobb azt minden alkalommal kézzel megcsinálni, hiszen az általunk használt
+                    adatok ismertek.
+                </p>
+                <p class="text-lg font-normal">Erre használhatjuk az strptime metódust, amely a datetime könyvtár része, amely egy
+                    date-stringet átalakít Python datetime objektum példánnyá:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>time_str = '2020-07-08 14:22:15'
+
+dt = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S') 
+# a strptime megpróbálja megegyeztetni a date-stringet annak a formátumnak, 
+# amit második argumentumként megadunk, ha sikerül visszatéríti a datetime példányt</code></pre>
+                <p class="text-lg font-normal pb-3">A következő részben megvizsgáljuk azt, hogy hogyan vagyunk képesek adatot
+                    olvasni és írni Pythonban SQL és noSQL adatbázisokba.
+                </p>
+                <p class="text-lg font-normal pb-3">Korábban már említettük, hogy az egyik leggyakoribb Python könyvtár, amit SQL
+                    adatbázisokkal való interakciókra használnak az az SQLAlchemy, ami leegyszerűsíti a teljes folyamatot, hiszen
+                    önmagában SQL adatbázisokban az olvasás és írás egy bonyolult folyamat, mivel mindig biztosítani kell azt is,
+                    hogy a felhasználó az adatot Python konténerként tudja kezelni. Az SQLAlchemy röviden és tömören azt teszi
+                    lehetővé, hogy nyers SQL utasításokat is akár használjunk a programkódunkban (ha a sebesség esszenciális), de
+                    az SQL-táblákat akár úgy is tudjuk lényegében kezelni a könyvtáron keresztül, mint Python classokat.
+                </p>
+                <p class="text-lg font-normal pb-3">Kezdjük azzal, hogy az adatunkat SQLite fájllá alakítsuk az SQLAlchemy-t
+                    felhasználva, de ezelőtt hozzuk létre az adatbázisunk "motrát", azt a szoftver komponenst, amelyet az
+                    adatbázisok kezelésére használunk, ahhoz, hogy írjunk, olvassunk, hozzáadjunk és töröljünk elemeket.
+                </p>
+                <p class="text-lg font-normal pb-3">A motor létrehozása az első lépés, amikor elkezdjük egy új SQLAlchemy
+                    session-t. Ez a motor fogja megteremteni a kapcsolatot az adatbázissal, elvégez minden átalakítást, amely
+                    szükséges azon általános SQL instrukciók megfelelő működéséhez, amelyet az SQLAlchemy generál, és a
+                    visszaterített adatokhoz.
+                </p>
+                <p class="text-lg font-normal">Számos motor áll rendelkezésünkre a legnépszerűbb adatbázisokhoz, de akár egy ún.
+                    memóriabeli motor/opció is létezik, amikoris a teljes adatbázis értelemszerűen a memóriában kerül tárolásra,
+                    ahonnan nagyon gyorsan érhetjük el azt. Nagy előnyük ezeknek a motroknak, hogy felcserélhetők, tehát
+                    elkezdhetjük kódunkat írni az egyik motorban, felhasználva az SQLite állomány-alapú adatbázisát, majd amikor
+                    publikálni szeretnék a kódunkat, akkor azt kicserélhetjük egy olyan motorra, amely képes ezt megbírni, mint
+                    pl. Postgresql-re, pusztán annyival, hogy kicserélünk egyetlen config-stringet. A következő kódrészlet
+                    szemlélteti a motor létrehozási folyamatot:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from sqlalchemy import create_engine
+
+engine = create_engine('sqlite:///nobel_prize.db', echo=True)
+# Ebben az esetben az állomány-alapú SQLite adatbázist használjuk, az echo Igazra állításával azt érjük el, hogy az 
+# SQLAlchemy-vel generált SQL instrukciók kiíródnak a terminálba</code></pre>
+                <p class="text-lg font-normal pb-3">Tanácsos, a lehető legtöbb esetben felhasználni az SQLAlchemy deklaratív
+                    stílusát
+                    az adatbázisokkal való interakciókor, hiszen a high-level stílussal könnyebb magát a kódot megírni, bár
+                    lassabb annak lefutása. Röviden és lényegretőrően fogalmazva, a deklaratív stílussal öröklöd minden Python
+                    SQL-tábla classodat egy bázis classból, aztán az SQLAlchemy megvizsgálja és elemzi annak a struktúráját és a
+                    kapcsolatokat.
+                </p>
+                <p class="text-lg font-normal pb-3">Előszöris, létrehozunk egy bázis classt, a declarativ_base-el. Ezt a bázist
+                    fogjuk
+                    felhasználni az előbb említett módon ahhoz, hogy létrehozzuk a tábla-classokat, amelyből az SQLAlchemy fogja
+                    létrehozni az adatbázis tábla sémáit. Ezeket a tábla-classokat tudjuk felhasználni arra, hogy a már megszokott
+                    módon interakcióba lépjünk az adatbázissal. Fontos megjegyezni azt, hogy a legtöbb SQL-könyvtár megköveteli
+                    azt, hogy formálisan definiáljuk ezeket a tábla-sémákat, ellentétben a NoSQL variánsokkal, mint a MongoDB,
+                    ahol ez nem szükséges, hiszen ott nincsenek sémák.
+                </p>
+                <p class="text-lg font-normal">A bázist felhasználva meghatározzuk a különböző táblákat, ebben az esetben csakis
+                    egyet, amit Winner-nek nevezünk:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base(bind=engine)
+
+class Winner(Base):
+    __tablename__ = 'winners' # elnevezi az SQL-táblát és ezt a kulcsszót használhatjuk annak eléréséhez
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    category = Column(String)
+    year = Column(Integer)
+    nationality = Column(String)
+    sex = Column(Enum('male', 'female'))
+    # beállítottuk a tábla-sémáját, meghatározva a tábla oszlopok típusát
+
+    def __repr__(self):
+        return "&#60;Winner(name={}, category={}, year={})>".format(self.name, self.category, self.year)
+    # opcionális metódus, amelyet a tábla-sor kiírására fogjuk használni</code></pre>
+                <p class="text-lg font-normal">Tehát, meghatároztuk a bázis örökölt classainkat az előző lépésben (sub-clasoskat),
+                    ezután használjuk a create_all metódust az adatbázis motrunkkal és a létrehozott bázis metaadatokkal, hogy
+                    létrehozzuk az adatbázisunkat, mivel az echo argumentumot Igazra állítottuk, minden generált instrukciót
+                    láthatunk a terminálban:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>Base.metadata.create_all(engine)</code></pre>
+                <p class="text-lg font-normal">Miután mindent összeállítottunk kezdhetjük is hozzáadni az új winners táblákban a
+                    winner példányokat. Mostmár megvan az adatbázisunk, egy session-re van szükségünk ahhoz, hogy interakcióba
+                    lépjünk vele:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>Session = sessionmaker(bind=engine)
+session = Session()</code></pre>
+                <p class="text-lg font-normal">Ezután használni tudjuk a korábban létrehozott Winner classunkat ahhoz, hogy
+                    létrehozzunk új példányokat/tábla-sorokat, és hozzáadhassuk a session-höz:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>albert = Winner(**nobel_winners[0])
+# a Python ** operátorja kicsomagolja az első nober_winners elemet key-value párokként, tehát (name=Albert Einstein, category=Physics...)
+session.add(albert)
+session.new
+# a new metódus segítségével beállítjuk az összes elemet, amelyet hozzáadtunk a session-höz.</code></pre>
+                <p class="text-lg font-normal pb-3">Fontos megjegyezni azt, hogy minden adatbázis beillesztés, törlés, stb.
+                    Python-on
+                    belül történik, csakis akkor változik meg a tényleges adatbázis, amikor a commit metódust is használjuk,
+                    azonban ennek használatát minimalizálnunk kellene, hiszen a háttérben az SQLAlchemy az átadandó adatokat
+                    értelmezi és összefoglalja, ahhoz, hogy a leghatékonyabban tudja azokat az adatbázisba írni.
+                </p>
+                <p class="text-lg font-normal">Ahogy azt a new metódus is láttatja, hozzáadtunk egy Winner példányt a session-höz,
+                    képesek vagyunk ezt onnan akár törölni is az expunge metódussal, ezután egy üres IdentitySet-et kapunk:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>session.expunge(albert)
+# törli az argumentumként megadott példányt, akár az összeset is törölhetjük az expunge_all() metódussal
+session.new</code></pre>
+                <p class="text-lg font-normal">Hiába adogattunk és törölgettünk dolgokat az adatbázisból, valójában még semmit sem
+                    változtattunk rajta mióta létrehoztuk. Adjuk hozzá az összes elemet a nobel_winners listából a session-höz,
+                    majd írjuk ki az adatbázisba a commit metódussal:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>winner_rows = [Winner(**w) for w in nobel_winners]
+# létrehoz egy listányi Winner példányt a nobel_winners elemeiből
+session.add_all(winner_rows)
+session.commit()
+# beilleszti a session IdentitySet-jéből az összes elemet az adatbázisba</code></pre>
+                <p class="text-lg font-normal">Ahhoz, hogy elérjük az adatokat használhatjuk a session query metódusát, a
+                    lekérésnek az eredménye majd szürhető, csoportosítható, stb., lehetővé téve az összes szabvány SQL
+                    adatlekérést. A következő kódrészletben lekérjük mindazon tábla-sorokat, amelyek nemzetiség svájci:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>result = session.query(Winner).filter_by(nationality='Swiss')</code></pre>
+                <p class="text-lg font-normal">De akár lekérhetjük rendezve is a sorokat:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>res = session.query(Winner).order_by('year')</code></pre>
+                <p class="text-lg font-normal">Ahhoz, hogy az adatbázisban található objektumokat újra Python dict-té alakítsuk
+                    kicsit dolgozni kell. Előszöris, létre kell hoznunk egy függvényt, amely létrehoz egy dict objektumot egy
+                    SQLAlchemy classból:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>def inst_to_dict(inst, delete_id=True):
+    dat = {}
+
+    for column in inst.__table__.columns:
+        dat[column.name] = getattr(inst, column.name)
+        # eléri a példány tábla class-át, hogy megszerezze az oszlop objektumok listáját
+        # egyszerűen elérjük annak a táblának az oszlopait, amelyhez tartozik a példány
+        # a getattr() függvénnyel pedig megszerezzük annak a mezőnek az értékét
+    if delete_id:
+        dat.pop('id')
+        # ha a delete_id igaz, akkor törölje az SQL elsődleges id mezőjét
+
+    return dat
+
+winner_rows = session.query(Winner)
+nobel_winners = [inst_to_dict(w) for w in winner_rows]</code></pre>
+                <p class="text-lg font-normal">Nagyon egyszerűen képesek vagyunk frissíteni táblázat sorokat, az által, hogy a
+                    query által visszatérített objektumot megváltoztatjuk, használhatjuk közben a new-hez hasonlóan a dirty-t,
+                    amely azokat a példány változtatásokat téríti vissza, amik még nem kerültek véglegesítésre az adatbázisban:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>marie = session.query(Winner).get(3)
+marie.nationality = 'French'
+session.dirty</code></pre>
+                <p class="text-lg font-normal">Miután megváltoztattuk a példányt, a commit-al a szokásos módon véglegesíteni is
+                    tudjuk, majd le is ellenőrízhetjük, hogy valóban megváltozott:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>session.commit()
+
+session.query(Winner).get(3).nationality # 'French'</code></pre>
+                <p class="text-lg font-normal">De akár törölhetünk is természetesen sorokat az adatbázisból:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>session.query(Winner).filter_by(name='Albert Einstein').delete()
+
+list(session.query(Winner)) # Albert már nem jelenik meg</code></pre>
+                <p class="text-lg font-normal">Továbbá, megkell említenünk még egy könyvtárt, amely az SQL adatbázisokkal való
+                    munkát könnyíti meg, még jobban, mint ahogy azt az SQLAlchemy teszi, és ez nem más, mint a Dataset könyvtár. A
+                    Dataset megpróbálja annyira kényelmessé tenni a sémás adatbázisokkal való munkát, mintha séma-nélküliek
+                    lennének, kihagyva számos olyan részletet, mint a séma-definíció, amelyeket pl. az SQLAlchemy is megkövetel. A
+                    Dataset az SQLAlchemy-re épül, ami azt eredményezi, hogy a legtöbb adatbázissal működik. Nézzük meg egy példán
+                    keresztül hogyan képes írni és olvasni a Dataset, ugyanakkor mivel nagy esély van rá, hogy nem rendelkezünk
+                    ezzel a könyvtárral alapértelmezetten, pip segítségével telepítenünk kell azt először:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>pip install dataset</code></pre>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>import dataset
+
+db = dataset.connect('sqlite:///nobel_prize.db') 
+# csatlakozunk a már létező adatbázisunkhoz
+
+wtable = db['winners']
+winners = wtable.find()
+winners = list(winners)
+# lekértük az adatbázisban található összes sort, ami a winners táblán belül található</code></pre>
+                <p class="text-lg font-normal">Most, akár újra is csinálhatjuk teljes egészében a winners táblát Dataset
+                    segítségével is, csak gyakorlásképpen:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code># töröljük a winners táblát
+wtable = db['winners']
+wtable.drop()
+
+# majd újra létrehozzuk, és ekkor üres
+wtable = db['winners']
+list(wtable.find()) # output: []</code></pre>
+                <p class="text-lg font-normal">Ahhoz, hogy újra létrehozzuk a winners táblát, jelen esetben Dataset-et használva
+                    nem kell létrehoznunk a sémát, ahogy azt az előbb az SQLAlchemy-t használva tettük. A Dataset okosan
+                    kikövetkezteti azokból az adatokból, amit hozzáadunk, és így mindenféle SQL létrehozást teljesen implicit
+                    módon hajt végre a háttérben. Hasonlóan mintahogy azt NoSQL rendszerek esetében is tennénk. Ez után
+                    használhatjuk a nobel_winners adatainkat, hogy hozzáadjunk néhány winner dict-et az adatbázishoz:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>with db as tx:
+    # jelen esetben a with-re azért van szükség, hogy biztosan a tx tranzakció véglegesítésre kerüljön az adatbázisban
+    for w in nobel_winners:
+        tx['winners'].insert(w)
+
+# ez után le is ellenőrízhetjük, hogy helyesen dolgoztunk-e
+
+print(list(db['winners'].find()))</code></pre>
+                <p class="text-lg font-normal">A használatának könnyedsége mellett, a Dataset még egy fontos előnnyel rendelkezik,
+                    ez nem más, mint a freeze metódus, amely egy nagyszerű eszköz kezdő adat-megjelenítőknek. A freeze fogja az
+                    eredményét egy SQL lekérdezésnek és átalakítsa JSON vagy CSV állománnyá, ahogy azt az alábbi kódrészlet is
+                    szemlélteti, azonban megintcsak először telepítenünk kell, hiszen a freeze metódust a Datafreeze könyvtár
+                    tartalmazza:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>pip install datafreeze</code></pre>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from datafreeze import freeze
+
+winners = db['winners'].find()
+freeze(winners, format='csv', filename='nobel_winners_ds.csv')</code></pre>
+                <p class="text-lg font-normal pb-3">Miután alaposan megvizsgáltuk azt, hogy hogyan tudunk SQL adatbázisokkal
+                    dolgozni Pythonban, nézzük meg, hogy megy ugyanez NoSQL rendszerek esetén.
+                </p>
+                <p class="text-lg font-normal pb-3">Dokumentum-centrikus adattárolók közé tartozik a MongoDB. Megvannak a maga
+                    használati esetei a MongoDB-nek és más NoSQL rendszereknek, azonban amikor már finomított és feldolgozott
+                    adatokat kell tárolni, akkor a MongoDB-vel egyszerűbb dolgozni. A MongoDB különösen jó választás
+                    adatmegjelenítők számára, mert Binary JSON-t használ adatformátumaként, ami a JSON kiegészítője és képes
+                    bináris-adattal, datetime-objektumokkal, stb-vel dolgozni, ami megkönnyíti így a JavaScript-tel való
+                    interakciót.
+                </p>
+                <p class="text-lg font-normal">Ahhoz, hogy létrehozzunk egy MongoDB collection-t Python-nal csupán néhány sorba
+                    kerül:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from pymongo import MongoClient
+
+client = MongoClient()
+# létrehozza a Mongo-Client-et, felhasználva az alapértelmezett host-ot és port-okat
+db = client.nobel_prize
+# létrehozza és hozzafér a nobel_prize adatbázishoz
+# a fenti utasítás esetében akár a client['nobel_prize'] forma is elfogadható, azonban úgy könnyebb hibázni
+coll = db.winners
+# ha a winners collection létezik, akkor lekéri, ha nem, akkor létrehozza</code></pre>
+                <p class="text-lg font-normal">A fenti esetben az alapértelmezett host alatt a localhost-ot értjük, és a port
+                    esetében a MongoDB a 27017-et tekinti alapértelmezettnek. Akár, opcionálisan, felhasználónevet és jelszót is
+                    meglehet adni. A következő kódrészlet egy nagyon hasznos kiegészítő függvényt mutat be, amelyet használhatunk
+                    arra, hogy elérjük az adatbázisunkat:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code># alapértelmezett beállításokkal, csupán az adatbázisnév tetszőleges
+def get_mongo_database(db_name, host='localhost', port=27017, username=None, password=None):
+    """ Elérjük a db_name-mel hivatkozott adatbázist MongoDB-ről, hitelesítő adatokkal vagy azok nélkül """
+
+    if username and password:
+        mongo_uri = 'mongodb://{}:{}@{}/{}'.format(username, password, host, db_name)
+        # URI = uniform resource identifier
+        conn = MongoClient(mongo_uri)
+    else:
+        conn = MongoClient(host, port)
+
+    return conn[db_name] # itt már a második féle jelölést használjuk az adatbázis eléréséhez</code></pre>
+                <p class="text-lg font-normal">Ezután, akár a kiegészítő függvény használatával is létrehozhatjuk a Nobel-díj
+                    adatbázisunkat, ahogy azt korábban is tettük:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>db = get_mongo_database('nobel_prize')
+coll = db['winners']
+coll.insert(nobel_winners)
+
+# beillesztjük az adatbázisba a dict objektumokat az insert metódussal
+# ugyanakkor, ha kiírjuk a terminálba az eredeti listát, a nobel_winners-et, megfigyelhetjük
+# hogy az insert metódus kiegészíti azt, hozzáad egy új 'id' mezőt.
+# ezek ObjectId-k, amelyek későbbi lehívásokat tesznek lehetővé, de más egyéb rejtett funkcionalítással is rendelkeznek,
+# mint pl. hogy rendelkeznek egy generálási idővel, amikoris az ObjectId létrejött</code></pre>
+                <p class="text-lg font-normal">Most, hogymár rendelkezünk elemekkel a winners collection-ben, a MongoDB legalább
+                    ennyire könnyűvé teszi azt, hogy mezőket találjunk meg bennük, a find metódussal:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>res = coll.find({'category': 'Chemistry'})
+print(list(res))</code></pre>
+                <p class="text-lg font-normal">Továbbá, számos speciális dollár-prefixelt operátort is használhatunk a
+                    lekérdezések során, például az alábbi kódrészlet a $gt (greater-than) operátort használja:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>res = coll.find({'year' : {'$gt': 1930}})
+print(list(res))</code></pre>
+                <p class="text-lg font-normal">Végül, nézzük meg azt, hogy hogyan tudjuk a winners collection-ünket Python dict
+                    listává alakítani, erre a feladatra egy újabb kiegészítő függvényt hozzunk létre:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>def mongo_coll_to_dicts(dbname='test', collname='test', query={}, del_id=True, **kw):
+    # a fenti paraméterlistában szereplő üres query, minden elemet lekér egy adott collection-ből
+    db = get_mongo_database(dbname, **kw)
+    res = list(db[collname].find(query))
+
+    if del_id:
+        for r in res:
+            r.pop('_id')
+
+    return res
+
+print(mongo_coll_to_dicts('nobel_prize', 'winners'))</code></pre>
+                <p class="text-lg font-normal pb-3">A képesség arra, hogy könnyedén és kényelmesen dolgozzunk dátumokkal és
+                    idősávokkal
+                    elengedhetetlen a vizualizációs munkához, de nem mindig túlságosan egyszerű folyamat. Számos mód van arra,
+                    hogy reprezentáljunk egy dátumot, vagy date-time-ot, mint string, és mindegyik megigényli a saját enkóderét
+                    vagy dekóderét, ahhoz, hogy értelmezzük azt. Ezért lényeges az, hogy következetes formában használjuk ezen
+                    objektumokat. Az ISO formátumot a legjobb használni a string-reprezentációhoz. Az ISO 8601-et használja
+                    alapértelmezetten a JavaScript, és ezzel egyszerűen lehet dolgozni Python esetén is, megkönnyítve azt, hogy ne
+                    kelljen felesleges átalakításokat végezni ahhoz, hogy az időformátumot mindkét nyelvben használni lehessen,
+                    mikor JSON részeként adjuk át.
+                </p>
+                <p class="text-lg font-normal">Megnézhetjük egy példán keresztül hogyan működik mindez, először hozzuk létre a
+                    Python datetime objektumunkat:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from datetime import datetime
+
+d = datetime.now()
+print(d.isoformat()) # output: 2020-07-04T19:13:47.622017</code></pre>
+                <p class="text-lg font-normal">A fent kapott string aztán JSON-ba, CSV-be, vagy egyébbe lementve beolvasható
+                    JavaScriptből, és felhasználható arra, hogy egy Date objektumot hozzunk létre:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>let d = new Date('2020-07-04T19:13:47.622017'); // output: Sat Jul 04 2020 19:13:47 GMT+0300 (Eastern European Summer Time)
+
+// akár vissza is alakíthatjuk ISO formátumba a kapott Date objektumot
+d.toISOString(); // output: 2020-07-04T16:13:47.622Z</code></pre>
+                <p class="text-lg font-normal">Végül, hogy teljes legyen a kép, értelmezhetjük a kapott string-et Pythonban is:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from dateutil import parser
+
+d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.622000+00:00</code></pre>
+                <p class="text-lg font-normal">Megfigyelhető némi pontosság-veszteség, amikor Python és JavaScript között
+                    alakítgatunk, de általában lényegtelen az eltérés.
+                </p>
             </section>
 
             <!-- második része vége -->
@@ -581,8 +1104,17 @@ cntr();</code></pre>
         </main>
 
 
+        <!--
         <script src="node_modules/d3/dist/d3.min.js"></script>
-        <script src="node_modules/underscore/underscore-min.js"></script>
+        <script src="node_modules/underscore/underscore-min.js"></script> 
+        -->
+
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script>
+            hljs.initHighlightingOnLoad();
+        </script>
         <script src="javascript/main.js"></script>
     </body>
 
