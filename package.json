@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "watch:sass": "node-sass sass/main.scss css/style.css -w",
-    "devserver": "live-server",
-    "start": "npm-run-all --parallel watch:sass devserver",
-    "build": "postcss css/tailwind.css -o css/compiled.css"
+    "ess:devserver": "live-server",
+    "ess:start": "npm-run-all --parallel watch:sass ess:devserver",
+    "finalize:compile": "postcss css/tailwind.css -o css/compiled.css",
+    "finalize:commit": "node-sass sass/main.scss css/style.css",
+    "ess:build": "npm-run-all finalize:compile finalize:commit"
   },
   "repository": {
     "type": "git",
