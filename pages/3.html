@@ -20,7 +20,7 @@
         <link rel="stylesheet"
             href="../css/compiled.css">
         <link rel="stylesheet"
-            href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/androidstudio.min.css">
+            href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/atom-one-dark.min.css">
         <link rel="stylesheet"
             href="../tools/pushy-1.3.0/css/pushy.css">
         <!-- Safari-n az emoji favicon nem működik -->
@@ -58,6 +58,123 @@
             <section class="pb-8">
                 <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">3 Az adatok megszerzése</h1>
 
+                <h2 class="text-2xl pb-4 font-semibold text-gray-800">Szerezzük meg az adatot a netről Python-nal</h2>
+                <p class="text-lg font-normal pb-3">A könyv ennek a részében nekikezdünk a valódi adat-vizualizációs folyamatnak
+                    az
+                    adatokkal megszerzésével.</p>
+                <p class="text-lg font-normal pb-3">Alapvetően elmondható, hogy nélkülözhetetlen része az adat-megjelenítésnek
+                    maga
+                    az
+                    adat, ami nem minden esetben áll készen számunkra. A lehető legjobb és legtisztább módon kell azt
+                    megszereznünk és ebben nagy segítségünkre van a Python. Számos Python könyvtár áll rendelkezésünkre a
+                    folyamat
+                    végrehajtására. A legfőbb módok arra ahogyan adatot tudunk letölteni a netről: HTTP-n keresztül
+                    megszereezzük
+                    a nyers adatfájlt, valamilyen ismert formátumban, legyen az CSV vagy JSON; akár egy erre dedikált API-t is
+                    használhatunk; megszerezzük az adatot az által, hogy letöltjük a weboldalt HTTP-n keresztül és értelmezzük
+                    helyileg a szükséges adatokért.</p>
+                <p class="text-lg font-normal">Előszöris, nézzük meg az egyik legelterjedtebb Python HTTP könyvtárt a
+                    requests-et. Ahogyan megbeszéltük a könyv előző részében azon fájlok, amelyek a böngészőben megjelennek
+                    valójában HTTP-n keresztül kerülnek továbbításra. Tehát, a webes tartalmat először lekell kérni egy GET
+                    request által, mielőtt azt értelmezni lehessen. Mivel a requests nem része a Python szabvány könyvtárnak
+                    először
+                    le kell azt töltsük a következő paranccsal:</p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install requests</code></pre>
+                <p class="text-lg font-normal">Miután letöltöttük neki is foghatunk a folyamatnak. Első lépésben próbáljuk a
+                    könyvtár segítségével letölteni egy Wikipédia oldalt. Használhatjuk erre a requests könyvtár get metódusát,
+                    amit a következő kódrészlet is szemléltet:</p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import requests
+
+response = requests.get('https://en.wikipedia.org/wiki/Nobel_Prize')
+
+response # output: &#60;Response [200]>
+
+dir(response) # output: a response objektum attribútumjai</code></pre>
+                <p class="text-lg font-normal">A fenti 200-as HTTP státusz kód lényegében a HTTP megfelelője a 'minden rendben
+                    volt'-nak. Ebben a kontextusban ez azt jelenti, hogy bizonyosan valamilyen információt a GET request
+                    visszatérített, a következő paranccsal akár meg is vizsgálhatjuk mit:</p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">response.headers</code></pre>
+                <p class="text-lg font-normal">Néhány nagyon érdekes dolgot tudunk megfigyelni a headers attribútummal, például
+                    azt, hogy a weboldalt tartalma <em>text/html</em>, a tartalom enkódolása <em>gzip</em>, stb:</p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">{'Date': 'Sun, 05 Jul 2020 15:09:55 GMT', 'Server': 'mw1407.eqiad.wmnet', 
+'X-Content-Type-Options': 'nosniff', 'P3p': 'CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more info."', 'Content-Language': 'en', 'Vary': 'Accept-Encoding,Cookie,Authorization', 'Last-Modified': 'Sun, 05 Jul 2020 14:58:26 GMT', 
+'Content-Type': 'text/html; charset=UTF-8', 'Content-Encoding': 'gzip', 'Age': '10136', 'X-Cache': 'cp3054 miss, cp3064 hit/19', 'X-Cache-Status': 'hit-front', 'Server-Timing': 'cache;desc="hit-front"', 'Strict-Transport-Security': 'max-age=106384710; includeSubDomains; preload', 
+'Set-Cookie': 'WMF-Last-Access=05-Jul-2020;Path=/;HttpOnly;secure;Expires=Thu, 06 Aug 2020 12:00:00 GMT, WMF-Last-Access-Global=05-Jul-2020;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu, 06 Aug 2020 12:00:00 GMT, GeoIP=MD:CU:Chisinau:47.01:28.86:v4; Path=/; secure; Domain=.wikipedia.org', 
+'X-Client-IP': '178.17.168.163', 'Cache-Control': 'private, s-maxage=0, max-age=0, must-revalidate', 
+'Accept-Ranges': 'bytes', 'Content-Length': '81973', 'Connection': 'keep-alive'}</code></pre>
+                <p class="text-lg font-normal">Mivel, a fenti vizsgálattal megtudtuk azt, hogy az eredmény egy szöveg, akár le is
+                    kérhetjük a valódi tartalmát:</p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">response.text</code></pre>
+                <p class="text-lg font-normal">A fenti kódrészlet visszatéríti a GET requests által lekért teljes HTML szöveget.
+                    Összeségébenn a requests egy elég kényelmes megoldás arra, hogy gyorsan szerezzünk webes adatot a Python
+                    programukba. Példaképpen kérjük le egy adatsettet az Eurostatról, kicsit nehézkes feladat megtalálni a
+                    megfelelő elérési útat, de a következő példa ezt szemlélteti:</p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">response = requests.get('http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/nama_10_gdp?geo=EU28&precision=1&na_item=B1GQ&unit=CP_MEUR&time=2018&time=2019')
+
+response # output: &#60;Response [200]></code></pre>
+                <p class="text-lg font-normal">Mivel a fenti esetben a kapott fájl egy JSON állomány, a requests könyvtár
+                    rendelkezik egy metódussal, amely lehetővé teszi azt, hogy elérjük a válasz adatját, mint egy Python dict. Ez
+                    tartalmazni fogja a metaadatot és egy listányi adatelemet:</p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">response.json()
+
+""" 
+output: 
+
+{'version': '2.0',
+ 'label': 'GDP and main components (output, expenditure and income)',
+ 'href': 'http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/nama_10_gdp?geo=EU28&precision=1&na_item=B1GQ&unit=CP_MEUR&time=2018&time=2019',
+ 'source': 'Eurostat',
+ 'updated': '2020-07-01',
+ 'extension': {'datasetId': 'nama_10_gdp',
+  'lang': 'EN',
+  'description': None,
+  'subTitle': None},
+ 'class': 'dataset',
+ 'value': {'0': 15915732.9, '1': 16452065.5},
+ 'dimension': {'unit': {'label': 'unit',
+   'category': {'index': {'CP_MEUR': 0},
+    'label': {'CP_MEUR': 'Current prices, million euro'}}},
+  'na_item': {'label': 'na_item',
+   'category': {'index': {'B1GQ': 0},
+    'label': {'B1GQ': 'Gross domestic product at market prices'}}},
+  'geo': {'label': 'geo',
+   'category': {'index': {'EU28': 0},
+    'label': {'EU28': 'European Union - 28 countries (2013-2020)'}}},
+  'time': {'label': 'time',
+   'category': {'index': {'2018': 0, '2019': 1},
+    'label': {'2018': '2018', '2019': '2019'}}}},
+ 'id': ['unit', 'na_item', 'geo', 'time'],
+ 'size': [1, 1, 1, 2]}
+"""</code></pre>
+                <p class="text-lg font-normal pb-3">Az előző példákban mindig 'nyers' módon weboldalakat, vagy JSON állományokat
+                    értünk
+                    el a requests könyvtár segítségével, a következőkben nézzük meg azt is miként tudjuk API-kkal való
+                    kommunikációkra is használni. Az API-kkal való kommunikációra akkor van szükség, amennyiben az adat amit
+                    keresünk nem található meg a web-en, de talán elérhetjük egy API-n keresztül. Ez magába foglalja azt, hogy egy
+                    lekérést intézünk a megfelelő szerverhez, hogy elérjük az adatot egy fix vagy általunk választható
+                    formátumban.</p>
+                <p class="text-lg font-normal pb-3">A web-es API-k által leggyakrabban használt formátumok a JSON és az XML.
+                    Számunkra
+                    az első lesz a fontos, korábban említett okokból kifolyólag. Számos megközelítés van arra, hogy arra, hogy
+                    létrehozzunk egy web-es API-t, és egy jó ideig egy kis háborúhoz hasonlító harc volt a különböző domináns
+                    architektúrák között: REST vs. XML-RPC vs. SOAP. Manapság, a REST tűnik diadalmasnak, ami egy nagyon jó dolog,
+                    hiszen egyszerűbb a használata és könnyedebb, mint bármelyik alternatíva, szerencsére a szabványosításnak
+                    köszönhetően nagyon valószínűvé teszi azt, hogy felismered és gyorsan átszoksz bármely új API-hoz, amivel
+                    bármikor is találkozol. Ideális, akár a kódodat is teljesen újrahasználhatod.</p>
+                <p class="text-lg font-normal pb-3">A legtöbb távoli adat elérés és manipulálás négy műveletben összefoglalható:
+                    hozzunk létre valamit, kérjünk le valamit, frissítsünk valamit és végül töröljünk valamit (CRUD). A HTTP
+                    biztosítja
+                    ezen alapvető műveleteket a POST, GET, PUT, DELETE utasításokkal, és a REST pontosan ezen utasítások
+                    absztrakciójára épül, mindenközben építve az URI-ra.</p>
+                <p class="text-lg font-normal">Számos vita van arról, hogy mi a megfelelő és mi a nem megfelelő RESTful interfész,
+                    de lényegében az URI-nak <em>(pl. http://example.com/api/items/2)</em>, tartalmaznia kellene mindazon
+                    információkat
+                    amelyek szükségesek ahhoz, hogy végbemehessen egy említett CRUD művelet. Úgy lehet elképzelni az egész munkát,
+                    hogy az URI a virtuális elérése az adatnak, a CRUD pedig a műveleteket jelenti, amelyeket az adattal képesek
+                    vagyunk elvégezni.</p>
             </section>
 
             <!-- harmadik része vége -->
