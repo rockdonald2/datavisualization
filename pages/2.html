@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="en"
+    class="text-gray-800 text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="A repo for studying a book.">
+        <meta name="keywords"
+            content="visualization,javascript,python,d3,flask,restful">
+        <meta name="author"
+            content="Lukács Zsolt">
+        <meta http-equiv="X-UA-Compatible"
+            content="ie=edge">
+        <title>2 Első lépések az adatvizualizációban</title>
+        <link rel="stylesheet"
+            href="../css/style.css">
+        <link rel="stylesheet"
+            href="../css/compiled.css">
+        <link rel="stylesheet"
+            href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/androidstudio.min.css">
+        <link rel="stylesheet"
+            href="../tools/pushy-1.3.0/css/pushy.css">
+        <!-- Safari-n az emoji favicon nem működik -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22
+                viewBox=%220
+                0
+                100
+                100%22><text y=%22.9em%22
+                    font-size=%2290%22>📕</text></svg>">
+    </head>
+
+    <body class="overflow-x-hidden">
+        <!-- navigáció -->
+        <nav class="pushy pushy-left">
+            <div class="pushy-content">
+                <ul>
+                    <li class="pushy-link"><a href="../index.html">1 Bevezetés</a></li>
+                    <li class="pushy-link"><a href="2.html">2 Első lépések az adatvizualizációban</a></li>
+                    <li class="pushy-link"><a href="3.html">3 Az adatok megszerzése</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Pushy-hoz site overlay -->
+        <div class="site-overlay"></div>
+
+        <main id="container"
+            class="container p-8 md:p-6 max-w-2xl md:max-w-3xl min-h-screen">
+            <button class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
+                Menü</button>
+
+            <!-- második része eleje -->
+
+            <section class="pb-8">
+                <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">2 Első lépések az adatvizualizációban</h1>
+                <h2 class="text-2xl pb-4 font-semibold text-gray-800">Az adatvizualizáció folyamata</h2>
+                <p class="text-lg font-normal">Az adatvizualizáció folyamata 5 lépésben összegezhető lépéssorozatként kerül
+                    végrehajtásra:</p>
+                <ol class="px-8 py-2 text-lg list-decimal">
+                    <li class="pb-2"><span class="font-semibold">Scrape:</span> meg kell "szerezni" az adatot, amit
+                        ábrázolni akarunk, erre használjuk majd a Scrapy framework-ot;</li>
+                    <li class="pb-2"><span class="font-semibold">Clean:</span> meg kell tisztítatni az adatot,
+                        erre használjunk a Python Pandas-ot;</li>
+                    <li class="pb-2"><span class="font-semibold">Process:</span> az adatok feldolgozásának
+                        lépése, IPython, Pandas és Matplotlib alkalmazásával;</li>
+                    <li class="pb-2"><span class="font-semibold">Deliver:</span> miután megszerezted,
+                        megtisztítottad és fel is dolgoztad az adatot, amit ábrázolni akarsz el is kell jutattni a web böngészőbe,
+                        ahol azt megfogod jeleníteni, erre használjuk a Flask RESTful API-t;</li>
+                    <li class="pb-2"><span class="font-semibold">Transform:</span> létrehozzuk az interaktív
+                        vizualizációt D3 könyvtár használatával.</li>
+                </ol>
+                <figure>
+                    <img class="mx-auto"
+                        src="../img/fig1.png"
+                        alt="Figure 1">
+                    <figcaption class="text-center pt-2 pb-4 text-md">1. Ábra: Adatvizualizáció folyamata</figcaption>
+                </figure>
+                <p class="text-lg font-normal">Tehát, az adatvizualizációs folyamat során a Python és Javascript együttesét
+                    használjuk, különböző könyvtárak felhasználásával, a folyamat megkönnyítésének érdekében.</p>
+
+                <h3 class="text-xl py-6 text-gray-900">2.1 Az adatok megszerzése Scrapy-vel</h3>
+                <p class="text-lg font-normal">Alapvetően, a legelső probléma amivel szembesülünk, amikor bármiféle adatot
+                    szeretnék valamilyen módon
+                    ábrázolni és vizualizálni az, hogy hogyan is szerezzük meg az adatot: akár lekérhetjük valamilyen
+                    kezelőfelületet használva, de akár saját magunk is összeállíthatjuk, ami nehézkes. Az adatok megszerzésekor
+                    jön képbe a web-scraping technika, web-scrape-nek hívjuk azt az eljárást, amely során weboldalakról adatokat
+                    szerzünk meg, általában valamilyen lekérdezés, illetőleg adatelemzés által. A Python Scrapy framework-ja pont
+                    ezt teszi lehetővé.</p>
+
+                <h3 class="text-xl py-6 text-gray-900">2.2 Az adatok tisztítása Pandas-val</h3>
+                <p class="text-lg font-normal">Az adatvizualizáció önmagában nem egy bonyolúlt és időígényes feladat, de sokszor
+                    az adatok használhatatlansága mégis azzá teszi. A legtöbb időt az adatvizualizáció során az emészti fel, hogy
+                    a Dirty Data-ból valami használhatót hozzunk ki. A Pandas az egyik
+                    legismertebb és leghasználtabb framework, amely az adatok feldolgozására használható. A Pandas a Python Numpy
+                    könyvtárát egészíti ki, és mindazon információ feldolgozási folyamat elvégezhető vele, amelyekkel az adat
+                    ábrázolásához foglalkoznunk kell, ugyanakkor az adataink interaktív vizsgálatát is lehetővé teszi, a beépített
+                    Matplotlib plot-okkal. A Pandas alkalmazásával képesek vagyunk elvégezni a fent említett időígényes
+                    munkákakat, hiszen hatékonyan szabadulhatunk meg felesleges, duplikátum bejegyzésektől, elrontott és hiányos
+                    rekordoktól.</p>
+
+                <h3 class="text-xl py-6 text-gray-900">2.3 Az adatok feldolgozása Pandas-al és Matplotplib-el</h3>
+                <p class="text-lg font-normal">Mielőtt elkezdenénk azt, hogy a már megtisztított adatainkat képernyőre vigyük,
+                    valamilyen módon meg is kell azokat értenünk. Mintákat, trendeket, anomáliákat kell az adatokból kinyernünk,
+                    gyakran ezek mélyen elvannak rejtve, minderre azért van szükség, hogy megfogalmazzuk azt a történetet és
+                    jelenséget, amelyet a vizualizációnkkal elszeretnénk mondani. Az IPython, a Pandas és Matplotlib hármasa
+                    lehetőséget nyújt arra, hogy interaktív fedezzük fel az adatokat, legenerálva segítségükkel plot-okat,
+                    egyenesen a parancssorról, majd a megismerések eredményét könnyen lementhetjük egy állományba, vagy egy
+                    adatbázisba, hogy könnyen átadhassuk a JavaScript vizualizációs felületnek.</p>
+
+                <h3 class="text-xl py-6 text-gray-900">2.4 Az adatok eljutattása a felületre Flask-al</h3>
+                <p class="text-lg font-normal">Miután finomítottuk adatunkat és fel is dolgoztuk azokat, valahogyan elkell
+                    jutassuk a böngészőbe, ahol a lényeg fog történni, ahol egy JavaScript könyvtár, jelen esetben a D3, képes azt
+                    átalakítani interaktív vizualizációvá. A Flask framework a Python egyik legnépszerűbb szerverkliense, amely
+                    tökéletesen használható kisméretű RESTful API-kat, amelyeket a JavaScript elérhet ahhoz, hogy az adatokat
+                    megszerezze a szerverről, állományokból vagy egyenes egy adatbázisból, és megjelenítse a böngészőben.</p>
+
+                <h3 class="text-xl py-6 text-gray-900">2.5 A végső interaktív vizualizáció D3-al</h3>
+                <p class="text-lg font-normal">Az előbb említett lépések végrehajtása után, végső soron meg is kell jelenítenünk
+                    az adatokat, ahol nem csak a készítő, de a felhasználó is megértheti a mögöttes tartalmat. A D3 a JavaScript
+                    egyik legfontosabb könyvtára, vitathatlanul a jelenleg piacon levő egyik legjobb vizualizációs eszköz, amely
+                    lehetővé teszi a fent említett célt.</p>
+
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">A környezet amiben dolgozunk</h2>
+                <p class="text-lg font-normal">Alapvetően, a legtöbb konyvtár, amit a könyv tanulmányozása során használni fogunk
+                    az Python-ból való. Python esetében már eredendően kiterjedt szabványfüggvény könyvtárkészlettel rendelkezik,
+                    amelyet még a harmadik személyek által készített publikus modulok is kiegészítenek. Ugyanakkor, mivel sok
+                    esetben az említett könyvtárok telepítése nehézkes feladat, az Anaconda framework-ot fogjuk segítségül hívni a
+                    probléma orvoslására. Minden dependencia ellenőrzést elvégez számunkra, és azok telepítését is lehetővé teszi.
+                    Alapvetően, ahhoz, hogy leellenőrízzük megfelelően telepítettük-e fel az Anaconda csomagot Windows rendszeren,
+                    a következő sort írhatjuk a parancssorba:</p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ ipython</code></pre>
+                <p class="text-lg font-normal">Amennyiben az helyesen működik a következőt kellene megnyissa a parancssorban:</p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ Python 3.7.6 (default, Jan 8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.12.0 -- An enhanced Interactive Python. Type '?' for help.
+In [1]:
+</code></pre>
+                <p class="text-lg font-normal">Az Anaconda natívan tartalmazza a legtöbb olyan könyvtárt, amit használni fogunk a
+                    könyv tanulmányozása során, ugyanakkor amikor olyan könyvtárakat kell elérjünk, amelyeket nem tartalmaz az
+                    Anaconda, használhatjuk a Python pip-jét. Alapvetően, ahhoz, hogy pip segítségével telepítsünk valamit, a
+                    következőket kell írjuk a parancssorba:</p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ pip install <_könyvtár_elnevezése></code></pre>
+                <p class="text-lg font-normal">Végül, beszélnünk kell az Anaconda virtuális környezeteiről, amelyeket a következő
+                    parancsal hozhatunk létre, a teljes Anaconda csomaggal jelenesetben:</p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ conda create --name pyjsviz anaconda</code></pre>
+                <p class="text-lg font-normal">Ahhoz, hogy ténylegesen használjuk az előző lépésben létrehozott virtuális
+                    környezetet aktiválnunk kell azt a következő paranccsal:</p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ source activate pyjsviz</code></pre>
+                <p class="text-lg font-normal">A D3 feltelepítéséhez természetesen használhatjuk a NPM eszközt a következő
+                    parancs segítségével:</p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ npm install d3</code></pre>
+                <p class="text-lg font-normal">A könyv tanulmányozása során adatbázist is fogunk készíteni, névszerint MongoDB-t
+                    és SQLite-ot, az előbbi egy noSQL eszköz, míg az utóbbi egy serverless SQL-adatbázis. Mindkét adatbázis-kliens
+                    telepítésének útmutatója megtalálható azok weboldalán.</p>
+                <p class="text-lg font-normal">Végül, a programkódok megírásához, mivel VSCode-ot használtam, nem kellett
+                    bármiféle IDE-t telepítenem, de az IDE-k közül nagyszerű választás lenne a PyCharm.</p>
+
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">A programozási nyelvek, amelyekkel dolgozunk</h2>
+                <p class="text-lg font-normal pb-3">Alapvetően, a már említett két programozási nyelvet fogjuk a könyv
+                    tanulmányozása
+                    során használni: JavaScript és Python, az előbbi a böngészőben fut, míg az utóbbi szinte bárhol, leginkább egy
+                    console-ban, ugyanakkor mindkét nyelv interpreted, tehát egy virtuális egység a beírt programsorokat, azonnal
+                    és közvetlenül értelmezni és végrehajtja.</p>
+                <p class="text-lg font-normal pb-3">A programkódok megírása során Python esetében IPython qtconsole-t használunk,
+                    illetőleg a JavaScript-et Chrome böngészőben futtatjuk.</p>
+                <p class="text-lg font-normal">Fontos megjegyezni a lényeges eltérést a Python és a JavaScript namespace
+                    között.
+                    Alapvetően mondva, a Python modulok által importált funkciók és változók zártak, tehát csakis kizárólag a
+                    modul nevén és a pont operátoron keresztül érhetők el, ez általánosságban véve egy jó dolog, és minden esetben
+                    ezt tiszteletben kell, hogy tartsuk, megőrízve azt, hogy a globális namespace túlfűttőtté váljon. Ezzel
+                    szemben, a JavaScript sokkal lazább namespace kezelést vállal. Nagyon könnyű zavarossá tehető a globális
+                    namespace ezért a modularitás konvencióját szükséges a kódba építenünk, amelyet úgy oldhatunk meg, hogy minden
+                    egyes funkció/modul amit létrehozunk, egy önhívó függvényen keresztül legyen elérhető, létrehozva a szükséges
+                    zártságot. Ezt mutatja be a következő kódrészlet:</p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>(function(nbviz) {
+    "use strict",
+    // ... 
+} (window.nbviz = windows.nbviz || {} ));
+
+// A fenti zárójel esetében, ha már létezik az nbviz objektum a globális namespaceben
+// akkor azt beadja a függvénybe, ellenkező esetben hozzáadja a globális namespacehez.
+</code></pre>
+                <p class="text-lg font-normal">Egy jó megközelítés arra nézve, hogy megismerjük a két nyelv közötti
+                    különbségeket, hogy megírjuk ugyanazt a programot mindkét nyelvben. Egy egyszerű adatfeldolgozást mutat be a
+                    következő programrészlet:</p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>student_data = [
+    {'name': 'Bob', 'id': 0, 'scores':[68, 75, 56, 81]},
+    {'name': 'Alice', 'id': 1, 'scores':[75, 90, 64, 88]},
+    {'name': 'Carol', 'id': 2, 'scores':[59, 74, 71, 68]},
+    {'name': 'Dan', 'id': 3, 'scores':[64, 58, 53, 62]},
+]
+
+def process_student_data(data, pass_threshold=60, merit_threshold=75):
+    """ egy egyszerű statisztikát hoz létre a tanulók adataiból """
+    # a fenti doc-string automatikusan hozzárendelődik a __doc__ attribútumhoz.
+
+    for sdata in data:
+        av = sum(sdata['scores']) / float(len(sdata['scores']))
+        sdata['average'] = av
+
+        if av > merit_threshold:
+            sdata['assessment'] = 'passed with merit'
+        elif av > pass_threshold:
+            sdata['assessment'] = 'passed'
+        else:
+            sdata['assessment'] = 'failed'
+
+        print("{}'s (id: {}) final asessment is {}.".format(sdata['name'], sdata['id'], sdata['assessment'].upper()))
+
+
+if __name__ == '__main__':
+    process_student_data(student_data)
+
+# bármikor amikor a Python interpreterje értelmez egy forrásállományt,
+# két dolgoz tesz:
+#   - beállít néhány speciális változót, mint pl. a 'name',
+#   - lefuttatja a fájlban található összes utasítást.
+# a name speciális változó értéke akkor lesz 'main', ha elsődleges forrásként futtassuk.
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+logger.debug('Some useful debugging output')
+logger.info('Some general information')
+logger.warning('Some warning')</code></pre>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>"use strict"
+
+let studentData = [{
+        'name': 'Bob',
+        'id': 0,
+        'scores': [68, 75, 56, 81]
+    },
+    {
+        'name': 'Alice',
+        'id': 1,
+        'scores': [75, 90, 64, 88]
+    },
+    {
+        'name': 'Carol',
+        'id': 2,
+        'scores': [59, 74, 71, 68]
+    },
+    {
+        'name': 'Dan',
+        'id': 3,
+        'scores': [64, 58, 53, 62]
+    },
+]
+
+function processStudentData(data, passThreshold, meritThreshold) {
+    passThreshold = typeof passThreshold !== 'undefined' ? passThreshold : 60;
+    meritThreshold = typeof meritThreshold !== 'undefined' ? meritThreshold : 75;
+    /* A fenti kód esetében inicializálja a paramétereket, 
+    amennyiben azok nem kaptak kezdeti értéket a függvény hívásakor */
+
+    data.forEach((sdata) => {
+        let av = sdata.scores.reduce((prev, current) => prev + current, 0) / sdata.scores.length;
+        sdata.average = av;
+
+        if (av > meritThreshold) {
+            sdata.assessment = 'passed with merit';
+        } else if (av > passThreshold) {
+            sdata.assessment = 'passed';
+        } else {
+            sdata.assessment = 'failed';
+        }
+
+        console.log(sdata.name + "'s (id: " + sdata.id + ") final assessment is: " + sdata.assessment.toUpperCase());
+    });
+}
+
+processStudentData(studentData);</code></pre>
+                <p class="text-lg font-normal">Ugyanakkor, a fenti Python kód során használt print utasítás akár
+                    helyettesíthető
+                    ugyancsak Python beépített modulnak tekinthető logging-al. Ezt a következő kódrészlet szemlélteti: </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>import logging
+
+logger = logging.getLogger(__name__)
+
+logger.debug('Some useful debugging output')
+logger.info('Some general information')
+logger.warning('Some warning')</code></pre>
+                <p class="text-lg font-normal pb-3">Nagyon jó gyakorlat az, ha minden változót, amit a programkódunk használ a
+                    függvények elején deklarálunk, főleg JavaScript esetében igaz ez, hiszen a JavaScript interpreterje a
+                    változókat minden egyéb kód előtt értelmezi. Ez azt jelenti a gyakorlatban, hogy teljesen közömbös az, hogy
+                    hol hozzuk létre a változóinkat, mindig úgy értelmezi az interpreter, mintha a függvény elején lett volna. Ez
+                    főleg error-kezelés esetében egy előny.
+                </p>
+                <p class="text-lg font-normal">A boolean adattípus esetében is érdekes dolgokat lehet felfedezni, miszerint
+                    amikor logikai kifejezéseket írunk, abban az esetben valójában nem egy boolean értéket fog a kifejezés
+                    téríteni, hanem valamelyik operándust, a következő logika szerint:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="plaintext">x or y      Ha x hamis, akkor y, másképp x
+x and y     Ha x hamis, akkor x, másképp y
+not x       Ha x hamis, akkor Igaz, másképp Hamis</code></pre>
+                <p class="text-lg font-normal pb-3">Durván szólva, a JavaScript objects-eket kvázi Python dicts-ként lehet
+                    használni,
+                    illetve Python lists-eket, pedig JavaScript array-ekként, lényeges és elhagyhatatlan különbség az említett
+                    összetett adattípusok esetében nincs. Továbbá, a Python rendelkezik még ún. tuple adattípussal is, ami nagyban
+                    hasonlít a list-hez, annyi különbséggel, hogy létrehozása után megváltoztathatlan.
+                </p>
+                <p class="text-lg font-normal">Egy újabb hiba, amelybe relatíve könnyen bele lehet szaladni az a for ciklus
+                    esetében tükrőzödik, vegyük például a következő kódrészletet:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>foo = {'first_key': 1, 'second_key': 2}
+
+for item in foo:
+    print(item)
+
+# Ebben az esetben nem a dict itemet fogja kiírna, hanem annak kulcsát.
+
+for item in foo.items():
+    print(item)
+
+# Ebben az esetben már a dict itemet fogja kiírni key-value páronként, tuple típusban.</code></pre>
+                <p class="text-lg font-normal">A fenti egyszerű Python esettel szemben, JavaScript-et használva korán sem
+                    ennyire
+                    könnyű objektumokkal dolgozni, hiszen a for ciklus nem ugyanúgy működik, mint Python esetében, a következő
+                    kódrészlet ezt szemlélteti:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let foo = {
+    'firstKey': 1,
+    'secondKey': 2
+};
+
+for (let item in foo) {
+    if (foo.hasOwnProperty(item)) {
+        console.log(item + " " + foo[item]);
+    }
+}</code></pre>
+                <p class="text-lg font-normal pb-3">Az előbbi esetben, azért van szükség a for cikluson belül a hasOwnProperty
+                    metódus
+                    használatára, mert a Python dict-ekkel szemben, a JavaScript objektumjai tartalmazhatnak örökölt
+                    tulajdonságokat is a prototyping chainről, és a metódus pont ez ellen tesz, leellenőrízve azt, hogy
+                    rendelkezik-e az objektum a vizsgált tulajdonsággal, azonban mint saját tulajdonság és nem örökölt.
+                </p>
+                <p class="text-lg font-normal pb-3">Ugyanakkor, a korábban ábrázolt problémákat a JavaScript többé-kevésbé már
+                    önmaga
+                    megoldotta, hiszen kiegészült olyan funkcionális elemekkel, amelyek megkönnyítik az adatok feldolgozását.
+                    Ilyen akár a forEach ciklus is, amely végigiterálva egy adatszerkezet elemein, végrehajtja a callback
+                    függvényt rajtuk.
+                </p>
+                <p class="text-lg font-normal pb-3">Azonban, ezeket a korábban említett függvényeket nem használhatjuk objektumok
+                    esetében, így azok feldolgozásakor más megoldást kell találjunk.
+                </p>
+                <p class="text-lg font-normal pb-3">A következő lényeges dolog, amit érdemes megvizsgálni a két programozási
+                    nyelv
+                    eltérése, ami az objektumorientált programozást illeti. A Python klasszikus OOP-t használ, ezzel szemben a
+                    JavaScript ún. prototype-okat.
+                </p>
+                <p class="text-lg font-normal">A Python classok nagyon egyszerűek, és hatásosan valósítja meg maga a nyelv
+                    az
+                    objektumorientált programozást, amit a következő kódrészlet is szemléltet:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>class Citizen(object):
+    def __init__(self, name, country):
+        self.name = name
+        self.country = country
+
+    def print_details(self):
+        print('Citizen {} from {}.'.format(self.name, self.country))
+
+c = Citizen('Lukács Zs.', 'Hungary')
+c.print_details()</code></pre>
+                <p class="text-lg font-normal pb-3">A Python classok központi eleme az __init__ függvény, amely az objektum
+                    példányok
+                    létrehozásakor kerülnek lehívásra. A classok metódusainak létrehozása során, elhagyhatatlan elem a self
+                    paraméter, amely a class példányra vonatkozik.
+                </p>
+                <p class="text-lg font-normal">Továbbá, a Python egy eléggé klasszikus megközelítést alkalmaz az öröklődés
+                    megoldására, amelyet a következő kódrészlet is szemléltet:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>class Winner(Citizen):
+    def __init__(self, name, country, category, year):
+        super(Winner, self).__init__(name, country)
+        self.category = category
+        self.year = year
+
+    def print_details(self):
+        print('Nobel winner {} from {}, category {}, year {}'.format(self.name, self.country, self.category, self.year))
+
+w = Winner('Albert E.', 'Switzerland', 'Physics', 1921)
+w.print_details()</code></pre>
+                <p class="text-lg font-normal pb-3">A fenti példa esetében, az ősosztályt, super-classnak nevezhetjük, és
+                    újrahasználhatjuk a super-class konstruktőrjét a super-el, felhasználva a Winner objektum példányt self-ként.
+                    Alapvetően, a super hívó ebben az esetben nem mást tesz, mint az öröklődési fán egy szintet felmegy, az első
+                    argumentumjától, és a jelenlegi példányt argumentumként adja tovább a class metódusnak.
+                </p>
+                <p class="text-lg font-normal pb-3">Ahhoz, hogy megértsük a JavaScript prototípusok és a Python classok közötti
+                    különbséget, megkell értenünk azt, hogy amikor egy Python classot lehívunk, az úgy zajlódik le, hogy lehívjük
+                    a különböző konstruktörőket az öröklődési fában, így létrehozva a class példányt.
+                </p>
+                <p class="text-lg font-normal">Ezzel szemben, amikor prototípusokkal foglalkozunk, olyan mintha már egy kész
+                    dolgot módosítgatnánk, ilyen értelemben véve nem teljesen új objektumokat hozunk létre, hanem adaptálunk egy
+                    meglévőt és azt bővítjük ki. A következő kódrészlet szemlélteti a JavaScript prototípusok működését:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let Citizen = function(name, country) {
+    this.name = name;
+    this.country = country;
+}
+
+Citizen.prototype = {
+    printDetails: function() {
+        console.log('Citizen ' + this.name + ' from ' + this.country);
+    }
+}
+
+let c = new Citizen('Lukács Zs.', 'Hungary');
+
+c.printDetails();</code></pre>
+                <p class="text-lg font-normal pb-3">A fenti kódrészlet mutatja be azt, hogy JavaScript-ben nincsenek classok, és
+                    így
+                    az objektum-példányokat függvényekből, vagy objektumokból építjük fel. Alapvetően, ebben az esetben az
+                    örökölhető, és az objektum-példányokhoz tartozó metódusokat a prototype résznél hozzuk létre. A new-t pedig új
+                    objektum létrehozására használjuk fel.
+                </p>
+                <p class="text-lg font-normal pb-3">Első ránézésre úgy tűnhet, mintha nem lenne különbség a Python self és a
+                    JavaScript this között, miközben ez korántsem igaz. A Python self-je egy változó, amit minden metódusnak
+                    bekell adni, mint paraméter, és ez jelöli a jelenlegi objektum példányt. Ezzel szemben, a this kulcsszó arra
+                    az objektumra vonatkozik, amely lehívja a metódust. Ilyen értelemben, a hívó objektum eltérhet attól az
+                    objektumtól, amelyhez a metódus tartozik.
+                </p>
+                <p class="text-lg font-normal">Végül, a JavaScript öröklődést a következő kódrészlet szemlélteti:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let Citizen = {
+    setCitizen: function(name, country) {
+        this.name = name;
+        this.country = country;
+        return this;
+    },
+    printDetails: function() {
+        console.log('Citizen ' + this.name + ' from ' + this.country);
+    }
+}
+
+let Winner = Object.create(Citizen);
+
+Winner.setWinner = function(name, country, category, year) {
+    this.setCitizen(name, country);
+    this.category = category;
+    this.year = year;
+    return this;
+}
+
+Winner.printDetails = function() {
+    console.log('Nobel winner ' + this.name + ' from ' + this.country + ', category ' + this.category + ', year ' + this.year);
+}
+
+let a = Object.create(Winner).setWinner('Einstein A.', 'Switzerland', 'Physics', '1921');
+
+a.printDetails();</code></pre>
+
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Különbségeik a gyakorlati felhasználásban</h2>
+                <p class="text-lg font-normal pb-3">Látszólag vannak eltérések a két nyelv között, de szerencsére többnyire
+                    szintaktikai eltérések, ahogyan azt az előző fejezet is szemlélteti. Az imperatív programozás lényege a két
+                    nyelvben majdhogynem azonos.
+                </p>
+                <p class="text-lg font-normal pb-3">Azonban, imperatív eltérés például a metódusok láncolata, amely a JavaScript
+                    esetében gyakran megjelenik, ezzel szemben Python esetén kevésbé. A metódus láncolást a korábbi JavaScript
+                    öröklődési példa is szemlélteti, amikoris egy objektum metódusból a this-t visszatérítve képesek vagyunk
+                    láncolatot létrehozni, hiszen mindig az aktuális objektumot téríti vissza.
+                </p>
+                <p class="text-lg font-normal">A következő jellegzetesség a listákon való végighaladásban érhető tetten.
+                    Mindkét
+                    programozási nyelv lehetőséget biztosít arra, hogy úgy haladjunk végig listákon, hogy mindeközben az elemek
+                    indexét is megőrízzük. Ilyen a Python enumerate-ja, vagy akár a JavaScript forEach, bár az utóbbi esetében
+                    valójában az elem indexét a callback függvénynek szolgáltatja. A következő kódrészletek ezt a két esetet
+                    szemléltetik:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>names = ['Alice', 'Bob', 'Carol']
+
+for i, n in enumerate(names):
+    print('{}: {}'.format(i, n))</code></pre>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let names = ['Alice', 'Bob', 'Carol']
+
+names.forEach(function(i, n) {
+    console.log(i + ': ' + n);
+})</code></pre>
+                <p class="text-lg font-normal">Lényeges imperatív eltérés a tuple unpacking is, amely Python esetében
+                    jelenik
+                    meg. A Python tuple unpacking arra nyújt lehetőséget például, hogy változókat cseréljünk meg, csökkentve annak
+                    a szükségességét, hogy ideiglenes változókat hozzunk létre. A következő kódrészlet ezt szemlélteti:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>def fibonacci(n):
+    x, y = 0, 1
+
+    for i in range(n):
+        print(x)
+        x, y = y, x + y
+
+fibonacci(4)</code></pre>
+                <p class="text-lg font-normal">Ugyancsak sajátossága a Python-nak a collections modul. A collections modul
+                    kiegészítő azon összetett adatszerkezetek listáját, amelyekkel a Python rendelkezik: deque, OrderedDict,
+                    defaultdict, stb. A collection funkcionalitását utánzó könyvtárak JavaScript-nél is megtalálhatók, bár ott
+                    kevésbé elterjedtek. Az egyik nagyon hasznos függvénye a collections modulnak a Counter, amelynek használatát
+                    a következő kódrészlet szemlélteti:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>from collections import Counter
+
+items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D']
+
+cntr = Counter(items)
+# a Counter függvény megszámolja az elemek gyakoriságát
+
+print(cntr)</code></pre>
+                <p class="text-lg font-normal">Az egyik nagyon fontos könyvtár, amely a JavaScript funkcionalitását
+                    kiegészíti az
+                    Underscore. Az Underscore könyvtár lévén, vagy CDN-n keresztül kell elérni, vagy NPM-el fel kell telepíteni az
+                    aktuális NPM környezetbe. Ezt a szokásos npm install underscore-al megtehetjük. Az Underscore nagyon sok
+                    hasznos függvénnyel rendelkezik, amely megkönnyíti az életünket a JavaScript használata során. Ilyen akár a
+                    countBy metódus, amely a Python collections moduljában található Counter-et is helyettesítheti, ezt a
+                    következő kódrészlet mutatja be:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D'];
+
+_.countBy(items);</code></pre>
+                <p class="text-lg font-normal">A következő dolog, amit mindenképp megkell említeni a JavaScript closure-je,
+                    vagy
+                    zártsága. Alapvetően, a closure ebben a kontextusban nem mást jelent, mint hogy lényegében egy fészkelt
+                    függvény deklarációja felhasznál egy olyan változót, amely egy külső scope-ban került deklarálásra, de nem a
+                    globális scopeban, azonban élettartama így globális módosul és értékét megőrzi a függvény terítése után is. A
+                    következő kódrészlet ezt szemlélteti:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>function Counter(inc) {
+    let count = 0;
+    let add = function() {
+        count += inc;
+        console.log('Current count: ' + count);
+    }
+    return add;
+}
+
+let cntr = Counter(2);
+
+cntr(); // count = 2;
+
+cntr(); // count = 4;
+// tehát az értékét megőrzi a count</code></pre>
+                <p class="text-lg font-normal pb-3">Hasonló technika a Python-ban is megfigyelhető, de ott kevésbé jelentős a
+                    használata.
+                </p>
+                <p class="text-lg font-normal">Utolsó érdekesség a két nyelv imperatív eltérései között a closure-el
+                    kapcsolatos.
+                    A closure esetében megtörténhet az, hogy a külső scope this-jére szeretnél hivatkozni, egy belső függvényben,
+                    ebben az esetben egy proxy-t kell használj ahhoz, hogy ez megtörténhessen, ezt általában that-al jelöljük, és
+                    a következőképpen néz ki a gyakorlatban:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>function outer(bar) {
+    this.bar = bar;
+    var that = this;
+    function inner(baz) {
+        this.baz = baz * that.bar;
+        // ...
+        // ebben az esetben a that a külső függvény this-jére vonatkozik.
+    }
+}</code></pre>
+
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Adatok írása és olvasása Python-al</h2>
+                <p class="text-lg font-normal pb-3">Alapvetően, nagyon lényeges követelmény minden olyan személlyel szemben, aki
+                    adatvizualizációval szeretne foglalkozni, hogy megfelelően képes legyen az adatait manipulálni és alakítani,
+                    ahogy az szükséges. A Python erőssége az, hogy rendkívül egyszerűvé teszi ezt a folyamatot, könnyen
+                    olvashatunk be állományokat, érhetünk el adatbázisokat, és miután ezt megtettük kedvünk szerint tudjuk azokat
+                    alakítani ahhoz, hogy megfelelően megjeleníthessük.
+                </p>
+                <p class="text-lg font-normal">Python megnyitni állományt, annyira egyszerű, mint beírni a következő utasítást:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>all = open('data.txt') # megnyitja az állományt olvasásra alapértelmezetten
+
+print(all) # output: <_io.TextIOWrapper name='data.txt' mode='r' encoding='cp1252'></code></pre>
+                <p class="text-lg font-normal pb-3">Azonban, az adatvizualizációs munka során nem csak szöveges állományokat kell
+                    feldolgozzunk, de a Python kiterjedtsége a CSV és JSON állományok feldolgozását is nagyban megkönnyíti.
+                    Ugyanakkor, nagyszerű könyvtárakkal rendelkezik, ahhoz, hogy SQL-adatbázisokkal dolgozzunk, mint pl. az
+                    SQLAlchemy, illetve, ha noSQL kliensek után néznénk a MongoDB egy nagyszerű választás, amelyet a Python-on
+                    belül a pymongo könyvtárral érhetünk el.
+                </p>
+                <p class="text-lg font-normal pb-3">Az adatok feldolgozásának demonstrálására jó kezdés, ha megnézzük hogyan
+                    használhatjuk a kulcsfontosságú adattárolási könyvtárakat egy példán keresztül. Ez lehetőséget biztosít arra,
+                    hogy megfigyeljük működés közben az adatformátummokat és adatbázisokat, amelyekkel foglalkoznak az
+                    adat-megjelenítők.
+                </p>
+                <p class="text-lg font-normal">Az adat, amivel a példa során dolgozni fogunk az egyik leggyakoribb, ami az adatok
+                    ábrázolásakor megjelenhet, egy listányi dict objektum, ezt az adatot adnánk át a böngészőnek JSON formátumban,
+                    a formátumátalakítás viszonylag könnyen megvalósítható a Python dict objektumból:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>nobel_winners = [
+    {
+        'category': 'Physics',
+        'name': 'Albert Einstein',
+        'nationality': 'Swiss',
+        'sex': 'male',
+        'year': 1921
+    },
+    {
+        'category': 'Physics',
+        'name': 'Paul Dirac',
+        'nationality': 'British',
+        'sex': 'male',
+        'year': 1933
+    },
+    {
+        'category': 'Chemistry',
+        'name': 'Marie Curie',
+        'nationality': 'Polish',
+        'sex': 'female',
+        'year': 1911
+    }
+]</code></pre>
+                <p class="text-lg font-normal">Első lépésben a fenti Python listát átalakítsuk egy CSV fájllá, bemutatva azt, hogy
+                    hogyan is lehet rendszerfájlokat olvasni és írni. Könyvtárak használata nélkül hagyományos Python IO-val ez
+                    így nézne ki:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>f = open('nobel_winners.csv', 'w')
+
+print(f)
+
+cols = list(nobel_winners[0].keys()) # lekéri a lista első dict objektumának kulcsait: category, name, nationality, sex, year, azért alakítom listává, hogy sortolható legyen
+cols.sort() # rendezzük alfabetikusan
+
+with open('nobel_winners.csv', 'w') as f: # a with arra jó, hogy garantálja, ha esetleg hiba történik a feldolgozás során az állomány bezáródik, ugyanez történik, ha kilépünk a blokkból
+    f.write(','.join(cols) + '\n') # kiírjuk a kulcsokat az első sorba, vesszővel elválasztva
+
+    for o in nobel_winners:
+        row = [str(o[col]) for col in cols] # kiírjuk az adatokat a dict objektumokból
+        f.write(','.join(row) + '\n')
+
+
+with open('nobel_winners.csv', 'r') as f:
+    [print(line, end='') for line in f.readlines()] # kiírjuk a terminálba a csv állományban található adatokat</code></pre>
+                <p class="text-lg font-normal">Általánosságban beszélve, a leggyakrabban használt, mindenhol jelenlevő
+                    adatformátumok közé sorolhatók a TSV és CSV fájlok, a két formátum között lényeges különbség az, hogy az
+                    adatok hogyan kerülne elválasztásra, CSV esetén vesszővel, TSV esetén tab-al, tehát whitespacecel. A CSV
+                    fájlokkal való munkát könnyíti meg a csv könyvtár, figyeljük meg használatát a fenti példa megismétlésével:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>import csv
+
+with open('nobel_winners.csv', 'w') as f:
+    field_names = list(nobel_winners[0].keys()) # a writer-nek explicit módon megkell mondanunk milyen mezőnevekkel dolgozunk, ebben az esetben a category, stb..
+    field_names.sort()
+
+    writer = csv.DictWriter(f, fieldnames=field_names) # a DictWriter alakítsa át a dict objektumokat csv sorokká
+    writer.writeheader() # kiírjuk a mezőneveket a csv fájlba
+
+    for w in nobel_winners:
+        writer.writerow(w)</code></pre>
+                <p class="text-lg font-normal">Ugyanakkor, valószínűbb, hogy többet fogsz CSV fájlokat olvasni, mint létrehozni,
+                    tehát nézzük meg, hogy hogyan lehet csv könyvtár segítségével állományokat olvasni:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>with open('nobel_winners.csv', 'r') as f:
+    reader = csv.reader(f)
+
+    for row in reader:
+        print(row)</code></pre>
+                <p class="text-lg font-normal">Általában, kényelmesebb megoldás a CSV adat feldolgozására, ha átalakítsuk a
+                    sorokat vissza Python dict objektumokká:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>with open('nobel_winners.csv', 'r') as f:
+    reader = csv.DictReader(f)
+
+    nobel_winners = list(reader)</code></pre>
+                <p class="text-lg font-normal pb-3">Fontos megjegyezni a fenti két példa esetében, hogy a 'year' kulcsú adat
+                    minden esetben string típusú lesz, explicit átkell azt alakítani int-té, ha számként akarjuk felhasználni. Az
+                    állománykezelés minden adatot string-ként kezel. Erre a problémára azonban megoldást nyújt majd a Pandas,
+                    amely megpróbálja kikövetkeztetni a megfelelő adattípust, minden párhoz.
+                </p>
+                <p class="text-lg font-normal pb-3">Alapvetően, rendelkezik a csv könyvtár néhány olyan argumentummal, amely
+                    segítségével a CSV formátum-családba tartozó formátumokat értelmezni tudjuk, ezek listája megtalálható a
+                    Python dokumentációjában.
+                </p>
+                <p class="text-lg font-normal">Most nézzük meg hogyan lehet egy CSV-ből kinyert dict-et JSON-ná alakítani.
+                    Amennyiben, egyszerű, elemi adatszerkezetekkel dolgozunk, mint pl. stringekkel, integerekkel és floatokkal,
+                    abban az esetben nagyon könnyen át tudjuk alakítani a Python dict-eket JSON-fájlokká, használva a json
+                    könyvtárat. A dump metódus, amely a json könyvtár részét képzi, bevesz egy Python konténer típust és egy
+                    állománymutatót, egyszerűen belementi az első argumentumot a másodikba:
+                </p>
+                <pre
+                    class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>import json
+
+with open('nobel_winners.json', 'w') as f:
+    json.dump(nobel_winners, f) # egyszerűen létrehozza a fenti nobel_winners dict objektumokból álló listából a json állományt</code></pre>
+                <p class="text-lg font-normal">Írni vagy olvasni legalább ugyanannyira egyszerű a json modul segítségével,
+                    használva olvasásra a load metódust, amit az alábbi példa is szemléltet:
+                </p>
+                <pre class="my-4 bg-gray-600 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>with open('nobel_winners.json', 'r') as f:
+    nobel_winners = json.load(f)</code></pre>
+                <p class="text-lg font-normal pb-3">Azonban, a fenti módszer közel sem tökéletes, amennyiben egy datetime
+                    objektumot akarunk dump-el átalakítani, hibaüzenetet kapunk. A probléma a szerializációs folyamattal van,
+                    elemi típusok esetében az alapértelmezett json enkóder és dekóder jól működik, de speciális típusok esetében,
+                    mint amilyen a datatime is, szükség van arra, hogy létrehozzuk a saját enkóderünket és dekóderünket.
+                    Szerencsére, ez valójában közel sem annyira nehéz.
+                </p>
+                <p class="text-lg font-normal">Előszöris, vizsgáljuk meg azt hogyan tudjuk átalakítani, enkódolni a Python
+                    datetime típus JSON stringekké. Egy ilyen sajátos enkódert mutat be a következő kódrészlet is:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>import datetime
+from dateutil import parser
+import json
+
+class JSONDateTimeEncoder(json.JSONEncoder): # örökli az alapértelmezett JSON enkóder metódusait és tulajdonságait, ahhoz, hogy saját datetime-ra szakosodotatt készítsünk
+    def default(self, obj):
+        if isinstance(obj, (datetime.date, datetime.datetime)): # lellenőrzi azt, hogy datetime típusú-e az objektum
+            return obj.isoformat()
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+def dumps(obj):
+    return json.dumps(obj, cls=JSONDateTimeEncoder) # használjuk a szerializációs metódust, beállítva a cls argumentummal a saját enkóderünket
+
+now_str = dumps({'time': datetime.datetime.now()}) # átalakítja json formátumba a jelenlegi időt</code></pre>
+                <p class="text-lg font-normal pb-3">A fenti példa esetében dekódoláskor, a 'time' mezőnél könnyű dolgunk van,
+                    hiszen az
+                    alapból egy string, ugyanakkor a datestring valamilyen módon értelmezni kell először. Nem ajánlott, hogy olyan
+                    dekódolokat hozzunk létre, amelyek tetszőleges date-stringeket képesek értelmezni, hiszen a date-stringek
+                    nagyon sok félék lehetnek, így jobb azt minden alkalommal kézzel megcsinálni, hiszen az általunk használt
+                    adatok ismertek.
+                </p>
+                <p class="text-lg font-normal">Erre használhatjuk az strptime metódust, amely a datetime könyvtár része, amely egy
+                    date-stringet átalakít Python datetime objektum példánnyá:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>time_str = '2020-07-08 14:22:15'
+
+dt = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S') 
+# a strptime megpróbálja megegyeztetni a date-stringet annak a formátumnak, 
+# amit második argumentumként megadunk, ha sikerül visszatéríti a datetime példányt</code></pre>
+                <p class="text-lg font-normal pb-3">A következő részben megvizsgáljuk azt, hogy hogyan vagyunk képesek adatot
+                    olvasni és írni Pythonban SQL és noSQL adatbázisokba.
+                </p>
+                <p class="text-lg font-normal pb-3">Korábban már említettük, hogy az egyik leggyakoribb Python könyvtár, amit SQL
+                    adatbázisokkal való interakciókra használnak az az SQLAlchemy, ami leegyszerűsíti a teljes folyamatot, hiszen
+                    önmagában SQL adatbázisokban az olvasás és írás egy bonyolult folyamat, mivel mindig biztosítani kell azt is,
+                    hogy a felhasználó az adatot Python konténerként tudja kezelni. Az SQLAlchemy röviden és tömören azt teszi
+                    lehetővé, hogy nyers SQL utasításokat is akár használjunk a programkódunkban (ha a sebesség esszenciális), de
+                    az SQL-táblákat akár úgy is tudjuk lényegében kezelni a könyvtáron keresztül, mint Python classokat.
+                </p>
+                <p class="text-lg font-normal pb-3">Kezdjük azzal, hogy az adatunkat SQLite fájllá alakítsuk az SQLAlchemy-t
+                    felhasználva, de ezelőtt hozzuk létre az adatbázisunk "motrát", azt a szoftver komponenst, amelyet az
+                    adatbázisok kezelésére használunk, ahhoz, hogy írjunk, olvassunk, hozzáadjunk és töröljünk elemeket.
+                </p>
+                <p class="text-lg font-normal pb-3">A motor létrehozása az első lépés, amikor elkezdjük egy új SQLAlchemy
+                    session-t. Ez a motor fogja megteremteni a kapcsolatot az adatbázissal, elvégez minden átalakítást, amely
+                    szükséges azon általános SQL instrukciók megfelelő működéséhez, amelyet az SQLAlchemy generál, és a
+                    visszaterített adatokhoz.
+                </p>
+                <p class="text-lg font-normal">Számos motor áll rendelkezésünkre a legnépszerűbb adatbázisokhoz, de akár egy ún.
+                    memóriabeli motor/opció is létezik, amikoris a teljes adatbázis értelemszerűen a memóriában kerül tárolásra,
+                    ahonnan nagyon gyorsan érhetjük el azt. Nagy előnyük ezeknek a motroknak, hogy felcserélhetők, tehát
+                    elkezdhetjük kódunkat írni az egyik motorban, felhasználva az SQLite állomány-alapú adatbázisát, majd amikor
+                    publikálni szeretnék a kódunkat, akkor azt kicserélhetjük egy olyan motorra, amely képes ezt megbírni, mint
+                    pl. Postgresql-re, pusztán annyival, hogy kicserélünk egyetlen config-stringet. A következő kódrészlet
+                    szemlélteti a motor létrehozási folyamatot:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from sqlalchemy import create_engine
+
+engine = create_engine('sqlite:///nobel_prize.db', echo=True)
+# Ebben az esetben az állomány-alapú SQLite adatbázist használjuk, az echo Igazra állításával azt érjük el, hogy az 
+# SQLAlchemy-vel generált SQL instrukciók kiíródnak a terminálba</code></pre>
+                <p class="text-lg font-normal pb-3">Tanácsos, a lehető legtöbb esetben felhasználni az SQLAlchemy deklaratív
+                    stílusát
+                    az adatbázisokkal való interakciókor, hiszen a high-level stílussal könnyebb magát a kódot megírni, bár
+                    lassabb annak lefutása. Röviden és lényegretőrően fogalmazva, a deklaratív stílussal öröklöd minden Python
+                    SQL-tábla classodat egy bázis classból, aztán az SQLAlchemy megvizsgálja és elemzi annak a struktúráját és a
+                    kapcsolatokat.
+                </p>
+                <p class="text-lg font-normal pb-3">Előszöris, létrehozunk egy bázis classt, a declarativ_base-el. Ezt a bázist
+                    fogjuk
+                    felhasználni az előbb említett módon ahhoz, hogy létrehozzuk a tábla-classokat, amelyből az SQLAlchemy fogja
+                    létrehozni az adatbázis tábla sémáit. Ezeket a tábla-classokat tudjuk felhasználni arra, hogy a már megszokott
+                    módon interakcióba lépjünk az adatbázissal. Fontos megjegyezni azt, hogy a legtöbb SQL-könyvtár megköveteli
+                    azt, hogy formálisan definiáljuk ezeket a tábla-sémákat, ellentétben a NoSQL variánsokkal, mint a MongoDB,
+                    ahol ez nem szükséges, hiszen ott nincsenek sémák.
+                </p>
+                <p class="text-lg font-normal">A bázist felhasználva meghatározzuk a különböző táblákat, ebben az esetben csakis
+                    egyet, amit Winner-nek nevezünk:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base(bind=engine)
+
+class Winner(Base):
+    __tablename__ = 'winners' # elnevezi az SQL-táblát és ezt a kulcsszót használhatjuk annak eléréséhez
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    category = Column(String)
+    year = Column(Integer)
+    nationality = Column(String)
+    sex = Column(Enum('male', 'female'))
+    # beállítottuk a tábla-sémáját, meghatározva a tábla oszlopok típusát
+
+    def __repr__(self):
+        return "&#60;Winner(name={}, category={}, year={})>".format(self.name, self.category, self.year)
+    # opcionális metódus, amelyet a tábla-sor kiírására fogjuk használni</code></pre>
+                <p class="text-lg font-normal">Tehát, meghatároztuk a bázis örökölt classainkat az előző lépésben (sub-clasoskat),
+                    ezután használjuk a create_all metódust az adatbázis motrunkkal és a létrehozott bázis metaadatokkal, hogy
+                    létrehozzuk az adatbázisunkat, mivel az echo argumentumot Igazra állítottuk, minden generált instrukciót
+                    láthatunk a terminálban:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>Base.metadata.create_all(engine)</code></pre>
+                <p class="text-lg font-normal">Miután mindent összeállítottunk kezdhetjük is hozzáadni az új winners táblákban a
+                    winner példányokat. Mostmár megvan az adatbázisunk, egy session-re van szükségünk ahhoz, hogy interakcióba
+                    lépjünk vele:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>Session = sessionmaker(bind=engine)
+session = Session()</code></pre>
+                <p class="text-lg font-normal">Ezután használni tudjuk a korábban létrehozott Winner classunkat ahhoz, hogy
+                    létrehozzunk új példányokat/tábla-sorokat, és hozzáadhassuk a session-höz:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>albert = Winner(**nobel_winners[0])
+# a Python ** operátorja kicsomagolja az első nober_winners elemet key-value párokként, tehát (name=Albert Einstein, category=Physics...)
+session.add(albert)
+session.new
+# a new metódus segítségével beállítjuk az összes elemet, amelyet hozzáadtunk a session-höz.</code></pre>
+                <p class="text-lg font-normal pb-3">Fontos megjegyezni azt, hogy minden adatbázis beillesztés, törlés, stb.
+                    Python-on
+                    belül történik, csakis akkor változik meg a tényleges adatbázis, amikor a commit metódust is használjuk,
+                    azonban ennek használatát minimalizálnunk kellene, hiszen a háttérben az SQLAlchemy az átadandó adatokat
+                    értelmezi és összefoglalja, ahhoz, hogy a leghatékonyabban tudja azokat az adatbázisba írni.
+                </p>
+                <p class="text-lg font-normal">Ahogy azt a new metódus is láttatja, hozzáadtunk egy Winner példányt a session-höz,
+                    képesek vagyunk ezt onnan akár törölni is az expunge metódussal, ezután egy üres IdentitySet-et kapunk:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>session.expunge(albert)
+# törli az argumentumként megadott példányt, akár az összeset is törölhetjük az expunge_all() metódussal
+session.new</code></pre>
+                <p class="text-lg font-normal">Hiába adogattunk és törölgettünk dolgokat az adatbázisból, valójában még semmit sem
+                    változtattunk rajta mióta létrehoztuk. Adjuk hozzá az összes elemet a nobel_winners listából a session-höz,
+                    majd írjuk ki az adatbázisba a commit metódussal:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>winner_rows = [Winner(**w) for w in nobel_winners]
+# létrehoz egy listányi Winner példányt a nobel_winners elemeiből
+session.add_all(winner_rows)
+session.commit()
+# beilleszti a session IdentitySet-jéből az összes elemet az adatbázisba</code></pre>
+                <p class="text-lg font-normal">Ahhoz, hogy elérjük az adatokat használhatjuk a session query metódusát, a
+                    lekérésnek az eredménye majd szürhető, csoportosítható, stb., lehetővé téve az összes szabvány SQL
+                    adatlekérést. A következő kódrészletben lekérjük mindazon tábla-sorokat, amelyek nemzetiség svájci:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>result = session.query(Winner).filter_by(nationality='Swiss')</code></pre>
+                <p class="text-lg font-normal">De akár lekérhetjük rendezve is a sorokat:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>res = session.query(Winner).order_by('year')</code></pre>
+                <p class="text-lg font-normal">Ahhoz, hogy az adatbázisban található objektumokat újra Python dict-té alakítsuk
+                    kicsit dolgozni kell. Előszöris, létre kell hoznunk egy függvényt, amely létrehoz egy dict objektumot egy
+                    SQLAlchemy classból:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>def inst_to_dict(inst, delete_id=True):
+    dat = {}
+
+    for column in inst.__table__.columns:
+        dat[column.name] = getattr(inst, column.name)
+        # eléri a példány tábla class-át, hogy megszerezze az oszlop objektumok listáját
+        # egyszerűen elérjük annak a táblának az oszlopait, amelyhez tartozik a példány
+        # a getattr() függvénnyel pedig megszerezzük annak a mezőnek az értékét
+    if delete_id:
+        dat.pop('id')
+        # ha a delete_id igaz, akkor törölje az SQL elsődleges id mezőjét
+
+    return dat
+
+winner_rows = session.query(Winner)
+nobel_winners = [inst_to_dict(w) for w in winner_rows]</code></pre>
+                <p class="text-lg font-normal">Nagyon egyszerűen képesek vagyunk frissíteni táblázat sorokat, az által, hogy a
+                    query által visszatérített objektumot megváltoztatjuk, használhatjuk közben a new-hez hasonlóan a dirty-t,
+                    amely azokat a példány változtatásokat téríti vissza, amik még nem kerültek véglegesítésre az adatbázisban:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>marie = session.query(Winner).get(3)
+marie.nationality = 'French'
+session.dirty</code></pre>
+                <p class="text-lg font-normal">Miután megváltoztattuk a példányt, a commit-al a szokásos módon véglegesíteni is
+                    tudjuk, majd le is ellenőrízhetjük, hogy valóban megváltozott:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>session.commit()
+
+session.query(Winner).get(3).nationality # 'French'</code></pre>
+                <p class="text-lg font-normal">De akár törölhetünk is természetesen sorokat az adatbázisból:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>session.query(Winner).filter_by(name='Albert Einstein').delete()
+
+list(session.query(Winner)) # Albert már nem jelenik meg</code></pre>
+                <p class="text-lg font-normal">Továbbá, megkell említenünk még egy könyvtárt, amely az SQL adatbázisokkal való
+                    munkát könnyíti meg, még jobban, mint ahogy azt az SQLAlchemy teszi, és ez nem más, mint a Dataset könyvtár. A
+                    Dataset megpróbálja annyira kényelmessé tenni a sémás adatbázisokkal való munkát, mintha séma-nélküliek
+                    lennének, kihagyva számos olyan részletet, mint a séma-definíció, amelyeket pl. az SQLAlchemy is megkövetel. A
+                    Dataset az SQLAlchemy-re épül, ami azt eredményezi, hogy a legtöbb adatbázissal működik. Nézzük meg egy példán
+                    keresztül hogyan képes írni és olvasni a Dataset, ugyanakkor mivel nagy esély van rá, hogy nem rendelkezünk
+                    ezzel a könyvtárral alapértelmezetten, pip segítségével telepítenünk kell azt először:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>pip install dataset</code></pre>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>import dataset
+
+db = dataset.connect('sqlite:///nobel_prize.db') 
+# csatlakozunk a már létező adatbázisunkhoz
+
+wtable = db['winners']
+winners = wtable.find()
+winners = list(winners)
+# lekértük az adatbázisban található összes sort, ami a winners táblán belül található</code></pre>
+                <p class="text-lg font-normal">Most, akár újra is csinálhatjuk teljes egészében a winners táblát Dataset
+                    segítségével is, csak gyakorlásképpen:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code># töröljük a winners táblát
+wtable = db['winners']
+wtable.drop()
+
+# majd újra létrehozzuk, és ekkor üres
+wtable = db['winners']
+list(wtable.find()) # output: []</code></pre>
+                <p class="text-lg font-normal">Ahhoz, hogy újra létrehozzuk a winners táblát, jelen esetben Dataset-et használva
+                    nem kell létrehoznunk a sémát, ahogy azt az előbb az SQLAlchemy-t használva tettük. A Dataset okosan
+                    kikövetkezteti azokból az adatokból, amit hozzáadunk, és így mindenféle SQL létrehozást teljesen implicit
+                    módon hajt végre a háttérben. Hasonlóan mintahogy azt NoSQL rendszerek esetében is tennénk. Ez után
+                    használhatjuk a nobel_winners adatainkat, hogy hozzáadjunk néhány winner dict-et az adatbázishoz:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>with db as tx:
+    # jelen esetben a with-re azért van szükség, hogy biztosan a tx tranzakció véglegesítésre kerüljön az adatbázisban
+    for w in nobel_winners:
+        tx['winners'].insert(w)
+
+# ez után le is ellenőrízhetjük, hogy helyesen dolgoztunk-e
+
+print(list(db['winners'].find()))</code></pre>
+                <p class="text-lg font-normal">A használatának könnyedsége mellett, a Dataset még egy fontos előnnyel rendelkezik,
+                    ez nem más, mint a freeze metódus, amely egy nagyszerű eszköz kezdő adat-megjelenítőknek. A freeze fogja az
+                    eredményét egy SQL lekérdezésnek és átalakítsa JSON vagy CSV állománnyá, ahogy azt az alábbi kódrészlet is
+                    szemlélteti, azonban megintcsak először telepítenünk kell, hiszen a freeze metódust a Datafreeze könyvtár
+                    tartalmazza:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>pip install datafreeze</code></pre>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from datafreeze import freeze
+
+winners = db['winners'].find()
+freeze(winners, format='csv', filename='nobel_winners_ds.csv')</code></pre>
+                <p class="text-lg font-normal pb-3">Miután alaposan megvizsgáltuk azt, hogy hogyan tudunk SQL adatbázisokkal
+                    dolgozni Pythonban, nézzük meg, hogy megy ugyanez NoSQL rendszerek esetén.
+                </p>
+                <p class="text-lg font-normal pb-3">Dokumentum-centrikus adattárolók közé tartozik a MongoDB. Megvannak a maga
+                    használati esetei a MongoDB-nek és más NoSQL rendszereknek, azonban amikor már finomított és feldolgozott
+                    adatokat kell tárolni, akkor a MongoDB-vel egyszerűbb dolgozni. A MongoDB különösen jó választás
+                    adatmegjelenítők számára, mert Binary JSON-t használ adatformátumaként, ami a JSON kiegészítője és képes
+                    bináris-adattal, datetime-objektumokkal, stb-vel dolgozni, ami megkönnyíti így a JavaScript-tel való
+                    interakciót.
+                </p>
+                <p class="text-lg font-normal">Ahhoz, hogy létrehozzunk egy MongoDB collection-t Python-nal csupán néhány sorba
+                    kerül:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>from pymongo import MongoClient
+
+client = MongoClient()
+# létrehozza a Mongo-Client-et, felhasználva az alapértelmezett host-ot és port-okat
+db = client.nobel_prize
+# létrehozza és hozzafér a nobel_prize adatbázishoz
+# a fenti utasítás esetében akár a client['nobel_prize'] forma is elfogadható, azonban úgy könnyebb hibázni
+coll = db.winners
+# ha a winners collection létezik, akkor lekéri, ha nem, akkor létrehozza</code></pre>
+                <p class="text-lg font-normal">A fenti esetben az alapértelmezett host alatt a localhost-ot értjük, és a port
+                    esetében a MongoDB a 27017-et tekinti alapértelmezettnek. Akár, opcionálisan, felhasználónevet és jelszót is
+                    meglehet adni. A következő kódrészlet egy nagyon hasznos kiegészítő függvényt mutat be, amelyet használhatunk
+                    arra, hogy elérjük az adatbázisunkat:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code># alapértelmezett beállításokkal, csupán az adatbázisnév tetszőleges
+def get_mongo_database(db_name, host='localhost', port=27017, username=None, password=None):
+    """ Elérjük a db_name-mel hivatkozott adatbázist MongoDB-ről, hitelesítő adatokkal vagy azok nélkül """
+
+    if username and password:
+        mongo_uri = 'mongodb://{}:{}@{}/{}'.format(username, password, host, db_name)
+        # URI = uniform resource identifier
+        conn = MongoClient(mongo_uri)
+    else:
+        conn = MongoClient(host, port)
+
+    return conn[db_name] # itt már a második féle jelölést használjuk az adatbázis eléréséhez</code></pre>
+                <p class="text-lg font-normal">Ezután, akár a kiegészítő függvény használatával is létrehozhatjuk a Nobel-díj
+                    adatbázisunkat, ahogy azt korábban is tettük:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>db = get_mongo_database('nobel_prize')
+coll = db['winners']
+coll.insert(nobel_winners)
+
+# beillesztjük az adatbázisba a dict objektumokat az insert metódussal
+# ugyanakkor, ha kiírjuk a terminálba az eredeti listát, a nobel_winners-et, megfigyelhetjük
+# hogy az insert metódus kiegészíti azt, hozzáad egy új 'id' mezőt.
+# ezek ObjectId-k, amelyek későbbi lehívásokat tesznek lehetővé, de más egyéb rejtett funkcionalítással is rendelkeznek,
+# mint pl. hogy rendelkeznek egy generálási idővel, amikoris az ObjectId létrejött</code></pre>
+                <p class="text-lg font-normal">Most, hogymár rendelkezünk elemekkel a winners collection-ben, a MongoDB legalább
+                    ennyire könnyűvé teszi azt, hogy mezőket találjunk meg bennük, a find metódussal:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>res = coll.find({'category': 'Chemistry'})
+print(list(res))</code></pre>
+                <p class="text-lg font-normal">Továbbá, számos speciális dollár-prefixelt operátort is használhatunk a
+                    lekérdezések során, például az alábbi kódrészlet a $gt (greater-than) operátort használja:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>res = coll.find({'year' : {'$gt': 1930}})
+print(list(res))</code></pre>
+                <p class="text-lg font-normal">Végül, nézzük meg azt, hogy hogyan tudjuk a winners collection-ünket Python dict
+                    listává alakítani, erre a feladatra egy újabb kiegészítő függvényt hozzunk létre:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code>def mongo_coll_to_dicts(dbname='test', collname='test', query={}, del_id=True, **kw):
+    # a fenti paraméterlistában szereplő üres query, minden elemet lekér egy adott collection-ből
+    db = get_mongo_database(dbname, **kw)
+    res = list(db[collname].find(query))
+
+    if del_id:
+        for r in res:
+            r.pop('_id')
+
+    return res
+
+print(mongo_coll_to_dicts('nobel_prize', 'winners'))</code></pre>
+                <p class="text-lg font-normal pb-3">A képesség arra, hogy könnyedén és kényelmesen dolgozzunk dátumokkal és
+                    idősávokkal
+                    elengedhetetlen a vizualizációs munkához, de nem mindig túlságosan egyszerű folyamat. Számos mód van arra,
+                    hogy reprezentáljunk egy dátumot, vagy date-time-ot, mint string, és mindegyik megigényli a saját enkóderét
+                    vagy dekóderét, ahhoz, hogy értelmezzük azt. Ezért lényeges az, hogy következetes formában használjuk ezen
+                    objektumokat. Az ISO formátumot a legjobb használni a string-reprezentációhoz. Az ISO 8601-et használja
+                    alapértelmezetten a JavaScript, és ezzel egyszerűen lehet dolgozni Python esetén is, megkönnyítve azt, hogy ne
+                    kelljen felesleges átalakításokat végezni ahhoz, hogy az időformátumot mindkét nyelvben használni lehessen,
+                    mikor JSON részeként adjuk át.
+                </p>
+                <p class="text-lg font-normal">Megnézhetjük egy példán keresztül hogyan működik mindez, először hozzuk létre a
+                    Python datetime objektumunkat:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="python">from datetime import datetime
+
+d = datetime.now()
+print(d.isoformat()) # output: 2020-07-04T19:13:47.622017</code></pre>
+                <p class="text-lg font-normal">A fent kapott string aztán JSON-ba, CSV-be, vagy egyébbe lementve beolvasható
+                    JavaScriptből, és felhasználható arra, hogy egy Date objektumot hozzunk létre:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="javascript">let d = new Date('2020-07-04T19:13:47.622017'); // output: Sat Jul 04 2020 19:13:47 GMT+0300 (Eastern European Summer Time)
+
+// akár vissza is alakíthatjuk ISO formátumba a kapott Date objektumot
+d.toISOString(); // output: 2020-07-04T16:13:47.622Z</code></pre>
+                <p class="text-lg font-normal">Végül, hogy teljes legyen a kép, értelmezhetjük a kapott string-et Pythonban is:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="python">from dateutil import parser
+
+d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.622000+00:00</code></pre>
+                <p class="text-lg font-normal mb-4">Megfigyelhető némi pontosság-veszteség, amikor Python és JavaScript között
+                    alakítgatunk, de általában lényegtelen az eltérés.
+                </p>
+
+                <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Webdev 101</h2>
+                <p class="text-lg font-normal pb-3">Egy egyszerű weboldal, amely alapvető alkotóeleme a világhálónak - az internet
+                    azon
+                    apró részének, amelyet az emberek nap, mint nap használnak - különböző állományokból épül fel: a különböző
+                    multimédia fájlok (kép, videó, hangfájlok) mellett, a kulcs elemek közé tartoznak a különböző szöveges
+                    állományok, mint például a Markup nyelvek, a HTML, a kinézetet moderáló CSS, a funkcionalítást biztosító
+                    JavaScript. Ezen állományok és egyéb más adatállományok, a HTTP segítségével kerülnek továbbításra, és a
+                    böngésző ezeket az állományokat használva építi fel azt a weboldalt, ami valóban megjelenik és amellyel
+                    interakcióba léphetünk, és ezt az egészet a DOM írja le. A HTTP, ahogy a nevében is benne van egy átviteli
+                    protokoll, lényegében ez az az elem, ami megoldja azt a problémát, hogy az adat eljusson a szerverről a
+                    böngészőbe, és ott megjelenhessen. A HTTP számos metódust biztosít, a leggyakoribb és legfontosabb a GET,
+                    amely lekér egy webes resource-t, lekérve az adatot egy szerverről, amennyiben sikerül, ha nem sikerül, akkor
+                    természetesen dob egy error-t, hogy tudassa azt velünk. Meglássuk, hogy később Python-on belül akár webes
+                    adatok kinyerésére (scrape-re) is használhatjuk a request könyvtárt felhasználva.
+                </p>
+                <p class="text-lg font-normal">Fejlesztés során, képes vagy egy kicsi szervert futtatni helyileg, Python
+                    segítségével, amit az alábbi kódrészlet is szemléltet:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="shell">$ python -m http.server</code></pre>
+                <p class="text-lg font-normal pb-3">A forráskönyvtár index.html állományát fogja megjeleníteni a fenti kódrészlet,
+                    helyileg, a következő címen elérve: <em>http://localhost:8000/</em>. Ugyanakkor, korlátozott funkcionalitása
+                    lényegében lehetetlené teszi azt, hogy apró demok kivételével, bármi másra is használhassuk, tehát jobb, ha
+                    mihamarabb megbarátkozunk a Flask-al, a könyv szerver opciójával.
+                </p>
+                <p class="text-lg font-normal pb-3">Természetesen, az adatmegjelenítés során nem kell túlságosan mélyreható
+                    web-fejlesztési készség, hiszen mi a vizualizációval fogunk foglalkozni, nem az általános struktúrával.
+                </p>
+                <p class="text-lg font-normal pb-3">Kicsi kitekintő a Single-page applikációkra, ún. SPA-kra, amelyek dinamikusan
+                    kerülnek összeállításra közvetlenül JavaScriptből, általában minimális HTML gerinccel és olyan CSS
+                    stílusokkal, amelyek dinamikusan kerülnek beállításra class és id attribútumokkal.
+                </p>
+                <p class="text-lg font-normal pb-3">Általánosságban, az SPA-k önállóak, és így kivállóan belehet őket illeszteni
+                    már
+                    létező weboldalakba, de akár önmagukban is működhetnek, egyedül egy HTTP szerverhez van szükségünk a
+                    működésükhöz, jó alternatívák az Apache vagy Nginx.
+                </p>
+                <p class="text-lg font-normal pb-3">Azért megfelelő SPA-kban gondolkodni, miközben adat-megjelenítéssel dolgozunk,
+                    mert
+                    így megkönnyíthetjük saját munkánkat azzal, hogy nem kell felesleges web-fejlesztői aspektusokba
+                    belebonyolódni, és kizárólag a programozói kihívásokra koncentrálhatunk.
+                </p>
+                <p class="text-lg font-normal pb-3">Végül, essen néhány szó a DOM-ról, ahogy az előbb is említettük alapvetően ez
+                    a faszerű elrendezés, amely azt határozza meg, hogy mikent is kötődnek egymáshoz a különböző objektumok a
+                    weboldalban. Az egész tartalom megjelenítése a DOM-tól függ. Azok a HTML fájlok, amelyek a HTTP-n keresztül
+                    eljutnak a felhasználóhoz a DOM-on keresztül kerülnek megjelenítésre a böngésző oldalán. Mind mondtuk, a DOM
+                    faszerű elrendezés, amelynek legfelső ágja maga a fő weboldal, vagy a dokumentum.
+                </p>
+                <p class="text-lg font-normal pb-3">A fenti elméleti részt kiegészítve, elmondható, hogy az a HTML, amit mi írunk,
+                    vagy generálunk egy template segítségével a böngésző alakítja át egy ún. <em>tree hierarchy of nodes</em>
+                    struktúrává, ahol mindenik ág egy újabb HTML elemet reprezentál. A legfelső ág tehát a dokumentum objektum, és
+                    ezután minden újabb ág egy parent-child mintában viszonul egymáshoz. A D3 könyvtár is a DOM-ot modósítva oldja
+                    meg a vizualizáció, tehát jó, ha van egy általános képünk arról, hogy az egész hogyan is néz ki.
+                </p>
+                <p class="text-lg font-normal pb-3">Egy tipikus web vizualizáció egy HTML skeletont, gerincet, használ és erre
+                    építi fel a teljes vizualizációt. A HTML egy leíró nyelv, amelyet egy állandó állapot megfogalmazására
+                    használhatunk, ebben az esetben egy weboldal tartalmának megfogalmazására. A HTML-el segítségével leírjuk,
+                    hogy mit is tartalmaz a weboldal, majd a CSS segítségével alakítsunk a tényleges megjelenését és stílusát. Ez
+                    a HTML fájl, a maga hosszával, a legtöbb lényeges HTML és CSS tulajdonságat magába süríti, tehát nem fogunk
+                    ide HTML kódrészleteket beilleszteni, teljesen felesleges.
+                </p>
+                <p class="text-lg font-normal pb-3">A HTML gerincbe CSS-t és JavaScript-t akár kétféleképpen is beilleszthetünk,
+                    közvetlen módon a &#60;style> és &#60;script> tagek segítségével, de akár közvetett módon is külön .css és .js
+                    állományokat felhasználva, ugyanúgy a két tag segítségével, az src attribútumot felhasználva, ahol
+                    meghatározzuk a fájlok elérési útvonalát.
+                </p>
+                <p class="text-lg font-normal pb-3">Ahogy az ezen HTML fájl esetében is megfigyelhető, gyakran találkozhatunk id
+                    és class attribútumokkal is, sőt inkább mindig, az id, ahogy az a nevéből is kiderül egy egyedi azonosító, míg
+                    a class akár több elemnél is megjelenhet, a CSS jelentőségük mellett, a JavaScript nélkülözhetetlen elemei is,
+                    hiszen a DOM interakciót nagyban megkönnyítik.
+                </p>
+                <p class="text-lg font-normal pb-3">Az általános HTML tagek mellett adat-vizualizációkor gyakran használjuk az
+                    &#60;svg> és &#60;canvas> tageket is, a modern böngészőkben az utóbbi akár 3D WebGL kontextust is támogatja,
+                    lehetővé téve, hogy OpenGL vizualizációkat ágyazzunk be a weboldalba.
+                </p>
+                <p class="text-lg font-normal pb-3">Áttérve röviden a CSS-re, a CSS határozza meg a "the look and feel"-t. Akár
+                    közvetlenül a HTML tagekre is beilleszthetjük a CSS-t, a style attribútumot használva, de ez nem ajánlott,
+                    nagyban megnehézíti a dolgokat. Ezért jó ötlet id-kkal, s class-okkal ellátni a tageket, lehetővé téve azt,
+                    hogy a CSS állományokba hivatkozzunk rájuk. A kulcsszó a CSS esetében a C, a cascading, ami röviden annyit
+                    eredményez, hogy elsőbbségi szabályok vannak a scriptben, tehát az elsőbbségi sorrendben fentebb levő
+                    szabályok, felülírják az alsóbbakat.
+                </p>
+                <p class="text-lg font-normal pb-3">Továbbá, a JavaScript a jelenlegi egyetlen olyan programozási nyelv, amely
+                    teljesen böngésző-orientált. Lényegében, egy jó általános kompetencia a nyelvben elengedhetetlen az
+                    adat-vizualizációs munka során. Ahogy, azt a korábbi fejezetekben is láthattuk a Python és a JavaScript között
+                    lényegi hasonlóságok vannak, mint szintaktikailag, mind lexikálisan, tehát viszonylag egyszerű az áttérés és
+                    váltás a két nyelv között.
+                </p>
+                <p class="text-lg font-normal pb-3">Végül, valamilyen adattal általában dolgozunk ahhoz, hogy valamit
+                    megjelenítsünk, tehát ez a negyedik elem, amely elengedhetetlen, leggyakrabban valamilyen statikus állományon
+                    keresztül, legyen az CSV vagy JSON, vagy dinamikusan valamilyen API-n keresztül jutassuk el a szerverhez egy
+                    adatbázisból.
+                </p>
+                <p class="text-lg font-normal pb-3">Említés szintjen megnézzük a Chrome DevTools-t is, amely elengedhetetlen része
+                    egy web-fejlesztő mindennapjainak, két fontos része van a HTML-CSS fokuszú Elements tab, és a JavaScript
+                    debug-ra használható Sources.
+                </p>
+                <p class="text-lg font-normal pb-3">Tehát, eddigieket összefoglalva, a modern adat-vizualizációs gyakorlat
+                    esetében létrehozzuk a tartalmunkat HTML-ben, valamilyen módon elhelyezzük és formázzuk CSS-ben, majd a
+                    lényeges dolgok JavaScript-en belül dőlnek el, amikoris létrehozzuk az interaktív elemeket, menüket, stb.
+                    Számos mód van arra, hogy vizuális tartalmat hozzuk létre, a modern böngészők leggyakoribb választásai közé
+                    tartoznak az SVG-k, a canvas kontextusok, de akár a CSS is alkalmas animációk, grafikus primitívek
+                    létrehozására. A D3 könyvtár az SVG-kre alapszik, amennyiben a vizualizációd nem tartalmaz több ezer elemet,
+                    addig az SVG egy teljesen valid megoldás. A canvas kontextus ezzel szemben, akkor hasznos amennyiben nem csak
+                    grafikus primitíveket, hanem valami komplexebbet szeretnél létrehozni, mint körök és vonalak, hanem akár JPG
+                    és PNG képek beillesztését szeretnéd. A canvas jobban kezeli az olyan helyzeteket, amikoris sok együttesen
+                    mozgó elemed van.
+                </p>
+                <p class="text-lg font-normal">Kitérve, az SVG-kre, minden svg létrehozása az &#60;svg> gyökértag-el indul, minden
+                    grafikus elem, mind a körök vagy vonalak, és a csoportok (groups) a DOM fa ezen ágában kerül létrehozásra. Az
+                    alábbi kis példa szemléltet egy SVG kontextust:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    svg#chart {
+        background: lightgray;
+    }
+&#60;/style>
+
+&#60;svg id="chart" width="300" height="225">
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: lightgray;
+                        }
+                    </style>
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                    </svg>
+                </div>
+                <p class="text-lg font-normal pb-3">Képesek vagyunk formákat csoportosítani a &#60;g> tag segítségével, azon
+                    formák, amelyeket így csoportosítottunk kollektíven módosítgathatók, beleértve pozíciójuk megváltoztatását,
+                    skálázásukat, stb.
+                </p>
+                <p class="text-lg font-normal">Általánosságban elmondva, az SVG vizualizációk alapja, bármiféle egyszerű
+                    vizualizációnál, vagy annál komplexebbnél is, nem bonyolultabb, mint grafikus primitíveket egymásra dobálni.
+                    Minden egyes primitív egy külön DOM tag lesz, amit frissíteni fogunk, ahogy változik. Például, az x és y
+                    attribútumok változni fognak, hogy tűkrözzenek bármiféle mozgást az svg-n, vagy csoporton belül:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;svg id="chart" width="300" height="225">
+    &#60;circle r="15" cx="100" cy="50">&#60;/circle>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: lightgray;
+                        }
+                    </style>
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                        <circle r="15"
+                            cx="100"
+                            cy="50"></circle>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal">Fontos megfigyelni azt, hogy a fenti pozíció attribútumok a #chart-hoz relatívek,
+                    tehát, az y 50 pixellel tólja el lefelé a #chart bal felső sarkától számítva, majd az x jobbra tólja el 100
+                    pixelnyit. Végül, az r attribútum a kör sugarát állítja be természetesen. Azután kicsit akár formázhatjuk is,
+                    például zöld színt adva neki:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="css">&#60;style>
+    svg#chart {
+        background: lightgray;
+    }
+
+    #chart circle {
+        fill: lightgreen;
+    }
+&#60;/style></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: lightgray;
+                        }
+
+                        #chart circle {
+                            fill: lightgreen;
+                        }
+                    </style>
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                        <circle r="15"
+                            cx="100"
+                            cy="50"></circle>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal">A modern böngészők esetében a legtöbb vizuális SVG stílust CSS segítségével
+                    állítsuk be, beleértve az <em>fill</em>-t, <em>stroke</em>-t, <em>stroke-width</em>-t, vagy akár
+                    <em>opacity</em>-t. Szóval, ha ezt szeretnénk, hogy adjunk hozzá egy félig átlátszó, vastag és kék-szinű
+                    vonalat, amely a kör közepén ér véget, a következő CSS-t és HTML-t kellene írnunk:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    svg#chart {
+        background: lightgray;
+    }
+
+    #chart circle {
+        fill: lightgreen;
+    }
+
+    #chart line#total {
+        stroke: blue;
+        stroke-width: 3px;
+        opacity: 0.5;
+    }
+&#60;/style>
+
+&#60;svg id="chart" width="300" height="225">
+    &#60;circle r="15" cx="100" cy="50">&#60;/circle>
+    &#60;line id="total" x1="50" x2="100" y1="50" y2="50">&#60;/line>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: lightgray;
+                        }
+
+                        #chart circle {
+                            fill: lightgreen;
+                        }
+
+                        #chart line#total {
+                            stroke: blue;
+                            stroke-width: 3px;
+                            opacity: 0.5;
+                        }
+                    </style>
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                        <circle r="15"
+                            cx="100"
+                            cy="50"></circle>
+                        <line id="total"
+                            x1="50"
+                            x2="100"
+                            y1="50"
+                            y2="50"></line>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal">Már láthattunk köröket és vonalakat SVG segítségével, próbáljunk meg egy két
+                    tengelyes rendszert összehozni SVG-ben:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    svg#chart {
+        background: #ccc;
+    }
+
+    line#x-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    line#y-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+&#60;/style>
+
+&#60;svg id="chart" width="300" height="225">
+    &#60;line id="x-axis" x1="50" x2="225" y1="150" y2="150">&#60;/line>
+    &#60;line id="y-axis" x1="50" x2="50" y1="50" y2="150">&#60;/line>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: #ccc;
+                        }
+
+                        line#x-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        line#y-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+                    </style>
+
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                        <line id="x-axis"
+                            x1="50"
+                            x2="225"
+                            y1="150"
+                            y2="150"></line>
+                        <line id="y-axis"
+                            x1="50"
+                            x2="50"
+                            y1="50"
+                            y2="150"></line>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal">Fontos megemlíteni később bonyodalmak elkerülése végett, hogy a line pozícióját
+                    (x1, x2), (y1, y2) koordinátánként helyezzük el. Aztán, nézzünk meg egy újabb elemet, kiegészítve az előbbi
+                    példát, a rect-et:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    svg#chart {
+        background: #ccc;
+    }
+
+    line#x-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    line#y-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    rect#legend {
+        fill: #fff;
+        stroke: #000;
+        stroke-width: 1px;
+    }
+&#60;/style>
+
+&#60;svg id="chart" width="300" height="225">
+    &#60;line id="x-axis" x1="50" x2="225" y1="150" y2="150">&#60;/line>
+    &#60;line id="y-axis" x1="50" x2="50" y1="50" y2="150">&#60;/line>
+    &#60;rect id="legend" x="200" y="25" width="55" height="30">&#60;/rect>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: #ccc;
+                        }
+
+                        line#x-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        line#y-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        rect#legend {
+                            fill: #fff;
+                            stroke: #000;
+                            stroke-width: 1px;
+                        }
+                    </style>
+
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                        <line id="x-axis"
+                            x1="50"
+                            x2="225"
+                            y1="150"
+                            y2="150"></line>
+                        <line id="y-axis"
+                            x1="50"
+                            x2="50"
+                            y1="50"
+                            y2="150"></line>
+                        <rect id="legend"
+                            x="200"
+                            y="25"
+                            width="55"
+                            height="30"></rect>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal">Miután már mindenféle grafikus primitívet hozzáadtunk az ábránkhoz, nézzük meg
+                    hogyan lehet kiegészíteni akár szöveggel is. Az egyik nagy előnye az SVG-knek, a canvas-al szemben, a szövegek
+                    kezelésében rejlik. A vector-alapú szövegek általában tisztábbak és a skálázást is jobban kezelik. A
+                    <em>&#60;text></em> tag-el tudunk szöveget hozzáadni egy SVG-hez. Elhelyezzük a szöveget az (x, y) koordináták
+                    segítségével, az egyik nagyon fontos tulajdonsága a text-nek a <em>text-anchor</em>, amely azt határozza meg,
+                    hogy az x koordinátához relatíven hogyan helyezi el a szöveget, három opció van: start, middle, end. A start
+                    az alapértelmezett. Az alábbi kódrészlet ezt mutatja be:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    svg#chart {
+        background: #ccc;
+    }
+
+    line#x-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    line#y-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    rect#legend {
+        fill: #fff;
+        stroke: #000;
+        stroke-width: 1px;
+    }
+&#60;/style>
+
+&#60;svg id="chart" width="300" height="225">
+    &#60;line id="x-axis" x1="50" x2="225" y1="150" y2="150">&#60;/line>
+    &#60;line id="y-axis" x1="50" x2="50" y1="50" y2="150">&#60;/line>
+    &#60;rect id="legend" x="200" y="40" width="55" height="30">&#60;/rect>
+    &#60;text id="title" text-anchor="middle" x="150" y="20">Dummy chart&#60;/text>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: #ccc;
+                        }
+
+                        line#x-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        line#y-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        rect#legend {
+                            fill: #fff;
+                            stroke: #000;
+                            stroke-width: 1px;
+                        }
+                    </style>
+
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                        <line id="x-axis"
+                            x1="50"
+                            x2="225"
+                            y1="150"
+                            y2="150"></line>
+                        <line id="y-axis"
+                            x1="50"
+                            x2="50"
+                            y1="50"
+                            y2="150"></line>
+                        <rect id="legend"
+                            x="200"
+                            y="40"
+                            width="55"
+                            height="30"></rect>
+                        <text id="title"
+                            text-anchor="middle"
+                            x="150"
+                            y="20">Dummy chart</text>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal">A text-el is úgy tudunk dolgozni, mint bármely grafikus primitívvel. Az alábbi
+                    példa esetén elnevezzük a tengelyeket:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    svg#chart {
+        background: #ccc;
+    }
+
+    line#x-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    line#y-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    rect#legend {
+        fill: #fff;
+        stroke: #000;
+        stroke-width: 1px;
+    }
+&#60;/style>
+
+&#60;svg id="chart" width="300" height="225">
+    &#60;line id="x-axis" x1="50" x2="225" y1="150" y2="150">&#60;/line>
+    &#60;line id="y-axis" x1="50" x2="50" y1="50" y2="150">&#60;/line>
+    &#60;rect id="legend" x="200" y="40" width="55" height="30">&#60;/rect>
+    &#60;text id="title" text-anchor="middle" x="150" y="20">Dummy chart&#60;/text>
+    &#60;text id="y-name" x="-80" y="40" text-anchor="middle" transform="rotate(-90, 0, 0)">y-axis&#60;/text>
+    &#60;text id="x-name" x="200" y="170" text-anchor="middle">x-axis&#60;/text>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: #ccc;
+                        }
+
+                        line#x-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        line#y-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        rect#legend {
+                            fill: #fff;
+                            stroke: #000;
+                            stroke-width: 1px;
+                        }
+                    </style>
+
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                        <line id="x-axis"
+                            x1="50"
+                            x2="225"
+                            y1="150"
+                            y2="150"></line>
+                        <line id="y-axis"
+                            x1="50"
+                            x2="50"
+                            y1="50"
+                            y2="150"></line>
+                        <rect id="legend"
+                            x="200"
+                            y="40"
+                            width="55"
+                            height="30"></rect>
+                        <text id="title"
+                            text-anchor="middle"
+                            x="150"
+                            y="20">Dummy chart</text>
+                        <text id="y-name"
+                            x="-80"
+                            y="40"
+                            text-anchor="middle"
+                            transform="rotate(-90, 0, 0)">y-axis</text>
+                        <text id="x-name"
+                            x="200"
+                            y="170"
+                            text-anchor="middle">x-axis</text>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal">Végül, a path-ek számítanak a legfontosabb, leghasznosabb, ugyanakkor viszonylag
+                    bonyolult SVG elemeknek. A path-ek felhasználásával lényegében olyan formát tudsz létrehozni, amilyent csak
+                    akarsz: akár többsoros, többgörbülettel rendelkező komponenseket is, amelyeket feltölthetsz színekkel,
+                    bezárhatod őket, stb. Ezt szemlélteti a következő kódrészlet is:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    svg#chart {
+        background: #ccc;
+    }
+
+    line#x-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    line#y-axis {
+        stroke: red;
+        stroke-width: 1px;
+    }
+
+    rect#legend {
+        fill: #fff;
+        stroke: #000;
+        stroke-width: 1px;
+    }
+
+    #chart path {
+        fill: none;
+        stroke: green;
+        stroke-width: 1px;
+    }
+&#60;/style>
+
+&#60;svg id="chart" width="300" height="225">
+    &#60;line id="x-axis" x1="50" x2="225" y1="150" y2="150">&#60;/line>
+    &#60;line id="y-axis" x1="50" x2="50" y1="50" y2="150">&#60;/line>
+    &#60;rect id="legend" x="200" y="40" width="55" height="30">&#60;/rect>
+    &#60;text id="title" text-anchor="middle" x="150" y="20">Dummy chart&#60;/text>
+    &#60;text id="y-name" x="-80" y="40" text-anchor="middle" transform="rotate(-90, 0, 0)">y-axis&#60;/text>
+    &#60;text id="x-name" x="200" y="170" text-anchor="middle">x-axis&#60;/text>
+    &#60;path d="M50 150L80 80L120 100L160 45">&#60;/path>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        svg#chart {
+                            background: #ccc;
+                        }
+
+                        line#x-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        line#y-axis {
+                            stroke: red;
+                            stroke-width: 1px;
+                        }
+
+                        rect#legend {
+                            fill: #fff;
+                            stroke: #000;
+                            stroke-width: 1px;
+                        }
+
+                        #chart path {
+                            fill: none;
+                            stroke: green;
+                            stroke-width: 1px;
+                        }
+                    </style>
+
+                    <svg class="mx-auto"
+                        id="chart"
+                        width="300"
+                        height="225">
+                        <line id="x-axis"
+                            x1="50"
+                            x2="225"
+                            y1="150"
+                            y2="150"></line>
+                        <line id="y-axis"
+                            x1="50"
+                            x2="50"
+                            y1="50"
+                            y2="150"></line>
+                        <rect id="legend"
+                            x="200"
+                            y="40"
+                            width="55"
+                            height="30"></rect>
+                        <text id="title"
+                            text-anchor="middle"
+                            x="150"
+                            y="20">Dummy chart</text>
+                        <text id="y-name"
+                            x="-80"
+                            y="40"
+                            text-anchor="middle"
+                            transform="rotate(-90, 0, 0)">y-axis</text>
+                        <text id="x-name"
+                            x="200"
+                            y="170"
+                            text-anchor="middle">x-axis</text>
+                        <path d="M50 150L80 80L120 100L160 45"></path>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal">Bármely SVG elemet képesek vagyunk transzformálni mértani műveletekkel. A
+                    leggyakrabban használt műveletek közé tartoznak: rotate, translate, scale, vagy akár a skewX és skewY, illetve
+                    a matrix is. Tekintsük meg a következő kódrészletet:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;svg id="ex" witdh="300" height="225" style="background: lightgray">
+    &#60;rect width="20" height="40" transform="translate(60, 120)">&#60;/rect>
+    &#60;rect width="20" height="40" transform="translate(120, 120), rotate(45)">&#60;/rect>
+    &#60;rect width="20" height="40" transform="translate(180, 120), scale(0.5)">&#60;/rect>
+    &#60;rect width="20" height="40" transform="translate(240, 120), scale(0.5), rotate(45)">&#60;/rect>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <svg class="mx-auto"
+                        id="ex"
+                        witdh="300"
+                        height="225"
+                        style="background: lightgray">
+                        <rect width="20"
+                            height="40"
+                            transform="translate(60, 120)"></rect>
+                        <rect width="20"
+                            height="40"
+                            transform="translate(120, 120), rotate(45)"></rect>
+                        <rect width="20"
+                            height="40"
+                            transform="translate(180, 120), scale(0.5)"></rect>
+                        <rect width="20"
+                            height="40"
+                            transform="translate(240, 120), scale(0.5), rotate(45)"></rect>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal pb-3">A fenti példa esetén érdekes megfigyelésem az, hogy jelen esetben szükséges a
+                    translate használata, és az általi pozíciónálása az elemnek, mert ha nem, akkor érdekesen máshova fogja azt
+                    helyezni. Az én logikám szerint, nagyban számít a sorrend a transform esetén, és ha nem translate függvénnyel
+                    pozícionálom az elemet, akkor a pozícionálás utoljára kerül végrehajtásra és már a fordított szögből mozgatja
+                    az elemet, elmozdítva arról a koordinátáról, ahová én szerettem volna azt helyezni.
+                </p>
+                <p class="text-lg font-normal pb-3">Gyakran amikor egy vizualizációt próbálsz felépíteni hasznos az, ha valamilyen
+                    módon csoportosítani tudod az elemeket. Akár amikor ikon-szöveg párosokról beszélhetünk, ez által a szöveget
+                    az ikon-hoz relatíven tudod pozíciónálni és nem a teljes SVG kontextushoz. Vagy akár mikor egy csoportnyi
+                    elemet szeretnél együttesen skálázni vagy forgatni.
+                </p>
+                <p class="text-lg font-normal">Ennek megvalósításához az SVG rendelkezik egy &#60;g> tag-el, amit úgy lehet
+                    elképzelni, mint egy mini-kontextust az egész SVG kontextuson belül. Ugyanakkor, csoportok magukon belül újabb
+                    csoportokat is tartalmazhatnak, így lényegében a végtelenségig "szintezhető" egy SVG kontextus. Nézzük meg az
+                    alábbi kódrészletet:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;svg id="ex" witdh="300" height="225" style="background: lightgray">
+    &#60;g id="shapes" transform="translate(120, 65)">
+        &#60;circle cx="50" cy="0" r="25" fill="red">&#60;/circle>
+        &#60;rect x="30" y="10" width="40" height="20" fill="blue">&#60;/rect>
+        &#60;path d="M-20 -10L50 -10L10 60Z" fill="green">&#60;/path>
+        &#60;circle r="10" fill="yellow">&#60;/circle>
+    &#60;/g>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <svg class="mx-auto"
+                        id="ex"
+                        witdh="300"
+                        height="225"
+                        style="background: lightgray">
+                        <g id="shapes"
+                            transform="translate(120, 65)">
+                            <circle cx="50"
+                                cy="0"
+                                r="25"
+                                fill="red"></circle>
+                            <rect x="30"
+                                y="10"
+                                width="40"
+                                height="20"
+                                fill="blue"></rect>
+                            <path d="M-20 -10L50 -10L10 60Z"
+                                fill="green"></path>
+                            <circle r="10"
+                                fill="yellow"></circle>
+                        </g>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal pb-3">Tehát, csoportosítva az elemeket együttesen voltunk képesek azokat mozgatni a
+                    translate függvény használatával.
+                </p>
+                <p class="text-lg font-normal">Az a sorrend ahogyan az elemek az SVG kontextuson belül deklarálva vannak igencsak
+                    fontos, hiszen a később deklarált elemek a hamarabb deklarált elemeket akár el is takarhatják, amennyiben
+                    ugyanazon a pozíción helyezkednek el. A DOM sorrend megváltoztatása fontos része egy JavaScript
+                    adat-megjelenítésnek, például a D3 könyvtár rendelkezik egy insert metódussal, amely segítségével
+                    beileszthetünk egy SVG elemet egy már létező elem elé. Ugyanakkor, egy elem átláthatósága is szabadszellemmel
+                    állítgatható, vagy az rgba() függvény alpha csatornájával, vagy akár az opacity tulajdonsággal. A következő
+                    kódrészlet mindkét jelenséget szemlélteti:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    #shapes2 circle {
+        opacity: 0.5;
+    }
+&#60;/style>
+
+&#60;svg id="ex" witdh="300" height="225" style="background: lightgray">
+    &#60;g id="shapes2" transform="translate(150, 112)">
+        &#60;circle cx="0" cy="-20" r="30" fill="red">&#60;/circle>
+        &#60;circle cx="17.3" cy="10" r="30" fill="green">&#60;/circle>
+        &#60;circle cx="-17.3" cy="10" r="30" fill="blue">&#60;/circle>
+    &#60;/g>
+&#60;/svg></code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="my-4">
+                    <style>
+                        #shapes2 circle {
+                            opacity: 0.5;
+                        }
+                    </style>
+
+                    <svg class="mx-auto"
+                        id="ex"
+                        witdh="300"
+                        height="225"
+                        style="background: lightgray">
+                        <g id="shapes2"
+                            transform="translate(150, 112)">
+                            <circle cx="0"
+                                cy="-20"
+                                r="30"
+                                fill="red"></circle>
+                            <circle cx="17.3"
+                                cy="10"
+                                r="30"
+                                fill="green"></circle>
+                            <circle cx="-17.3"
+                                cy="10"
+                                r="30"
+                                fill="blue"></circle>
+                        </g>
+                    </svg>
+                </div>
+                <p class="text-lg font-normal pb-3">Fontos megjegyezni azt, hogy a fenti példák esetében ún. 'hardcode-oltuk' az
+                    SVG
+                    elemeket a HTML fájlba, a gyakorlati adat-vizualizáció során valójában az esetek legnagyobb többségében D3
+                    könyvtáron keresztül fogjuk ezt megtenni, adatfájlokat használva, hogy meghatározzuk az attribútumjaikat és
+                    tulajdonságaikat, ahogy azt korábban is tettük.
+                </p>
+                <p class="text-lg font-normal">Az a tény, hogy az SVG grafikus primítivek hagyományos DOM tag-ekként működnek
+                    számos előnyt jelent az SVG-nek a canvas-el szemben: könnyebb nem programozóknak létrehozni azokat és a
+                    debuggolás is nagyban leegyszerűsödik. Mint mondtam, adat-vizualizációkor majdnem az összes SVG elemed
+                    JavaScript-ből lesz létrehozva, majd a megszokott módon Chrome DevTools-ból meg is tudjuk figyelni a script
+                    által generált elemeket. Ebben a részben még nem fogunk neki, hogy megismerjük a D3 komplex működését, azonban
+                    mégis használjuk egy percre, amit a következő kódrészlet szemléltet:
+                </p>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="html">&#60;style>
+    #ex3 circle {
+        fill: red;
+    }
+&#60;/style>
+
+&#60;svg id="ex3" witdh="300" height="225" style="background: lightgray">
+&#60;/svg></code></pre>
+                <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
+                    text-gray-200"><code class="javascript">let exCircles = function(data) {
+    let ex = d3.select('#ex3');
+
+    // beállítjuk az SVG kontextus magasságát és szélességét a paraméterből
+    ex.attr('height', data.height).attr('width', data.width);
+
+    // létrehozunk néhány kört a paramétert felhasználva
+    ex.selectAll('circle').data(data.circles)
+        .enter()
+        .append('circle')
+        .attr('cx', function(d) { return d.x })
+        .attr('cy', function(d) { return d.y })
+        .attr('r', function(d) { return d.r })
+};
+
+let data = {
+    width: 300, height: 225,
+    circles: [
+        {'x': 50, 'y': 30, 'r': 20},
+        {'x': 70, 'y': 80, 'r': 10},
+        {'x': 160, 'y': 60, 'r': 10},
+        {'x': 200, 'y': 100, 'r': 5},
+    ]
+};
+
+exCircles(data);</code></pre>
+                <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
+                </p>
+                <div class="mt-4">
+                    <style>
+                        #ex3 circle {
+                            fill: red;
+                        }
+                    </style>
+
+                    <svg class="mx-auto"
+                        id="ex3"
+                        witdh="300"
+                        height="225"
+                        style="background: lightgray">
+                    </svg>
+                </div>
+            </section>
+
+            <!-- második része vége -->
+
+            <div class="my-8 flex">
+                <button class="flex-auto w-24 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in"><a
+                        class="block px-4 py-2"
+                        href="../index.html">&larr;
+                        Előző</a></button>
+                <button
+                    class="flex-auto w-24 ml-4 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in"><a
+                        class="block px-4 py-2"
+                        href="3.html">Következő
+                        &rarr;</a></button>
+            </div>
+
+        </main>
+
+
+        <!--
+        <script src="node_modules/d3/dist/d3.min.js"></script>
+        <script src="node_modules/underscore/underscore-min.js"></script> 
+        -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
+        <script>
+            hljs.initHighlightingOnLoad();
+        </script>
+        <script src="../javascript/main.js"></script>
+        <script src="../javascript/introd3.js"></script>
+    </body>
+
+</html>

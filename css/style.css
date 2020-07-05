@@ -44,13 +44,15 @@
 *::before {
   padding: 0;
   margin: 0;
-  box-sizing: inherit;
-  outline: none; }
+  box-sizing: inherit; }
+
+*::selection {
+  background: #6c94c5; }
 
 body {
-  /*font-family: 'FiraGo',
-    sans-serif;*/
-  font-family: 'Source Sans Pro', sans-serif; }
+  font-family: 'FiraGo', sans-serif;
+  /*font-family: 'Source Sans Pro',
+    sans-serif;*/ }
 
 html {
   font-size: 62.5%;
