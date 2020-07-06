@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap');
 
 @font-face {
     font-family: 'FiraGo';
@@ -49,7 +50,9 @@
     src:
         url('../fonts/FiraGO-Regular.latin.woff2') format('woff2');
     unicode-range: U+0000-007F, U+0080-00FF;
-}
+}*/
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital@0;1&family=IBM+Plex+Sans+Condensed:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&family=IBM+Plex+Serif:ital@0;1&display=swap');
 
 *,
 *::after,
@@ -57,6 +60,10 @@
     padding: 0;
     margin: 0;
     box-sizing: inherit;
+}
+
+*::-moz-selection {
+    background: #6c94c5;
 }
 
 *::selection {
@@ -70,11 +77,39 @@ body {
     /*font-family: 'Source Sans Pro',
     sans-serif;*/
 
-    font-family: 'Work Sans',
-    sans-serif;
+    /* font-family: 'Work Sans',
+    sans-serif;*/
+
+    /*font-family: 'Cabin',
+        sans-serif;*/
+
+    font-family: 'IBM Plex Sans',
+        sans-serif;
 }
 
 html {
     font-size: 62.5%;
     box-sizing: border-box;
+}
+
+code {
+    font-family: 'IBM Plex Mono',
+        monospace !important;
+}
+
+#arr {
+    bottom: 2rem;
+    right: 10%;
+    opacity: 0;
+    visibility: hidden;
+
+    @media only screen and (max-width: 1238px) {
+        right: 5%;
+    }
+}
+
+
+.show {
+    opacity: 100 !important;
+    visibility: visible !important;
 }
