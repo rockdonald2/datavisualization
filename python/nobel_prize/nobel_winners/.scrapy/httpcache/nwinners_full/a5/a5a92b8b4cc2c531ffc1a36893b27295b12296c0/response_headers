@@ -1,0 +1,19 @@
+Date: Tue, 07 Jul 2020 19:10:47 GMT
+Server: mw1353.eqiad.wmnet
+X-Content-Type-Options: nosniff
+P3P: CP="See https://www.wikidata.org/wiki/Special:CentralAutoLogin/P3P for more info."
+Vary: Accept-Encoding,X-Forwarded-Proto,Cookie,Authorization
+Expires: Tue, 07 Jul 2020 19:10:47 GMT
+Last-Modified: Tue, 07 Jul 2020 19:10:47 GMT
+Location: https://www.wikidata.org/wiki/Q208670
+Content-Type: text/html; charset=utf-8
+Age: 0
+X-Cache: cp3062 miss, cp3054 pass
+X-Cache-Status: pass
+Server-Timing: cache;desc="pass"
+Strict-Transport-Security: max-age=106384710; includeSubDomains; preload
+Set-Cookie: WMF-Last-Access=07-Jul-2020;Path=/;HttpOnly;secure;Expires=Sat, 08 Aug 2020 12:00:00 GMT
+Set-Cookie: WMF-Last-Access-Global=07-Jul-2020;Path=/;Domain=.wikidata.org;HttpOnly;secure;Expires=Sat, 08 Aug 2020 12:00:00 GMT
+Set-Cookie: GeoIP=MD:CU:Chisinau:47.01:28.86:v4; Path=/; secure; Domain=.wikidata.org
+X-Client-Ip: 178.17.168.164
+Cache-Control: private, s-maxage=0, max-age=0, must-revalidate

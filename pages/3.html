@@ -61,7 +61,8 @@
 
                 <section id="3python">
                     <h2 class="text-2xl pb-4 font-semibold text-gray-800">Szerezzük meg az adatot a netről Python-nal</h2>
-                    <p id="firstPar" class="text-lg font-normal pb-3">A könyv ennek a részében nekikezdünk a valódi adat-vizualizációs
+                    <p id="firstPar"
+                        class="text-lg font-normal pb-3">A könyv ennek a részében nekikezdünk a valódi adat-vizualizációs
                         folyamatnak
                         az
                         adatokkal megszerzésével.</p>
@@ -719,6 +720,640 @@ print(missing_nationality)</code></pre>
                         megtalálásához relatíve sok tesztre és próbálkozásra van szükségünk.
                     </p>
                 </section>
+
+                <section id="3scrapy">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">A komoly scrapelés Scrapy-vel</h2>
+                    <p class="text-lg font-normal pb-3">Ahogy egyre összetetebb scrapelési célokat tűzöl ki magad elé, úgy
+                        bonyolódik a folyamat, és egy idő után már sajnos a BeautifulSoup és reqeuests páros nem lesz elég
+                        ambícióid eléréséhez. Alapvetően, a legnagyobb problémát a szinkron lekérdezésekkel van, amikoris a dolgok
+                        nagyon könnyen lelassulhatnak, amennyiben a számuk megsokasodik. Tehát, olyan problémák jelentkeznek,
+                        amikre nem számítottál, és ilyenkor jó az, hogy léteznek olyan könyvtárak, amelyek sokoldalúbbak,
+                        robusztusabbak és képesek megoldani ezeket a problémákat önmagukban, erre jó a Scrapy.</p>
+                    <p class="text-lg font-normal pb-3">Miközben a BeautifulSoup nagyon hasznos kis eszköz gyors és 'dirty'
+                        scrapekhez, addig a Scrapy az a Python könyvtár, amely a legnagyobb adatokkal is könnyűszerrel elbánik.
+                        Minden dologgal úgy mond a dobozból rendelkezik, amit korábban is használtunk: beépített cache, lejárati
+                        idővel, aszinkron lekérdezések, User-Agent randomizálás, és még sok egyéb. Azonban, az egésznek ára is
+                        van, hiszen a Scrapy-t közel sem annyira egyszerű megtanulni, de a következő példákban mégis megpróbáljuk.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Az előző részben sikeresen kinyertünk egy olyan adatsort, amely
+                        tartalmazza a Nobel-győzteseket névvel, évvel és kategóriával. Aztán megpróbáltuk mindegyik nemzetiségét
+                        is lekérni, több-kevesebb sikerrel. A fejezetben fentebb helyezzük a lécet és megpróbáljuk a fenti adatok
+                        mellett olyanokat is megszerezni, mint: ország, születési és elhalálozási dátum, nem, születési és
+                        elhalálozási hely, stb. Legvégén pedig akár meg is próbálhatjuk megszerezni a győztesek képeit, ahol ez
+                        lehetséges, és egy kevés életrajzi adatot is, amelyeket majd később a vizualizáció során fogunk
+                        felhasználni:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig6.png"
+                            alt="Ábra 6">
+                        <figcaption class="text-center pt-3 pb-4 text-md">6. Ábra: Nobel-győztes oldal</figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Elkezdve, előszöris töltsük le magunknak a Scrapy-t, amely a
+                        szabványkönyvtárnak nem része, de pip-el könnyedén feltelepíthető:
+                    </p>
+                    <pre
+                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install scrapy</code></pre>
+                    <p class="text-lg font-normal">Miután sikeresen feltelepítettük a Scrapy-t, mostmár elérhetjük a scrapy
+                        parancsot. Ellentétben a legtöbb Python könyvtárral, a Scrapy-t úgy tervezték, hogy a parancssorból
+                        futhasson a scraping projekt kontextusán belül, meghatározva konfigurációs fájlokkal, 'scraping spiders',
+                        pipeline-okkal, stb. Hozzunk létre egy új projektet a Nobel-díjas scrapeünkhöz, a startproject opcióval.
+                        Alapvetően, ez az opció nem mást tesz, mint létrehoz egy projekt mappát, tehát előnyös, ha egy erre
+                        kialakított mappában futtatjuk le:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy startproject nobel_winners
+New Scrapy project 'nobel_winners', using template directory 'd:\github\misc\anaconda\lib\site-packages\scrapy\templates\project', created in:
+    D:\GitHub\datavisualization\python\nobel_prize\nobel_winners
+
+You can start your first spider with:
+    cd nobel_winners
+    scrapy genspider example example.com</code></pre>
+                    <p class="text-lg font-normal pb-3">Tehát, ahogy a fenti utasítás is hangoztatja, a nobel_winners mappába kell
+                        belépnünk ahhoz, hogy használhassuk a scrapy-t. A projekt mappában belül megfigyelhető, hogy egész szép
+                        struktúrát inicializált a scrapy, különböző fájlokkal. Emellett, létrehozott egy config állományt is, a
+                        mappán kívül 'scrapy.cfg' néven. Így, a nobel_winners almappa tehát tartalmazza a Python módult, amit
+                        __init__.py fájl jelöl, néhány skeleton fájllal és spiders mappával, amely majd a scrapereket fogja
+                        tartalmazni.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Visszatérve mégegyszer a korábbi nemzetiséges kudarcunkra, tehát nem
+                        sikerült
+                        minden Nobel-győztes nemzetiségét kinyerni az egyszerű megoldással, következetesség hiányából legfőképpen.
+                        Ugyanakkor, ahelyett, hogy indirekt módon szereznénk meg a nemzetiségi adatokat, egy kis Wikipédia
+                        keresgélés rámutat arra, hogy van más megoldás is. Van egy oldal, amely felsorolja a győzteseket
+                        országonként. Ebben az esetben azonban nem táblázatos formát választottak, hanem egy év szerinti csökkenő
+                        sorrendbe rendezett listában sorolták fel a győzteseket. A hagyományos megközelítéssel nehéz lenne ebből
+                        használható adatokat kinyerni, túlzottan rendezetlenül vannak elhelyezve az adatok, tehát önmagában az
+                        adat nincs megfelelően megszervezve. Azonban meglássuk majd, hogy néhány jól-megszervezett Scrapy lekérés
+                        csodákat képes művelni.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A következő ábra azt szemlélteti, hogy mi lesz a kezdő oldala az első
+                        spiderünknek, együtt azokkal a kulcs-elemekkel, amiket megcélzunk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig7.png"
+                            alt="Ábra 7">
+                        <figcaption class="text-center pt-3 pb-4 text-md">7. Ábra: Az első spiderünk kezdő oldala</figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Ahhoz, hogy megszerezzük a szükséges adatot segítségül hívva megintcsak a
+                        Chrome DevTools-t megkeressük azokat a HTML tag-eket, amelyek számunkra relevánsak az első spiderünkhöz, a
+                        fejléc címet, ami egy h2 tag, tartalmazza az országot, majd egy rendezett listán, ol-en, belül a győztesek
+                        lista elemenként, li-ben:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig8.png"
+                            alt="Ábra 8">
+                        <figcaption class="text-center pt-3 pb-4 text-md">8. Ábra: A szükséges HTML tagek</figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A Scrapy az lxml-hez hasonlóan Xpath-et használ ahhoz, hogy megcélozza a
+                        HTML tageket, az xpath már tudjuk, hogy egy szintaxis, amely a HTML dokumentum részeit képes elérni, néha
+                        meglehetőségen bonyolulttá tud válni, de szerencsére a Chrome DevTools-ból már korábban említett
+                        megoldással képesek vagyunk bármely HTML tag xpath elérését megszerezni. Nézzük meg mégegyszer, így néz ki
+                        egy HTML tag xpath-je:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="plaintext">//*[@id="mw-content-text"]/div/h3[1]
+
+# bontsuk darabokra
+# a //*[@id="mw-content-text"] kiválaszt egy bármilyen elemet, amely rendelkezik a megadott id-vel
+# a /div/h3 kiválasztja az említett elemen belüli div child elemet, majd azon belül a h3 child elemet
+# a [1] pedig az első ilyen elemet jelöli, érdekesség, itt nem 0 kezdésű indexek vannak, hanem 1-től kezdődőek</code></pre>
+                    <p class="text-lg font-normal">A megfelelő xpath target megtalálása kulcsfontosságú a sikeres scrapehez,
+                        és sok esetben magába foglal néhány próbálkozást. A Scrapy ezt a folyamatot nagyban megkönnyíti, hiszen
+                        biztosít egy parancssori shell-t, amely bevesz egy URL-t és létrehoz egy válasz-kontextust (response
+                        context), ahol kipróbálhatjuk az xpath-jeinket:
+                    </p>
+                    <pre
+                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy shell https://en.wikipedia.org/wiki/List_of_Nobel_laureates_by_country</code></pre>
+                    <p class="text-lg font-normal">Mostmár, hogy megvan a shell-ünk, kisérletezhetünk. Próbáljuk meg megszerezni
+                        az összes h2 taget az oldalról:
+                    </p>
+                    <pre
+                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [2]: h2s = response.xpath('//h2')</code></pre>
+                    <p class="text-lg font-normal">Tehát, ebben az esetben kaptunk egy listányi h2 elemet, amely az adott HTML
+                        oldalon megtalálható. Most válasszunk ki a listából egyet, mondjuk az elsőt, és a Shell 'code-complete' és
+                        'syntax-highlighting' adottságait kihasználva vizsgáljuk meg annak metódusait és tulajdonságait, ehhez
+                        elégséges beírni az adott változót, majd a . operátor beírása utána egyszerűen tab-ot nyomni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [5]: h2 = h2s[0]
+
+In [6]: h2.2020-07-07 12:00:56 [parso.python.diff] DEBUG: diff parser start
+2020-07-07 12:00:56 [parso.python.diff] DEBUG: line_lengths old: 1; new: 1
+2020-07-07 12:00:56 [parso.python.diff] DEBUG: -> code[replace] old[1:1] new[1:1]
+2020-07-07 12:00:56 [parso.python.diff] DEBUG: parse_part from 1 to 1 (to 0 in part parser)
+2020-07-07 12:00:56 [parso.python.diff] DEBUG: diff parser end
+In [7]: h2.
+            attrib               get()                re()                 remove()             root                 type
+            css()                getall()             re_first()           remove_namespaces()  selectorlist_cls     xpath()
+            extract()            namespaces           register_namespace() response             text
+In [6]: h2.extract()
+Out[6]: '&#60;h2 id="mw-toc-heading">Contents&#60;/h2>'</code></pre>
+                    <p class="text-lg font-normal">Gyakran fogjuk használni az extract metódust, amely segítségével elérhetjük a
+                        'nyers eredményét' egy xpath selectornak. Így megmutatja azt, hogy az elért első h2 tag, valójában a
+                        tartalomjegyzéket tartalmazza. Ugyanakkor, a valódi tartalom ami számunkra érdekes h3 tagekben van:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [16]: h3s = response.xpath('//h3')
+In [18]: len(h3s)
+Out[18]: 88</code></pre>
+                    <p class="text-lg font-normal">Ebből a megfigyelésünkből azt is képesek vagyunk kikövetkeztetni, hogy a
+                        fejlécek egy 'mw-headline' classal rendelkeznek, amely nagyban megkönnyíti az elemek szűrését. Próbáljuk
+                        ki egy xpath-en a text metódust, amellyel kinyerhetjük a szöveget egy 'mw-headline' classal rendelkező
+                        span-ből:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [20]: h3_arg = h3s[0]
+
+In [21]: country = h3_arg.xpath('span[@class="mw-headline"]/text()').extract()
+
+In [22]: country
+Out[22]: ['Argentina']</code></pre>
+                    <p class="text-lg font-normal pb-3">Megfigyelhettük, hogy az extract metódus visszatérít egy listányi
+                        találatot,
+                        ebben az esetben egyetlen stringet tartalmazó listát. Ez által megtudtuk azt, hogy ha végig iterálunk a
+                        h3s listán, akkor képesek vagyunk az országok nevét kinyerni.
+                    </p>
+                    <p class="text-lg font-normal">Feltételezve, hogy rendelkezünk az előző pontokban kinyert h3 fejlécekkel, most
+                        valamilyen módon megkellene szerezzük a rendezett listákat, amelyek az országnevek után vannak. Erre
+                        nagyszerűen használható az xpath <em>following-sibling</em> selectorja. Szerezzük is meg az első rendezett
+                        listát Argentína után:
+                    </p>
+                    <pre
+                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [23]: ol_arg = h3_arg.xpath('following-sibling::ol[1]')
+
+In [24]: ol_arg
+Out[24]: [&#60;Selector xpath='following-sibling::ol[1]' data='&#60;ol>&#60;li>&#60;a href="/wiki/C%C3%A9sar_Mil...'>]</code></pre>
+                    <p class="text-lg font-normal">A fenti esetben hiába mondható el az, hogy valójában egyetlen Selector van,
+                        mégis egy SelectorList-et térít vissza az xpath, ezt a problémát megoldhatjuk úgy, hogy közvetlenül
+                        kiválasztjuk már lekérdezéskor az első elemet:
+                    </p>
+                    <pre
+                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [25]: ol_arg = h3_arg.xpath('following-sibling::ol[1]')[0]
+
+In [26]: ol_arg
+Out[26]: [&#60;Selector xpath='following-sibling::ol[1]' data='&#60;ol>&#60;li>&#60;a href="/wiki/C%C3%A9sar_Mil...'>]</code></pre>
+                    <p class="text-lg font-normal">Megvan a listánk, mostmár meg is szerezhetjük a benne található lista elemeket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [27]: lis_arg = ol_arg.xpath('li')
+
+In [28]: lis_arg
+Out[28]:
+[&#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/C%C3%A9sar_Milstei...'>,
+ &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/Adolfo_P%C3%A9rez_...'>,
+ &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/Luis_Federico_Lelo...'>,
+ &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/Bernardo_Houssay" ...'>,
+ &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/Carlos_Saavedra_La...'>]</code></pre>
+                    <p class="text-lg font-normal">Vizsgáljuk meg az egyiket az extract metódussal. Elsőként, megszeretnénk
+                        szerezni a nyertes nevét és a lista elemben található szöveget:
+                    </p>
+                    <pre
+                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [29]: li = lis_arg[0]
+
+In [30]: li
+Out[30]: &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/C%C3%A9sar_Milstei...'>
+
+In [31]: li.extract()
+Out[31]: '&#60;li>&60;a href="/wiki/C%C3%A9sar_Milstein" title="César Milstein">César Milstein&#60;/a>*, Physiology or Medicine, 1984&#60;/li>'</code></pre>
+                    <p class="text-lg font-normal">A fenti részből kiderül, hogy a lista elemek egy mintát követnek szerkezetileg,
+                        a név egy anchor tag-en belül van, a győztes Wikipédia oldalára hivatkozva, majd vesszővel elválasztva
+                        található meg a kategória, illetőleg az év. Egy robusztus megoldás a győztes nevének scrapelésére, ha
+                        kiválasztjuk az említett anchor tageket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [32]: name = li.xpath('a//text()')[0].extract()
+
+In [33]: name
+Out[33]: 'César Milstein'</code></pre>
+                    <p class="text-lg font-normal">Gyakran hasznos lehet, ha képesek vagyunk egy valamilyen elemben található
+                        összes szöveget kinyerni egyidejűleg, kihagyva bármilyen HTML tag jelölést, csakis a valódi tartalmat,
+                        erre használható a <em>descendent-or-self</em>:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [34]: list_text = li.xpath('descendant-or-self::text()').extract()
+
+In [35]: list_text
+Out[35]: ['César Milstein', '*, Physiology or Medicine, 1984']</code></pre>
+                    <p class="text-lg font-normal pb-3">Megalkottuk az összes szükséges xpath-et a scrapelési targetjeinkhez, most
+                        foglaljuk bele őket egy Scrapy spiderbe.
+                    </p>
+                    <p class="text-lg font-normal">Ahogy azt korábban is láthattuk, a Scrapy xpath szelekciói visszatérítenek egy
+                        listányi selectort, amelyek ugyancsak rendelkeznek az említett xpath metódussal. Amikor használjuk az
+                        xpath metódust jobb, ha képben vagyunk a relatív és abszolút szelekciók közötti különbségekkel. Vegyük a
+                        Nobel-díjas oldalon található tartalomjegyzéket példaképpen, amely a következő struktúrával rendelkezik:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">&#60;div id='toc'... >
+ &#60;ul ... >
+    &#60;li ... >
+        &#60;a href='Argentina'> ... &#60;/a>
+    &#60;/li>
+    ...
+ &#60;/ul>
+&#60;/div></code></pre>
+                    <p class="text-lg font-normal">Alapvetően, képesek lennénk elérni a tartalomjegyzéket a következő xpath
+                        query-vel:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [36]: toc = response.xpath('//div[@id="toc"]')[0]
+
+In [37]: toc
+Out[37]: &#60;Selector xpath='//div[@id="toc"]' data='&#60;div id="toc" class="toc" role="navig...'></code></pre>
+                    <p class="text-lg font-normal">Ha megszeretnénk szerezni az összes ország &#60li> lista tagjét, abban az
+                        esetben használhatnánk egy relatív xpath-et a kiválasztott toc div-en. A következőképpen:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [46]: lis = toc.xpath('.//ul/li')
+
+In [47]: len(lis)
+Out[47]: 80</code></pre>
+                    <p class="text-lg font-normal">Gyakori hiba az, hogy nem-relatív xpath selectort használunk a jelenlegi
+                        kiválasztáson, amely a teljes dokumentumból választ ki elemeket és nem a jelenlegi kontextuson belül:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [51]: lis = toc.xpath('//ul/li')
+
+In [52]: len(lis)
+Out[52]: 240</code></pre>
+                    <p class="text-lg font-normal pb-3">Felfegyverkezve a szükséges xpath tudással, létre is hozhatjuk az első
+                        scraperünket, amelynek célja az lesz, hogy megszerezze nekünk az országneveket és illetőleg az
+                        országneveken belüli listából a teljes szöveget.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A Scrapy a scraperjeit spider-eknek hívja, amelynek mindegyike egy Python
+                        modul, amely a spiders mappában található, amit létrehozott a projekt indításakor. Mi az első ilyen
+                        modulunkat <em>nwinner_list_spider.py</em>-nak fogjuk hívni.
+                    </p>
+                    <p class="text-lg font-normal">A spiderek valójában subclassok, amelyek a scrapy.Spider classot bővítik
+                        ki, továbbá bármit helyezünk el a spiders mappába automatikusan érzékelve lesz a Scrapy által és
+                        elérhetővé lesz téve a scrapy paranccsal. A következő példa a leggyakoribb mintát fogja bemutatni, amelyre
+                        a legtöbb spider-edet alapozni fogod:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import scrapy
+import re
+
+class NWinnerItem(scrapy.Item):
+    county = scrapy.Field()
+    name = scrapy.Field()
+    link_text = scrapy.Field()
+
+class NWinnerSpider(scrapy.Spider):
+    """ Megszerzi az országneveket és a link texteket a Nobel-győzteseknek """
+
+    name = 'nwinners_list'
+
+    allowed_domains = ['en.wikipedia.org']
+    start_urls = ['https://en.wikipedia.org/wiki/List_of_Nobel_laureates_by_country']
+
+    def parse(self, response):
+        h3s = response.xpath('//h3')
+        # megszerezzük az összes &#60;h3>-at a weboldalon, a legtöbb ilyen az országneveket tartalmazza
+
+        for h3 in h3s:
+            country = h3.xpath('span[@class="mw-headline"]/text()').extract()
+            # ahol lehetséges, megszerzi a &#60;h3> elem azon child &#60;span>-jét, amely rendelkezik az mw-headline classal
+
+            if country:
+                winners = h3.xpath('following-sibling::ol[1]')
+                # megszerzi a h3-at követő rendezett listát, amely a nyerteseket tartalmazza
+
+                for w in winners.xpath('li'):
+                    # a listán végighaladva megszerzi a &#60;li>-ben található szöveget
+
+                    text = w.xpath('descendant-or-self::text()').extract()
+
+                    # majd téríti a találatokat, de yield segítségével, amely lehetőséget biztosít arra, 
+                    # hogy úm. szüneteltessük a függvényt és megőrzi állapotát ahová visszatérhet
+                    # a végrehajtás
+                    yield NWinnerItem(country = country[0], name=text[0], link_text = ' '.join(text))</code></pre>
+                    <p class="text-lg font-normal pb-3">A létrehozott parse metódus megkapja a Wikipédia oldalhoz intézett HTTP
+                        request
+                        válaszát, és Scrapy Itemeket yield-el, amelyek JSON objektumokká lesznek átalakítva és hozzáfűzve az
+                        output állományhoz.
+                    </p>
+                    <p class="text-lg font-normal">Hajtsuk is végre az első spider-ünket, hogy megfigyeljük valóban helyesen
+                        működik-e és megkapjuk-e a kívánt adatokat. Megtekinthetjük a rendelkezésre álló spider-eket a következő
+                        paranccsal:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy list
+nwinners_list</code></pre>
+                    <p class="text-lg font-normal">Ahogy az várható volt egyetlen spider-rel rendelkezünk <em>nwinners_list</em>
+                        néven. Ahhoz, hogy elkezdjük a scrapelést, használnunk kell a crawl parancsot és megjelöljük az output
+                        állományt, amely jelenesetben a nwinners.json lesz:
+                    </p>
+                    <pre
+                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy crawl nwinners_list -o nwinners.json</code></pre>
+                    <p class="text-lg font-normal pb-3">Kellemes esetben egy elég szép log-ot is társít a crawl parancs mellé a
+                        scrapy,
+                        amelyben úm. beszámol mindenről, amit ő tett, ebben az esetben azt is megmutatja, hogy mit sikerült
+                        megszerezni, de legfőképpen azt is, hogy hány Scrapy Itemet sikerült sikeresen megszereznie. Végül,
+                        megfigyelhető a crawl eredménye a megadott JSON állományban.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Miután elmondhatjuk azt, hogy a Scrapy sikeresen lescrapelte a kívánt
+                        adatokat,
+                        az országneveket, a győztes nevét és a lista elemben található minden szöveget, akár kissé finomíthatunk
+                        is rajta, hogy mindazon adatokat is egyúttal megszerezzük, amely a végső vizualizációnkhoz kellene.
+                    </p>
+                    <p class="text-lg font-normal">Előszöris, foglaljuk be mindazon mezőket, amelyre szükségünk lesz jelenesetben
+                        a scrapy.Item-be:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">class NWinnerItem(scrapy.Item):
+    name = scrapy.Field()
+    link = scrapy.Field()
+    year = scrapy.Field()
+    category = scrapy.Field()
+    country = scrapy.Field()
+    gender = scrapy.Field()
+    born_in = scrapy.Field()
+    date_of_birth = scrapy.Field()
+    date_of_death = scrapy.Field()
+    place_of_birth = scrapy.Field()
+    place_of_death = scrapy.Field()
+    text = scrapy.Field()</code></pre>
+                    <p class="text-lg font-normal">Ugyanakkor, az is jó ötlet lenne, ha leegyszerűsítenénk egy kicsit a kódot, az
+                        által, hogy létrehozunk egy <em>process_winner_li</em> nevű függvényt, amely feldolgozza a győztes
+                        linkjének szövegét. Alapvetően, egy link selectort és egy országnevet fogunk átadni neki és visszatérít
+                        egy dict-et, amely tartalmazza a kívánt adatokat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">class NWinnerItem(scrapy.Item):
+    name = scrapy.Field()
+    link = scrapy.Field()
+    year = scrapy.Field()
+    category = scrapy.Field()
+    country = scrapy.Field()
+    gender = scrapy.Field()
+    born_in = scrapy.Field()
+    date_of_birth = scrapy.Field()
+    date_of_death = scrapy.Field()
+    place_of_birth = scrapy.Field()
+    place_of_death = scrapy.Field()
+    text = scrapy.Field()
+
+class NWinnerSpider(scrapy.Spider):
+    """ Megszerzi a NWinnerItem-ben meghatározott adatokat """
+
+    name = 'nwinners_list'
+
+    allowed_domains = ['en.wikipedia.org']
+    start_urls = ['https://en.wikipedia.org/wiki/List_of_Nobel_laureates_by_country']
+
+    def parse(self, response):
+        h3s = response.xpath('//h3')
+
+        for h3 in h3s:
+            country = h3.xpath('span[@class="mw-headline"]/text()').extract()
+
+            if country:
+                winners = h3.xpath('following-sibling::ol[1]')
+
+                for w in winners.xpath('li'):
+                    wdata = process_winner_li(w, country[0])
+
+                    yield NWinnerItem(name = wdata['name'], link = wdata['link'], year = wdata['year'], category = wdata['category'], country = wdata['country'], born_in = wdata['born_in'], text = wdata['text'])
+
+BASE_URL = 'http://en.wikipedia.org'
+
+def process_winner_li(w, country=None):
+    """ Feldolgozza a győztes &#60;li> tagjét, hozzáadva a születési országot vagy nemzetiséget, ha lehetséges """
+
+    wdata = {}
+
+    # azért van szükség az egyenlőség jobb oldalán található részre, mert a href a következő alakot veszi fel a wiki-n: /wiki/...
+    # a xpath segítségével megkeressük azt az anchor taget, amely rendelkezik hivatkozási linkkel
+    wdata['link'] = BASE_URL + w.xpath('a/@href').extract()[0]
+
+    # kiveszi a teljes szöveget a &#60;li>-ből, majd a nevet kiválasztja ebből a sorból
+    text = ' '.join(w.xpath('descendant-or-self::text()').extract())
+    wdata['name'] = text.split(',')[0].strip()
+
+    # regExp, amely megtalál a stringben egy olyan match-et, amely 4 számból áll
+    year = re.findall('\d{4}', text)
+
+    if year:
+        wdata['year'] = int(year[0])
+    else:
+        wdata['year'] = 0
+        print('No year in ', text)
+
+    # regExp, amely kiválasztja a kategóriát
+    category = re.findall('Physics|Chemistry|Physiology or Medicine|Literature|Peace|Economics', text)
+
+    if category:
+        wdata['category'] = category
+    else:
+        wdata['category'] = ''
+        print('No category in ', text)
+
+    if country:
+        # a csillaggal jelölték azt a wiki-n, ha valaki az adott országban született, de más nemzetiségű
+        if text.find('*') != -1:
+            wdata['country'] = ''
+            wdata['born_in'] = country
+        else:
+            wdata['country'] = country
+            wdata['born_in'] = ''
+
+    # lementünk egy másolatot a szövegből, hogy akár később manuálisan is tudjunk az adatokon korrigálni
+    wdata['text'] = text
+    return wdata</code></pre>
+                    <p class="text-lg font-normal pb-3">Következő lépésben a <em>wdata</em>-ban visszatérített link mező lesz a
+                        fontos,
+                        hiszen azt fogjuk felhasználni a hiányzó adatok pótlására. A fő Wikipédia Nobel-díj győztesek listája
+                        megadta a legtöbb adatot, amelyre szükségünk volt, de még mindig a győztesek születési és elhalálozási
+                        dátumjai, valamint a nemük még hiányzik.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Tehát, a következőkben megvizsgáljuk azt, hogy az életrajzi Wikipédia
+                        oldalukról hogyan lehet kinyerni a kívánt és hiányos adatokat.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Korábban a Wikipédia rendelkezett egy <em>persondata</em> rejtett
+                        táblázattal, amely megbízható hozzáférést nyújtott olyan adatokhoz, mint például születési és elhalálozási
+                        hely, dátumok, stb. Ugyanakkor, ez a hasznos kis forrás mára már elavultá vált és nem alkalmazzák. A jó
+                        hír az, hogy ez annak a próbálkozásnak a része, hogy javítsák az életrajzi információk kategorizáltságán
+                        az által, hogy ennek dedikált teret hoznak létre a <em>Wikidata</em>-n, a Wikipédia központi strukturált
+                        központi adattárolóján.
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig9.png"
+                            alt="Ábra 9">
+                        <figcaption class="text-center pt-3 pb-4 text-md">9. Ábra: A rejtett persondata táblázat felépítése
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Minden Wikipédia oldal tartalmazza a releváns Wikidata oldalt is, az
+                        oldalsó menübarban.
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig10.png"
+                            alt="Ábra 10">
+                        <figcaption class="text-center pt-3 pb-4 text-md">10. Ábra: A Wikidata elérése
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Követve a fent ábrázolt linket az adataink nagy részét megtalálhatjuk, a
+                        jelentős dátumokat és helyeket, amelyekre szükségünk van. Alapvetően, a Wikidata oldal mezőket tartalmaz,
+                        minden mező egy számítógép-generált HTML, ezekhez kapcsolódó kódokkal, ezek hasznosak lehetnek a scrapelés
+                        során.
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig11.png"
+                            alt="Ábra 11">
+                        <figcaption class="text-center pt-3 pb-4 text-md">11. Ábra: A Wikidata felépítése
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Miután az oldalon megkerestük azt a mezőt, ami nekünk kell, a Chrome
+                        DevTools néhány klikk alatt képesek vagyunk annak xpath elérését megszerezni, hogy a Scrapy-ből könnyedén
+                        hivatkozhassunk rá.
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig12.png"
+                            alt="Ábra 12">
+                        <figcaption class="text-center pt-3 pb-4 text-md">12. Ábra: A Wikidata mező xpath-jének elérése
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Miután minden szükséges elérést megszereztünk a keresett adatunkhoz, nincs
+                        más hátra mind mindezt összeállítani és megvizsgálni azt, hogy hogyan kezeli a Scrapy a lánc-lekéréseket
+                        (chain requests), lehetővé téve komplex, többoldalas scrapelési lehetőségeket.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Megint csak felmerül az a probléma, hogy ha lehetséges, akkor valamilyen
+                        módon minimalizáljuk a hívásokat és lekéréseket a Wikipédia oldalhoz, miközben kisérletezünk az
+                        xpath-ekkel, tehát jó megközelítés, ha tároljuk az elért oldalakat. Szerencsére, ez a mi esetünkben nem
+                        kellene, hogy gondot okozzon, hiszen a Nobel-díjas adatsor mindössze évente egyszer frissítődik.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A hagyományos megközelítés esetében is foglalkoztunk már cache-el, akkor a
+                        requests pluginjával oldottuk meg, most a Scrapy kifinomult cachelési rendszerével fogunk dolgozni, amely
+                        segítségével finomhangolva és részletekre bontva vagyunk képesek pontosan meghatározni azt, hogy hogyan
+                        szeretnék cachelni, például adatbázis/fájlrendszeri tárolási lehetőségek-back-end-ek közötti választást
+                        tesz lehetővé, stb.
+                    </p>
+                    <p class="text-lg font-normal">Ugyanakkor, mielőtt használhatnánk azt a projektünk <em>settings.py</em>
+                        módulában engedélyezni kell azt. Számos beállítási lehetőség áll rendelkezésünkre, de jelenesetben az
+                        egyszerű példánkban elégséges lesz a <em>HTTPCACHE_ENABLED</em> igazra állítani:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="plaintext"># Enable and configure HTTP caching (disabled by default)
+# See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
+HTTPCACHE_ENABLED = True
+#HTTPCACHE_EXPIRATION_SECS = 0
+#HTTPCACHE_DIR = 'httpcache'
+#HTTPCACHE_IGNORE_HTTP_CODES = []
+#HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'</code></pre>
+                    <p class="text-lg font-normal">Nem ez az egyetlen middleware, amivel a Scrapy rendelkezik, a teljes lista itt
+                        megtekinthető: <a
+                            href="https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#downloader-middleware"
+                            class="group text-lg pb-8 text-gray-600
+                    hover:text-blue-800 opacity-75 hover:opacity-100 transition duration-100 ease-in">link <span class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100
+                    ease-in">↗</span></a> .
+                    </p>
+                    <p class="text-lg font-normal pb-3">A jelenlegi parser metódusunk, ami a Spiderünkben található felhasználja
+                        az
+                        általunk írt process_winners_li függvényt, hogy megszerezze az országadatokat, nevet, évet, kategóriát, és
+                        az életrajzi hyperlinket. Namármost, jelenleg az utóbb említett hyperlinket szeretnénk felhasználni arra,
+                        hogy Scrapy lekérdezéseket generáljunk, amely eléri az életrajzi oldalt, és ezt az elérést fogja átadni
+                        egy metódusnak scrapeléshez.
+                    </p>
+                    <p class="text-lg font-normal">A Scrapy Python-ra hajazó láncolási mintát tesz lehetővé, felhasználva a Python
+                        yield utasítását, hogy generátorokat hozzon létre, lehetővé téve a Scrapy-nek, hogy könnyen fogyasszon
+                        bármilyen további oldal lekérdezést, amit csak csinálunk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">class NWinnerSpider(scrapy.Spider):
+    name = 'nwinners_full'
+    allowed_domains = ['en.wikipedia.org']
+    start_urls = ['https://en.wikipedia.org/wiki/List_of_Nobel_laureates_by_country']
+
+    def parse(self, response):
+        filename = response.url.split('/')[-1]
+
+        # lekéri az összes h3 taget az oldalról
+        h3s = response.xpath('//h3')
+
+        # jelenleg csak az első 3 országot fogjuk megszerezni
+        for h3 in list(h3s)[:2]:
+            # megszerezzük az országot, és ki is bontjuk, megszerezve a teljes tartalmát
+            country = h3.xpath('span[@class="mw-headline"]/text()').extract()
+
+            # ha az országnak nincs valid tartalma, ne csináljon semmit
+            if country:
+                # megszerezzük a nyertesek listáját
+                winners = h3.xpath('following-sibling::ol[1]')
+
+                # a lista elemein végighaladva megszerezzük az adatokat
+                for w in winners.xpath('li'):
+                    # feldolgozzuk a lista elemet megszerezve az alapvető adatokat, amelyek a Nobel-díjas oldalról kinyerhetők
+                    wdata = process_winner_li(w, country[0])
+
+                    # a további, hiányzó adatokat request láncolással oldjuk meg
+                    # a request funkció egy request-et csinál a győztes Wikipédia oldalára, felhasználva a wdata-ban található hyperlinket
+                    # a callback függvényt állítsuk be a második argumentumban, amely az első argumentumra címezett request válaszát fogja megkapni majd feldolgozni
+                    request = scrapy.Request(wdata['link'], callback=self.parse_bio, dont_filter=True)
+
+                    # létrehozunk egy Scrapy Itemet, amely tartalmazni fogja a Nobel adatunkat
+                    # aztán ez az Item adat hozzárendelődik a request metaadatjához, hogy bármiféle válasz hozzáférést biztosítson
+                    request.meta['item'] = NWinnerItem(**wdata)
+
+                    # az által, hogy yield-eljük a request-et, a parse metódus egy generátorrá válik, amely felhasználható request-eket térít
+                    yield request</code></pre>
+                    <p class="text-lg font-normal pb-3">Korábban tehát megfigyeltük azt, hogy az életrajzi oldalon a Wikidata
+                        részt
+                        kell megtalálnunk, hiszen abban az adattárolóban minden számunkra releváns információ megtalálható. Tehát,
+                        megkell találnunk a linket és egy lekérdezést irányítani rá. Aztán már utána meg is szerezhetjük a hiányzó
+                        nemadatokat, helyeket és dátumokat.
+                    </p>
+                    <p class="text-lg font-normal">Erre két külön metódust fogunk írni, egy <em>parse_bio</em>-t, és egy
+                        <em>parse_wikidata</em>-t, az utóbbi a Wikidata linkjének megtaláláshoz fogjuk használni, az előbbit pedig
+                        a lekérdezés-láncolat végén a hiányzó mezők betöltésére:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">    # ez a metódus fogja kezelni a életrajzi oldalra címzett lekérdez call-backjét
+    def parse_bio(self, response):
+        # ahhoz, hogy hozzáadjuk a scrapelt adatunkat a Scrapy Itemhez, először lekérjük azt a response metaadatjából
+        item = response.meta['item']
+
+        # megkapja a linket az életrajzi oldal Wikidata oldalához
+        href = response.xpath('//li[@id="t-wikibase"]/a/@href').extract()
+
+        if href:
+            # felhasználja a Wikidata linket ahhoz, hogy generáljon egy lekérdezést a Spider-ünk parse_wikidata metódusával, mint callback függvény
+            request = scrapy.Request(href[0], callback=self.parse_wikidata, dont_filter=True)
+
+            request.meta['item'] = item
+
+            yield request
+
+    def parse_wikidata(self, response):
+        item = response.meta['item']
+
+        # a releváns adatok tartalmazó kódok, amik a Wikidata forrásából vannak, a nevük megegyezik a Scrapy Itemükben meghatározott nevekkel,
+        # azok amelyek link attribútummal is rendelkeznek linkként vannak meghatározva a wikin
+        property_codes = [
+            {'name':'date_of_birth', 'code':'P569'},
+            {'name':'date_of_death', 'code':'P570'},
+            {'name':'place_of_birth', 'code':'P19',
+            'link':True},
+            {'name':'place_of_death', 'code':'P20',
+            'link':True},
+            {'name':'gender', 'code':'P21', 'link':True}
+        ]
+
+        # ez a szépség a Chrome DevTools-ból való
+        p_template = '//*[@id="{code}"]/div[2]/div[1]/div/div[2]/div[2]/div[1]{link_html}/text()'
+
+        for prop in property_codes:
+            link_html = ''
+
+            if prop.get('link'):
+                link_html = '/a'
+
+            # kiegészítjük a fenti template selectorunkat a hiányos részekkel, a format függvényt használva
+            # hozzáadva a szükség /a-t amennyiben linkbe van ágyazva a Wikin a mező
+            sel = response.xpath(p_template.format(code=prop['code'], link_html=link_html))
+
+            if sel:
+                item[prop['name']] = sel[0].extract()
+
+        # végül yieldeljük az item-et, amely ezen a ponton már minden adatot tartalmaznia kellene a wiki-ről
+        yield item</code></pre>
+                    <p class="text-lg font-normal">Aztán nézzük meg megfelelően működik-e a scraper, amit írtunk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy crawl nwinners_full
+# Obey robots.txt rules
+# ROBOTSTXT_OBEY = False
+# a fenti settings.py módosítást eszközölni kellett, másképp nem működik a scrap, a crawl először letölti ezt a robots.txt-t, mielőtt megtörténne a scrape
+# ebben az esetben ez megakadályozza a lefutást</code></pre>
+                    <p class="text-lg font-normal">A log fájlból kiderül, hogy minden jól futott le. Mostmár tényleg minden
+                        adat rendelkezésünkre áll, ami alapvető adatot illet. Ugyanakkor, az alapvető adatokon túl szeretnénk akár
+                        képeket és életrajzi történeteket is, ahol az lehetséges.
+                    </p>
+                </section>
             </section>
 
             <!-- harmadik része vége -->
@@ -736,12 +1371,11 @@ print(missing_nationality)</code></pre>
                         <span
                             class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button>-->
             </div>
-
         </main>
 
         <div id="arr"
-            class="fixed hidden lg:block transition duration-100 ease-in"><a
-                class="inline-block text-3xl hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125"
+            class="fixed hidden lg:block transition duration-100 ease-in"><a class="inline-block text-3xl hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
+                opacity-50 hover:opacity-100"
                 href="#menu">&uarr;</a></div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
