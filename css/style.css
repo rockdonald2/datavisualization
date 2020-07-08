@@ -24,7 +24,7 @@ code {
   font-family: 'Fira Code', monospace !important; }
 
 #arr {
-  bottom: 2rem;
+  bottom: 5%;
   right: 10%;
   opacity: 0;
   visibility: hidden; }

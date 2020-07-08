@@ -1,0 +1,9 @@
+Date: Wed, 08 Jul 2020 10:29:46 GMT
+Server: Varnish
+X-Varnish: 269785616
+X-Cache: cp3055 int
+X-Cache-Status: int-front
+Server-Timing: cache;desc="int-front"
+Set-Cookie: WMF-Last-Access=08-Jul-2020;Path=/;HttpOnly;secure;Expires=Sun, 09 Aug 2020 00:00:00 GMT
+X-Client-Ip: 178.17.168.165
+Location: https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Adolfo_P%C3%A9rez_Esquivel%2C_premio_Nobel_de_la_Paz_en_1980%2C_Visit%C3%B3_al_Presidente_de_la_Asamblea_Nacional%2C_Fernando_Cordero._%285076794488%29.jpg/220px-Adolfo_P%C3%A9rez_Esquivel%2C_premio_Nobel_de_la_Paz_en_1980%2C_Visit%C3%B3_al_Presidente_de_la_Asamblea_Nacional%2C_Fernando_Cordero._%285076794488%29.jpg

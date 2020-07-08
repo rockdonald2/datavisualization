@@ -1,0 +1,17 @@
+Date: Tue, 07 Jul 2020 08:04:44 GMT
+Vary: Accept-Encoding,Cookie,Authorization
+Server: ATS/8.0.8
+X-Content-Type-Options: nosniff
+P3P: CP="See https://en.wikipedia.org/wiki/Special:CentralAutoLogin/P3P for more info."
+Content-Language: en
+Last-Modified: Mon, 06 Jul 2020 01:47:57 GMT
+Content-Type: text/html; charset=UTF-8
+Content-Encoding: gzip
+Age: 83383
+X-Cache: cp3058 miss, cp3058 hit/7
+X-Cache-Status: hit-front
+Server-Timing: cache;desc="hit-front"
+Strict-Transport-Security: max-age=106384710; includeSubDomains; preload
+X-Client-Ip: 178.17.168.165
+Cache-Control: private, s-maxage=0, max-age=0, must-revalidate
+Accept-Ranges: bytes

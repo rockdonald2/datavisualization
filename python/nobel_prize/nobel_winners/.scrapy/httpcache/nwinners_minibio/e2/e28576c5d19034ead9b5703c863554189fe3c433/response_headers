@@ -1,0 +1,9 @@
+Date: Wed, 08 Jul 2020 10:29:46 GMT
+Server: Varnish
+X-Varnish: 267723443
+X-Cache: cp3055 int
+X-Cache-Status: int-front
+Server-Timing: cache;desc="int-front"
+Set-Cookie: WMF-Last-Access=08-Jul-2020;Path=/;HttpOnly;secure;Expires=Sun, 09 Aug 2020 00:00:00 GMT
+X-Client-Ip: 178.17.168.165
+Location: https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Elizabeth_Blackburn_CHF_Heritage_Day_2012_Rush_001.JPG/250px-Elizabeth_Blackburn_CHF_Heritage_Day_2012_Rush_001.JPG

@@ -1,0 +1,16 @@
+Date: Wed, 08 Jul 2020 07:14:00 GMT
+Server: mw1265.eqiad.wmnet
+X-Content-Type-Options: nosniff
+P3P: CP="See https://www.wikidata.org/wiki/Special:CentralAutoLogin/P3P for more info."
+Vary: Accept-Encoding,X-Forwarded-Proto,Cookie,Authorization
+Expires: Wed, 08 Jul 2020 07:14:00 GMT
+Last-Modified: Wed, 08 Jul 2020 07:14:00 GMT
+Location: https://www.wikidata.org/wiki/Q188999
+Content-Type: text/html; charset=utf-8
+Age: 0
+X-Cache: cp3054 miss, cp3058 pass
+X-Cache-Status: pass
+Server-Timing: cache;desc="pass"
+Strict-Transport-Security: max-age=106384710; includeSubDomains; preload
+X-Client-Ip: 178.17.168.165
+Cache-Control: private, s-maxage=0, max-age=0, must-revalidate

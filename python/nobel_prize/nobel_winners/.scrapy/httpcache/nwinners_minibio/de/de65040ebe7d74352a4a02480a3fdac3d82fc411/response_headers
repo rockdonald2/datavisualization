@@ -1,0 +1,10 @@
+Date: Wed, 08 Jul 2020 09:39:27 GMT
+Server: Varnish
+X-Varnish: 844041632
+X-Cache: cp3062 int
+X-Cache-Status: int-front
+Server-Timing: cache;desc="int-front"
+Set-Cookie: WMF-Last-Access=08-Jul-2020;Path=/;HttpOnly;secure;Expires=Sun, 09 Aug 2020 00:00:00 GMT
+Set-Cookie: WMF-Last-Access-Global=08-Jul-2020;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Sun, 09 Aug 2020 00:00:00 GMT
+X-Client-Ip: 178.17.168.165
+Location: https://en.wikipedia.org/wiki/John_E._Sulston

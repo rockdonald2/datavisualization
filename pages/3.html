@@ -20,7 +20,7 @@
         <link rel="stylesheet"
             href="../css/compiled.css">
         <link rel="stylesheet"
-            href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/monokai-sublime.min.css">
+            href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/dracula.min.css">
         <link rel="stylesheet"
             href="../tools/pushy-1.3.0/css/pushy.css">
         <!-- Safari-n az emoji favicon nem működik -->
@@ -1228,7 +1228,8 @@ HTTPCACHE_ENABLED = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'</code></pre>
-                    <p class="text-lg font-normal pb-3">Nem ez az egyetlen middleware, amivel a Scrapy rendelkezik, a teljes lista itt
+                    <p class="text-lg font-normal pb-3">Nem ez az egyetlen middleware, amivel a Scrapy rendelkezik, a teljes lista
+                        itt
                         megtekinthető: <a
                             href="https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#downloader-middleware"
                             class="group text-lg pb-8 text-gray-600
@@ -1349,9 +1350,232 @@ HTTPCACHE_ENABLED = True
 # ROBOTSTXT_OBEY = False
 # a fenti settings.py módosítást eszközölni kellett, másképp nem működik a scrap, a crawl először letölti ezt a robots.txt-t, mielőtt megtörténne a scrape
 # ebben az esetben ez megakadályozza a lefutást</code></pre>
-                    <p class="text-lg font-normal">A log fájlból kiderül, hogy minden jól futott le. Mostmár tényleg minden
+                    <p class="text-lg font-normal pb-3">A log fájlból kiderül, hogy minden jól futott le. Mostmár tényleg minden
                         adat rendelkezésünkre áll, ami alapvető adatot illet. Ugyanakkor, az alapvető adatokon túl szeretnénk akár
                         képeket és életrajzi történeteket is, ahol az lehetséges.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Mind említettük kis személyiséget szeretnénk hozzáadni a végső
+                        projektünkhöz
+                        életrajzi történetekkel és képekkel. Szerencsére a Wikipédia életrajzi oldalak ezeket általában
+                        tartalmazzák, tehát jó kiindulás.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Az eddig scrapelt adataink mind stringek voltak, ahhoz, hogy képeket
+                        szerezzünk meg különböző formátumokban, használnunk kell a Scrapy <em>pipeline</em>-t. Általánosságban, a
+                        pipeline-ok lehetővé teszik, hogy utófeldolgozzuk a scrapelt elemeket és lényegében akárhányat
+                        létrehozhatsz belőlük. Képes vagy sajátot is írni vagy felhasználhatod azokat, amelyeket a Scrapy már
+                        alapértelmezetten rendelkezésedre bocsájt, mint például az <em>ImagesPipeline</em> amit most is fogunk
+                        használni.
+                    </p>
+                    <p class="text-lg font-normal">A legegyszerűbb formájában egy pipeline-nál csakis egy
+                        <em>process_item</em> metódust kell meghatározni. Ez fogja megkapni a scrapelt elemeket és a Spider
+                        objektumot. A következőkben létrehozunk egy olyan pipeline-t, amely elveti azokat a győzteseket a
+                        listából, amelyek egyesületek, mintsem személyek, így lerövidítve a listát, kihagyva a felesleges
+                        kereséseket. Ehhez a <em>pipelines.py</em> módulba a következőt írjuk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">from scrapy.exceptions import DropItem
+
+class DropNonPerson(object):
+    """ Törölje a nem-egyén győzteseket """
+
+    def process_item(self, item, spider):
+        if not item['gender']:
+            # abban az esetben, ha a scrapelt elemünkben nem található gender, abban az esetben egy egyesületről beszélhetünk
+            # mivel a végső vizualizációnk a személyekre összpontosít, ezért a DropItem-el elvetjük az elemet az output streamből
+            raise DropItem('A következő győztes nem személy: {}'.format(item['name']))
+
+        # muszáj visszatérítenünk az elemet a metódusból, további pipeline-ok miatt vagy akár azért, mert a Scrapy-nek lekell mentenie
+        return item</code></pre>
+                    <p class="text-lg font-normal">Végül, ahhoz, hogy hozzáadjuk a fent megírt pipeline-t a projektünk
+                        spider-jeihez, bekell azt jegyeznünk a settings.py-ban, a következőképpen:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">ITEM_PIPELINES = {
+    'nobel_winners.pipelines.DropNonPerson': 1, # az 1-essel aktíváljuk a pipeline-t
+}</code></pre>
+                    <p class="text-lg font-normal pb-3">Miután megismerkedtünk a pipeline-okkal, létrehozhatjuk azokat, amelyekkel
+                        tényleges dolgozni fogunk. A problémánk megoldásához előszöris, az életrajzi szöveget a már megszokott
+                        módon megszerezhetjük, de a képekkel jobb, ha az ImagePipeline foglalkozik.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Akár hozzáadhatnánk a fent említett scrapeket a már létező nwinners_full
+                        spiderünkhöz, de az már kezd egy kicsit zsúfolttá válni. Alapvetően, logikailag sem szembeütköző az, hogy
+                        a klasszikus formális kategóriáktól, a személyes adatokat szétválasszuk, tehát létrefogunk hozni egy új
+                        spider-t <em>nwinners_minibio</em> néven.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Ahogy megszokhattuk, az első dolgunk mindig az, hogy megkeressük azokat a
+                        cél elemeket, amelyekben az általunk kívánt adatok megtalálhatóak, tehát keressük azt a taget, amely
+                        tartalmazza az életrajzi szövegeket és a képet.
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig13.png"
+                            alt="Ábra 13">
+                        <figcaption class="text-center pt-3 pb-4 text-md">13. Ábra: Az életrajzi oldalak felépítése
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Megvizsgálva az oldal HTML felépítését elmondhatjuk azt, hogy a szöveges
+                        tartalom egy div tag-en belül található, amelynek az id-ja az 'mw-content-text', és a következő xpath-el
+                        érhetjük el: '//*[@id="mw-content-text"]'. Most gondot okozhat az, hogy hol kellene megállnunk a
+                        scrapeléssel. Korábban, a Wikipédia oldalakon azzal jelölték a bevezető végét, hogy egy üres paragrafust
+                        helyeztek el ott, ahogy azt a fenti ábra is bemutatja. Manapság ez már nem így van, kicsit bonyolódik a
+                        helyzet. Alapvetően, most sem túl
+                        bonyolúlt megtalálni a megállási pontot, a bevezető a tartalomjegyzék div előtt ér véget, tehát
+                        használhatjuk akár azt is.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Rátérve a képre, megfigyelhetjük azt, hogy a kép egy táblázatban van,
+                        amelynek
+                        a következő xpath elérése létezik: '//*[@id="mw-content-text"]/div/table[1]'. Szerencsénkre, az egyedüli
+                        img tag, ami ezen a táblázaton belül van az általunk keresett kép a győztesről. Így a kép hivatkozásának
+                        elérésének
+                        xpath-je: '//*[@id="mw-content-text"]/div/table[1]/tbody/tr[2]/td/a/img/@src'.
+                    </p>
+                    <p class="text-lg font-normal">Ahogy azt korábban is tettük az első spiderünknél, a folyamatot azzal
+                        kezdjük, hogy létrehozzuk a Scrapy Itemet, amely az adatokat fogja tárolni. Előszöris, lescrapeljük a
+                        bio-linket, és a nevét a győztesnek, majd ezeket használhatjuk azononosítókként a képhez és a szöveghez.
+                        Szükségünk van egy további változóra is, hogy tároljuk az kép-linkeket (ebben az esetben csak egy kép
+                        lesz, de jobb ezzel is megismerkedni), az eredményül kapott kép-hivatkozásokat, végül egy bio_image mezőre
+                        is, hogy tárolja az érdekelt képet:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import scrapy
+import re
+
+BASE_URL = 'http://en.wikipedia.org'
+
+class NWinnerItemBio(scrapy.Item):
+    link = scrapy.Field()
+    name = scrapy.Field()
+    mini_bio = scrapy.Field()
+    image_urls = scrapy.Field()
+    bio_image = scrapy.Field()
+    images = scrapy.Field()
+
+class NWinnerSpiderBio(scrapy.Spider):
+    name = 'nwinners_minibio'
+    allowed_domains = ['en.wikipedia.org']
+    start_urls = ['https://en.wikipedia.org/wiki/List_of_Nobel_laureates_by_country']
+
+    def parse(self, response):
+        filename = response.url.split('/')[-1]
+        h3s = response.xpath('//h3')
+
+        for h3 in h3s:
+            country = h3.xpath('//span[@class="mw-headline"]/text()').extract()
+
+            if country:
+                winners = h3.xpath('following-sibling::ol[1]')
+
+                for w in winners.xpath('li'):
+                    wdata = {}
+
+                    wdata['link'] = BASE_URL + w.xpath('a/@href').extract()[0]
+
+                    request = scrapy.Request(wdata['link'], callback=self.get_mini_bio)
+
+                    request.meta['item'] = NWinnerItemBio(**wdata)
+
+                    yield request
+
+    def get_mini_bio(self, response):
+        """ Lekéri a győztes életrajzi-szövegét és képét """
+
+        BASE_URL_ESCAPED = 'http:\/\/en.wikipedia.org'
+
+        item = response.meta['item']
+
+        item['image_urls'] = []
+
+        img_src = response.xpath('//*[@id="mw-content-text"]/div/table[1]/tbody/tr[2]/td/a/img/@src')
+
+        if img_src:
+            item['image_urls'] = ['https:' + img_src[0].extract()]
+
+        mini_bio = ''
+        # eltérünk a könyv xpath-jétől, hiszen a mi esetünkben nincs az az üres para, amivel ő áll meg
+        # nekünk a content-text-en belüli összes elem kell, hogy megkeressük a megállást jelentő tartalomjegyzéket
+        tags = response.xpath('//*[@id="mw-content-text"]/div/*').extract()
+
+        for t in tags:
+            # ahhoz, hogy megkapjuk a keresett jegyzéket, regExp-et használunk
+            if re.findall('id="toc"', t):
+                break
+
+            # muszáj volt belerakjam a korlátozást a stringbe, másképp néha megbolondult
+            if not re.findall('&#60;p>', t[:16]):
+                continue
+
+            # mivel a mi esetünkben nyersnek vannak meg a tag-ek, jobb, ha a paragrafus tageket eltávolítjuk
+            tmp = re.sub('&#60;p>|&#60;/p>', '', t)
+            mini_bio += tmp
+
+        mini_bio = mini_bio.replace('href="/wiki', 'href="' + BASE_URL + '/wiki')
+        mini_bio = mini_bio.replace('href="#', item['link'] + '#')
+
+        item['mini_bio'] = mini_bio
+
+        yield item
+</code></pre>
+                    <p class="text-lg font-normal pb-3">Miután sikeresen megírtuk az újabb spider-ünket, létrekell hozzuk a
+                        kiegészítő pipeline-ját, amely átalakítja a kép URL-ket és lementi, mint kép, ehhez fogjuk a már többször
+                        is említett ImagesPipeline-t használni.
+                    </p>
+                    <p class="text-lg font-normal">Az ImagesPipeline két fő metódussal rendelkezik, egy
+                        <em>get_media_requests</em>-el, amely lekérdezéseket generál a kép URL-kre, és egy
+                        <em>item_completed</em>-el, amelyet az után hív le miután a lekerdezés megtörtént:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">from scrapy.pipelines.images import ImagesPipeline
+
+class NobelImagesPipeline(ImagesPipeline):
+    # bevesz bármilyen kép URL, amit az nwinners_minibio spider scrapelt és generál egy HTTP lekérdezést a tartalmára
+    def get_media_requests(self, item, info):
+        for image_url in item['image_urls']:
+            yield scrapy.Request(image_url, meta={'dont_redirect': False})
+
+    # miután legenerálódott a lekérdezés, ennek eredménye ebbe a metódusba kerül
+    def item_completed(self, results, item, info):
+        # Mivel, az eredmény tuple-kbe van rendezve a következő formában: [(True, Image), (False, Image)]
+        # kiszűrjük azokat az eseteket, amikor nem sikerült a képet lekérni
+        image_paths = [x['path'] for ok, x in results if ok]
+
+        # azoknál, amelyeknél sikerült, lementi a elérésüket, ahhoz a mappához viszonyítva, amelyet
+        # a settings.py-ban határoztunk meg:
+        # IMAGES_STORE = 'images'
+        # ITEM_PIPELINES = {
+        # 'nobel_winners.pipelines.DropNonPerson': 1, # az 1-essel aktíváljuk a pipeline-t
+        # 'nobel_winners.pipelines.NobelImagesPipeline': 1,
+        # }
+        if image_paths:
+            item['bio_image'] = image_paths[0]
+
+        return item</code></pre>
+                    <p class="text-lg font-normal pb-3">Nincs más dolgunk, mint lefuttatni a létrehozott új spider-ünket, és
+                        megvizsgálni annak output-ját.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A fájlok között megfigyelhető, hogy minden sikerült, megvannak az
+                        életrajzi bekezdések és a képek fájlai is, ahol az lehetséges és elérhető volt. Érdekesség, hogy a
+                        képfájlok elnevezése egy SHA1 hash az URL-nek, ez által az image pipeline képes leellenőrízni a létező
+                        képeket és elkerülni a felesleges lekérdezéseket már létező képekhez.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Azonban, mielőtt végeznénk ezzel a fejezettel még beszélnünk kell arról az
+                        esetről is, amikor több pipeline-unk van, hiszen a korábbi példák esetében is kettőt hoztunk létre, egyet
+                        a egyesületek eldobására, a másodikat pedig a képekhez. Általánosságban, a pipeline-ok, amelyeket a
+                        beállítások módulban engedélyezünk az összes spider-re vonatkoznak, ami létezik a projektünkben. Ilyen
+                        esetekben, lehet az lenne célszerű, ha megtudnánk határozni azt, hogy melyik pipeline melyik spider-re
+                        vonatkozik. Számos megközelítés van a probléma megoldására.
+                    </p>
+                    <p class="text-lg font-normal">Az egyik legokosabb döntés az lenne, ha nem általánosan a módulban, hanem
+                        a spider <em>custom_settings</em> tulajdonságát felhasználva állítanánk be a pipeline-t. A mi esetünkben
+                        így az nwinners_minibio spider a következőképpen alakulna át:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">class NWinnerSpiderBio(scrapy.Spider):
+    name = 'nwinners_minibio'
+    allowed_domains = ['en.wikipedia.org']
+    start_urls = ['https://en.wikipedia.org/wiki/List_of_Nobel_laureates_by_country']
+
+    custom_settings = {
+        'ITEM_PIPELINES': {'nobel_winners.pipelines.NobelImagesPipeline': 1,}
+    }
+
+    ...</code></pre>
+                    <p class="text-lg font-normal">Tehát, ebben az esetben a NobelImagesPipeline csakis erre a spider-re
+                        vonatkozna, a többiben nem lenne elérhető scrapelés közben.
                     </p>
                 </section>
             </section>
@@ -1374,7 +1598,7 @@ HTTPCACHE_ENABLED = True
         </main>
 
         <div id="arr"
-            class="fixed hidden lg:block transition duration-100 ease-in"><a class="inline-block text-3xl hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
+            class="fixed hidden lg:block transition duration-100 ease-in"><a class="inline-block text-3xl py-3 px-6 hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
                 opacity-50 hover:opacity-100"
                 href="#menu">&uarr;</a></div>
 
@@ -1383,9 +1607,6 @@ HTTPCACHE_ENABLED = True
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
         <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
-        <script>
-            hljs.initHighlightingOnLoad();
-        </script>
         <!-- cross-platform megoldás a smooth-scroll-ra, jQuery használatával -->
         <script src="../javascript/smooth.js"></script>
         <script src="../javascript/main.js"></script>
