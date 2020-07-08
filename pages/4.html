@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en"
+    class="text-gray-800 text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="A repo for studying a book.">
+        <meta name="keywords"
+            content="visualization,javascript,python,d3,flask,restful">
+        <meta name="author"
+            content="Lukács Zsolt">
+        <meta http-equiv="X-UA-Compatible"
+            content="ie=edge">
+        <title>4 Az adatok tisztítása és feldolgozása</title>
+        <link rel="stylesheet"
+            href="../css/style.css">
+        <link rel="stylesheet"
+            href="../css/compiled.css">
+        <link rel="stylesheet"
+            href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/dracula.min.css">
+        <link rel="stylesheet"
+            href="../tools/pushy-1.3.0/css/pushy.css">
+        <!-- Safari-n az emoji favicon nem működik -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22
+                viewBox=%220
+                0
+                100
+                100%22><text y=%22.9em%22
+                    font-size=%2290%22>📕</text></svg>">
+    </head>
+
+    <body class="overflow-x-hidden">
+        <!-- navigáció -->
+        <nav class="pushy pushy-left">
+            <div class="pushy-content">
+                <ul>
+                    <li class="pushy-link"><a href="../index.html">1 Bevezetés</a></li>
+                    <li class="pushy-link"><a href="2.html">2 Első lépések az adatvizualizációban</a></li>
+                    <li class="pushy-link"><a href="3.html">3 Az adatok megszerzése</a></li>
+                    <li class="pushy-link"><a href="4.html">4 Az adatok tisztítása és feldolgozása</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Pushy-hoz site overlay -->
+        <div class="site-overlay"></div>
+
+        <main id="container"
+            class="container p-8 md:p-6 max-w-2xl md:max-w-3xl min-h-screen">
+            <button id="menu"
+                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
+                Menü</button>
+
+            <!-- negyedik része eleje -->
+
+            <section class="pb-8">
+                <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">4 Az adatok tisztítása és feldolgozása</h1>
+
+                <section id="4numpy">
+                    <h2 class="text-2xl pb-4 font-semibold text-gray-800">Bevezetés a NumPy-ba</h2>
+                    <p id="firstPar"
+                        class="text-lg font-normal pb-3">Ebben a fejezetben egy újabb Python könyvtárral fogunk megismerkedni, a
+                        Numeric Python-al, röviden a NumPy-al. A NumPy kulcsfontosságú lesz a Pandas-al való munka során,
+                        elhagyhatatlan az
+                        adat-elemzéshez használt könyvtárunkhoz, amellyel az ezt követő fejezetekben fogunk megismerkedni miközben
+                        a
+                        nemrég megszerzett Nobel-díj adatsorunkat tisztítjuk és fedezzük fel. Egy általános ismeret és tudás a
+                        NumPy alapvető elemeiről nélkülözhetetlen, ha a legtöbbet szeretnénk kinyerni a Pandas-ból.</p>
+                    <p class="text-lg font-normal pb-3">A NumPy egy Python módul, amely elérhetővé tesz nagyon gyors,
+                        több-dimenziós tömb manipulálást, mindezt a háttérben alacsony szintű könyvtárakkal megtámogatva C-ben és
+                        Fortran-ban írva. A Python natív teljesítménye nagy mennyiségű adattal lassú, nagyon magas nyelv lévén, de
+                        a NumPy lehetővé tesz azt, hogy párhuzamosan hajts végre műveleteket nagy tömbökön egyidejűleg, ez által
+                        nagyon gyorssá téve.</p>
+                    <p class="text-lg font-normal pb-3">Mondhatni, a NumPy minden adat-feldolgozási munkának az alapját képzi, de
+                        továbbá elmondható az is, hogy maga a NumPy ökoszisztéma is rendkívül kiterjedt, olyan kiegészítőkkel
+                        rendelkezik, mint a SciPy, a Python tudományos módulja, amely bonyolult tudományos és mérnöki módulokat
+                        tartalmaz. De megemlíthető még a Scikit-learn, amely rendelkezésünkre bocsájt machine-learning
+                        algoritmusokat. Azonban, az említetteken kívül még számos kiegészítővel rendelkezik a NumPy és szakosodott
+                        könyvtárak is léteznek, amelyek a NumPy több-dimenziós tömbjeire épülnek.</p>
+                    <p class="text-lg font-normal pb-3">Amit legfőképpen megkell tehát érteni a NumPy-al kapcsolatosan, az nem
+                        más, mint a tömbjei, a következőkben példákon keresztül azokat fogjuk megvizsgálni.</p>
+                    <p class="text-lg font-normal">A NumPy-ban minden a több-dimenziós <em>ndarray</em> objektumra épül. Egyéb
+                        dolgok mellett, olyan egyszerűeket is ellehet végezni ezen objektumokon, mint az aritmetikai műveletek,
+                        ahogy azt elemi típusok, akár floatok esetében is tennénk. Nézzük meg ezt egy példán keresztül:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import numpy as np
+
+a = np.array([1, 2, 3])
+
+a + a # output: array([2, 4, 6])</code></pre>
+                    <p class="text-lg font-normal">Az ndarray objektum három fontos tulajdonsággal rendelkezik, a dimenziók száma
+                        <em>(ndim)</em>, az alakja <em>(shape)</em>, végül a numerikus típusa <em>(numeric type)</em>. Ugyanaz a
+                        tömbnyi szám akár átalakítható helyben is, amely akár magába foglalhatja a tömb dimenzióinak számának
+                        megváltozását is. A következő példa egy ilyent helyzetet szemléltet:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># ezt a függvényt fogjuk használni a 3 tulajdonság kiírására
+def print_array_details(a):
+    print('Dimensions: {}, shape: {}, dtype: {}'.format(a.ndim, a.shape, a.dtype))
+
+a = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+print(a)
+print_array_details(a)
+# output:
+# [1 2 3 4 5 6 7 8 9]
+# Dimensions: 1, shape: (9,), dtype: int32</code></pre>
+                    <p class="text-lg font-normal">Felhasználva a <em>reshape</em> metódust, képesek vagyunk megváltoztatni az
+                        alakját és a dimenzióinak számát az 'a' tömbnek. Alakítsuk át a jelenlegi tömbünket egy 3 dimenziós
+                        tömbbé, amely 3 darab 3 tagból álló tömbből áll:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">a = a.reshape([3, 3])
+print(a)
+print_array_details(a)
+# [[1 2 3]
+#  [4 5 6]
+#  [7 8 9]]
+# Dimensions: 2, shape: (3, 3), dtype: int32</code></pre>
+                    <p class="text-lg font-normal">A következő példában egy összesen 8 tagból álló tömb három dimenziossá is
+                        tehető:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">b = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+b = b.reshape([2, 2, 2])
+print(b)
+print_array_details(b)
+# [[[1 2]
+#   [3 4]]
+# 
+#  [[5 6]
+#   [7 8]]]
+# Dimensions: 3, shape: (2, 2, 2), dtype: int32</code></pre>
+                    <p class="text-lg font-normal pb-3">A fenti példákból már általánosságban kikövetkeztethető néhány dolog.
+                        Egyrészt,
+                        a dimenziók számát az alakja határozza meg, illetve ahhoz, hogy egy bizonyos dimenziót betöltsön egy
+                        tömbnyi szám, minimum <em>n^ndim</em> elemmel kell rendelkezzen, (n, n, n) alak esetén.</p>
+                    <p class="text-lg font-normal">A tömb alakja és numerikus típusa létrehozáskor is meghatározható, ugyanakkor
+                        létrehozás után a legkönnyebb megoldás a tömb numerikus típusának megváltoztatására a reshape-hez
+                        hasonlóan
+                        az <em>astype</em> metódus lenne. Eben az esetben a metódus egy átméretezett másolatot készít az eredeti
+                        tömbről a modósított típussal:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">x = np.array([[1, 2, 3], [4, 5, 6]], np.int64)
+print(x.shape) # output: (2, 3)
+print(x.dtype) # output: int64
+
+x.shape = (6, )
+x = x.astype('int32')
+print(x.shape) # output: (6, )
+print(x.dtype) # output: int32</code></pre>
+                    <p class="text-lg font-normal">Amellett, hogy NumPy esetén lehetőségünk van számsorokból tömböket létrehozni,
+                        biztosít jónéhány kiegészítő függvényt, hogy létrehozzunk tömböt egy bizonyos mintával. <em>zeros</em> és
+                        <em>ones</em> függvények példaképpen a leggyakrabban használtak közé tartoznak, amelyek előre feltöltött
+                        tömböket hoznak létre a megadott mintával. Fontos megjegyezni, hogy ezek a függvények általában float64
+                        típussal dolgoznak, és nem intekkel:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">a = np.zeros([2, 3])
+print(a)
+print(a.dtype)
+# output:
+# [[0. 0. 0.]
+#  [0. 0. 0.]]
+# float64
+
+b = np.ones([2, 3])
+print(b)
+print(b.dtype)
+# output:
+# [[1. 1. 1.]
+#  [1. 1. 1.]]
+# float64</code></pre>
+                    <p class="text-lg font-normal">Emellett, rendelkezésünkre áll egy <em>empty</em> metódus is, amely létrehozza
+                        a szükséges memória-blokkot, azonban nem tölti fel azt elemekkel és az inicializálást ránk hagyja:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">empty_arr = np.empty([2, 3])
+print(empty_arr)
+# output: 
+# [[1. 1. 1.]
+#  [1. 1. 1.]]
+# az output változhat, attól függően éppen mi volt a memóriaterületen</code></pre>
+                    <p class="text-lg font-normal">A következő hasznos metódus a <em>random</em>, amely a random módulon belül
+                        található meg egyéb hasznos függvényekkel együtt. Ez létrehoz egy megadott mintájú random számokkal
+                        feltöltött tömböt:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">rand_arr = np.random.random([2, 3])
+print(rand_arr)
+# output:
+# [[0.16112766 0.76956209 0.28967126]
+#  [0.17799395 0.11935788 0.83240867]]</code></pre>
+                    <p class="text-lg font-normal">A <em>linspace</em> létrehoz egy meghatározott számű elemből álló egyenlő
+                        eloszlású tömböt, egy megadott intervalumon belül, az <em>arange</em> is ehhez hasonló, azonban ott
+                        lépegetéssel működik, tehát nem az elemek számát, hanem az elemek közötti állandó különbséget adjuk meg:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># létrehozunk egy 5 elemből álló egyenlő-eloszlású tömböt 2 és 10 között
+a = np.linspace(2, 10, 5)
+print(a)
+
+
+# létrehozunk egy tömböt 2 és 10 között, kettesével lépegetve
+b = np.arange(2, 10, 2)
+print(b)
+
+# output:
+# [ 2.  4.  6.  8. 10.]
+# [2 4 6 8]
+# az arange a felső határral kizáró, míg a linspace megengedő</code></pre>
+                    <p class="text-lg font-normal">A NumPy esetén, az egy-dimenziós tömbök indexeléskor és slicekor ugyanúgy
+                        viselkednek, mint a Python listák:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">a = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+print(a[5])
+print(a[1:3])
+print(a[::-1])
+a[::4] = -1
+print(a)
+
+# output:
+# 6
+# [2 3]
+# [9 8 7 6 5 4 3 2 1]
+# [-1  2  3  4 -1  6  7  8 -1]</code></pre>
+                    <p class="text-lg font-normal pb-3">A több-dimenziós tömbök indexelése nagyban hasonlít az egy-dimenziós
+                        tömbökéhez. Minden dimenziónak megvan a maga index és slice művelete, és ezeket vesszővel elválasztott
+                        tuple-ként határozzuk meg. A következő ábra szemlélteti a folyamatot:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig14.png"
+                            alt="Ábra 14">
+                        <figcaption class="text-center pt-3 pb-4 text-md">14. Ábra: A több-dimenziós indexelés NumPy-al
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Abban az esetben, ha az objektumok száma a tuple-ben kevesebb, mint a dimenziók
+                        száma, abban az esetben, azt feltételezi, hogy a teljes egészét kiválasztottuk a hiányzónak, de akár
+                        ellipsziseket is használhatunk a teljes kiválasztásra:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">a = np.arange(16, dtype='int64')
+a = a.reshape([2, 2, 4])
+# print(a)
+# print(a[0, 1])
+print(a[0, :, 2:3])
+print(a[0, :, :])
+print(a[0, ...])
+
+# output:
+# [[2]
+#  [6]]
+# [[0 1 2 3]
+#  [4 5 6 7]]
+# [[0 1 2 3]
+#  [4 5 6 7]]</code></pre>
+                    <p class="text-lg font-normal">Az egyik legjobb dolog a NumPy tömbökkel kapcsolatosan, hogy képes vagy
+                        alapvető és nem is annyira alapvető műveleteket elvégezni velük, olyan módon ahogy azt korábban is
+                        megszokhattad, tehát mint sima numerikus változókkal. Az egyszerű matematikai műveletek, ahogy azt
+                        elvárnánk minden tömbelemen végrehajtásra kerülnek:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">a = np.arange(1, 7, dtype='int64')
+print(a)
+a = a.reshape([2, 3])
+print(a)
+print(a + 2)
+print(a * 2)
+print(a / 2.0)
+# a fenti osztás esetében, implicit módon, amikor float számmal osztunk, a tömb átalakításra kerül float64 típusúvá
+
+# output:
+# [1 2 3 4 5 6]
+# [[1 2 3]
+#  [4 5 6]]
+# [[3 4 5]
+#  [6 7 8]]
+# [[ 2  4  6]
+#  [ 8 10 12]]
+# [[0.5 1.  1.5]
+#  [2.  2.5 3. ]]</code></pre>
+                    <p class="text-lg font-normal">A logikai operátorok hasonló logika mentén működnek, ahogy azt a következő
+                        példa is szemlélteti:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">print(a &#60; 4)
+# output:
+# [[ True  True  True]
+# [False False False]]</code></pre>
+                    <p class="text-lg font-normal">A tömbök emellett hasznos metódusokkal is rendelkeznek, a műveleteken túl,
+                        amelyeket a következő példa is szemléltet:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">a = np.arange(10).reshape([2, 5])
+
+print(a.min(axis=1))
+# output: [0 5]
+
+print(a.sum(axis=0))
+# output: [ 5  7  9 11 13]
+
+print(a.sum(axis=1))
+# output: [10 35]
+
+print(a.mean(axis=1))
+# output: [2. 7.]
+
+# szórás
+print(a.std(axis=1))
+# output: [1.41421356 1.41421356]
+
+# az axis = 0 esetén, függölegesen, a dimenziók között, összegzi (pl.) az elemeket 
+# az axis = 1 esetén, vízszintesen, a dimenziókon belül, összegzi az elemeket</code></pre>
+                    <p class="text-lg font-normal">Továbbá, nagyszámú beépített tömb függvénnyel is rendelkezik a NumPy,
+                        megintcsak az alábbi példa szemléltet ezek közül néhányat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">pi = np.pi
+a = np.array([pi, pi/2, pi/4, pi/6])
+print(np.degrees(a)) # átalakítja radiánból fokba a megadott tömb elemeit
+# output: [180.  90.  45.  30.]
+
+sin_a = np.sin(a) # visszatéríti a radiánok szinusz értékét
+print(sin_a)
+# output: [1.22464680e-16 1.00000000e+00 7.07106781e-01 5.00000000e-01]
+
+print(np.round(sin_a, 7)) # kerekíti 7 tizedespontosággal
+# output: [0.        1.        0.7071068 0.5      ]
+
+a = np.arange(8).reshape([2, 4])
+
+print(np.cumsum(a, axis=1))
+# halmozott összeg a második tengely mentén, tehát jelenesetben vízszintesen, dimenziókon belül
+
+print(np.cumsum(a))
+# a tengelymeghatározás nélkül a tömb kisimul, tehát egy-dimenzióssá alakul
+
+# output:
+# [[ 0  1  3  6]
+#  [ 4  9 15 22]]
+# [ 0  1  3  6 10 15 21 28]</code></pre>
+                    <p class="text-lg font-normal pb-3">Függetlenül attól, hogy melyik Python adat-feldolgozási könyvtárat
+                        használod,
+                        legyen az Pandas, Scipy, vagy scikit-learn, esetleg PyBrain, nagy esély van rá, hogy az alapvető mögöttes
+                        adat-struktúra a NumPy tömbje lesz.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Ilyen értelemben, a képesség arra, hogy létrehozhassunk tömb feldolgozási
+                        függvényeket nagy segítségünkre lehet a továbbiakban.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A következőkben ezzel ismerkedünk meg miközben megpróbáljuk megszelíditeni
+                        a tömböket, hogy kiszámolhassunk egy statisztikai mozgóátlagot. Nagyon egyszerűen elmondva a mozgóátlag
+                        egy olyan statisztikai számítás, amely során az által elemezzük az adatpontokat, hogy a nagy adatsort
+                        kisebb adatsorokra bontjuk és azok átlagait átlagoljuk.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A következőkben ezzel ismerkedünk meg miközben megpróbáljuk megszelíditeni
+                        a tömböket, hogy kiszámolhassunk egy statisztikai mozgóátlagot. Nagyon egyszerűen elmondva a mozgóátlag
+                        egy olyan statisztikai számítás, amely során lényegében átlagok sorozatát számoljuk egy mozgó "ablakon"
+                        (adatsoron) belül a legutolsó n darab értékből, ahol az n egy változó szám.
+                    </p>
+                    <p class="text-lg font-normal">Egy-dimenziós tömb esetében néhány sor alatt ki lehet számolni a mozgóátlagot:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">def moving_average(a, n=3):
+    ret = np.cumsum(a, dtype=float)
+    ret[n:] = ret[n:] - ret[:-n]
+    return ret[n - 1:] / n</code></pre>
+                    <p class="text-lg font-normal pb-3">Tehát, a függvény bevesz egy a tömböt, és egy n számot, amely meghatározza
+                        a
+                        mozgó ablakunk hosszát, jelen esetben alapértelmezetten ez egyenlő 3-al. Első lépésben, halmozott összeget
+                        számolunk a NumPy beépített függvényével. A halmozott összeg, mint tudjuk, lényegében a tömb elemein
+                        végighaladva, az összes addigi elem összege, beleértve az aktuálist is.
+                    </p>
+                    <p class="text-lg font-normal">Második lépésben, kezdve a halmozott összeg n-edik indexétől, kivonjuk az
+                        i-n-edik értékét minden i-ből, ami azt jelenti, hogy az i most minden érték összege az utolsó n elemnek,
+                        beleértve az n-ediket is, valahogy így:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="plaintext">[ 0, 1, 2, 3, 4, 5] tömb esetén, előszöris halmozott összeget számolunk, így megkapjuk
+a [0, 1, 3, 6, 10, 15] tömböt, következő lépésben elkezdjük az n-edik indextől, és kivonjuk belőle az i-n-edik indexet,
+így a tömb a [0, 1, 3, 6-0, 10-1, 15-3] tömböt,
+mivel 3 elemből álló subseteink vannak, 3-1-től van értelme átlagot számolni, így a visszatérített átlagjaink a
+[3 / 3, 6 / 3, 9 / 3, 12 / 3] lesznek.</code></pre>
+                    <p class="text-lg font-normal">Akár papír mellett élőben is megvizsgálhatjuk a függvényük helyes működését:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">print(moving_average(np.arange(6)))
+# output: [1. 2. 3. 4.]</code></pre>
+                </section>
+
+                <section id="4pandas">
+                    
+                </section>
+            </section>
+
+            <!-- negyedik része vége -->
+
+            <div class="my-8 flex content-center">
+                <button class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in"><a
+                        class="block px-4 py-2"
+                        href="3.html"><span class="inline-block font-normal transform group-hover:-translate-x-1 transition
+                            duration-100 ease-in">&larr;</span>
+                        Előző</a></button>
+                <!--<button class="flex-auto w-24 ml-4 py-2 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
+                    ease-in"><a class="block px-4"
+                        href="#">Következő
+                        <span
+                            class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button>-->
+            </div>
+        </main>
+
+        <div id="arr"
+            class="fixed block transition duration-100 ease-in"><a class="inline-block text-3xl py-3 px-6 hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
+                opacity-50 hover:opacity-100"
+                href="#menu">&uarr;</a></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
+        <!-- cross-platform megoldás a smooth-scroll-ra, jQuery használatával -->
+        <script src="../javascript/smooth.js"></script>
+        <script src="../javascript/main.js"></script>
+        <script src="../javascript/introd3.js"></script>
+    </body>
+
+</html>

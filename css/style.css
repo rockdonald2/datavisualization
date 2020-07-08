@@ -31,6 +31,9 @@ code {
   @media only screen and (max-width: 1238px) {
     #arr {
       right: 5%; } }
+  @media only screen and (max-width: 768px) {
+    #arr {
+      right: 10%; } }
 
 .show {
   opacity: 100 !important;

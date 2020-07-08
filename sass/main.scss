@@ -41,6 +41,10 @@ code {
     @media only screen and (max-width: 1238px) {
         right: 5%;
     }
+
+    @media only screen and (max-width: 768px) {
+        right: 10%;
+    }
 }
 
 .show {

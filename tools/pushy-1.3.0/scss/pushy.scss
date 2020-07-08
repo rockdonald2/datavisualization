@@ -3,7 +3,7 @@
 * https://github.com/christophery/pushy/
 * by Christopher Yee */
 
-$menu_width: 300px !default;
+$menu_width: 350px !default;
 
 /* Menu Appearance */
 
@@ -26,6 +26,7 @@ $menu_width: 300px !default;
 
     a:hover{
         color: #FFF;
+        background: #2c5282;
     }
 
     ul:first-child{
@@ -48,31 +49,23 @@ $menu_width: 300px !default;
 /* Menu Movement */
 
 .pushy-left{
-    -webkit-transform: translate3d( unquote('-' + $menu_width) ,0,0);
-    -ms-transform: translate3d( unquote('-' + $menu_width) ,0,0);
     transform: translate3d( unquote('-' + $menu_width) ,0,0);
 }
 
 .pushy-open-left{
     #container,
     .push{
-        -webkit-transform: translate3d( $menu_width ,0,0);
-        -ms-transform: translate3d( $menu_width ,0,0);
         transform: translate3d( $menu_width ,0,0);
     }
 }
 
 .pushy-right{
-    -webkit-transform: translate3d( $menu_width ,0,0);
-    -ms-transform: translate3d( $menu_width ,0,0);
     transform: translate3d( $menu_width ,0,0);
 }
 
 .pushy-open-right{
     #container,
     .push{
-        -webkit-transform: translate3d( unquote('-' + $menu_width) ,0,0);
-        -ms-transform: translate3d( unquote('-' + $menu_width) ,0,0);
         transform: translate3d( unquote('-' + $menu_width) ,0,0);
     }
 }
@@ -80,8 +73,6 @@ $menu_width: 300px !default;
 .pushy-open-left,
 .pushy-open-right{
     .pushy{
-        -webkit-transform: translate3d(0,0,0);
-        -ms-transform: translate3d(0,0,0);
         transform: translate3d(0,0,0);
     }
 
@@ -179,8 +170,6 @@ $menu_width: 300px !default;
         top: 50%;
         right: 15px;
         background: url("../img/arrow.svg") no-repeat;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
         transform: translateY(-50%);
         transition: transform 0.2s;
     }
@@ -214,8 +203,6 @@ $menu_width: 300px !default;
 
     > a::after,
     > button::after{
-        -webkit-transform: translateY(-50%) rotate(90deg);
-        -ms-transform: translateY(-50%) rotate(90deg);
         transform: translateY(-50%) rotate(90deg);
     }
 }
