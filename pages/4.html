@@ -84,7 +84,8 @@
 
 a = np.array([1, 2, 3])
 
-a + a # output: array([2, 4, 6])</code></pre>
+a + a # output: array([2, 4, 6])</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Az ndarray objektum három fontos tulajdonsággal rendelkezik, a dimenziók száma
                         <em>(ndim)</em>, az alakja <em>(shape)</em>, végül a numerikus típusa <em>(numeric type)</em>. Ugyanaz a
                         tömbnyi szám akár átalakítható helyben is, amely akár magába foglalhatja a tömb dimenzióinak számának
@@ -98,7 +99,8 @@ print(a)
 print_array_details(a)
 # output:
 # [1 2 3 4 5 6 7 8 9]
-# Dimensions: 1, shape: (9,), dtype: int32</code></pre>
+# Dimensions: 1, shape: (9,), dtype: int32</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Felhasználva a <em>reshape</em> metódust, képesek vagyunk megváltoztatni az
                         alakját és a dimenzióinak számát az 'a' tömbnek. Alakítsuk át a jelenlegi tömbünket egy 3 dimenziós
                         tömbbé, amely 3 darab 3 tagból álló tömbből áll:</p>
@@ -108,7 +110,8 @@ print_array_details(a)
 # [[1 2 3]
 #  [4 5 6]
 #  [7 8 9]]
-# Dimensions: 2, shape: (3, 3), dtype: int32</code></pre>
+# Dimensions: 2, shape: (3, 3), dtype: int32</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A következő példában egy összesen 8 tagból álló tömb három dimenziossá is
                         tehető:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">b = np.array([1, 2, 3, 4, 5, 6, 7, 8])
@@ -120,7 +123,8 @@ print_array_details(b)
 # 
 #  [[5 6]
 #   [7 8]]]
-# Dimensions: 3, shape: (2, 2, 2), dtype: int32</code></pre>
+# Dimensions: 3, shape: (2, 2, 2), dtype: int32</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A fenti példákból már általánosságban kikövetkeztethető néhány dolog.
                         Egyrészt,
                         a dimenziók számát az alakja határozza meg, illetve ahhoz, hogy egy bizonyos dimenziót betöltsön egy
@@ -137,7 +141,8 @@ print(x.dtype) # output: int64
 x.shape = (6, )
 x = x.astype('int32')
 print(x.shape) # output: (6, )
-print(x.dtype) # output: int32</code></pre>
+print(x.dtype) # output: int32</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Amellett, hogy NumPy esetén lehetőségünk van számsorokból tömböket létrehozni,
                         biztosít jónéhány kiegészítő függvényt, hogy létrehozzunk tömböt egy bizonyos mintával. <em>zeros</em> és
                         <em>ones</em> függvények példaképpen a leggyakrabban használtak közé tartoznak, amelyek előre feltöltött
@@ -157,7 +162,8 @@ print(b.dtype)
 # output:
 # [[1. 1. 1.]
 #  [1. 1. 1.]]
-# float64</code></pre>
+# float64</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Emellett, rendelkezésünkre áll egy <em>empty</em> metódus is, amely létrehozza
                         a szükséges memória-blokkot, azonban nem tölti fel azt elemekkel és az inicializálást ránk hagyja:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">empty_arr = np.empty([2, 3])
@@ -165,7 +171,8 @@ print(empty_arr)
 # output: 
 # [[1. 1. 1.]
 #  [1. 1. 1.]]
-# az output változhat, attól függően éppen mi volt a memóriaterületen</code></pre>
+# az output változhat, attól függően éppen mi volt a memóriaterületen</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A következő hasznos metódus a <em>random</em>, amely a random módulon belül
                         található meg egyéb hasznos függvényekkel együtt. Ez létrehoz egy megadott mintájú random számokkal
                         feltöltött tömböt:</p>
@@ -173,7 +180,8 @@ print(empty_arr)
 print(rand_arr)
 # output:
 # [[0.16112766 0.76956209 0.28967126]
-#  [0.17799395 0.11935788 0.83240867]]</code></pre>
+# [0.17799395 0.11935788 0.83240867]]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A <em>linspace</em> létrehoz egy meghatározott számű elemből álló egyenlő
                         eloszlású tömböt, egy megadott intervalumon belül, az <em>arange</em> is ehhez hasonló, azonban ott
                         lépegetéssel működik, tehát nem az elemek számát, hanem az elemek közötti állandó különbséget adjuk meg:
@@ -190,7 +198,8 @@ print(b)
 # output:
 # [ 2.  4.  6.  8. 10.]
 # [2 4 6 8]
-# az arange a felső határral kizáró, míg a linspace megengedő</code></pre>
+# az arange a felső határral kizáró, míg a linspace megengedő</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A NumPy esetén, az egy-dimenziós tömbök indexeléskor és slicekor ugyanúgy
                         viselkednek, mint a Python listák:
                     </p>
@@ -205,7 +214,8 @@ print(a)
 # 6
 # [2 3]
 # [9 8 7 6 5 4 3 2 1]
-# [-1  2  3  4 -1  6  7  8 -1]</code></pre>
+# [-1 2 3 4 -1 6 7 8 -1]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A több-dimenziós tömbök indexelése nagyban hasonlít az egy-dimenziós
                         tömbökéhez. Minden dimenziónak megvan a maga index és slice művelete, és ezeket vesszővel elválasztott
                         tuple-ként határozzuk meg. A következő ábra szemlélteti a folyamatot:
@@ -235,7 +245,8 @@ print(a[0, ...])
 # [[0 1 2 3]
 #  [4 5 6 7]]
 # [[0 1 2 3]
-#  [4 5 6 7]]</code></pre>
+# [4 5 6 7]]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Az egyik legjobb dolog a NumPy tömbökkel kapcsolatosan, hogy képes vagy
                         alapvető és nem is annyira alapvető műveleteket elvégezni velük, olyan módon ahogy azt korábban is
                         megszokhattad, tehát mint sima numerikus változókkal. Az egyszerű matematikai műveletek, ahogy azt
@@ -259,14 +270,16 @@ print(a / 2.0)
 # [[ 2  4  6]
 #  [ 8 10 12]]
 # [[0.5 1.  1.5]
-#  [2.  2.5 3. ]]</code></pre>
+# [2. 2.5 3. ]]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A logikai operátorok hasonló logika mentén működnek, ahogy azt a következő
                         példa is szemlélteti:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">print(a &#60; 4)
 # output:
 # [[ True  True  True]
-# [False False False]]</code></pre>
+# [False False False]]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A tömbök emellett hasznos metódusokkal is rendelkeznek, a műveleteken túl,
                         amelyeket a következő példa is szemléltet:
                     </p>
@@ -289,7 +302,8 @@ print(a.std(axis=1))
 # output: [1.41421356 1.41421356]
 
 # az axis = 0 esetén, függölegesen, a dimenziók között, összegzi (pl.) az elemeket 
-# az axis = 1 esetén, vízszintesen, a dimenziókon belül, összegzi az elemeket</code></pre>
+# az axis = 1 esetén, vízszintesen, a dimenziókon belül, összegzi az elemeket</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Továbbá, nagyszámú beépített tömb függvénnyel is rendelkezik a NumPy,
                         megintcsak az alábbi példa szemléltet ezek közül néhányat:
                     </p>
@@ -316,7 +330,8 @@ print(np.cumsum(a))
 # output:
 # [[ 0  1  3  6]
 #  [ 4  9 15 22]]
-# [ 0  1  3  6 10 15 21 28]</code></pre>
+# [ 0 1 3 6 10 15 21 28]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Függetlenül attól, hogy melyik Python adat-feldolgozási könyvtárat
                         használod,
                         legyen az Pandas, Scipy, vagy scikit-learn, esetleg PyBrain, nagy esély van rá, hogy az alapvető mögöttes
@@ -340,7 +355,8 @@ print(np.cumsum(a))
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">def moving_average(a, n=3):
     ret = np.cumsum(a, dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
-    return ret[n - 1:] / n</code></pre>
+    return ret[n - 1:] / n</code><button id="copy"
+        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Tehát, a függvény bevesz egy a tömböt, és egy n számot, amely meghatározza
                         a
                         mozgó ablakunk hosszát, jelen esetben alapértelmezetten ez egyenlő 3-al. Első lépésben, halmozott összeget
@@ -355,11 +371,13 @@ print(np.cumsum(a))
 a [0, 1, 3, 6, 10, 15] tömböt, következő lépésben elkezdjük az n-edik indextől, és kivonjuk belőle az i-n-edik indexet,
 így a tömb a [0, 1, 3, 6-0, 10-1, 15-3] tömböt,
 mivel 3 elemből álló subseteink vannak, 3-1-től van értelme átlagot számolni, így a visszatérített átlagjaink a
-[3 / 3, 6 / 3, 9 / 3, 12 / 3] lesznek.</code></pre>
+[3 / 3, 6 / 3, 9 / 3, 12 / 3] lesznek.</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Akár papír mellett élőben is megvizsgálhatjuk a függvényük helyes működését:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">print(moving_average(np.arange(6)))
-# output: [1. 2. 3. 4.]</code></pre>
+# output: [1. 2. 3. 4.]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                 </section>
 
                 <section id="4pandas">
@@ -401,7 +419,8 @@ mivel 3 elemből álló subseteink vannak, 3-1-től van értelme átlagot számo
 "retweet_count":23,
 "coordinates":[-97.5, 45.3]
 ...
-}</code></pre>
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A példát véve, elmondható, hogy a 'text' és 'id' mezők egyedi azonosítók,
                         az
                         első akár tartalmazhat kategorikus információt is (pl. azon tweetek kategóriája, amelyek tartalmazzák a
@@ -449,7 +468,8 @@ print(df.head())
 #     category             name nationality     sex  year
 # 0    Physics  Albert Einstein       Swiss    male  1921
 # 1    Physics       Paul Dirac     British    male  1933
-# 2  Chemistry      Marie Curie      Polish  female  1911</code></pre>
+# 2 Chemistry Marie Curie Polish female 1911</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A fenti esetben már használtuk is a DataFrame <em>head</em> metódusát, amely
                         segítségével alapértelmezetten az első 5 sort írja ki. Namármost, szeretnénk a korábbi scrapelési munka
                         során megszerzett, terjedelmes, több-soros JSON állományunkat áthelyezni egy DataFrame-be. Problémába ott
@@ -463,18 +483,21 @@ print(df.head())
 
 df = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/minibios.json')
 
-print(df.head())</code></pre>
+print(df.head())</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A fenti megjelenítések más tűkrözik azt, hogy a DataFrame az említett
                         táblázatos formával dolgozik, tehát a mezők oszlopokként és a mező értékek pedig soronként működnek,
                         kiegészítve egy sorszám oszloppal az elején.</p>
                     <p class="text-lg font-normal">A DataFrame oszlopjai a columns tulajdonság szerint vannak indexelve, amely egy
                         Pandas index példány. A következőképpen kiválaszthatjuk a korábbi DataFrame-jeink oszlopait:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">print(df.columns)
-# output: Index(['link', 'name', 'year', 'category', 'country', 'born_in', 'text'], dtype='object')</code></pre>
+# output: Index(['link', 'name', 'year', 'category', 'country', 'born_in', 'text'], dtype='object')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Alapvetően, Pandas sorok egyetlen numerikus indexel rendelkeznk (ugyanakkor
                         több indexet is képes kezelni, ha az szükséges), amelyek az index tulajdonsággal érhetőek el:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">print(df.index)
-# output: RangeIndex(start=0, stop=1163, step=1)</code></pre>
+# output: RangeIndex(start=0, stop=1163, step=1)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Ebben az esetben egy intervallum térít vissza, abból az okból kifolyólag,
                         hogy
                         nagyon hosszú JSON állományunk van. Rövidebb esetében akár egy <em>Int64Index([0, 1, 2, ...],
@@ -487,7 +510,8 @@ df = df.set_index('name')
 # majd használjuk a loc metódust, hogy kiválasszunk sorokat, amelyek tartalmazzák a megadott elemet
 print(df.loc['Albert Einstein'])
 # végül, használva a reset_index metódust visszaállítjuk az eredeti állapotába
-df = df.reset_index()</code></pre>
+df = df.reset_index()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A DataFrame sorai és oszlopai <em>Pandas Series-ként</em> vannak tárolva,
                         a
                         NumPy tömbjeinek heterogén megfelelője. Ezek alapjaiban címkézett egy-dimenziós tömbök, amelyek bármilyen
@@ -496,7 +520,8 @@ df = df.reset_index()</code></pre>
                         láthattuk a <em>loc</em> metódust, amely a megadott címke szerint választ ki elemeket. Létezik az
                         <em>iloc</em> metódus, amely pozíció szerint választ ki:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># kiválasztja a metódus a második sort, amely a head esetén lenne a második
-print(df.iloc[2])</code></pre>
+print(df.iloc[2])</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Végül, van egy <em>ix</em> metódus is, amely ötvözi a címkézett elérést a
                         pozíció szerinti eléréssel. Alapvetően, az ix a címkézett elérést helyezi fontossági sorrend szerinti első
                         helyre, de második megoldásként mindig az egész számú pozíció szerinti elérésre tér vissza, amennyiben
@@ -522,7 +547,8 @@ print(name_col)
 1160                          Peter Handke
 1161                     Corneille Heymans
 1162                      Elfriede Jelinek
-Name: name, Length: 1163, dtype: object '''</code></pre>
+Name: name, Length: 1163, dtype: object '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Továbbá, számos megközelítés van arra is, hogy csoportokat (valójában
                         sorok
                         csoportjait) válasszunk ki a DataFrame-ünkből, visszatérítve egy új, már szűrt DataFrame-t. Gyakran ki
@@ -539,7 +565,8 @@ print(df.groups.keys())
 
 # lekérjük, majd kiírjuk a fizikai Nobel-díj győzteseket
 phy_group = df.get_group('Physics')
-print(phy_group.head())</code></pre>
+print(phy_group.head())</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A második megközelítést egy ún. boolean mask-ot használ ahhoz, hogy létrehozzon
                         egy új DataFrame-t. Képesek vagyunk egy boolean operátort használni az összes oszlopon egy DataFrame-ben,
                         pontosan olyan módon ahogyan azt egy NumPy tömb esetén is tehetnénk:</p>
@@ -556,7 +583,8 @@ print(phy_group.head())</code></pre>
 1159    False
 1160    False
 1161    False
-1162    False '''</code></pre>
+1162 False '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A használt boolean mask-ot majd használhatjuk az eredeti DataFrame-n, hogy
                         kiválasszuk a sorainak egy alcsoportját:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">print(df[df.category == 'Physics'])
@@ -573,7 +601,8 @@ print(phy_group.head())</code></pre>
 1147      http://en.wikipedia.org/wiki/Donna_Strickland  ...                   Donna Strickland , Physics, 2018
 1149  http://en.wikipedia.org/wiki/William_Lawrence_...  ...             William Lawrence Bragg , Physics, 1915
 1151    http://en.wikipedia.org/wiki/Arthur_B._McDonald  ...                 Arthur B. McDonald , Physics, 2015
-1156  http://en.wikipedia.org/wiki/Fran%C3%A7ois_Eng...  ...                   François Englert , Physics, 2013 '''</code></pre>
+1156 http://en.wikipedia.org/wiki/Fran%C3%A7ois_Eng... ... François Englert , Physics, 2013 '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Számos további példát fogunk még látni arra, hogy hogyan tudunk adatokat
                         kiválasztani, ugyanakkor először azzal fogunk még jobban megismerkedni, hogy hogyan tudunk létrehozni
                         DataFrame-eket létező adatokból és hogyan tudjuk lementeni a DataFrame kezelések eredményeit.</p>
@@ -592,7 +621,8 @@ print(df.head())
                name    category
 0   Albert Einstein     Physics
 1       Marie Curie   Chemistry
-2  William Faulkner  Literature '''</code></pre>
+2 William Faulkner Literature '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Továbbá, a fenti példához nagyban hasonlóan képesek vagyunk az
                         <em>from_dict</em> metódust használni, hogy rekord-alapú (record based) létrehozáshoz, amikor is egy tömb
                         dict-et adunk meg, amelyben mindenik egy újabb rekord és egy újabb sort jelöl a DataFrame-ünkben. A
@@ -610,7 +640,8 @@ print(df.head())
                name    category
 0   Albert Einstein     Physics
 1       Marie Curie   Chemistry
-2  William Faulkner  Literature '''</code></pre>
+2 William Faulkner Literature '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Mivel említettük, hogy nem igazán fogjuk valaha is használni a fenti
                         megoldásokat, térjünk is rá a lényegre, a fájlból/adatbázisból történő beolvasásra. A Pandas rengeteg
                         <em>read_[formátum]/to_[formátum]</em> metódussal rendelkezik, amelyek lefedik a legtőbb elképzelhető
@@ -624,8 +655,9 @@ print(df.head())
                         van szó.</p>
                     <p class="text-lg font-normal">Korábban már láthattuk azt, hogyan képes a Pandas JSON állományból létrehozni
                         DataFrame-eket:</p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/nwinners.json')</code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
+                            class="python">df = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/nwinners.json')</code><button id="copy"
+                            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Ugyanakkor, a JSON állomány is számos formát felvehet, meghatározva egy
                         opcionális orient argumentummal, az orient a következő értékek valamelyikét veheti fel: [split, records,
                         index, columns, values]. Mint mondtuk képes a Pandas önmagától is kikövetkeztetni a megfelelő orient-et,
@@ -639,7 +671,8 @@ print(df.head())
 
 # elvégezzük a szükséges műveletek a df-en ...
 
-json = df.to_json('./nobel_prize/nobel_winners/nobel_winners/nwinners_cleaned.json', orient='records')</code></pre>
+json = df.to_json('./nobel_prize/nobel_winners/nobel_winners/nwinners_cleaned.json', orient='records')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Rendelkezésünkre állnak a <em>date_format</em>, <em>double_precision</em>,
                         <em>default_handler</em> paraméterek is, ha az objektum nem alakítható át JSON-ná a Pandas parser-ével.
                     </p>
@@ -647,8 +680,9 @@ json = df.to_json('./nobel_prize/nobel_winners/nobel_winners/nwinners_cleaned.js
                         annyira kifinomult, hogy szinte a lehető legtöbb elképzelhető adattal képes elbánni ebben a formátumban. A
                         konvencionális CSV fájlok, a nagy többség ilyen, bármiféle paraméter nélkül képesek betölteni:
                     </p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df = pd.read_csv('nobel_winners.csv')</code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
+                            class="python">df = pd.read_csv('nobel_winners.csv')</code><button id="copy"
+                            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ugyanakkor, számos CSV forma van, ami nem vesszővel van elválasztva, vagy
                         sajátos, a szokásostól eltérő idézőjelezést használ olyan stringek esetén, amelyek szóközt vagy speciális
                         karaktereket tartalmaznak. Ilyen esetekben képesek vagyunk bármilyen egyéni elemet meghatározni az
@@ -667,12 +701,14 @@ print(df.head())
 ''' output:
               name   category
 0  Albert Einstein   Physics
-1      Marie Curie  Chemistry '''</code></pre>
+1 Marie Curie Chemistry '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Képesek vagyunk a JSON-hoz hasonlóan DataFrame-t CSV fájllá is alakítani a
                         következőképpen:
                     </p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">csv = df.to_csv('data.csv', encoding='utf-8')</code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
+                            class="python">csv = df.to_csv('data.csv', encoding='utf-8')</code><button id="copy"
+                            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Áttérve az Excel fájlokra, a Pandas a Python <em>xlrd</em> módulját használja,
                         hogy olvasson egyaránt .xls, és .xls fájlokból. Az Excel dokumentumoknak akár több elnevezett munkalapja
                         is lehet, amelyek mindegyik DataFrame-é alakítható. Két mód van arra, hogy egy munkalapot beolvassunk
@@ -685,12 +721,14 @@ dfs['WSheet1'] = xls.parse('WinnersSheet1', na_values = ['NA'])
 # ugyanúgy, azonban ebben az esetben meghatározzuk előszöris az oszlopot, pozíció szerint, hogy használjuk, mint a DataFrame sorcímkéi
 # az na_values esetében meghatározzuk azon stringeket, amelyeket NaN-ként kell értelmezzen
 # végül a skiprows esetében a sorok számát határozzuk meg, amelyeket kikell hagyjon feldolgozás előtt, pl. metaadat lenne ezekben
-dfs['WSheet2'] = xls.parse('WinnersSheet2', index_col=0, na_values=['-'], skiprows=3)</code></pre>
+dfs['WSheet2'] = xls.parse('WinnersSheet2', index_col=0, na_values=['-'], skiprows=3)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Alternatívan, képesek vagyunk a <em>read_excel</em> metódust is használni,
                         amely egy kényelmesebb megoldás több munkalap beolvasására:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># ebben az esetben a második munkalap rosszul formázottsága miatt nem megfelelően olvassa be
-data = pd.read_excel('nobel_winners.xlsx', ['WinnersSheet1', 'WinnersSheet2'], index_col=None, na_values = ['NA'])</code></pre>
+data = pd.read_excel('nobel_winners.xlsx', ['WinnersSheet1', 'WinnersSheet2'], index_col=None, na_values = ['NA'])</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Az egyetlen ok ami miatt nem lenne használható a read_excel metódus az az
                         amikor különböző argumentumokkal szeretnénk beolvasni mindenik Excel munkalapot, ahogy azt az első
                         példában is láthattunk, illetőleg, amely nélkül a második példában nem megfelelően fogja a rosszul
@@ -702,14 +740,15 @@ data = pd.read_excel('nobel_winners.xlsx', ['WinnersSheet1', 'WinnersSheet2'], i
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">data = pd.read_excel('nobel_winners.xlsx')
 
-data = pd.read_excel('nobel_winners.xlsx', None) # == sheetname=None</code></pre>
+data = pd.read_excel('nobel_winners.xlsx', None) # == sheetname=None</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A <em>usecols</em> paraméter pedig lehetőséget nyújt arra, hogy kiválasszuk
                         azokat az oszlopokat, amelyeket szeretnénk értelmezni és beolvasni. A usecols-t több formátumban is
                         megadhatjuk, a legegyszerűbb, ha Excel stílusban adjuk meg ahogy azt a példa is mutatja, de akár egy
                         listányi egész számot is megadhatunk, jelölve azokat az oszlopokat, amelyeket beolvasnánk:
                     </p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">data = pd.read_excel('nobel_winners.xlsx', 'WinnersSheet1', index_col=0, usecols='A:C')</code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">data = pd.read_excel('nobel_winners.xlsx', 'WinnersSheet1', index_col=0, usecols='A:C')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Most az érdekesebb részt képesek vagyunk DataFrame-ket is, az előző példákhoz
                         hasonlóan, Excel fájlok munkalapjaiként lementeni a <em>to_excel</em> metódussal, megadva az Excel
                         fájlnevét és a munkalapnevét:
@@ -718,7 +757,8 @@ data = pd.read_excel('nobel_winners.xlsx', None) # == sheetname=None</code></pre
 
 # lementi a DataFrame értékeit a nobel_winners Excel fájlba, létrehozva egy új munkalapot WinnersSheet3 néven
 # fontos megjegyezni azt, hogy teljesen új Excel fájlt hoz létre, törölve a már létező munkalapokat
-excel = df.to_excel('nobel_winners.xlsx', sheet_name='WinnersSheet3')</code></pre>
+excel = df.to_excel('nobel_winners.xlsx', sheet_name='WinnersSheet3')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Illetőleg, megtörténhet az is, hogy több DataFrame-t szeretnénk kiírni egy
                         megosztott Excel fájlba, azt valahogy így tennénk:
                     </p>
@@ -728,7 +768,8 @@ df2 = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/minibios.json')
 # ebben az esetben mindkét DataFrame-t ugyanabba az Excel fájlba fogja írni
 with pd.ExcelWriter('nobel_winners.xlsx') as writer:
     df1.to_excel(writer, sheet_name='WinnersSheet')
-    df2.to_excel(writer, sheet_name='WinnersBios')</code></pre>
+    df2.to_excel(writer, sheet_name='WinnersBios')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Áttérve, fájlalapú adattárolásról, adatbázis alapúra, a Pandas, ha
                         lehetséges,
                         a Python SQLAlchemy módulját használja az adatbázis absztrakcióhoz. Amennyiben nem áll rendelkezésre,
@@ -745,7 +786,8 @@ import sqlalchemy
 engine = sqlalchemy.create_engine('mysql+pymysql://root@localhost/nobel_prize')
 
 # megadjuk első argumentumként a beolvasandó SQL tábla nevét, majd a tárolómotrot
-df = pd.read_sql('nobel_winners', engine)</code></pre>
+df = pd.read_sql('nobel_winners', engine)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">DataFrame-ket SQL adatbázisba írni is legalább ennyire egyszerű, felhasználva
                         az előbb létrehozott tárolómotrunkat:
                     </p>
@@ -753,7 +795,8 @@ df = pd.read_sql('nobel_winners', engine)</code></pre>
 df = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/nwinners.json')
 # kiírjuk az adatbázisba, az első argumentumban meghatározva az SQL tábla nevét, 
 # megadva a tárolómotrot, illetőleg 500-as chunkokban, sorokban, fogja kiírni
-df.to_sql('nobel_winners', engine, chunksize=500)</code></pre>
+df.to_sql('nobel_winners', engine, chunksize=500)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Fontos megemlíteni azt, hogy a Pandas megpróbálja finoman kikövetkeztetni az
                         adatunkból, hogy milyen SQL adattípus felelnek meg neki, ha szükséges akár ezt magunk is megadhatjuk a
                         következőképpen:
@@ -762,7 +805,8 @@ df.to_sql('nobel_winners', engine, chunksize=500)</code></pre>
 
 df = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/nwinners.json')
 # mivel a VARCHAR típust használja, ezért megkell adni a hosszt is
-df.to_sql('nobel_winners', engine, dtype={'year': String(4)})</code></pre>
+df.to_sql('nobel_winners', engine, dtype={'year': String(4)})</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Végül, az adat-vizualizációs munka során sokat lehetne mesélni a
                         dokumentum-alapú NoSQL adatbázisok által nyújtott kényelemről, ilyen például a már korábban említett
                         MongoDB. A MongoDB-vel
@@ -785,7 +829,8 @@ db = client.nobel_prize
 # megkeresi az összes dokumentumot a winners collection-ön belül
 cursor = db.winners.find()
 # beolvassa az összes dokumentumot a winners collection-ön belül listaként, hogy létrehozza a DataFrame-t
-df = pd.DataFrame(list(cursor))</code></pre>
+df = pd.DataFrame(list(cursor))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Aztán legalább ennyire egyszerű DataFrame-ket MongoDB adatbázisba írni, amelyet
                         a következő kódrészlet szemléltet:
                     </p>
@@ -808,7 +853,8 @@ db = get_mongo_database('nobel_prize')
 
 df = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/nwinners.json')
 records = df.to_dict(orient='records')
-db['nwinners_full'].insert_many(records)</code></pre>
+db['nwinners_full'].insert_many(records)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A következőkben írjunk néhány hasznos kicsi függvényt, amely megkönnyíti, hogy
                         DataFrame-t írjunk és olvassunk egy MongoDB adatbázisba/adatbázisból:
                     </p>
@@ -835,7 +881,8 @@ def dataframe_to_mongo(df, db_name, collection, host='localhost', port=27017, us
 
     records = df.to_dict(orient='records')
 
-    db[collection].insert_many(records)</code></pre>
+    db[collection].insert_many(records)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Egy következő mód arra, hogy DataFrame-ket hozzunk létre az az, hogy
                         felépítjük őket <em>Series</em>-ek egy kollekciójából. A következőkben a Series-t fogjuk könnyű
                         részleteiben
@@ -860,7 +907,8 @@ print(s)
 1    2
 2    3
 3    4
-dtype: int32 '''</code></pre>
+dtype: int32 '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Megjegyezendő dolog, hogy az egész értékű indexek automatikusan kerülnek
                         létrehozásra a Series-ünkhöz. Ha egy sornyi adatot adnánk hozzá egy DataFrame-hez és mi szeretnénk
                         meghatározni azok indexeit, abban az esetben megtehetjük azt az által, hogy beadunk egy listányi egész
@@ -874,7 +922,8 @@ a    1
 b    2
 c    3
 d    4
-dtype: int64 '''</code></pre>
+dtype: int64 '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A fenti esetben fontos megjegyezni azt is, hogy az index tömb hossza, megkell
                         egyezzen az adatokat tartalmazó tömb hosszával. A fenti esetet leegyszerűsítve használhatjuk a Series-ek
                         létrehozására a Python dict-ekkel történő megoldást is a következőképpen, amikor egyszerre tudjuk az
@@ -888,7 +937,8 @@ a    1
 b    2
 c    3
 d    4
-dtype: int64 '''</code></pre>
+dtype: int64 '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Abban az esetben, ha a dict-es megközelítés esetén egy indexeket tartalmazó
                         tömböt is beadunk a metódusba, a Pandas nagyon érthető módon megpróbálja párosítani az indexeket az
                         adatsorhoz, minden olyan index esetet, amelyet nem tud párosítani, az adotthoz indexhez NaN-t rendel, ha
@@ -901,7 +951,8 @@ print(s)
 a    1.0
 b    2.0
 c    NaN
-dtype: float64 '''</code></pre>
+dtype: float64 '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Végül, képesek vagyunk egyetlen skaláris (egyszerű numerikus érték) értéket
                         átadni, mint adat a Series-nek, adva, hogy az indexeket meghatározzuk, ebben az esetben az összes
                         meghatározott indexhez az adott skaláris értéket rendeli hozzá:
@@ -913,7 +964,8 @@ print(s)
 1    9
 2    9
 3    9
-dtype: int64 '''</code></pre>
+dtype: int64 '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A Series-ek úgy működnek, mint a NumPy tömbök (ndarray), ami azt eredményezi,
                         hogy a legtöbb NumPy függvénnyel használhatók:
                     </p>
@@ -928,7 +980,8 @@ a    1.000000
 b    1.414214
 c    1.732051
 d    2.000000
-dtype: float64 '''</code></pre>
+dtype: float64 '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Következő érdekesség, hogy a slicing operátorok is ugyanúgy működnek,
                         mintha csak NumPy tömböket, vagy Python listákat használnánk:
                     </p>
@@ -937,7 +990,8 @@ dtype: float64 '''</code></pre>
 ''' output:
 b    1.414214
 c    1.732051
-dtype: float64 '''</code></pre>
+dtype: float64 '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A Series legnagyobb előnye a NumPy tömbökkel szemben, ahogy az a bevezetőbe is
                         említve volt, hogy többféle adattípust is nagyszerűen kezel:
                     </p>
@@ -947,7 +1001,8 @@ dtype: float64 '''</code></pre>
 0         9
 1         4
 2    foobar
-dtype: object '''</code></pre>
+dtype: object '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Mivel a DataFrame-k épitőkockáinak az iment megismert Series-ek számítanak, nem
                         túl bonyolúlt feladat összesíteni ezeket létrehozva DataFrame-ket, felhasználva a Pandas <em>concat</em>
                         metódusát:
@@ -963,14 +1018,16 @@ print(df.head())
 ''' output:
               name   category
 0  Albert Einstein    Physics
-1      Marie Curie  Chemistry '''</code></pre>
+1 Marie Curie Chemistry '''</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Végül, pedig az utolsó bevezető dologról kell beszélnünk, ami nem más,
                         mint a
                         Pandas <em>Panel</em>. A Panel class lényegében nem más, mint egy konténer több DataFrame-hez. Ahogyan a
                         DataFrame lényegében Series-ekből épül fel, úgy a Panel DataFramek-ekből épül fel. A Panel egy újabb
                         dimenziót ad hozzá a DataFrame-hez, ez által mivel a harmadik szintet képviseli, három-dimenziós
                         konténerré válik. Tehát, összeségében az indexeken és oszlopokon túl, amelyekkel a DataFrame rendelkezik,
-                        biztosít egy újabb tengelyt, amely meghatározza melyik DataFrame-nél vagyunk jelenleg. Továbbá, érdemes volt megismerni a koncepciót, de a Pandas legújabb változataiban ez a class már nem érhető el.
+                        biztosít egy újabb tengelyt, amely meghatározza melyik DataFrame-nél vagyunk jelenleg. Továbbá, érdemes
+                        volt megismerni a koncepciót, de a Pandas legújabb változataiban ez a class már nem érhető el.
                     </p>
                 </section>
             </section>

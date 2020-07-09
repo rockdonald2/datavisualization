@@ -5,6 +5,8 @@ const lastModified = '2020 Július 9.'
 
 modified != null ? modified.textContent = 'Utolsó modósítás: ' + lastModified : null;
 
+/* Nyíl megjelenése */
+
 const arrow = document.querySelector('#arr');
 const firstPar = document.querySelector('#firstPar');
 
@@ -35,3 +37,26 @@ function checkPos(e) {
 }
 
 window.addEventListener('scroll', debounce(checkPos));
+
+/* Másolás gomb a kódrészleteknél */
+
+const gomb = document.querySelectorAll('#copy');
+
+function masolas(e) {
+    /* megszerezzük a kód tartalmát */
+    const kod = e.target.parentNode.childNodes[0];
+
+    /* egy rejtett textarea DOM elem */
+    let copyTextarea = document.createElement("textarea");
+    copyTextarea.style.position = "fixed";
+    copyTextarea.style.opacity = "0";
+    copyTextarea.textContent = kod.textContent;
+
+    /* hozzáadjuk a clipboardhoz, és töröljük a rejtett elemet a DOM-ból */
+    document.body.appendChild(copyTextarea);
+    copyTextarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(copyTextarea);
+}
+
+gomb.forEach((g) => g.addEventListener('click', masolas));

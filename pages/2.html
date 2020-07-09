@@ -45,7 +45,8 @@
 
         <main id="container"
             class="container p-8 md:p-6 max-w-2xl md:max-w-3xl min-h-screen">
-            <button id="menu" class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
+            <button id="menu"
+                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
                 Menü</button>
 
             <!-- második része eleje -->
@@ -55,7 +56,8 @@
 
                 <section id="2adviz">
                     <h2 class="text-2xl pb-4 font-semibold text-gray-800">Az adatvizualizáció folyamata</h2>
-                    <p id="firstPar" class="text-lg font-normal">Az adatvizualizáció folyamata 5 lépésben összegezhető lépéssorozatként kerül
+                    <p id="firstPar"
+                        class="text-lg font-normal">Az adatvizualizáció folyamata 5 lépésben összegezhető lépéssorozatként kerül
                         végrehajtásra:</p>
                     <ol class="px-8 py-2 text-lg list-decimal">
                         <li class="pb-2"><span class="font-semibold">Scrape:</span> meg kell "szerezni" az adatot, amit
@@ -149,35 +151,36 @@
                         Alapvetően, ahhoz, hogy leellenőrízzük megfelelően telepítettük-e fel az Anaconda csomagot Windows
                         rendszeren,
                         a következő sort írhatjuk a parancssorba:</p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ ipython</code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ ipython</code><button id="copy"
+                            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Amennyiben az helyesen működik a következőt kellene megnyissa a parancssorban:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ Python 3.7.6 (default, Jan 8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]
 Type 'copyright', 'credits' or 'license' for more information
 IPython 7.12.0 -- An enhanced Interactive Python. Type '?' for help.
 In [1]:
-</code></pre>
+</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Az Anaconda natívan tartalmazza a legtöbb olyan könyvtárt, amit használni
                         fogunk a
                         könyv tanulmányozása során, ugyanakkor amikor olyan könyvtárakat kell elérjünk, amelyeket nem tartalmaz az
                         Anaconda, használhatjuk a Python pip-jét. Alapvetően, ahhoz, hogy pip segítségével telepítsünk valamit, a
                         következőket kell írjuk a parancssorba:</p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ pip install <_könyvtár_elnevezése></code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ pip install <_könyvtár_elnevezése></code><button id="copy"
+                            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Végül, beszélnünk kell az Anaconda virtuális környezeteiről, amelyeket a
                         következő
                         parancsal hozhatunk létre, a teljes Anaconda csomaggal jelenesetben:</p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ conda create --name pyjsviz anaconda</code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ conda create --name pyjsviz anaconda</code><button id="copy"
+                            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ahhoz, hogy ténylegesen használjuk az előző lépésben létrehozott virtuális
                         környezetet aktiválnunk kell azt a következő paranccsal:</p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ source activate pyjsviz</code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ source activate pyjsviz</code><button id="copy"
+                            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A D3 feltelepítéséhez természetesen használhatjuk a NPM eszközt a következő
                         parancs segítségével:</p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ npm install d3</code></pre>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>$ npm install d3</code><button id="copy"
+                            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A könyv tanulmányozása során adatbázist is fogunk készíteni, névszerint
                         MongoDB-t
                         és SQLite-ot, az előbbi egy noSQL eszköz, míg az utóbbi egy serverless SQL-adatbázis. Mindkét
@@ -218,7 +221,8 @@ In [1]:
 
 // A fenti zárójel esetében, ha már létezik az nbviz objektum a globális namespaceben
 // akkor azt beadja a függvénybe, ellenkező esetben hozzáadja a globális namespacehez.
-</code></pre>
+</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Egy jó megközelítés arra nézve, hogy megismerjük a két nyelv közötti
                         különbségeket, hogy megírjuk ugyanazt a programot mindkét nyelvben. Egy egyszerű adatfeldolgozást mutat be
                         a
@@ -255,15 +259,8 @@ if __name__ == '__main__':
 # két dolgoz tesz:
 #   - beállít néhány speciális változót, mint pl. a 'name',
 #   - lefuttatja a fájlban található összes utasítást.
-# a name speciális változó értéke akkor lesz 'main', ha elsődleges forrásként futtassuk.
-
-import logging
-
-logger = logging.getLogger(__name__)
-
-logger.debug('Some useful debugging output')
-logger.info('Some general information')
-logger.warning('Some warning')</code></pre>
+# a name speciális változó értéke akkor lesz 'main', ha elsődleges forrásként futtassuk.</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>"use strict"
 
 let studentData = [{
@@ -310,7 +307,8 @@ function processStudentData(data, passThreshold, meritThreshold) {
     });
 }
 
-processStudentData(studentData);</code></pre>
+processStudentData(studentData);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ugyanakkor, a fenti Python kód során használt print utasítás akár
                         helyettesíthető
                         ugyancsak Python beépített modulnak tekinthető logging-al. Ezt a következő kódrészlet szemlélteti: </p>
@@ -320,7 +318,8 @@ logger = logging.getLogger(__name__)
 
 logger.debug('Some useful debugging output')
 logger.info('Some general information')
-logger.warning('Some warning')</code></pre>
+logger.warning('Some warning')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Nagyon jó gyakorlat az, ha minden változót, amit a programkódunk használ a
                         függvények elején deklarálunk, főleg JavaScript esetében igaz ez, hiszen a JavaScript interpreterje a
                         változókat minden egyéb kód előtt értelmezi. Ez azt jelenti a gyakorlatban, hogy teljesen közömbös az,
@@ -335,7 +334,8 @@ logger.warning('Some warning')</code></pre>
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="plaintext">x or y      Ha x hamis, akkor y, másképp x
 x and y     Ha x hamis, akkor x, másképp y
-not x       Ha x hamis, akkor Igaz, másképp Hamis</code></pre>
+not x Ha x hamis, akkor Igaz, másképp Hamis</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Durván szólva, a JavaScript objects-eket kvázi Python dicts-ként lehet
                         használni,
                         illetve Python lists-eket, pedig JavaScript array-ekként, lényeges és elhagyhatatlan különbség az említett
@@ -356,7 +356,8 @@ for item in foo:
 for item in foo.items():
     print(item)
 
-# Ebben az esetben már a dict itemet fogja kiírni key-value páronként, tuple típusban.</code></pre>
+# Ebben az esetben már a dict itemet fogja kiírni key-value páronként, tuple típusban.</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A fenti egyszerű Python esettel szemben, JavaScript-et használva korán sem
                         ennyire
                         könnyű objektumokkal dolgozni, hiszen a for ciklus nem ugyanúgy működik, mint Python esetében, a következő
@@ -371,7 +372,8 @@ for (let item in foo) {
     if (foo.hasOwnProperty(item)) {
         console.log(item + " " + foo[item]);
     }
-}</code></pre>
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Az előbbi esetben, azért van szükség a for cikluson belül a hasOwnProperty
                         metódus
                         használatára, mert a Python dict-ekkel szemben, a JavaScript objektumjai tartalmazhatnak örökölt
@@ -406,7 +408,8 @@ for (let item in foo) {
         print('Citizen {} from {}.'.format(self.name, self.country))
 
 c = Citizen('Lukács Zs.', 'Hungary')
-c.print_details()</code></pre>
+c.print_details()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A Python classok központi eleme az __init__ függvény, amely az objektum
                         példányok
                         létrehozásakor kerülnek lehívásra. A classok metódusainak létrehozása során, elhagyhatatlan elem a self
@@ -425,7 +428,8 @@ c.print_details()</code></pre>
         print('Nobel winner {} from {}, category {}, year {}'.format(self.name, self.country, self.category, self.year))
 
 w = Winner('Albert E.', 'Switzerland', 'Physics', 1921)
-w.print_details()</code></pre>
+w.print_details()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A fenti példa esetében, az ősosztályt, super-classnak nevezhetjük, és
                         újrahasználhatjuk a super-class konstruktőrjét a super-el, felhasználva a Winner objektum példányt
                         self-ként.
@@ -457,7 +461,8 @@ Citizen.prototype = {
 
 let c = new Citizen('Lukács Zs.', 'Hungary');
 
-c.printDetails();</code></pre>
+c.printDetails();</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A fenti kódrészlet mutatja be azt, hogy JavaScript-ben nincsenek classok,
                         és
                         így
@@ -501,7 +506,8 @@ Winner.printDetails = function() {
 
 let a = Object.create(Winner).setWinner('Einstein A.', 'Switzerland', 'Physics', '1921');
 
-a.printDetails();</code></pre>
+a.printDetails();</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                 </section>
 
                 <section id="2progkul">
@@ -528,12 +534,14 @@ a.printDetails();</code></pre>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>names = ['Alice', 'Bob', 'Carol']
 
 for i, n in enumerate(names):
-    print('{}: {}'.format(i, n))</code></pre>
+    print('{}: {}'.format(i, n))</code><button id="copy"
+        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let names = ['Alice', 'Bob', 'Carol']
 
 names.forEach(function(i, n) {
     console.log(i + ': ' + n);
-})</code></pre>
+})</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Lényeges imperatív eltérés a tuple unpacking is, amely Python esetében
                         jelenik
                         meg. A Python tuple unpacking arra nyújt lehetőséget például, hogy változókat cseréljünk meg, csökkentve
@@ -547,7 +555,8 @@ names.forEach(function(i, n) {
         print(x)
         x, y = y, x + y
 
-fibonacci(4)</code></pre>
+fibonacci(4)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ugyancsak sajátossága a Python-nak a collections modul. A collections modul
                         kiegészítő azon összetett adatszerkezetek listáját, amelyekkel a Python rendelkezik: deque, OrderedDict,
                         defaultdict, stb. A collection funkcionalitását utánzó könyvtárak JavaScript-nél is megtalálhatók, bár ott
@@ -562,7 +571,8 @@ items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D']
 cntr = Counter(items)
 # a Counter függvény megszámolja az elemek gyakoriságát
 
-print(cntr)</code></pre>
+print(cntr)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Az egyik nagyon fontos könyvtár, amely a JavaScript funkcionalitását
                         kiegészíti az
                         Underscore. Az Underscore könyvtár lévén, vagy CDN-n keresztül kell elérni, vagy NPM-el fel kell
@@ -575,7 +585,8 @@ print(cntr)</code></pre>
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>let items = ['F', 'B', 'B', 'F', 'A', 'C', 'D', 'D'];
 
-_.countBy(items);</code></pre>
+_.countBy(items);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A következő dolog, amit mindenképp megkell említeni a JavaScript closure-je,
                         vagy
                         zártsága. Alapvetően, a closure ebben a kontextusban nem mást jelent, mint hogy lényegében egy fészkelt
@@ -599,7 +610,8 @@ let cntr = Counter(2);
 cntr(); // count = 2;
 
 cntr(); // count = 4;
-// tehát az értékét megőrzi a count</code></pre>
+// tehát az értékét megőrzi a count</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Hasonló technika a Python-ban is megfigyelhető, de ott kevésbé jelentős a
                         használata.
                     </p>
@@ -619,7 +631,8 @@ cntr(); // count = 4;
         // ...
         // ebben az esetben a that a külső függvény this-jére vonatkozik.
     }
-}</code></pre>
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                 </section>
 
                 <section id="2python">
@@ -638,7 +651,8 @@ cntr(); // count = 4;
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>all = open('data.txt') # megnyitja az állományt olvasásra alapértelmezetten
 
-print(all) # output: <_io.TextIOWrapper name='data.txt' mode='r' encoding='cp1252'></code></pre>
+print(all) # output: <_io.TextIOWrapper name='data.txt' mode='r' encoding='cp1252'></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Azonban, az adatvizualizációs munka során nem csak szöveges állományokat
                         kell
                         feldolgozzunk, de a Python kiterjedtsége a CSV és JSON állományok feldolgozását is nagyban megkönnyíti.
@@ -680,7 +694,8 @@ print(all) # output: <_io.TextIOWrapper name='data.txt' mode='r' encoding='cp125
         'sex': 'female',
         'year': 1911
     }
-]</code></pre>
+]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Első lépésben a fenti Python listát átalakítsuk egy CSV fájllá, bemutatva azt,
                         hogy
                         hogyan is lehet rendszerfájlokat olvasni és írni. Könyvtárak használata nélkül hagyományos Python IO-val
@@ -703,7 +718,8 @@ with open('nobel_winners.csv', 'w') as f: # a with arra jó, hogy garantálja, h
 
 
 with open('nobel_winners.csv', 'r') as f:
-    [print(line, end='') for line in f.readlines()] # kiírjuk a terminálba a csv állományban található adatokat</code></pre>
+    [print(line, end='') for line in f.readlines()] # kiírjuk a terminálba a csv állományban található adatokat</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Általánosságban beszélve, a leggyakrabban használt, mindenhol jelenlevő
                         adatformátumok közé sorolhatók a TSV és CSV fájlok, a két formátum között lényeges különbség az, hogy az
                         adatok hogyan kerülne elválasztásra, CSV esetén vesszővel, TSV esetén tab-al, tehát whitespacecel. A CSV
@@ -720,7 +736,8 @@ with open('nobel_winners.csv', 'w') as f:
     writer.writeheader() # kiírjuk a mezőneveket a csv fájlba
 
     for w in nobel_winners:
-        writer.writerow(w)</code></pre>
+        writer.writerow(w)</code><button id="copy"
+            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ugyanakkor, valószínűbb, hogy többet fogsz CSV fájlokat olvasni, mint
                         létrehozni,
                         tehát nézzük meg, hogy hogyan lehet csv könyvtár segítségével állományokat olvasni:
@@ -729,14 +746,16 @@ with open('nobel_winners.csv', 'w') as f:
     reader = csv.reader(f)
 
     for row in reader:
-        print(row)</code></pre>
+        print(row)</code><button id="copy"
+            class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Általában, kényelmesebb megoldás a CSV adat feldolgozására, ha átalakítsuk a
                         sorokat vissza Python dict objektumokká:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>with open('nobel_winners.csv', 'r') as f:
     reader = csv.DictReader(f)
 
-    nobel_winners = list(reader)</code></pre>
+    nobel_winners = list(reader)</code><button id="copy"
+        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Fontos megjegyezni a fenti két példa esetében, hogy a 'year' kulcsú adat
                         minden esetben string típusú lesz, explicit átkell azt alakítani int-té, ha számként akarjuk felhasználni.
                         Az
@@ -754,17 +773,18 @@ with open('nobel_winners.csv', 'w') as f:
                         könyvtárat. A dump metódus, amely a json könyvtár részét képzi, bevesz egy Python konténer típust és egy
                         állománymutatót, egyszerűen belementi az első argumentumot a másodikba:
                     </p>
-                    <pre
-                        class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>import json
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>import json
 
 with open('nobel_winners.json', 'w') as f:
-    json.dump(nobel_winners, f) # egyszerűen létrehozza a fenti nobel_winners dict objektumokból álló listából a json állományt</code></pre>
+    json.dump(nobel_winners, f) # egyszerűen létrehozza a fenti nobel_winners dict objektumokból álló listából a json állományt</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Írni vagy olvasni legalább ugyanannyira egyszerű a json modul segítségével,
                         használva olvasásra a load metódust, amit az alábbi példa is szemléltet:
                     </p>
                     <pre class="my-4 bg-gray-600 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>with open('nobel_winners.json', 'r') as f:
-    nobel_winners = json.load(f)</code></pre>
+    nobel_winners = json.load(f)</code><button id="copy"
+        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Azonban, a fenti módszer közel sem tökéletes, amennyiben egy datetime
                         objektumot akarunk dump-el átalakítani, hibaüzenetet kapunk. A probléma a szerializációs folyamattal van,
                         elemi típusok esetében az alapértelmezett json enkóder és dekóder jól működik, de speciális típusok
@@ -790,7 +810,8 @@ class JSONDateTimeEncoder(json.JSONEncoder): # örökli az alapértelmezett JSON
 def dumps(obj):
     return json.dumps(obj, cls=JSONDateTimeEncoder) # használjuk a szerializációs metódust, beállítva a cls argumentummal a saját enkóderünket
 
-now_str = dumps({'time': datetime.datetime.now()}) # átalakítja json formátumba a jelenlegi időt</code></pre>
+now_str = dumps({'time': datetime.datetime.now()}) # átalakítja json formátumba a jelenlegi időt</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A fenti példa esetében dekódoláskor, a 'time' mezőnél könnyű dolgunk van,
                         hiszen az
                         alapból egy string, ugyanakkor a datestring valamilyen módon értelmezni kell először. Nem ajánlott, hogy
@@ -808,7 +829,8 @@ now_str = dumps({'time': datetime.datetime.now()}) # átalakítja json formátum
 
 dt = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S') 
 # a strptime megpróbálja megegyeztetni a date-stringet annak a formátumnak, 
-# amit második argumentumként megadunk, ha sikerül visszatéríti a datetime példányt</code></pre>
+# amit második argumentumként megadunk, ha sikerül visszatéríti a datetime példányt</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A következő részben megvizsgáljuk azt, hogy hogyan vagyunk képesek adatot
                         olvasni és írni Pythonban SQL és noSQL adatbázisokba.
                     </p>
@@ -849,7 +871,8 @@ dt = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
 
 engine = create_engine('sqlite:///nobel_prize.db', echo=True)
 # Ebben az esetben az állomány-alapú SQLite adatbázist használjuk, az echo Igazra állításával azt érjük el, hogy az 
-# SQLAlchemy-vel generált SQL instrukciók kiíródnak a terminálba</code></pre>
+# SQLAlchemy-vel generált SQL instrukciók kiíródnak a terminálba</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Tanácsos, a lehető legtöbb esetben felhasználni az SQLAlchemy deklaratív
                         stílusát
                         az adatbázisokkal való interakciókor, hiszen a high-level stílussal könnyebb magát a kódot megírni, bár
@@ -894,7 +917,8 @@ class Winner(Base):
 
     def __repr__(self):
         return "&#60;Winner(name={}, category={}, year={})>".format(self.name, self.category, self.year)
-    # opcionális metódus, amelyet a tábla-sor kiírására fogjuk használni</code></pre>
+    # opcionális metódus, amelyet a tábla-sor kiírására fogjuk használni</code><button id="copy"
+        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Tehát, meghatároztuk a bázis örökölt classainkat az előző lépésben
                         (sub-clasoskat),
                         ezután használjuk a create_all metódust az adatbázis motrunkkal és a létrehozott bázis metaadatokkal, hogy
@@ -902,7 +926,8 @@ class Winner(Base):
                         láthatunk a terminálban:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
-                    text-gray-200"><code>Base.metadata.create_all(engine)</code></pre>
+                    text-gray-200"><code>Base.metadata.create_all(engine)</code><button id="copy"
+                        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Miután mindent összeállítottunk kezdhetjük is hozzáadni az új winners táblákban
                         a
                         winner példányokat. Mostmár megvan az adatbázisunk, egy session-re van szükségünk ahhoz, hogy interakcióba
@@ -910,7 +935,8 @@ class Winner(Base):
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>Session = sessionmaker(bind=engine)
-session = Session()</code></pre>
+session = Session()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ezután használni tudjuk a korábban létrehozott Winner classunkat ahhoz, hogy
                         létrehozzunk új példányokat/tábla-sorokat, és hozzáadhassuk a session-höz:
                     </p>
@@ -919,7 +945,8 @@ session = Session()</code></pre>
 # a Python ** operátorja kicsomagolja az első nober_winners elemet key-value párokként, tehát (name=Albert Einstein, category=Physics...)
 session.add(albert)
 session.new
-# a new metódus segítségével beállítjuk az összes elemet, amelyet hozzáadtunk a session-höz.</code></pre>
+# a new metódus segítségével beállítjuk az összes elemet, amelyet hozzáadtunk a session-höz.</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Fontos megjegyezni azt, hogy minden adatbázis beillesztés, törlés, stb.
                         Python-on
                         belül történik, csakis akkor változik meg a tényleges adatbázis, amikor a commit metódust is használjuk,
@@ -933,7 +960,8 @@ session.new
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>session.expunge(albert)
 # törli az argumentumként megadott példányt, akár az összeset is törölhetjük az expunge_all() metódussal
-session.new</code></pre>
+session.new</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Hiába adogattunk és törölgettünk dolgokat az adatbázisból, valójában még semmit
                         sem
                         változtattunk rajta mióta létrehoztuk. Adjuk hozzá az összes elemet a nobel_winners listából a
@@ -945,17 +973,20 @@ session.new</code></pre>
 # létrehoz egy listányi Winner példányt a nobel_winners elemeiből
 session.add_all(winner_rows)
 session.commit()
-# beilleszti a session IdentitySet-jéből az összes elemet az adatbázisba</code></pre>
+# beilleszti a session IdentitySet-jéből az összes elemet az adatbázisba</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ahhoz, hogy elérjük az adatokat használhatjuk a session query metódusát, a
                         lekérésnek az eredménye majd szürhető, csoportosítható, stb., lehetővé téve az összes szabvány SQL
                         adatlekérést. A következő kódrészletben lekérjük mindazon tábla-sorokat, amelyek nemzetiség svájci:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
-                    text-gray-200"><code>result = session.query(Winner).filter_by(nationality='Swiss')</code></pre>
+                    text-gray-200"><code>result = session.query(Winner).filter_by(nationality='Swiss')</code><button id="copy"
+                        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">De akár lekérhetjük rendezve is a sorokat:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
-                    text-gray-200"><code>res = session.query(Winner).order_by('year')</code></pre>
+                    text-gray-200"><code>res = session.query(Winner).order_by('year')</code><button id="copy"
+                        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ahhoz, hogy az adatbázisban található objektumokat újra Python dict-té
                         alakítsuk
                         kicsit dolgozni kell. Előszöris, létre kell hoznunk egy függvényt, amely létrehoz egy dict objektumot egy
@@ -977,7 +1008,8 @@ session.commit()
     return dat
 
 winner_rows = session.query(Winner)
-nobel_winners = [inst_to_dict(w) for w in winner_rows]</code></pre>
+nobel_winners = [inst_to_dict(w) for w in winner_rows]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Nagyon egyszerűen képesek vagyunk frissíteni táblázat sorokat, az által, hogy a
                         query által visszatérített objektumot megváltoztatjuk, használhatjuk közben a new-hez hasonlóan a dirty-t,
                         amely azokat a példány változtatásokat téríti vissza, amik még nem kerültek véglegesítésre az
@@ -986,7 +1018,8 @@ nobel_winners = [inst_to_dict(w) for w in winner_rows]</code></pre>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>marie = session.query(Winner).get(3)
 marie.nationality = 'French'
-session.dirty</code></pre>
+session.dirty</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Miután megváltoztattuk a példányt, a commit-al a szokásos módon véglegesíteni
                         is
                         tudjuk, majd le is ellenőrízhetjük, hogy valóban megváltozott:
@@ -994,13 +1027,15 @@ session.dirty</code></pre>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>session.commit()
 
-session.query(Winner).get(3).nationality # 'French'</code></pre>
+session.query(Winner).get(3).nationality # 'French'</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">De akár törölhetünk is természetesen sorokat az adatbázisból:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>session.query(Winner).filter_by(name='Albert Einstein').delete()
 
-list(session.query(Winner)) # Albert már nem jelenik meg</code></pre>
+list(session.query(Winner)) # Albert már nem jelenik meg</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Továbbá, megkell említenünk még egy könyvtárt, amely az SQL adatbázisokkal való
                         munkát könnyíti meg, még jobban, mint ahogy azt az SQLAlchemy teszi, és ez nem más, mint a Dataset
                         könyvtár. A
@@ -1014,7 +1049,8 @@ list(session.query(Winner)) # Albert már nem jelenik meg</code></pre>
                         ezzel a könyvtárral alapértelmezetten, pip segítségével telepítenünk kell azt először:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
-                    text-gray-200"><code>pip install dataset</code></pre>
+                    text-gray-200"><code>pip install dataset</code><button id="copy"
+                        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>import dataset
 
@@ -1024,7 +1060,8 @@ db = dataset.connect('sqlite:///nobel_prize.db')
 wtable = db['winners']
 winners = wtable.find()
 winners = list(winners)
-# lekértük az adatbázisban található összes sort, ami a winners táblán belül található</code></pre>
+# lekértük az adatbázisban található összes sort, ami a winners táblán belül található</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Most, akár újra is csinálhatjuk teljes egészében a winners táblát Dataset
                         segítségével is, csak gyakorlásképpen:
                     </p>
@@ -1035,7 +1072,8 @@ wtable.drop()
 
 # majd újra létrehozzuk, és ekkor üres
 wtable = db['winners']
-list(wtable.find()) # output: []</code></pre>
+list(wtable.find()) # output: []</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ahhoz, hogy újra létrehozzuk a winners táblát, jelen esetben Dataset-et
                         használva
                         nem kell létrehoznunk a sémát, ahogy azt az előbb az SQLAlchemy-t használva tettük. A Dataset okosan
@@ -1051,7 +1089,8 @@ list(wtable.find()) # output: []</code></pre>
 
 # ez után le is ellenőrízhetjük, hogy helyesen dolgoztunk-e
 
-print(list(db['winners'].find()))</code></pre>
+print(list(db['winners'].find()))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A használatának könnyedsége mellett, a Dataset még egy fontos előnnyel
                         rendelkezik,
                         ez nem más, mint a freeze metódus, amely egy nagyszerű eszköz kezdő adat-megjelenítőknek. A freeze fogja
@@ -1061,12 +1100,14 @@ print(list(db['winners'].find()))</code></pre>
                         tartalmazza:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
-                    text-gray-200"><code>pip install datafreeze</code></pre>
+                    text-gray-200"><code>pip install datafreeze</code><button id="copy"
+                        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>from datafreeze import freeze
 
 winners = db['winners'].find()
-freeze(winners, format='csv', filename='nobel_winners_ds.csv')</code></pre>
+freeze(winners, format='csv', filename='nobel_winners_ds.csv')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Miután alaposan megvizsgáltuk azt, hogy hogyan tudunk SQL adatbázisokkal
                         dolgozni Pythonban, nézzük meg, hogy megy ugyanez NoSQL rendszerek esetén.
                     </p>
@@ -1090,7 +1131,8 @@ db = client.nobel_prize
 # létrehozza és hozzafér a nobel_prize adatbázishoz
 # a fenti utasítás esetében akár a client['nobel_prize'] forma is elfogadható, azonban úgy könnyebb hibázni
 coll = db.winners
-# ha a winners collection létezik, akkor lekéri, ha nem, akkor létrehozza</code></pre>
+# ha a winners collection létezik, akkor lekéri, ha nem, akkor létrehozza</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A fenti esetben az alapértelmezett host alatt a localhost-ot értjük, és a port
                         esetében a MongoDB a 27017-et tekinti alapértelmezettnek. Akár, opcionálisan, felhasználónevet és jelszót
                         is
@@ -1110,7 +1152,8 @@ def get_mongo_database(db_name, host='localhost', port=27017, username=None, pas
     else:
         conn = MongoClient(host, port)
 
-    return conn[db_name] # itt már a második féle jelölést használjuk az adatbázis eléréséhez</code></pre>
+    return conn[db_name] # itt már a második féle jelölést használjuk az adatbázis eléréséhez</code><button id="copy"
+        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Ezután, akár a kiegészítő függvény használatával is létrehozhatjuk a Nobel-díj
                         adatbázisunkat, ahogy azt korábban is tettük:
                     </p>
@@ -1123,20 +1166,23 @@ coll.insert(nobel_winners)
 # ugyanakkor, ha kiírjuk a terminálba az eredeti listát, a nobel_winners-et, megfigyelhetjük
 # hogy az insert metódus kiegészíti azt, hozzáad egy új 'id' mezőt.
 # ezek ObjectId-k, amelyek későbbi lehívásokat tesznek lehetővé, de más egyéb rejtett funkcionalítással is rendelkeznek,
-# mint pl. hogy rendelkeznek egy generálási idővel, amikoris az ObjectId létrejött</code></pre>
+# mint pl. hogy rendelkeznek egy generálási idővel, amikoris az ObjectId létrejött</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Most, hogymár rendelkezünk elemekkel a winners collection-ben, a MongoDB
                         legalább
                         ennyire könnyűvé teszi azt, hogy mezőket találjunk meg bennük, a find metódussal:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>res = coll.find({'category': 'Chemistry'})
-print(list(res))</code></pre>
+print(list(res))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Továbbá, számos speciális dollár-prefixelt operátort is használhatunk a
                         lekérdezések során, például az alábbi kódrészlet a $gt (greater-than) operátort használja:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code>res = coll.find({'year' : {'$gt': 1930}})
-print(list(res))</code></pre>
+print(list(res))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Végül, nézzük meg azt, hogy hogyan tudjuk a winners collection-ünket Python
                         dict
                         listává alakítani, erre a feladatra egy újabb kiegészítő függvényt hozzunk létre:
@@ -1153,7 +1199,8 @@ print(list(res))</code></pre>
 
     return res
 
-print(mongo_coll_to_dicts('nobel_prize', 'winners'))</code></pre>
+print(mongo_coll_to_dicts('nobel_prize', 'winners'))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A képesség arra, hogy könnyedén és kényelmesen dolgozzunk dátumokkal és
                         idősávokkal
                         elengedhetetlen a vizualizációs munkához, de nem mindig túlságosan egyszerű folyamat. Számos mód van arra,
@@ -1174,7 +1221,8 @@ print(mongo_coll_to_dicts('nobel_prize', 'winners'))</code></pre>
                     text-gray-200"><code class="python">from datetime import datetime
 
 d = datetime.now()
-print(d.isoformat()) # output: 2020-07-04T19:13:47.622017</code></pre>
+print(d.isoformat()) # output: 2020-07-04T19:13:47.622017</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">A fent kapott string aztán JSON-ba, CSV-be, vagy egyébbe lementve beolvasható
                         JavaScriptből, és felhasználható arra, hogy egy Date objektumot hozzunk létre:
                     </p>
@@ -1182,14 +1230,16 @@ print(d.isoformat()) # output: 2020-07-04T19:13:47.622017</code></pre>
                     text-gray-200"><code class="javascript">let d = new Date('2020-07-04T19:13:47.622017'); // output: Sat Jul 04 2020 19:13:47 GMT+0300 (Eastern European Summer Time)
 
 // akár vissza is alakíthatjuk ISO formátumba a kapott Date objektumot
-d.toISOString(); // output: 2020-07-04T16:13:47.622Z</code></pre>
+d.toISOString(); // output: 2020-07-04T16:13:47.622Z</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Végül, hogy teljes legyen a kép, értelmezhetjük a kapott string-et Pythonban
                         is:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code class="python">from dateutil import parser
 
-d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.622000+00:00</code></pre>
+d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.622000+00:00</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal mb-4">Megfigyelhető némi pontosság-veszteség, amikor Python és JavaScript között
                         alakítgatunk, de általában lényegtelen az eltérés.
                     </p>
@@ -1217,7 +1267,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
                         segítségével, amit az alábbi kódrészlet is szemléltet:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
-                    text-gray-200"><code class="shell">$ python -m http.server</code></pre>
+                    text-gray-200"><code class="shell">$ python -m http.server</code><button id="copy"
+                        class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">A forráskönyvtár index.html állományát fogja megjeleníteni a fenti
                         kódrészlet,
                         helyileg, a következő címen elérve: <em>http://localhost:8000/</em>. Ugyanakkor, korlátozott
@@ -1351,7 +1402,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
 &#60;/style>
 
 &#60;svg id="chart" width="300" height="225">
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1380,7 +1432,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code class="html">&#60;svg id="chart" width="300" height="225">
     &#60;circle r="15" cx="100" cy="50">&#60;/circle>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1415,7 +1468,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
     #chart circle {
         fill: lightgreen;
     }
-&#60;/style></code></pre>
+&#60;/style></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1462,7 +1516,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
 &#60;svg id="chart" width="300" height="225">
     &#60;circle r="15" cx="100" cy="50">&#60;/circle>
     &#60;line id="total" x1="50" x2="100" y1="50" y2="50">&#60;/line>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1518,7 +1573,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
 &#60;svg id="chart" width="300" height="225">
     &#60;line id="x-axis" x1="50" x2="225" y1="150" y2="150">&#60;/line>
     &#60;line id="y-axis" x1="50" x2="50" y1="50" y2="150">&#60;/line>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1586,7 +1642,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
     &#60;line id="x-axis" x1="50" x2="225" y1="150" y2="150">&#60;/line>
     &#60;line id="y-axis" x1="50" x2="50" y1="50" y2="150">&#60;/line>
     &#60;rect id="legend" x="200" y="25" width="55" height="30">&#60;/rect>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1673,7 +1730,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
     &#60;line id="y-axis" x1="50" x2="50" y1="50" y2="150">&#60;/line>
     &#60;rect id="legend" x="200" y="40" width="55" height="30">&#60;/rect>
     &#60;text id="title" text-anchor="middle" x="150" y="20">Dummy chart&#60;/text>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1757,7 +1815,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
     &#60;text id="title" text-anchor="middle" x="150" y="20">Dummy chart&#60;/text>
     &#60;text id="y-name" x="-80" y="40" text-anchor="middle" transform="rotate(-90, 0, 0)">y-axis&#60;/text>
     &#60;text id="x-name" x="200" y="170" text-anchor="middle">x-axis&#60;/text>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1861,7 +1920,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
     &#60;text id="y-name" x="-80" y="40" text-anchor="middle" transform="rotate(-90, 0, 0)">y-axis&#60;/text>
     &#60;text id="x-name" x="200" y="170" text-anchor="middle">x-axis&#60;/text>
     &#60;path d="M50 150L80 80L120 100L160 45">&#60;/path>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1939,7 +1999,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
     &#60;rect width="20" height="40" transform="translate(120, 120), rotate(45)">&#60;/rect>
     &#60;rect width="20" height="40" transform="translate(180, 120), scale(0.5)">&#60;/rect>
     &#60;rect width="20" height="40" transform="translate(240, 120), scale(0.5), rotate(45)">&#60;/rect>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -1994,7 +2055,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
         &#60;path d="M-20 -10L50 -10L10 60Z" fill="green">&#60;/path>
         &#60;circle r="10" fill="yellow">&#60;/circle>
     &#60;/g>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -2049,7 +2111,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
         &#60;circle cx="17.3" cy="10" r="30" fill="green">&#60;/circle>
         &#60;circle cx="-17.3" cy="10" r="30" fill="blue">&#60;/circle>
     &#60;/g>
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="my-4">
@@ -2106,7 +2169,8 @@ d = parser.parse('2020-07-04T16:13:47.622Z') # output: 2020-07-04 16:13:47.62200
 &#60;/style>
 
 &#60;svg id="ex3" witdh="300" height="225" style="background: lightgray">
-&#60;/svg></code></pre>
+&#60;/svg></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto
                     text-gray-200"><code class="javascript">let exCircles = function(data) {
     let ex = d3.select('#ex3');
@@ -2133,7 +2197,8 @@ let data = {
     ]
 };
 
-exCircles(data);</code></pre>
+exCircles(data);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Renderelve valahogy így nézne ki:
                     </p>
                     <div class="mt-4">
@@ -2171,8 +2236,7 @@ exCircles(data);</code></pre>
         </main>
 
         <div id="arr"
-            class="fixed block transition duration-100 ease-in"><a
-                class="inline-block text-3xl hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
+            class="fixed block transition duration-100 ease-in"><a class="inline-block text-3xl hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
                 opacity-50 hover:opacity-100"
                 href="#menu">&uarr;</a></div>
 
