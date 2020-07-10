@@ -114,7 +114,7 @@ def process_winner_li(w, country=None):
 
     # regExp, amely kiválasztja a kategóriát
     category = re.findall(
-        "Physics|Chemistry|Physiology or Medicine|Literature|Peace|Economics", text
+        "Physics|Chemistry|Physiology or Medicine|Physiology|Medicine|Literature|Peace|Economics", text
     )
 
     if category:
@@ -152,7 +152,7 @@ class NWinnerSpider(scrapy.Spider):
         # lekéri az összes h3 taget az oldalról
         h3s = response.xpath("//h3")
 
-        # jelenleg csak az első 3 országot fogjuk megszerezni
+        # jelenleg csak az első 3 országot fogjuk megszerezni, már nem igaz
         for h3 in h3s:
             # megszerezzük az országot, és ki is bontjuk, megszerezve a teljes tartalmát
             country = h3.xpath('span[@class="mw-headline"]/text()').extract()
@@ -213,8 +213,10 @@ class NWinnerSpider(scrapy.Spider):
         ]
 
         # ez a szépség a Chrome DevTools-ból való
+        # alakítani kellett, hiszen megváltozott a wikidata oldala a könyvhöz képest
+        # //*[@id="P21"]/div[2]/div[1]/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[1]/a/text()
         p_template = (
-            '//*[@id="{code}"]/div[2]/div[1]/div/div[2]/div[2]/div[1]{link_html}/text()'
+            '//*[@id="{code}"]/div[2]/div[1]/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[1]{link_html}/text()'
         )
 
         for prop in property_codes:
@@ -231,6 +233,8 @@ class NWinnerSpider(scrapy.Spider):
 
             if sel:
                 item[prop["name"]] = sel[0].extract()
+            else:
+                item[prop["name"]] = ""
 
         # végül yieldeljük az item-et, amely ezen a ponton már minden adatot tartalmaznia kellene a wiki-ről
         yield item

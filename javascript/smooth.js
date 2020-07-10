@@ -20,5 +20,7 @@ $(document).ready(function () {
                 window.location.hash = hash;
             });
         } // End if
+
+        if (document.activeElement != document.body) document.activeElement.blur();
     });
 });
