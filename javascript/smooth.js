@@ -21,6 +21,6 @@ $(document).ready(function () {
             });
         } // End if
 
-        if (document.activeElement != document.body) document.activeElement.blur();
+        $(this).blur()
     });
 });

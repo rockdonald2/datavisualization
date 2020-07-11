@@ -1,6 +1,7 @@
 import pandas as pd
 from pymongo import MongoClient
 import numpy as np
+import sqlalchemy
 
 # alapértelmezett beállításokkal, csupán az adatbázisnév tetszőleges
 def get_mongo_database(
@@ -489,21 +490,94 @@ def clean_data(df):
     df.date_of_birth = pd.to_datetime(df.date_of_birth)
     df.date_of_death = pd.to_datetime(df.date_of_death)
 
-    # a MongoDB-n való tárolás miatt vissza kell alakítani object-é az oszlopot, és NaN-ra állítani a NaT-okat,
-    # mert másképp nem engedi feltölteni, ValueError miatt
-    df.date_of_death = df.date_of_death.astype(object).where(df.date_of_death.notnull(), np.nan)
-
     # kiszámoljuk minden győztes esetén az életkorukat, amikor megkapták a díjat,
     # használjuk a DateTimeIndex metódust, hogy jelezzük a Pandas-nak dátummal dolgozunk
     df['award_age'] = df.year - pd.DatetimeIndex(df.date_of_birth).year
 
     return df, df_born_in
 
+
+def dataframe_mongo_compatible(df):
+    # a MongoDB-n való tárolás miatt vissza kell alakítani object-é az oszlopot, és NaN-ra állítani a NaT-okat,
+    # mert másképp nem engedi feltölteni, ValueError miatt
+    df.date_of_death = df.date_of_death.astype(object).where(df.date_of_death.notnull(), np.nan)
+
+    return df
+
+def dataframe_reverse_compatible(df):
+    # visszalakítjuk datetime objektummá az oszlopot
+    df.date_of_death = pd.to_datetime(df.date_of_death)
+
+    return df
+
 df, df_born_in = clean_data(df)
+
+df_winners_bios = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/minibios.json')
+
+# a pandas merge metódusa bevesz két DataFrame-t és egyesíti őket olyan oszlopok alapján, amelyek megegyeznek, jelen esetben
+# a link oszlop egyezése alapján
+# a how argumentum azt határozza meg, hogy melyik kulcsok lesznek belefoglalva a végső, eredményül kapott táblázatba,
+# ezek ugyanúgy működnek, mint az SQL join-ok, ebben az esetben az outer az SQL FULL_OUTER_JOIN-ra utal
+# amely azt jelenti, hogy egyesíti a kulcsokat ebben az esetben
+df_winners_all = pd.merge(df, df_winners_bios, how='outer', on='link')
+
+""" print(df_winners_all.info()) """
+
+""" output:
+0   link            946 non-null    object
+ 1   name            927 non-null    object
+ 2   year            927 non-null    float64
+ 3   category        927 non-null    object
+ 4   country         927 non-null    object
+ 5   text            927 non-null    object
+ 6   date_of_birth   927 non-null    datetime64[ns]
+ 7   date_of_death   633 non-null    datetime64[ns]
+ 8   place_of_birth  927 non-null    object
+ 9   place_of_death  633 non-null    object
+ 10  gender          927 non-null    object
+ 11  award_age       927 non-null    float64
+ 12  image_urls      946 non-null    object
+ 13  mini_bio        946 non-null    object
+ 14  bio_image       809 non-null    object """
+
+# először is elvetjük azokat, ahol nincs név, azaz csak a minibios-ban léteztek, de a cleaned-ben nem
+# majd droppoljuk a duplikátumokat link és year alapján
+df_winners_all = df_winners_all[~df_winners_all.name.isnull()].drop_duplicates(subset=['link', 'year'])
+
+# kiigazitsuk az image_urls-eket az által, hogy NaN-ra állítjuk az üreseket
+df_winners_all.loc[(~(df_winners_all.image_urls.astype(bool))), 'image_urls'] = np.nan
+
+"""
+df = dataframe_mongo_compatible(df)
 
 # feltöltsük az adatbázisba
 dataframe_to_mongo(df, 'nobel_prize', 'winners_cleaned', removeexisting=True, skipifexists=True)
 dataframe_to_mongo(df_born_in, 'nobel_prize', 'winners_born_in', removeexisting=True, skipifexists=True)
+
+df = dataframe_reverse_compatible(df)
+
+engine = sqlalchemy.create_engine('mysql+pymysql://root@localhost/nobel_prize')
+df.to_sql('winners_cleaned', engine, if_exists='replace')
+
+engine = sqlalchemy.create_engine('sqlite:///nobel_prize.db')
+df.to_sql('winners_cleaned', engine, if_exists='replace') """
+
+
+""" df.to_json('winners_cleaned.json', orient='records', date_format='iso')
+df_born_in.to_json('winners_born_in.json', orient='records', date_format='iso') """
+
+
+
+""" df_winners_all = dataframe_mongo_compatible(df_winners_all)
+
+dataframe_to_mongo(df_winners_all, 'nobel_prize', 'winners_cleaned_w_bios', removeexisting=True, skipifexists=True, forceupdate=True)
+
+df_winners_all = dataframe_reverse_compatible(df_winners_all)
+
+engine = sqlalchemy.create_engine('mysql+pymysql://root@localhost/nobel_prize')
+df_winners_all.to_sql('winners_cleaned_w_bios', engine, if_exists='replace')
+
+df_winners_all.to_json('winners_cleaned_w_bios.json', orient='records', date_format='iso') """
 
 
 

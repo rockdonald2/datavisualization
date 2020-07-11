@@ -70,8 +70,8 @@ class NWinnerSpiderBio(scrapy.Spider):
                 continue
 
             # mivel a mi esetünkben nyersnek vannak meg a tag-ek, jobb, ha a paragrafus tageket eltávolítjuk
-            tmp = re.sub('<p>|</p>', '', t)
-            mini_bio += tmp
+            # tmp = re.sub('<p>|</p>', '', t)
+            mini_bio += t
 
         mini_bio = mini_bio.replace('href="/wiki', 'href="' + BASE_URL + '/wiki')
         mini_bio = mini_bio.replace('href="#', item['link'] + '#')

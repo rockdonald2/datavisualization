@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-    class="text-gray-800 text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+    class="text-gray-800 text-base md:text-lg antialiased leading-normal tracking-normal break-normal bg-white">
 
     <head>
         <meta charset="UTF-8">
@@ -1926,6 +1926,1119 @@ df, df_born_in = clean_data(df)</code><button id="copy"
 dataframe_to_mongo(df, 'nobel_prize', 'winners_cleaned', removeexisting=True, skipifexists=True)
 dataframe_to_mongo(df_born_in, 'nobel_prize', 'winners_born_in', removeexisting=True, skipifexists=True)</code><button id="copy"
     class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Amellett, hogy MongoDB-re is feltöltöttük a tisztított adatbázisunkat, célszerű
+                        későbbi okokból kifolyólag SQL adatbázisokba is tárolni, SQLite-on és MySQL adatbázisokban. Azonban,
+                        frissítenünk kell a clean_data függvényünket, hiszen érdekes anomáliában futhattunk miközben felakartuk
+                        tölteni. Valamilyen belső implementációs okból kifolyólag a MongoDB nem támogatja a NaT-ot, azonban, ha
+                        átalakítom a NaT-ot NaN-ra a dátum oszlopban az SQL adatbázisok nem fogadják el, de a MongoDB igen,
+                        fordítva pedig ellenkezőképpen. Így kiegészítjük a clean_data függvényünket egy kiegészítő függvénnyel,
+                        amely MongoDB kompatibilissá teszi az adatsorunkat feltöltés előtt, majd visszaalakítja eredeti
+                        állapotába, kitörölve a függvényekben található sorokat a clean_data-ból:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">def dataframe_mongo_compatible(df):
+    # a MongoDB-n való tárolás miatt vissza kell alakítani object-é az oszlopot, és NaN-ra állítani a NaT-okat,
+    # mert másképp nem engedi feltölteni, ValueError miatt
+    df.date_of_death = df.date_of_death.astype(object).where(df.date_of_death.notnull(), np.nan)
+
+    return df
+
+def dataframe_reverse_compatible(df):
+    # visszalakítjuk datetime objektummá az oszlopot
+    df.date_of_death = pd.to_datetime(df.date_of_death)
+
+    return df
+
+df, df_born_in = clean_data(df)
+
+df = dataframe_mongo_compatible(df)
+
+# feltöltsük az adatbázisba
+dataframe_to_mongo(df, 'nobel_prize', 'winners_cleaned', removeexisting=True, skipifexists=True)
+dataframe_to_mongo(df_born_in, 'nobel_prize', 'winners_born_in', removeexisting=True, skipifexists=True)
+
+df = dataframe_reverse_compatible(df)
+
+engine = sqlalchemy.create_engine('mysql+pymysql://root@localhost/nobel_prize')
+df.to_sql('winners_cleaned', engine, if_exists='replace')
+
+engine = sqlalchemy.create_engine('sqlite:///nobel_prize.db')
+df.to_sql('winners_cleaned', engine, if_exists='replace')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Végül, jobb, ha megvan mindkét adatsorunk fájlként is, azonban vigyáznunk kell,
+                        hogy adjuk meg a dátumformátumot, másképp használhatatlan állapotban menti le:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df.to_json('winners_cleaned.json', orient='records', date_format='iso')
+df_born_in.to_json('winners_born_in.json', orient='records', date_format='iso')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ezen a ponton akár létrehozhatunk egy összevont DataFrame-t is, amely
+                        tartalmazza a már tiszta győztes adataink mellett a korábban megszerzett életrajzi adatokat is. Ez jó
+                        lehetőség arra, hogy demonstráljuk a Pandas képességeit, hogy DataFrame-ket összevonjon:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df, df_born_in = clean_data(df)
+
+df_winners_bios = pd.read_json('./nobel_prize/nobel_winners/nobel_winners/minibios.json')
+
+# a pandas merge metódusa bevesz két DataFrame-t és egyesíti őket olyan oszlopok alapján, amelyek megegyeznek, jelen esetben
+# a link oszlop egyezése alapján
+# a how argumentum azt határozza meg, hogy melyik kulcsok lesznek belefoglalva a végső, eredményül kapott táblázatba,
+# ezek ugyanúgy működnek, mint az SQL join-ok, ebben az esetben az outer az SQL FULL_OUTER_JOIN-ra utal
+# amely azt jelenti, hogy egyesíti a kulcsokat ebben az esetben
+df_winners_all = pd.merge(df, df_winners_bios, how='outer', on='link')
+
+print(df_winners_all.info())
+
+""" output:
+ 0   link            946 non-null    object
+ 1   name            927 non-null    object
+ 2   year            927 non-null    float64
+ 3   category        927 non-null    object
+ 4   country         927 non-null    object
+ 5   text            927 non-null    object
+ 6   date_of_birth   927 non-null    datetime64[ns]
+ 7   date_of_death   633 non-null    datetime64[ns]
+ 8   place_of_birth  927 non-null    object
+ 9   place_of_death  633 non-null    object
+ 10  gender          927 non-null    object
+ 11  award_age       927 non-null    float64
+ 12  image_urls      946 non-null    object
+ 13  mini_bio        946 non-null    object
+ 14  bio_image       809 non-null    object """</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Természetesen, ez sem ment tökéletesen, hiszen az életrajzi adatokat tartalmazó
+                        adatsorunk magába foglalt felesleges dolgokat is, de gyorsan képesek vagyunk elvetni a duplikátumokat
+                        használva a drop_duplicates metódust:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># először is elvetjük azokat, ahol nincs név, azaz csak a minibios-ban léteztek, de a cleaned-ben nem
+# majd droppoljuk a duplikátumokat link és year alapján
+df_winners_all = df_winners_all[~df_winners_all.name.isnull()].drop_duplicates(subset=['link', 'year'])
+
+# kiigazitsuk az image_urls-eket az által, hogy NaN-ra állítjuk az üreseket
+df_winners_all.loc[(~(df_winners_all.image_urls.astype(bool))), 'image_urls'] = np.nan</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ahhoz, hogy befejezzük a fejezetet nem maradt más, mint, hogy lementsük újra az
+                        adatbázisokba és állományba is:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df_winners_all = dataframe_mongo_compatible(df_winners_all)
+
+dataframe_to_mongo(df_winners_all, 'nobel_prize', 'winners_cleaned_w_bios', removeexisting=True, skipifexists=True, forceupdate=True)
+
+df_winners_all = dataframe_reverse_compatible(df_winners_all)
+
+engine = sqlalchemy.create_engine('mysql+pymysql://root@localhost/nobel_prize')
+df_winners_all.to_sql('winners_cleaned_w_bios', engine, if_exists='replace')
+
+df_winners_all.to_json('winners_cleaned_w_bios.json', orient='records', date_format='iso')
+</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                </section>
+
+                <section id="4visualizing">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Vizualizáljuk adatunkat Matplotlib-el</h2>
+                    <p class="text-lg font-normal pb-3">A Python Matplotlib könyvtára, együtt számos kiegészítőjével, példaképpen
+                        a statisztikai fokuszú Seaborn, érett, és rendkívül testreszabható ábrázolási ökoszisztémát biztosít
+                        felhasználóinak. A Matplotlib ábrák interaktívan használhatók az IPython-al, lehetővé téve egy erőteljes
+                        és intuitív megközelítést és módot arra, hogy megtaláljunk adataink érdekes darabjait. Ebben a fejezetben
+                        megismerkedünk a Matplotlib-el és annak említett kiegészítőjével a Seaborn-al.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A Matplotlib kicsit összezavaró is lehet, ha az ember random módon elkezd
+                        példákat csipegetni belőle az internetről. A legfőbb komplikációt és bonyodalmat az okozza, hogy két fő
+                        mód van arra, hogy ábrákat hozzunk létre, amelyek pont annyira hasonlítanak egymásra, hogy könnyen
+                        összetéveszthessük őket, de épp különböznek is annyira, hogy rengeteg frusztráló hibához vezessenek. Az
+                        első megközelítés egy globális state machine-t használ arra, hogy közvetlenül lépjen kapcsolatba a
+                        Matplotlib <em>pyplot</em> móduljával. A második megközelítés esetében, amely objektum-orientált,
+                        használunk számunkra ismerősebb ábra és tengely (figure and axes) classokat, így biztosítva egy
+                        programozóbarátibb alternatívát.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A következőkben megvizsgáljuk és tisztázzuk a két megközelítés közötti
+                        különbségeket, de jelenleg hüvelykujj-szabályként lerögzíthetjük, hogy amennyiben interaktívan, egyetlen
+                        ábrával dolgozol, a pyplot-os globális state egy kényelmes megoldás.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Egy IPython session-ön belül a Matplotlib kétféleképpen tud működni:
+                        inline és
+                        egy önálló ablakként (Qt). Az IPython QtConsole-ja mindkét módot támogatja, a Notebook az inline grafikát
+                        támogatja, míg az IPython közvetlenül a parancssorról indítva csakis az önálló ablakot támogatja. A
+                        következőkben mi a Notebook-ot fogjuk használni, de ez még változhat.
+                    </p>
+                    <p class="text-lg font-normal">Előszöris, indítsunk el egy IPython session-t a notebook flag-el a
+                        következőképpen:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ jupyter notebook</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Használhatjuk a Matplob egyik 'mágikus' parancsát az IPython session-ön belül,
+                        hogy engedélyezzük az interaktív Matplotlib-et. Ahhoz, hogy így elérjük az inline grafikát a Notebook-on
+                        belül, használhatjuk az <em>inline</em> direktívát, fontos megjegyezni az inline grafika esetén, hogy nem
+                        lehet létrehozása utána módosítani, nem úgy, mint az önálló Matplotlib ablak esetén:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="plaintext">%matplotlib inline</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Függetlenül attól, hogy interaktív módban, vagy Python programban használjuk a
+                        Matplotlib-et azonos importokat fogunk írni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Nem kötelezőek a NumPy és Pandas könyvtárak, azonban a Matplotlib
+                        rendkívül jól dolgozik együtt az említett könyvtárak alapértelmezett adattípusaival, az nparray-ekkel és
+                        Series-ekkel.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Kiegészítve a fenti "létrehozás után nem lehet módosítani" azt jelenti,
+                        hogy
+                        nem használhatjuk a céllában a <em>gcf (get current figure)</em> metódust, hanem megkell ismételjünk
+                        minden ábra parancsot, bármilyen hozzáadással vagy egyeztetéssel egy új cellában, mivel inline mód esetén
+                        az IPython cella miután lefutott, a 'drawing context' üresítve lesz.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A pyplot módul biztosít egy globális state-t, amelyet interaktívan tudsz
+                        manipulálni. Arra lett ez kitalálva, hogy interaktív fedezzük fel adatainkat, és akkor a legjobb és
+                        leghasznosabb, amikor kicsi, egyszerű ábrákat hozzunk létre. A pyplot-ot kényelmes használni, de az
+                        összetetebb ábrákhoz mindenképp a Matplotlib objektum-orientált API-jához kell fordulnunk.
+                    </p>
+                    <p class="text-lg font-normal">Mielőtt demonstrálnánk azt, hogy hogyan használjuk a globális dolgot,
+                        készítsünk valamilyen random adatot, amit megjeleníthetünk, felhasználva a Pandas hasznos
+                        <em>period_range</em> metódusát:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">from datetime import datetime
+
+# visszaterít 200 darab PeriodIndex-et, a mai naptól kezdve, naponkénti gyakorisággal
+x = pd.period_range(datetime.now(), periods=200, freq='d')
+# átalakítja a PeriodIndex-et először DateTimeIndex-é, majd Python datetime-á
+x = x.to_timestamp().to_pydatetime()
+# létrehoz 3 darab 200 tagból álló tömböt, majd halmozott összeget csinál a 0-ás tengely mentén, ami azt jelenti, hogy soronként
+y = np.random.randn(3, 200).cumsum(0)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Összegezve, a fenti kód alapján rendelkezünk a y tengelyen 200 darab idővel,
+                        illetve 3 random tömbbel, a kiegészítő x értékekkel. Majd ezeket átadjuk különkénti argumentumokként a
+                        <em>plot</em> metódusba, hogy ábrázoljuk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">plt.plot(x, y)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig15.png"
+                            alt="Ábra 15">
+                        <figcaption class="text-center pt-3 pb-4 text-md">15. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Megegyezhetünk abban, hogy a Matplotlib alapértelmezett beállításai
+                        kevésbé ideálisak, de szerencsére az egyik nagy erőssége a könyvtárnak a puszta száma a testreszabhatósági
+                        lehetőségeknek. Ezért mondható el az, hogy nagyon gazdag a skálája azon ábrázolási könyvtáraknak, amelyek
+                        a Matplotlib-et ideálisabb alapértelmezett beállításokkal látják el, vonzóbb színbeállításokkal, és
+                        egyebekkel. A következőkben vizsgáljunk meg pár testreszabhatósági lehetőséget, az előbbi ábránk
+                        alakításával.
+                    </p>
+                    <p class="text-lg font-normal">A Matplotlib konfigurációs lehetőségeit az erre lefoglalt <em>matplotlibrc</em>
+                        fájlban kell meghatározzuk vagy dinamikusan, egy dict-hez hasonló <em>rcParams</em> változóban.
+                        Változtassuk mi a vonaldiagrammunk szélességét és alapértelmezett színét:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">mpl.rcParams['lines.linewidth'] = 2
+mpl.rcParams['lines.color'] = 'r' # piros
+
+plt.plot(x, y)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig16.png"
+                            alt="Ábra 16">
+                        <figcaption class="text-center pt-3 pb-4 text-md">16. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Amennyiben az ábrád alapértelmezett olvashatósága rossz, vagy a
+                        szélesség-magasság arány szuboptimális, akkor nagy valószínűséggel megkell változtasd a méretét.
+                        Alapértelmezetten, a Matplotlib inchet használ, hogy beállítsa ábrái méretét. Ez hamar értelmet nyer,
+                        amikor belegondolunk abba a rengeteg backendbe (gyakran vektor-grafika alapú), amelybe a Matplotlib
+                        lementhet dolgokat. Ebben az esetben használni fogjuk a pyplotot, hogy beállítsuk az ábra méretét 8x4
+                        inchre:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">plt.rcParams['lines.linewidth'] = 2
+plt.rcParams['figure.figsize'] = (8, 4)
+
+plt.plot(x, y)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig17.png"
+                            alt="Ábra 17">
+                        <figcaption class="text-center pt-3 pb-4 text-md">17. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A Matplotlib pontot (points), és nem pixelt, használ, hogy mérje az ábrai
+                        méretét. Ez elfogadott mérési mód olyan publikációkhoz, amelyet nyomtatásra szántak, és a Matplotlib-et
+                        arra tervezték, hogy publikálható minőségű képeket hozzon létre.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Alapértelemzetten egy pont hozzávetőlegesen 1/72-ed rész széles az inchhez
+                        viszonyítva, de a Matplotlib lehetővé teszi, hogy ezt alakítsuk, az által, hogy megváltoztassuk a generált
+                        ábrák dpi-ját. Minél nagyobb a szám, annál szebb a kép minősge. Az inline ábrák esetén, amelyekkel az
+                        előbb is foglalkoztunk, a felbontás általában az ábrák generálására használt backend motor eredménye.
+                    </p>
+                    <p class="text-lg font-normal">Az előző ábrákról hiányzik a jelölés, hogy egyáltalán tudjuk mit jelentek a
+                        tengelyek. A Matplotlib rendelkezik egy hasznos jelmagyarázat dobozzal, hogy elnevezzük a vonalainkat, ami
+                        jól konfigurálható, ahogy azt ettől a könyvtár megszokhatnánk. Azonban, ahhoz, hogy mindhárom vonalunkat
+                        külön tudjuk elnevezni közvetetten kell ezt megközelítsük, hiszen ámbár a plot beesz egy címke
+                        argumentumot, azonban ezt az összes vonalra alkalmazza, ami nálunk nem előnyös. Hasznosan, a plot parancs
+                        visszatéríti az összes <em>Line2D</em> objektumot, amit létrehoz a generálás alatt, majd ezeket
+                        felhasználhatjuk a <em>legend</em> metódusban, hogy beállítsuk az egyedi címkéket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">plots = plt.plot(x, y)
+print(plots)
+
+"""
+output:
+
+[&#60;matplotlib.lines.Line2D object at 0x0000012612A5C4C0>, 
+&#60;matplotlib.lines.Line2D object at 0x0000012612A82880>, 
+&#60;matplotlib.lines.Line2D object at 0x0000012612A827C0>]
+
+"""</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A legend metódus tehát beállíthatja a címkéket, ajánl egy elhelyezkedést a
+                        jelmagyarázat doboznak, és beállít még néhány egyéb dolgot is:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">plots = plt.plot(x, y)
+
+# második argumentumban beállítjuk a vonalaink címkéit,
+# harmadik argumentumban használva a 'best' pozíciót, a lehető legjobb helyre rakja a jelmagyarázatot, anélkül, hogy bármelyik vonalat is takarná,
+# framealpha-val beállítjuk a doboz átláthatóságát,
+# végül, a prop-al alakítsuk a font beállításait a címkéknek
+plt.legend(plots, ('foo', 'bar', 'baz'), loc='best', framealpha=0.5, prop={'size': 'small', 'family': 'monospace'})</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig18.png"
+                            alt="Ábra 18">
+                        <figcaption class="text-center pt-3 pb-4 text-md">18. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Aztán, szeretnénk címet beállítani az ábránknak, majd címkéket hozzáfűzni a
+                        tengelyekhez, jelölve, hogy mit is mutatnak be, a következő kódrészlet szemlélteti mennyire is egyszerű:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">plots = plt.plot(x, y)
+
+# második argumentumban beállítjuk a vonalaink címkéit,
+# harmadik argumentumban használva a 'best' pozíciót, a lehető legjobb helyre rakja a jelmagyarázatot, anélkül, hogy bármelyik vonalat is takarná,
+# framealpha-val beállítjuk a doboz átláthatóságát,
+# végül, a prop-al alakítsuk a font beállításait a címkéknek
+plt.legend(plots, ('foo', 'bar', 'baz'), loc='best', framealpha=0.5, prop={'size': 'small', 'family': 'monospace'})
+
+plt.title('Random trends')
+plt.xlabel('Date')
+plt.ylabel('Cum. sum')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig19.png"
+                            alt="Ábra 19">
+                        <figcaption class="text-center pt-3 pb-4 text-md">19. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Némi szöveget is hozzáadhatunk az ábránkhoz a <em>figtext</em> metódussal:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># az első két argumentum az x és y koordinátákat, tehát az ábramérethez viszonyított pozíciót határozza meg
+# a harmadik a szöveg, míg az utolsó két argumentum a horizontális és vertikális alignment-et határozza meg
+plt.figtext(0.995, 0.01, u'Innovation™', ha='right', va='bottom')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig20.png"
+                            alt="Ábra 20">
+                        <figcaption class="text-center pt-3 pb-4 text-md">20. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Mostmár megírhatjuk a teljes kódot, ahogy az ábránk megjelenítjük:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">plt.rcParams['figure.figsize'] = (8, 4)
+
+plots = plt.plot(x, y)
+
+plt.legend(plots, ('foo', 'bar', 'baz'), loc='best', framealpha=0.5, prop={'size': 'small', 'family': 'monospace'})
+
+plt.title('Random trends')
+plt.xlabel('Date')
+plt.ylabel('Cum. sum')
+
+plt.figtext(0.995, 0.01, u'Innovation™', ha='right', va='bottom')
+
+# megjeleníti a rácsokat
+plt.grid(True)
+
+# a metódus biztosítja, hogy minden ábra elemed az ábradobozon belül van, és nincs olyan elem, amely levágódik
+plt.tight_layout()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig21.png"
+                            alt="Ábra 21">
+                        <figcaption class="text-center pt-3 pb-4 text-md">21. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Egy terület, ahol a Matplotlib kimagaslik az az ábrák lementése, számos output
+                        formátumot támogatva. Az elérhető formátumok függnek az elérhető backendeken, de általánosságban a PNG,
+                        PDF, PS, EPS és az SVG formátumok mindig támogatottak. A mentés egyszerűségét a következő kódrészlet
+                        szemlélteti:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># képesek vagyunk explicit módon is meghatározni a format argumentummal a formátumot
+# azonban a Matplotlib megérti a kiterjesztéseket is
+plt.savefig('mpl_3lines_custom.svg')
+plt.savefig('mpl_3lines_custom.png')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Ahogy azt korábban demonstráltuk interaktívan manipulálni a pyplot
+                        globális
+                        state-jét jól működik gyors adat-ábrázoláshoz, illetőleg egyábrás munkákhoz. Azonban, ha kicsit több
+                        irányításra vágysz a diagramjaid fölött, jobb megoldás a Matplotlib figure és axes objektum-orientált
+                        megközelítését hasznosítani.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Lényegében, az objektum-orientált Matplotlib esetén, a figure tömören az a
+                        rajzolási terület, amelybe egy vagy több axes-t, vagy ábrát helyezzünk bele. Mindkét classnak megvannak a
+                        maga tulajdonságai, amelyeket egymástól függetlenül képesek vagyunk meghatározni. Ilyen értelemben,
+                        visszavezetve a korábbi pyplot-os példánkra, az egy axis-t rajzolt a globális figure-re.
+                    </p>
+                    <p class="text-lg font-normal">Képesek vagyunk létrehozni egy figure-t, a pyplot <em>figure</em> metódusával:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">fig = plt.figure(
+            figsize=(8, 4), # beállítjuk a figure méretét inchekben
+            dpi=200, # felbontás
+            tight_layout=True, # bármilyen tengelyt, címkét, stb.-t a vászonra szorít be
+            linewidth=1, edgecolor='r' # 1 pixel széles vonalak, piros keret
+) </code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Ahogy az megfigyelhető, a figure-k megosztanak számos tulajdonságot a
+                        globális
+                        pyplot módullal. Ezeket belehet állítani létrehozáskor, vagy a hasonló nevű metódusaikon keresztül. Minden
+                        figure-nek több axis-e, tehát tengelye, ábrázolt diagramja lehet, ezek mindegyike hasonló az egyedüli,
+                        globális ábra state-hez, de tekintélyes előny, hogy több ilyen ábra létezhet egy figure-n,
+                        mindegyik a saját tulajdonságaival.
+                    </p>
+                    <p class="text-lg font-normal">A <em>figure.add_axes</em> metódus lehetővé teszi, hogy pontosan beállítsuk a
+                        figure-n belül az axis-eink elhelyezkedéseit (pl. lehetővé teszi, hogy egy kisebb ábrát helyezz el egy
+                        főábrán belül). Az ábra elemek pozíciónálása egy 0->1 koordináta rendszert használ, ahol az 1 a figure
+                        szélessége vagy magassága. Képesek vagyunk tehát meghatározni a pozíciót egy négy elemből álló lista, vagy
+                        tuple segítségével, beállítva a balalsó, és jobbfelső korlátokat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># [bottom(h*0.2), left(w*0.2), top(h*0.8), right(w*0.8)]
+fig.add_axes([0.2, 0.2, 0.8, 0.8])</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A következő példa azt mutatja be, hogy miként tudunk egy kisebb ábrát
+                        behelyezni a nagy ábránkon belül, felhasználva a random teszt adatainkat korábbról:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">fig = plt.figure(figsize=(8, 4))
+# --- Fő ábra
+ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+ax.set_title('Main Axes with Insert Child Axes')
+# [ first_row:last_row , column_0 ]
+ax.plot(x, y[:,0])
+ax.set_xlabel('Date')
+ax.set_ylabel('Cum. sum')
+# --- Beillesztett ábra
+ax = fig.add_axes([0.15, 0.15, 0.3, 0.3])
+ax.plot(x, y[:,1], color='g') # zöld
+# kitörli az x tengelyen a jelöléseket, tehát ott nem jelennek meg a dátumok
+ax.set_xticks([])</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig22.png"
+                            alt="Ábra 22">
+                        <figcaption class="text-center pt-3 pb-4 text-md">22. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Habár, az add_axes lehetővé teszi azt, hogy finomhangolva elhelyezzük és
+                        alakítsuk az ábráink kinézetét és megjelenését, a legtöbbször mégis a Matplotlib beépített
+                        rácselrendezését fogjuk használni. A legegyszerűbb megoldás, ha használjuk a <em>figure.subplots</em>-t,
+                        amellyel meghatározhatjuk a sor-oszlopot elrendezésünket, amikoris a cellák azonos méretűek. Amennyiben,
+                        olyan rácselrendezést szeretnénk létrehozni, ahol a cellák különböző méretűek, a <em>gridspec</em> módult
+                        használnánk.
+                    </p>
+                    <p class="text-lg font-normal">Lehívva a subplots-ot bármiféle argumentum nélkül visszatérítene egy olyan
+                        figure-t, amelynek egyetlen axis-a van. Ez nagyban arra hasonlít, ahogyan a pyplot state machine-t
+                        korábban használtuk. A következő példa bemutatja a figure és axis ekvivalensét a korábban a 21. ábrában
+                        létrehozott pyplot demonak:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">figure, ax = plt.subplots()
+
+# a label az a címke, ami a jelmagyarázatban jelenne meg, ebben az esetben üresre állítjuk
+plots = ax.plot(x, y, label='')
+
+figure.set_size_inches(8, 4)
+ax.legend(plots, ('foo', 'bar', 'baz'), loc='best', framealpha=0.25, prop={'size': 'small', 'family': 'monospace'})
+ax.set_title('Random trends')
+ax.set_xlabel('Date')
+ax.set_ylabel('Cum. sum')
+ax.grid(True)
+figure.text(0.995, 0.01, u'Innovation™', ha='right', va='bottom')
+figure.tight_layout()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig23.png"
+                            alt="Ábra 23">
+                        <figcaption class="text-center pt-3 pb-4 text-md">23. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A subplots-ot argumentumokkal lehívva, amelyben meghatározzuk a sorok és
+                        oszlopok számát, lehetővé teszi, hogy több ábrát helyezzünk el egy rácselrendezésben. Így a subplots
+                        visszatérít egy figure-t, illetve egy tömbnyi axis-t, sor-oszlop sorrendben. A következő példában,
+                        meghatározunk egy oszlopot, tehát az ábrák egyetlen tömb lesz, amelyben három egymásra helyezett ábra
+                        lesz. Ugyanakkor, használjuk a Python hasznos <em>zip</em> metódusát is, hogy létrehozzunk három dict-et a
+                        vonaladatokkal (line data). A zip bevesz n darab listát, vagy tupleket és visszatérít n darab tuplet, a
+                        sorrend szerint találó adatokkal párosítva:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">letters = ['a', 'b']
+numbers = [1, 2]
+
+list(zip(letters, numbers))
+# output: [('a', 1), ('b', 2)]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A következő példa során a for loopban használjuk az enumerate-t, hogy
+                        szolgáltassunk egy i indexet, amelyet arra fogunk használni, hogy kiválasszuk az ábrát sor szerint,
+                        mindeközben hasznosítsuk a zippelt labelled_data dict-ünket is, hogy beállítsuk az ábratulajdonságokat.
+                    </p>
+                    <p class="text-lg font-normal">Fontos megfigyelni majd a megosztott x és y tengelyeket, amelyet a subplots
+                        hívásban határozunk meg létrehozáskor. Ez alapján könnyen összehasonlíthatóvá válnak az ábrák. Ahhoz, hogy
+                        elkerüljük a felesleges x tengelyeket a felső két ábra esetén, a set_xlabel metódust csakis az utolsó sor
+                        esetén hívjuk le, felhasználva a Python negatív indexelését:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># tehát létrehozunk egy rácselrendezést, 1 oszloppal és 3 sorral, tehát 3 egymásra helyezett ábránk lesz,
+# megosztjuk a 3 ábra között az x és y tengelyeket, tehát normalizáltak lesznek,
+# majd beállítjuk a vászon nagyságát, 8x8 inchre
+fig, axes = plt.subplots(nrows=3, ncols=1, sharex=True, sharey=True, figsize=(8, 8))
+
+# létrehozunk egy dict-et, a zip segítségével, amely zippeli a random teszt adatainkat a vonaladatokkal,
+# tehát, valahogy így fog kinézni: {('y érték', 'foo', 'b'), ...}
+# a transzponáltra azért van szükség, mert az y shape-je (200, 3) jelenleg, nekünk megkell fordítanunk ahhoz, hogy
+# sor-oszlop legyen, tehát a transzponáltal a shape-je (3, 200)-ra vált
+labelled_data = zip(y.transpose(), ('foo', 'bar', 'baz'), ('b', 'g', 'r'))
+
+# címezzük az ábránkat
+fig.suptitle('Three random trends', fontsize=16)
+
+# létrehozzuk az ábrákat
+for i, ld in enumerate(labelled_data):
+    ax = axes[i]
+    # használjuk a zip-el létrehozott struktúránkat
+    ax.plot(x, ld[0], label=ld[1], color=ld[2])
+    ax.set_ylabel('Cum. sum')
+    # elhelyezzük a jelmagyarázatot
+    ax.legend(loc='upper left', framealpha=0.5, prop={'size': 'small'})
+    
+# az utolsó ábrát ellátjuk az x tengely címkéjével is, máshova felesleges lenne
+axes[-1].set_xlabel('Date')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig24.png"
+                            alt="Ábra 24">
+                        <figcaption class="text-center pt-3 pb-4 text-md">24. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A következőkben vizsgáljunk meg néhány gyakori ábratípust, amelyekkel
+                        találkozhatunk.
+                    </p>
+                    <p class="text-lg font-normal">Megfigyelhettük eddig, hogy csak vonaldiagramokkal foglalkoztunk, de a
+                        Matplotlib számos másikkal is rendelkezik. Az egyik ilyen az oszlopdiagram, amely esetében elmondható,
+                        mint a legtöbb Matplotlib diagram esetén is, hogy rendkívül jól testreszabható. A következő példa egy
+                        oszlopdiagramot hoz létre. Fontos észrevenni azt, hogy magadnak kell meghatároznod az oszlop és címke
+                        elhelyezkedéseket. Ez a fajta rugalmasság azonban gyorsan megszokható, de így idő után fárasztóvá is
+                        válható. Tehát, életbevágó, hogy hozzunk létre kisegítő metódusokat, vagy számos olyan könyvtár is
+                        rendelkezésünkre áll, amely sokkal felhasználó-barátabbá teszik az oszlopdiagrammok létrehozását:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># meghatározzuk az oszlopcímkéket
+labels = ['Physics', 'Chemistry', 'Literature', 'Peace']
+# az adatokat, ami jelen esetben a magassága lesz az oszlopnak
+foo_data = [3, 6, 10, 4]
+
+# oszlopszélesség, számítások során fontos
+bar_width = 0.5
+# az x tengelyen való elhelyezkedés, azért van a + bar_width, mert így baloldalt kimarad 1 féloszlopnak a helye
+xlocations = np.array(range(len(foo_data))) + bar_width
+
+# létrehozzuk az oszlopot, az előbb szerzett elhelyezkedéssel, az adatokkal, és a hosszal
+plt.bar(xlocations, foo_data, width=bar_width)
+
+# beállítunk egy ideillő y tengely-címkézést
+plt.yticks(range(0, 12))
+
+# elhelyezzük az oszlopok alá a címkét
+plt.xticks(xlocations, labels)
+
+# az x tengelyt 0-tól, az utolsó oszlop + 1 féloszlop helye szerinti határra allítjuk
+plt.xlim(0, xlocations[-1] + bar_width)
+
+# beállítjuk a címet
+plt.title('Prizes won by Fooland')
+
+# meghatározza, hogy hol legyen a tengelyeken a jelölés, lehet az x tengely fent vagy lent,
+# az y bal vagy jobb oldalt
+plt.gca().get_xaxis().tick_bottom()
+plt.gca().get_yaxis().tick_left()
+
+# beállítja a jelenlegi figure méretét
+plt.gcf().set_size_inches((8, 4))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig25.png"
+                            alt="Ábra 25">
+                        <figcaption class="text-center pt-3 pb-4 text-md">25. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A több csoporttal rendelkező oszlopdiagrammok különösen hasznosak tudnak lenni.
+                        A következő példában kiegészítjük a fenti ábránkat egy újabb országgal, és használjuk a subplots metódust,
+                        hogy létrehozzuk a csoportosított oszlopdiagramunkat. Mégegyszer kiemeljük, hogy az
+                        oszlopelhelyezkedéseket nekünk kell meghatároznunk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># meghatározzuk az oszlopcímkéket
+labels = ['Physics', 'Chemistry', 'Literature', 'Peace']
+# az adatokat, ami jelen esetben a magassága lesz az oszlopnak
+foo_data = [3, 6, 10, 4]
+bar_data = [8, 3, 6, 1]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+# ez az oszlopszélesség kiadja az 1-et, hiszen 0.4 szélesség mellett 0.1 oszlop padding lesz
+bar_width = 0.4
+
+# létrehozzuk az elhelyezkedés-rendet
+xlocs = np.arange(len(foo_data))
+# elhelyezzük az első, világosabb oszlopot
+ax.bar(xlocs - bar_width, foo_data, bar_width, color='#fde0bc', label='Fooland')
+# elhelyezzük a második, sötétebb oszlopot
+ax.bar(xlocs, bar_data, bar_width, color='peru', label='Barland')
+
+# beállítjuk az y tengely tickjeit
+ax.set_yticks(range(12))
+
+# manuális határoztam meg a x tengely jelöléseinek elhelyezkedését egy tömb-ben
+ax.set_xticks(ticks=[-0.2, 0.8, 1.8, 2.8])
+ax.set_xticklabels(labels)
+# beállítjuk az y tengely vonalat, ami alapján könnyen leolvashatóvá válik az ábra
+ax.yaxis.grid(True)
+ax.legend(loc='best')
+ax.set_ylabel('Number of prizes')
+fig.suptitle('Prizes by country')
+fig.tight_layout(pad=2)
+fig.savefig('mpl_barchart_multi.png', dpi=200)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig26.png"
+                            alt="Ábra 26">
+                        <figcaption class="text-center pt-3 pb-4 text-md">26. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Gyakran hasznos tud lenni, ha horizontális oszlopokat hozunk létre, főleg
+                        akkor, ha sok van belőlük, vagy, mint ahogy most is szöveges címkéket használunk. Az előző példánkat
+                        átalakítani ebbe a formátumba relatíve egyszerű feldat, csak kicseréljük a bar metódust annak horizontális
+                        megfelelőjére a <em>barh</em>-ra, és megcseréljük az ábra címkéket és határokat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># meghatározzuk az oszlopcímkéket
+labels = ['Physics', 'Chemistry', 'Literature', 'Peace']
+# az adatokat, ami jelen esetben a magassága lesz az oszlopnak
+foo_data = [3, 6, 10, 4]
+bar_data = [8, 3, 6, 1]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+# ez az oszlopszélesség kiadja az 1-et, hiszen 0.4 szélesség mellett 0.1 oszlop padding lesz
+bar_width = 0.4
+
+# létrehozzuk az elhelyezkedés-rendet
+xlocs = np.arange(len(foo_data))
+# elhelyezzük az első, világosabb oszlopot
+ax.barh(xlocs - bar_width, foo_data, bar_width, color='#fde0bc', label='Fooland')
+# elhelyezzük a második, sötétebb oszlopot
+ax.barh(xlocs, bar_data, bar_width, color='peru', label='Barland')
+
+# beállítjuk az y tengely tickjeit
+ax.set_yticks(ticks=[-0.2, 0.8, 1.8, 2.8])
+ax.set_yticklabels(labels)
+
+# beállítjuk az x tengely tickjeit
+ax.set_xticks(range(12))
+
+# beállítjuk az x tengely vonalat, ami alapján könnyen leolvashatóvá válik az ábra
+ax.xaxis.grid(True)
+ax.legend(loc='best')
+ax.set_xlabel('Number of prizes')
+fig.suptitle('Prizes by country')
+fig.tight_layout(pad=2)
+fig.savefig('mpl_barchart_multi.png', dpi=200)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig27.png"
+                            alt="Ábra 27">
+                        <figcaption class="text-center pt-3 pb-4 text-md">27. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Következő oszloptípusra térve, találkozhatunk még egymásra helyezett
+                        oszlopdiagrammokkal is. A következő példa az előző ábrát ilyen formában jeleníti meg:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># meghatározzuk az oszlopcímkéket
+labels = ['Physics', 'Chemistry', 'Literature', 'Peace']
+# az adatokat, ami jelen esetben a magassága lesz az oszlopnak
+foo_data = [3, 6, 10, 4]
+bar_data = [8, 3, 6, 1]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+bar_width = 0.8
+
+# létrehozzuk az elhelyezkedés-rendet
+xlocs = np.arange(len(foo_data))
+
+# elhelyezzük az első, világosabb oszlopot
+ax.bar(xlocs, foo_data, bar_width, color='#fde0bc', label='Fooland')
+# elhelyezzük a második, sötétebb oszlopot
+# a bottom része a fontos, azzal tóljuk felfelé a másodikat, hogy az első tetején álljon
+ax.bar(xlocs, bar_data, bar_width, color='peru', label='Barland', bottom=foo_data)
+
+
+ax.set_yticks(range(18))
+ax.set_xticks(ticks=np.array(range(len(foo_data))))
+ax.set_xticklabels(labels)
+ax.set_xlim(-(1-bar_width) - 0.8, xlocs[-1] + 1)
+
+# beállítjuk az x tengely vonalat, ami alapján könnyen leolvashatóvá válik az ábra
+ax.yaxis.grid(True)
+ax.legend(loc='best')
+ax.set_xlabel('Number of prizes')
+fig.suptitle('Prizes by country')
+fig.tight_layout(pad=2)
+fig.savefig('mpl_barchart_multi.png', dpi=200)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig28.png"
+                            alt="Ábra 28">
+                        <figcaption class="text-center pt-3 pb-4 text-md">28. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A következő hasznos ábratípus az a szórt grafikon, amely bevesz egy
+                        két-dimenziós tömböt, amelyben pontokon kívül, azok tulajdonságai is megtalálhatók, a méretükről,
+                        színükről és egyebekről. A következő kódrészlet egy ilyent grafikont mutat be:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># pontok száma a diagramon
+num_points = 100
+# szórása
+gradient = 0.5
+
+x = np.array(range(num_points))
+# a randn 100 darab normális eloszlású véletlenszerű számokat ad, amely 0 és 10 között lesz, amihez még
+# hozzáadunk egy x-től függő értéket is szórással
+y = np.random.randn(num_points) * 10 + x * gradient
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+# létrehozzuk a szórtgrafikont
+ax.scatter(x, y)
+
+fig.suptitle('A Simple Scatterplot')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig29.png"
+                            alt="Ábra 29">
+                        <figcaption class="text-center pt-3 pb-4 text-md">29. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Mint említettük képesek vagyunk beállítani a pontok méreteit és színeit az
+                        által, hogy átadunk egy tömböt a méret és szín indexekkel a jelenlegi, alapértelmezett colormapnak. Fontos
+                        megjegyezni azt, ami elsőre zavaró is lehet, hogy mi a pontokat határoló doboz területét határozzuk meg és
+                        nem annak átmérőjét. Ez azt eredményezi, hogy ha megszeretnénk kétszerezni a kör átmérőjét, akkor a
+                        méretét négyszeresére kell növelnünk. A következő példában szín és méret információkat határozunk meg a
+                        szórtdiagram létrehozásakor:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># pontok száma a diagramon
+num_points = 100
+# meredekség
+gradient = 0.5
+
+x = np.array(range(num_points))
+# a randn 100 darab normális eloszlású véletlenszerű számokat ad, amely 0 és 10 között lesz, amihez még
+# hozzáadunk egy x-től függő értéket is szórással
+y = np.random.randn(num_points) * 10 + x * gradient
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+# meghatároz 100 darab random színértéket 0 és 1 között az alapértelmezett colormaphez
+colors = np.random.rand(num_points)
+# random méreteket határozunk meg a köreinknek 2 és 22 között, majd négyzetére emeljük, hogy variáljuk a méreteket
+size = (2 + np.random.rand(num_points) * 20) ** 2
+
+# létrehozzuk a szórtgrafikont
+ax.scatter(x, y, s=size, c=colors, alpha=0.5)
+
+fig.suptitle('A Simple Scatterplot with Color and Size specified')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig30.png"
+                            alt="Ábra 30">
+                        <figcaption class="text-center pt-3 pb-4 text-md">30. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A regressziós egyenes egy egyszerű prediktív modell két változó közötti
+                        korrelációról, kapcsolatról. A statisztika eszköztárában a lineáris regresszió egy olyan paraméteres
+                        regressziós modell, amely feltételezi a magyarázó és magyarázott változó közötti lineáris kapcsolatot. Ez
+                        azt jelenti, hogy a lineáris regresszió becslése során a mintavételi adatok pontfelhőjére igyekszünt
+                        egyenest illeszteni.
+                    </p>
+                    <p class="text-lg font-normal">A következő példa használja a NumPy nagyon hasznos <em>polyfit</em> függvényét,
+                        amelyet a példában arra használunk, hogy legenerálja a meredekségét és konstansát ennek a vonalnak, amely
+                        a legjobban
+                        illik az x és y tömbökben meghatározott pontokra. Majd, ezt a vonalat ábrázoljuk ugyanazon az ábrán, ahol
+                        a szórtdiagram is található:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># pontok száma a diagramon
+num_points = 100
+# meredekség
+gradient = 0.5
+
+x = np.array(range(num_points))
+# a randn 100 darab normális eloszlású véletlenszerű számokat ad, amely 0 és 10 között lesz, amihez még
+# hozzáadunk egy x-től függő értéket is szórással
+y = np.random.randn(num_points) * 10 + x * gradient
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+# létrehozzuk a szórtgrafikont
+ax.scatter(x, y)
+
+# az 1 a dimenziók számát határozza meg, ebben az esetben 1 dimenzióról beszélhetünk
+m, c = np.polyfit(x, y, 1)
+
+# majd ábrázoljuk az x érték alapján az egyenest
+ax.plot(x, m * x + c, color='peru')
+
+fig.suptitle('A Simple Scatterplot with Regression-line')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig31.png"
+                            alt="Ábra 31">
+                        <figcaption class="text-center pt-3 pb-4 text-md">31. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Alapvetően, jó ötlet az, ha konfidenciaintervallumokat ábrázolunk amikor
+                        lineáris regressziót készítünk. A konfidenciaintervallum egy olyan intervallum, amely a becsült változó
+                        alsó és felső korlátja. A konfidenciaintervallum intervallum értékű becslést ad egy paraméterre:
+                        valószínűleg ezek közé a korlátok közé esik. Ez sok esetben jobb, mint egyetlen becsült értéket adni. A
+                        konfidenciaintervallumokat Matplotlib-el és NumPy-al is ki lehet számolni, azonban kicsit fura lehet.
+                        Szerencsére, a Matplotlib-re épülve, rendelkezésünkre áll egy könyvtár, amely tartalmaz extra, szakosodott
+                        függvényeket statisztikai analízisre és adat-vizualizációra, emellett nem utolsó sorban még jobban is néz
+                        ki, ez a Seaborn, amelyet a következőkben fogunk megvizsgálni.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Számos olyan könyvtár van, amely fogja a Matplotlib ábrázolási képességeit
+                        és
+                        egy könnyebben használható álca alá rejti és ami számunkra még fontosabb, hogy ezek a könyvtárak jól
+                        működnek együtt a Pandas-al: ggplot, bokeh. Azonban, az interaktív, magyarázó vizualizációhoz szükséges,
+                        hogy megismerjük adatunkat és, hogy megtudjuk hogyan lehetne legjobban ábrázolni, és ehhez a Seaborn
+                        könyvtár a legmegfelelőbb.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Az egyik legjobb dolog a Seaborn-al kapcsolatosan, hogy nem rejti el a
+                        Matplotlib API-ját, lehetővé téve, hogy alakítsuk ábráinkat a Matplotlib kiterjedt eszköztárával. Ilyen
+                        értelemben nem helyettesítője, hanem egy kiegészítője a Matplotlib-nek a Seaborn.
+                    </p>
+                    <p class="text-lg font-normal">Ahhoz, hogy dolgozhassunk a Seaborn-al egyszerűen kiegészítsük a kezdeti import
+                        listánkat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import seaborn as sns</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A Seaborn számos függvénye úgy lett tervezve, hogy elfogadja a Pandas
+                        DataFrame-jeit is, lehetővé téve számunkra ez által, hogy meghatározzuk, példaképpen, az oszlop értékeket
+                        egy 2D szórtgrafikonhoz. A következő példában fogjuk a már létező x és y tömbjeinket az előző példából és
+                        használjuk arra, hogy 'dummy' adatot hozzunk létre:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># pontok száma a diagramon
+num_points = 100
+# meredekség
+gradient = 0.5
+
+x = np.array(range(num_points))
+# a randn 100 darab normális eloszlású véletlenszerű számokat ad, amely 0 és 10 között lesz, amihez még
+# hozzáadunk egy x-től függő értéket is szórással
+y = np.random.randn(num_points) * 10 + x * gradient
+
+data = pd.DataFrame({'dummy x': x, 'dummy y': y})
+data</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, így már rendelkezünk egy kétoszlopos DataFrame-el x és y oszlopokkal, az
+                        x = [0, 100), illetve az y random számokkal feltöltött. A következő példa szemlélteti a Seaborn lineáris
+                        regresszióra szakosodott <em>lmplot</em> függvényének használatát. Fontos megjegyezni azt, hogy némely
+                        Seaborn ábra esetében, ahhoz, hogy beállítsuk a figure méretét beadunk egy méretet (magasságot) inchben,
+                        valamint egy aspect-ratio-t (szélesség/magasság), a második fontos megjegyeznivaló, hogy a Seaborn
+                        megosztja a pyplot globális kontextusát, ez ott lesz fontos, amikor leakarjuk menteni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># pontok száma a diagramon
+num_points = 100
+# meredekség
+gradient = 0.5
+
+x = np.array(range(num_points))
+# a randn 100 darab normális eloszlású véletlenszerű számokat ad, amely 0 és 10 között lesz, amihez még
+# hozzáadunk egy x-től függő értéket is szórással
+y = np.random.randn(num_points) * 10 + x * gradient
+
+data = pd.DataFrame({'dummy x': x, 'dummy y': y})
+
+# meghatározzuk a két tengely címkéjét, beadjuk az adatot, végül meghatározzuk a figure méretét
+sns.lmplot('dummy x', 'dummy y', data, height=4, aspect=2)
+plt.tight_layout()
+# plt.savefig('mpl_scatter_seaborn.png')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig32.png"
+                            alt="Ábra 32">
+                        <figcaption class="text-center pt-3 pb-4 text-md">32. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Mint említettük a Seaborn esetenként sokkal jobban néz ki az alapértelmezett
+                        Matplotlib-nél, nézzük is meg milyen vizuális testreszabhatósági lehetőségeket nyújt. Változtassunk meg
+                        néhány dolgot az előbbi ábránkon, valamint állítsuk be a konfidenciaintervallumot egy 68%-os
+                        szabványhibára, a 68% ebben a kontextusban azt jelenti, hogy 68% valószínűséggel esik a becsült paraméter
+                        az intervallumba:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># pontok száma a diagramon
+num_points = 100
+# meredekség
+gradient = 0.5
+
+x = np.array(range(num_points))
+# a randn 100 darab normális eloszlású véletlenszerű számokat ad, amely 0 és 10 között lesz, amihez még
+# hozzáadunk egy x-től függő értéket is szórással
+y = np.random.randn(num_points) * 10 + x * gradient
+
+data = pd.DataFrame({'dummy x': x, 'dummy y': y})
+
+# meghatározzuk a két tengely címkéjét, beadjuk az adatot, végül meghatározzuk a figure méretét
+sns.lmplot('dummy x', 'dummy y', data, height=4, aspect=2, 
+           scatter_kws={"color": "slategray"}, # beállítjuk a pontok színét
+           line_kws={"linewidth": 2, "linestyle": "--", "color": "seagreen"}, # beállítjuk a regressziós egyenes tulajdonságait
+          markers="D", # a pontokat gyémánt ábrával fogjuk jelölni
+          ci=68) # 68%-os valószínűséggel fog az adott intervallumba esni a becsült érték
+
+plt.tight_layout()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig33.png"
+                            alt="Ábra 33">
+                        <figcaption class="text-center pt-3 pb-4 text-md">33. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A Seaborn felajánl számos hasznos ábratípust, azokon felül, amelyeket a
+                        Matplotlib alapjáraton beállít és biztosít. Az első ilyen, amit megfogunk nézni, és ami egyben az egyik
+                        legérdekesebb is, az a <em>FacetGrid</em>, amelyet több-dimenziós adatok tűkrözésére használhatunk.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Egy nagyon jó megközelítés arra nézve, hogy egy átfogó képet kapjunk az
+                        adatunkról az a képesség, hogy adataink különböző részhalmazairól több példányt ábrázoljunk ugyanolyan
+                        ábrázolási módon. Ilyen értelemben, nagy mennyiségű információt egyetlen ábrán lehet bemutatni, és a
+                        különböző dimenziók közötti kapcsolatok pedig gyorsan megérthetővé válnak.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A FacetGrids megköveteli azt, hogy adatunk Pandas DataFrame formátumban
+                        legyen, és számos nálam sokkalta okosabb ember szerint, ilyen formában minden oszlop a DataFrame-ben egy
+                        változó kellene legyen, illetve minden sor egy megfigyelés.
+                    </p>
+                    <p class="text-lg font-normal">Használjuk a továbbiakban a Tips-et, a Seaborn teszt adatsorát, hogy működés
+                        közben is megfigyelhessük a Seaborn-t. A Tips egy viszonylag kicsi adatsor, amely borravalók eloszlását
+                        mutatja be, különböző dimenziók szerint, mint például a hét napja, vagy az alapján, hogy a fogyasztó
+                        dohányzó volt-e vagy sem. Első lépésben olvassuk be ezt az adatsort egy DataFrame-be, használva a
+                        <em>load_dataset</em> metódust:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># a függvény betölt egy minta adatsort a Seaborn online repojából névszerint
+tips = sns.load_dataset('tips')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ahhoz, hogy létrehozhassunk a fenti adatsorból egy FacetGrid-et, meghatározzuk
+                        első argumentumként a DataFrame-t, majd második argumentumként az érdekelt oszlopot, ebben az esetben a
+                        smoker-t. Az érdekelt oszlop lesz felhasználva arra, hogy létrehozza az ábracsoportokat, ebben az esetben
+                        kettő lesz, dohányzó és nem dohányzó. Majd használjuk a grid <em>map</em> metódusát, hogy létrehozzunk
+                        több szórtdiagrammot, a teljes számla és a borravaló arányából:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># a függvény betölt egy minta adatsort a Seaborn online repojából névszerint
+tips = sns.load_dataset('tips')
+
+# beadjuk az adatsort és az érdekelt oszlopot, amely alapján ábracsoportokat hoz létre
+g = sns.FacetGrid(tips, col='smoker')
+
+# majd létrehozunk az ábracsoportok szerint különböző szórtdiagrammokat a teljes számla és
+# borravaló arányából
+g.map(plt.scatter, 'total_bill', 'tip')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig34.png"
+                            alt="Ábra 34">
+                        <figcaption class="text-center pt-3 pb-4 text-md">34. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Képesek vagyunk egy újabb dimenzióját belefoglalni a Tips adatnak, az által,
+                        hogy meghatározzuk a jelölőt, amit használunk a szórtgrafikonon. A következő példában piros gyémánttal
+                        jelöljük a nőket és kék négyzettel a férfiakat a diagrammokban:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">pal = dict(Female='red', Male='blue')
+
+# a függvény betölt egy minta adatsort a Seaborn online repojából névszerint
+tips = sns.load_dataset('tips')
+
+# beadjuk az adatsort és az érdekelt oszlopot, amely alapján ábracsoportokat hoz létre
+# a hue argumentum által meghatározunk egy jelölést a nem dimenziónak, a kws argumentum segítségével pedig,
+# beállítjuk a gyémánt és négyzet jelöléseket, végül a palette-el a színt is
+g = sns.FacetGrid(tips, col='smoker', hue='sex', hue_kws={'marker': ['D', 's']},
+                 palette=pal, height=4, aspect=1)
+
+# majd létrehozunk az ábracsoportok szerint különböző szórtdiagrammokat a teljes számla és
+# borravaló arányából
+g.map(plt.scatter, 'total_bill', 'tip', alpha=0.4)
+g.add_legend()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig35.png"
+                            alt="Ábra 35">
+                        <figcaption class="text-center pt-3 pb-4 text-md">35. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Továbbá, ugyancsak képesek vagyunk sorok, de akár oszlopok szerint is adataink
+                        részhalmazát kiválasztani dimenziók szerint. A két kombinációja, együtt a <em>regplot</em> metódus
+                        segítségével, lehetővé teszi, hogy 5 dimenziót fedezzünk fel egyidejűleg:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">pal = dict(Female='red', Male='blue')
+
+tips = sns.load_dataset('tips')
+
+# beadjuk a 'time' sort is, hogy elkülönítsük a borravalókat idő szerint
+g = sns.FacetGrid(tips, col='smoker', row='time', hue='sex', hue_kws={'marker': ['D', 's']},
+                 palette=pal, height=4, aspect=1)
+
+# a regplot regressziós görbét is elhelyez, nem szerinti konfidenciaintervallumra alapozva
+g.map(sns.regplot, 'total_bill', 'tip')
+g.add_legend()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig36.png"
+                            alt="Ábra 36">
+                        <figcaption class="text-center pt-3 pb-4 text-md">36. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Ugyanezt az eredményt a korábban látott lmplot metódussal is elérhetjük, hiszen
+                        magába sűríti a FacetGrid és regplot funkcionalitását, a következő kód a fent látható ábrát eredményezi:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">tips = sns.load_dataset('tips')
+
+pal = dict(Female='red', Male='blue')
+
+sns.lmplot(x='total_bill', y='tip', hue='sex', 
+           markers=['D', 's'], col='smoker', row='time', 
+           data=tips, palette=pal, height=4, aspect=1)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig37.png"
+                            alt="Ábra 37">
+                        <figcaption class="text-center pt-3 pb-4 text-md">37. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A második nagyon érdekes Seaborn ábratípus a <em>Pairgrids</em>, amely egy
+                        gyors útat biztosít arra, hogy több-dimenziós adatot vizsgáljunk. Nem úgy, mint a FacetGrids esetében, a
+                        Pairgrids-nál nem osztjuk az adatsorunkat részhalmazokra, amelyeket az után dimenziók szerinti hasonlítunk
+                        össze. Pairgrids esetén, az adatsor dimenziói mind összehasonlításra kerülnek páronként egy négyzetes
+                        rácselrendezésben. Alapértelmezetten tehát minden dimenzió összehasonlítódik, de képesek vagyunk
+                        meghatározni azokat, amelyeket ábrázolni szeretnénk beadva egy vars paramétert, ami egy lista, amikor
+                        létrehozzuk a Pairgrid-ünket.
+                    </p>
+                    <p class="text-lg font-normal">Ahhoz, hogy ábrázoljuk a páronkénti összehasonlíthatóság hasznosságát,
+                        felhasználjuk a Seaborn egy újabb példaképpen megadott adatsorát az Iris-t. Az Iris adatsor három
+                        kékliliomokról fajtáról tartalmaz információkat, elsőként tehát a megszokott módon olvassuk be az
+                        adatsorunkat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">iris = sns.load_dataset('iris')
+iris</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ahhoz, hogy megragadjuk a kapcsolatot a 'petal' és 'sepal' dimenziók között
+                        fajokként, második lépésben létrekell hoznunk egy PairGrid objektumot, beállítva a hue-t a 'species'-re,
+                        melynek értelmében fajokként fogja színezni a jelöléseket, majd használjuk a map metódusokat, hogy
+                        létrehozzuk az ábrákat a paronkénti rácselrendezésben:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># beállítjuk a font méretet felhasználva a Seaborn set metódusát
+sns.set(font_scale=1)
+
+# beállítja a jelöléseket, és faj szerint színezi őket
+g = sns.PairGrid(iris, hue='species')
+
+# a diag és offdiag metódusok által, az átlóra hisztogrammot, az átlón kívül pedig szórtdiagrammot használ
+g.map_diag(plt.hist)
+g.map_offdiag(plt.scatter)
+
+
+g.add_legend()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig38.png"
+                            alt="Ábra 38">
+                        <figcaption class="text-center pt-3 pb-4 text-md">38. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Tehát, ahogy láthatjuk a fenti ábra nagyon informatív tud lenni, amikor
+                        különböző változópárok közötti lineáris korrelációt vizsgáljuk és keressük, egy többváltozós sorban, ezt
+                        az ábratípus angolul scatter-plot mátrixnak is szokás nevezni. Továbbá, az ábra redundanciája, tehát, az
+                        ábrák
+                        többször is megjelennek, lehetőséget nyújt arra, hogy többféle ábrát is használhassunk, többféleképpen
+                        vizsgálva a kapcsolatokat, a főátló szerint.
+                    </p>
                 </section>
             </section>
 
