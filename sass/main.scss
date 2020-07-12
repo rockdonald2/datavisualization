@@ -1,8 +1,10 @@
-@import "../css/fira-go";
+/* @import "../css/fira-go"; */
 @import "../css/compiled";
 @import url("//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/atom-one-dark.min.css");
 @import "../tools/pushy-1.3.0/css/pushy";
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap');
 
 *,
 *::after,
@@ -21,7 +23,9 @@
 }
 
 body {
-    font-family: 'FiraGo',
+    /* font-family: 'FiraGo',
+        sans-serif; */
+    font-family: 'Work Sans',
         sans-serif;
 }
 
@@ -42,7 +46,9 @@ pre {
 }
 
 code {
-    font-family: 'Fira Code',
+    /* font-family: 'Fira Code',
+        monospace !important; */
+    font-family: 'Roboto Mono',
         monospace !important;
 }
 

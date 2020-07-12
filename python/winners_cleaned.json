@@ -415,19 +415,6 @@
     "gender": "male",
     "award_age": 60
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Eugene_Wigner",
-    "name": "Eugene Wigner",
-    "year": 1963,
-    "category": "Physics",
-    "country": "United States",
-    "text": "Eugene Wigner ,  born in Hungary , Physics, 1963",
-    "date_of_birth": "1902-11-17T00:00:00.000Z",
-    "date_of_death": "1995-01-01T00:00:00.000Z",
-    "place_of_birth": "Budapest",
-    "place_of_death": "Princeton",
-    "gender": "male",
-    "award_age": 61
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Maria_Goeppert-Mayer",
     "name": "Maria Goeppert-Mayer",
     "year": 1963,
@@ -1116,19 +1103,6 @@
     "place_of_death": "Woods Hole",
     "gender": "male",
     "award_age": 64
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Felix_Bloch",
-    "name": "Felix Bloch",
-    "year": 1952,
-    "category": "Physics",
-    "country": "United States",
-    "text": "Felix Bloch ,  born in Switzerland , Physics, 1952",
-    "date_of_birth": "1905-10-23T00:00:00.000Z",
-    "date_of_death": "1983-09-10T00:00:00.000Z",
-    "place_of_birth": "Z\u00fcrich",
-    "place_of_death": "Z\u00fcrich",
-    "gender": "male",
-    "award_age": 47
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Val_Fitch",
     "name": "Val Fitch",
@@ -1962,6 +1936,19 @@
     "gender": "male",
     "award_age": 43
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Simon_Kuznets",
+    "name": "Simon Kuznets",
+    "year": 1971,
+    "category": "Economics",
+    "country": "United States",
+    "text": "Simon Kuznets ,  born in then Russia, now Belarus , Economics, 1971",
+    "date_of_birth": "1901-04-30T00:00:00.000Z",
+    "date_of_death": "1985-07-08T00:00:00.000Z",
+    "place_of_birth": "Pinsk",
+    "place_of_death": "Cambridge",
+    "gender": "male",
+    "award_age": 70
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Earl_Wilbur_Sutherland_Jr.",
     "name": "Earl W. Sutherland Jr.",
     "year": 1971,
@@ -2066,6 +2053,19 @@
     "gender": "male",
     "award_age": 56
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Ivar_Giaever",
+    "name": "Ivar Giaever",
+    "year": 1973,
+    "category": "Physics",
+    "country": "United States",
+    "text": "Ivar Giaever ,  Norway , Physics, 1973",
+    "date_of_birth": "1929-04-05T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Bergen",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 44
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Stanford_Moore",
     "name": "Stanford Moore",
     "year": 1972,
@@ -2156,19 +2156,6 @@
     "place_of_death": "Mountain View",
     "gender": "male",
     "award_age": 51
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Samuel_C._C._Ting",
-    "name": "Samuel C. C. Ting",
-    "year": 1976,
-    "category": "Physics",
-    "country": "United States",
-    "text": "Samuel C. C. Ting , Physics, 1976",
-    "date_of_birth": "1936-01-27T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Ann Arbor",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 40
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Daniel_Carleton_Gajdusek",
     "name": "Daniel Carleton Gajdusek",
@@ -2547,19 +2534,6 @@
     "gender": "male",
     "award_age": 72
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/G%C3%A9rard_Debreu",
-    "name": "G\u00e9rard Debreu",
-    "year": 1983,
-    "category": "Economics",
-    "country": "United States",
-    "text": "G\u00e9rard Debreu ,  born in France , Economics, 1983",
-    "date_of_birth": "1921-07-04T00:00:00.000Z",
-    "date_of_death": "2004-12-31T00:00:00.000Z",
-    "place_of_birth": "Calais",
-    "place_of_death": "Paris",
-    "gender": "male",
-    "award_age": 62
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Subrahmanyan_Chandrasekhar",
     "name": "Subrahmanyan Chandrasekhar",
     "year": 1983,
@@ -2611,6 +2585,19 @@
     "place_of_death": "Nashville",
     "gender": "male",
     "award_age": 64
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Rita_Levi-Montalcini",
+    "name": "Rita Levi-Montalcini",
+    "year": 1986,
+    "category": "Physiology or Medicine",
+    "country": "United States",
+    "text": "Rita Levi-Montalcini ,  born in Italy , Physiology or Medicine, 1986",
+    "date_of_birth": "1909-04-22T00:00:00.000Z",
+    "date_of_death": "2012-12-30T00:00:00.000Z",
+    "place_of_birth": "Turin",
+    "place_of_death": "Nomentano",
+    "gender": "female",
+    "award_age": 77
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Jerome_Karle",
     "name": "Jerome Karle",
@@ -2677,6 +2664,19 @@
     "gender": "male",
     "award_age": 68
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Joseph_Brodsky",
+    "name": "Joseph Brodsky",
+    "year": 1987,
+    "category": "Literature",
+    "country": "United States",
+    "text": "Joseph Brodsky ,  born in Russia , Literature, 1987",
+    "date_of_birth": "1940-05-24T00:00:00.000Z",
+    "date_of_death": "1996-01-28T00:00:00.000Z",
+    "place_of_birth": "Saint Petersburg",
+    "place_of_death": "Brooklyn",
+    "gender": "male",
+    "award_age": 47
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Robert_M._Solow",
     "name": "Robert M. Solow",
     "year": 1987,
@@ -2689,19 +2689,6 @@
     "place_of_death": null,
     "gender": "male",
     "award_age": 63
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Yuan_T._Lee",
-    "name": "Yuan T. Lee",
-    "year": 1986,
-    "category": "Chemistry",
-    "country": "United States",
-    "text": "Yuan T. Lee ,  born in Taiwan , Chemistry, 1986",
-    "date_of_birth": "1936-11-19T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Hsinchu",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 50
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Dudley_R._Herschbach",
     "name": "Dudley R. Herschbach",
@@ -2989,19 +2976,6 @@
     "gender": "male",
     "award_age": 69
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Edmond_H._Fischer",
-    "name": "Edmond H. Fischer",
-    "year": 1992,
-    "category": "Physiology or Medicine",
-    "country": "United States",
-    "text": "Edmond H. Fischer ,  born in China , Physiology or Medicine, 1992",
-    "date_of_birth": "1920-04-06T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Shanghai",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 72
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Edwin_G._Krebs",
     "name": "Edwin G. Krebs",
     "year": 1992,
@@ -3014,19 +2988,6 @@
     "place_of_death": "Seattle",
     "gender": "male",
     "award_age": 74
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Ronald_Coase",
-    "name": "Ronald Coase",
-    "year": 1991,
-    "category": "Economics",
-    "country": "United States",
-    "text": "Ronald Coase ,  born in the United Kingdom , Economics, 1991",
-    "date_of_birth": "1910-12-29T00:00:00.000Z",
-    "date_of_death": "2013-09-02T00:00:00.000Z",
-    "place_of_birth": "London",
-    "place_of_death": "Chicago",
-    "gender": "male",
-    "award_age": 81
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Douglass_C._North",
     "name": "Douglass C. North",
@@ -3261,6 +3222,19 @@
     "place_of_death": "Beverly Hills",
     "gender": "male",
     "award_age": 67
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/John_Harsanyi",
+    "name": "John Harsanyi",
+    "year": 1994,
+    "category": "Economics",
+    "country": "United States",
+    "text": "John Harsanyi ,  born in Hungary , Economics, 1994",
+    "date_of_birth": "1920-05-29T00:00:00.000Z",
+    "date_of_death": "2000-08-09T00:00:00.000Z",
+    "place_of_birth": "Budapest",
+    "place_of_death": "Berkeley",
+    "gender": "male",
+    "award_age": 74
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/William_Vickrey",
     "name": "William Vickrey",
@@ -3664,6 +3638,19 @@
     "place_of_death": "San Diego",
     "gender": "male",
     "award_age": 71
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Sydney_Brenner",
+    "name": "Sydney Brenner",
+    "year": 2002,
+    "category": "Physiology or Medicine",
+    "country": "United States",
+    "text": "Sydney Brenner ,  born in South Africa , Physiology or Medicine, 2002",
+    "date_of_birth": "1927-01-13T00:00:00.000Z",
+    "date_of_death": "2019-04-05T00:00:00.000Z",
+    "place_of_birth": "Germiston",
+    "place_of_death": "Singapore",
+    "gender": "male",
+    "award_age": 75
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/William_S._Knowles",
     "name": "William S. Knowles",
@@ -4471,19 +4458,6 @@
     "gender": "male",
     "award_age": 71
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/William_C._Campbell_(scientist)",
-    "name": "William C. Campbell",
-    "year": 2015,
-    "category": "Physiology or Medicine",
-    "country": "United States",
-    "text": "William C. Campbell ,  born in Ireland , Physiology or Medicine, 2015",
-    "date_of_birth": "1930-06-28T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Ramelton",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 85
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/W._E._Moerner",
     "name": "William E. Moerner",
     "year": 2014,
@@ -4561,32 +4535,6 @@
     "place_of_death": null,
     "gender": "male",
     "award_age": 74
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Arieh_Warshel",
-    "name": "Arieh Warshel",
-    "year": 2013,
-    "category": "Chemistry",
-    "country": "United States",
-    "text": "Arieh Warshel ,  born in  Israel , Chemistry, 2013",
-    "date_of_birth": "1940-11-20T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Sde Nahum",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 73
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Michael_Levitt",
-    "name": "Michael Levitt",
-    "year": 2013,
-    "category": "Chemistry",
-    "country": "United States",
-    "text": "Michael Levitt ,  born in South Africa , Chemistry, 2013",
-    "date_of_birth": "1947-05-09T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Pretoria",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 66
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Martin_Karplus",
     "name": "Martin Karplus",
@@ -4744,6 +4692,19 @@
     "gender": "male",
     "award_age": 75
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Oliver_Hart_(economist)",
+    "name": "Oliver Hart",
+    "year": 2016,
+    "category": "Economics",
+    "country": "United States",
+    "text": "Oliver Hart ,  born in United Kingdom , Economics, 2016",
+    "date_of_birth": "1948-10-09T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "London",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 68
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Fraser_Stoddart",
     "name": "Fraser Stoddart",
     "year": 2016,
@@ -4756,6 +4717,19 @@
     "place_of_death": null,
     "gender": "male",
     "award_age": 74
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/F._Duncan_M._Haldane",
+    "name": "F. Duncan M. Haldane",
+    "year": 2016,
+    "category": "Physics",
+    "country": "United States",
+    "text": "F. Duncan M. Haldane ,  born in United Kingdom , Physics, 2016",
+    "date_of_birth": "1951-09-14T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "London",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 65
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/William_Nordhaus",
     "name": "William Nordhaus",
@@ -4861,6 +4835,19 @@
     "gender": "male",
     "award_age": 85
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Joachim_Frank",
+    "name": "Joachim Frank",
+    "year": 2017,
+    "category": "Chemistry",
+    "country": "United States",
+    "text": "Joachim Frank ,  born in Germany , Chemistry, 2017",
+    "date_of_birth": "1940-09-12T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Weidenau",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 77
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Barry_Barish",
     "name": "Barry Barish",
     "year": 2017,
@@ -4951,6 +4938,19 @@
     "place_of_death": null,
     "gender": "male",
     "award_age": 70
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Aziz_Sancar",
+    "name": "Aziz Sancar",
+    "year": 2015,
+    "category": "Chemistry",
+    "country": "United States",
+    "text": "Aziz Sancar ,  born in Turkey , Chemistry, 2015",
+    "date_of_birth": "1946-09-08T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Savur",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 69
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Paul_L._Modrich",
     "name": "Paul L. Modrich",
@@ -5120,6 +5120,19 @@
     "place_of_death": "London",
     "gender": "male",
     "award_age": 53
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Ernest_Rutherford,_1st_Baron_Rutherford_of_Nelson",
+    "name": "Ernest Rutherford",
+    "year": 1908,
+    "category": "Chemistry",
+    "country": "United Kingdom",
+    "text": "Ernest Rutherford ,  born in New Zealand , Chemistry, 1908",
+    "date_of_birth": "1871-08-30T00:00:00.000Z",
+    "date_of_death": "1937-10-19T00:00:00.000Z",
+    "place_of_birth": "Nelson",
+    "place_of_death": "Groove Street",
+    "gender": "male",
+    "award_age": 37
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/George_Bernard_Shaw",
     "name": "George Bernard Shaw",
@@ -5433,19 +5446,6 @@
     "gender": "male",
     "award_age": 70
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Sydney_Brenner",
-    "name": "Sydney Brenner",
-    "year": 2002,
-    "category": "Physiology or Medicine",
-    "country": "United Kingdom",
-    "text": "Sydney Brenner ,  born in South Africa , Physiology or Medicine, 2002",
-    "date_of_birth": "1927-01-13T00:00:00.000Z",
-    "date_of_death": "2019-04-05T00:00:00.000Z",
-    "place_of_birth": "Germiston",
-    "place_of_death": "Singapore",
-    "gender": "male",
-    "award_age": 75
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/John_E._Sulston",
     "name": "John E. Sulston",
     "year": 2002,
@@ -5602,19 +5602,6 @@
     "gender": "male",
     "award_age": 72
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Maurice_Wilkins",
-    "name": "Maurice Wilkins",
-    "year": 1962,
-    "category": "Physiology or Medicine",
-    "country": "United Kingdom",
-    "text": "Maurice Wilkins ,  born in New Zealand , Physiology or Medicine, 1962",
-    "date_of_birth": "1916-12-15T00:00:00.000Z",
-    "date_of_death": "2004-10-05T00:00:00.000Z",
-    "place_of_birth": "Pongaroa",
-    "place_of_death": "Blackheath",
-    "gender": "male",
-    "award_age": 46
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Francis_Crick",
     "name": "Francis Crick",
     "year": 1962,
@@ -5719,19 +5706,6 @@
     "gender": "male",
     "award_age": 54
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Dennis_Gabor",
-    "name": "Dennis Gabor",
-    "year": 1971,
-    "category": "Physics",
-    "country": "United Kingdom",
-    "text": "Dennis Gabor ,  born in Hungary , Physics, 1971",
-    "date_of_birth": "1900-06-05T00:00:00.000Z",
-    "date_of_death": "1979-02-09T00:00:00.000Z",
-    "place_of_birth": "Budapest",
-    "place_of_death": "London",
-    "gender": "male",
-    "award_age": 71
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Bernard_Katz",
     "name": "Bernard Katz",
     "year": 1970,
@@ -5809,19 +5783,6 @@
     "place_of_death": "Cambridge",
     "gender": "male",
     "award_age": 49
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Betty_Williams_(Nobel_laureate)",
-    "name": "Betty Williams",
-    "year": 1976,
-    "category": "Peace",
-    "country": "United Kingdom",
-    "text": "Betty Williams , Peace, 1976",
-    "date_of_birth": "1943-05-22T00:00:00.000Z",
-    "date_of_death": "2020-03-17T00:00:00.000Z",
-    "place_of_birth": "Belfast",
-    "place_of_death": "Belfast",
-    "gender": "female",
-    "award_age": 33
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/John_Cornforth",
     "name": "John Cornforth",
@@ -6017,6 +5978,19 @@
     "place_of_death": "London",
     "gender": "male",
     "award_age": 64
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Ronald_Coase",
+    "name": "Ronald Coase",
+    "year": 1991,
+    "category": "Economics",
+    "country": "United Kingdom",
+    "text": "Ronald Coase ,  based in the United States , Economics, 1991",
+    "date_of_birth": "1910-12-29T00:00:00.000Z",
+    "date_of_death": "2013-09-02T00:00:00.000Z",
+    "place_of_birth": "London",
+    "place_of_death": "Chicago",
+    "gender": "male",
+    "award_age": 81
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/William_Golding",
     "name": "William Golding",
@@ -6239,6 +6213,19 @@
     "gender": "male",
     "award_age": 60
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Edmond_H._Fischer",
+    "name": "Edmond H. Fischer",
+    "year": 1992,
+    "category": "Physiology or Medicine",
+    "country": "Switzerland",
+    "text": "Edmond H. Fischer ,Physiology or Medicine,1992",
+    "date_of_birth": "1920-04-06T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Shanghai",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 72
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Richard_R._Ernst",
     "name": "Richard R. Ernst",
     "year": 1991,
@@ -6304,6 +6291,19 @@
     "gender": "male",
     "award_age": 49
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Daniel_Bovet",
+    "name": "Daniel Bovet",
+    "year": 1957,
+    "category": "Physiology or Medicine",
+    "country": "Switzerland",
+    "text": "Daniel Bovet , Physiology or Medicine, 1957",
+    "date_of_birth": "1907-03-23T00:00:00.000Z",
+    "date_of_death": "1992-04-08T00:00:00.000Z",
+    "place_of_birth": "Fleurier",
+    "place_of_death": "Rome",
+    "gender": "male",
+    "award_age": 50
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Vladimir_Prelog",
     "name": "Vladimir Prelog",
     "year": 1975,
@@ -6342,6 +6342,19 @@
     "place_of_death": "Muralto",
     "gender": "male",
     "award_age": 68
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Felix_Bloch",
+    "name": "Felix Bloch",
+    "year": 1952,
+    "category": "Physics",
+    "country": "Switzerland",
+    "text": "Felix Bloch , Physics, 1952",
+    "date_of_birth": "1905-10-23T00:00:00.000Z",
+    "date_of_death": "1983-09-10T00:00:00.000Z",
+    "place_of_birth": "Z\u00fcrich",
+    "place_of_death": "Z\u00fcrich",
+    "gender": "male",
+    "award_age": 47
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Paul_Hermann_M%C3%BCller",
     "name": "Paul Hermann M\u00fcller",
@@ -6433,32 +6446,6 @@
     "place_of_death": "Cambridge",
     "gender": "male",
     "award_age": 82
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/F._Duncan_M._Haldane",
-    "name": "F. Duncan M. Haldane",
-    "year": 2016,
-    "category": "Physics",
-    "country": "United Kingdom",
-    "text": "F. Duncan M. Haldane , Physics, 2016",
-    "date_of_birth": "1951-09-14T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "London",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 65
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Tomas_Lindahl",
-    "name": "Tomas Lindahl",
-    "year": 2015,
-    "category": "Chemistry",
-    "country": "United Kingdom",
-    "text": "Tomas Lindahl ,  born in Sweden , Chemistry, 2015",
-    "date_of_birth": "1938-01-28T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Stockholm",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 77
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/John_O%27Keefe_(neuroscientist)",
     "name": "John O'Keefe",
@@ -6564,19 +6551,6 @@
     "gender": "male",
     "award_age": 66
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Oliver_Hart_(economist)",
-    "name": "Oliver Hart",
-    "year": 2016,
-    "category": "Economics",
-    "country": "United Kingdom",
-    "text": "Oliver Hart , Economics, 2016",
-    "date_of_birth": "1948-10-09T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "London",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 68
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Richard_Henderson_(biologist)",
     "name": "Richard Henderson",
     "year": 2017,
@@ -6589,19 +6563,6 @@
     "place_of_death": null,
     "gender": "male",
     "award_age": 72
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Aziz_Sancar",
-    "name": "Aziz Sancar",
-    "year": 2015,
-    "category": "Chemistry",
-    "country": "Turkey",
-    "text": "Aziz Sancar , Chemistry, 2015",
-    "date_of_birth": "1946-09-08T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Savur",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 69
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/14th_Dalai_Lama",
     "name": "14th Dalai Lama",
@@ -6641,19 +6602,6 @@
     "place_of_death": "Lucerne",
     "gender": "male",
     "award_age": 74
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Albert_Einstein",
-    "name": "Albert Einstein",
-    "year": 1921,
-    "category": "Physics",
-    "country": "Switzerland",
-    "text": "Albert Einstein ,  born in Germany , Physics, 1921",
-    "date_of_birth": "1879-03-14T00:00:00.000Z",
-    "date_of_death": "1955-04-18T00:00:00.000Z",
-    "place_of_birth": "Ulm",
-    "place_of_death": "Princeton",
-    "gender": "male",
-    "award_age": 42
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Charles_%C3%89douard_Guillaume",
     "name": "Charles \u00c9douard Guillaume",
@@ -6720,18 +6668,31 @@
     "gender": "male",
     "award_age": 59
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Henry_Dunant",
-    "name": "Henry Dunant",
-    "year": 1901,
-    "category": "Peace",
-    "country": "Switzerland",
-    "text": "Henry Dunant , Peace, 1901",
-    "date_of_birth": "1828-05-08T00:00:00.000Z",
-    "date_of_death": "1910-10-30T00:00:00.000Z",
-    "place_of_birth": "Geneva",
-    "place_of_death": "Heiden",
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Samuel_C._C._Ting",
+    "name": "Samuel C. C. Ting",
+    "year": 1976,
+    "category": "Physics",
+    "country": "Taiwan",
+    "text": "Samuel C. C. Ting , Physics, 1976",
+    "date_of_birth": "1936-01-27T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Ann Arbor",
+    "place_of_death": null,
     "gender": "male",
-    "award_age": 73
+    "award_age": 40
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Yuan_T._Lee",
+    "name": "Yuan T. Lee",
+    "year": 1986,
+    "category": "Chemistry",
+    "country": "Taiwan",
+    "text": "Yuan T. Lee , Chemistry, 1986",
+    "date_of_birth": "1936-11-19T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Hsinchu",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 50
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Georges_Charpak",
     "name": "Georges Charpak",
@@ -6758,19 +6719,6 @@
     "place_of_death": null,
     "gender": "male",
     "award_age": 74
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Shmuel_Yosef_Agnon",
-    "name": "Shmuel Yosef Agnon",
-    "year": 1966,
-    "category": "Literature",
-    "country": "Ukraine",
-    "text": "Shmuel Yosef Agnon , Literature, 1966",
-    "date_of_birth": "1888-07-17T00:00:00.000Z",
-    "date_of_death": "1970-02-17T00:00:00.000Z",
-    "place_of_birth": "Buchach",
-    "place_of_death": "Jerusalem",
-    "gender": "male",
-    "award_age": 78
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Camilo_Jos%C3%A9_Cela",
     "name": "Camilo Jos\u00e9 Cela",
@@ -6849,6 +6797,19 @@
     "place_of_death": "Madrid",
     "gender": "male",
     "award_age": 72
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Tomas_Lindahl",
+    "name": "Tomas Lindahl",
+    "year": 2015,
+    "category": "Chemistry",
+    "country": "Sweden",
+    "text": "Tomas Lindahl , Chemistry, 2015",
+    "date_of_birth": "1938-01-28T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Stockholm",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 77
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Tomas_Transtr%C3%B6mer",
     "name": "Tomas Transtr\u00f6mer",
@@ -7331,19 +7292,6 @@
     "gender": "male",
     "award_age": 61
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Ivar_Giaever",
-    "name": "Ivar Giaever",
-    "year": 1973,
-    "category": "Physics",
-    "country": "Norway",
-    "text": "Ivar Giaever , Physics, 1973",
-    "date_of_birth": "1929-04-05T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Bergen",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 44
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Nadine_Gordimer",
     "name": "Nadine Gordimer",
     "year": 1991,
@@ -7526,19 +7474,6 @@
     "gender": "male",
     "award_age": 60
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/W%C5%82adys%C5%82aw_Reymont",
-    "name": "W\u0142adys\u0142aw Reymont",
-    "year": 1924,
-    "category": "Literature",
-    "country": "Russia and Soviet Union",
-    "text": "W\u0142adys\u0142aw Reymont , born in Congress Poland (Russian Empire), Literature, 1924",
-    "date_of_birth": "1867-05-07T00:00:00.000Z",
-    "date_of_death": "1925-12-05T00:00:00.000Z",
-    "place_of_birth": "Kobiele Wielkie",
-    "place_of_death": "Warsaw",
-    "gender": "male",
-    "award_age": 57
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Leonid_Kantorovich",
     "name": "Leonid Kantorovich",
     "year": 1975,
@@ -7564,19 +7499,6 @@
     "place_of_death": "Moscow",
     "gender": "male",
     "award_age": 54
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Simon_Kuznets",
-    "name": "Simon Kuznets",
-    "year": 1971,
-    "category": "Economics",
-    "country": "Russia and Soviet Union",
-    "text": "Simon Kuznets , now Belarus, Economics, 1971",
-    "date_of_birth": "1901-04-30T00:00:00.000Z",
-    "date_of_death": "1985-07-08T00:00:00.000Z",
-    "place_of_birth": "Pinsk",
-    "place_of_death": "Cambridge",
-    "gender": "male",
-    "award_age": 70
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Mikhail_Sholokhov",
     "name": "Mikhail Sholokhov",
@@ -7708,19 +7630,6 @@
     "gender": "male",
     "award_age": 59
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Joseph_Brodsky",
-    "name": "Joseph Brodsky",
-    "year": 1987,
-    "category": "Literature",
-    "country": "Russia and Soviet Union",
-    "text": "Joseph Brodsky , born in Russia, Literature, 1987",
-    "date_of_birth": "1940-05-24T00:00:00.000Z",
-    "date_of_death": "1996-01-28T00:00:00.000Z",
-    "place_of_birth": "Saint Petersburg",
-    "place_of_death": "Brooklyn",
-    "gender": "male",
-    "award_age": 47
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Pyotr_Kapitsa",
     "name": "Pyotr Kapitsa",
     "year": 1978,
@@ -7746,6 +7655,19 @@
     "place_of_death": "Moscow",
     "gender": "male",
     "award_age": 87
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/W%C5%82adys%C5%82aw_Reymont",
+    "name": "W\u0142adys\u0142aw Reymont",
+    "year": 1924,
+    "category": "Literature",
+    "country": "Poland",
+    "text": "W\u0142adys\u0142aw Reymont ,  born in Congress Poland (Russian Empire) , Literature, 1924",
+    "date_of_birth": "1867-05-07T00:00:00.000Z",
+    "date_of_death": "1925-12-05T00:00:00.000Z",
+    "place_of_birth": "Kobiele Wielkie",
+    "place_of_death": "Warsaw",
+    "gender": "male",
+    "award_age": 57
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Henryk_Sienkiewicz",
     "name": "Henryk Sienkiewicz",
@@ -7981,6 +7903,19 @@
     "gender": "male",
     "award_age": 49
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Maurice_Wilkins",
+    "name": "Maurice Wilkins",
+    "year": 1962,
+    "category": "Physiology or Medicine",
+    "country": "New Zealand",
+    "text": "Maurice Wilkins , Physiology or Medicine, 1962",
+    "date_of_birth": "1916-12-15T00:00:00.000Z",
+    "date_of_death": "2004-10-05T00:00:00.000Z",
+    "place_of_birth": "Pongaroa",
+    "place_of_death": "Blackheath",
+    "gender": "male",
+    "award_age": 46
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Ben_Feringa",
     "name": "Ben Feringa",
     "year": 2016,
@@ -8215,19 +8150,6 @@
     "gender": "female",
     "award_age": 51
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Rita_Levi-Montalcini",
-    "name": "Rita Levi-Montalcini",
-    "year": 1986,
-    "category": "Physiology or Medicine",
-    "country": "Italy",
-    "text": "Rita Levi-Montalcini , Physiology or Medicine, 1986",
-    "date_of_birth": "1909-04-22T00:00:00.000Z",
-    "date_of_death": "2012-12-30T00:00:00.000Z",
-    "place_of_birth": "Turin",
-    "place_of_death": "Nomentano",
-    "gender": "female",
-    "award_age": 77
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Kenzabur%C5%8D_%C5%8Ce",
     "name": "Kenzabur\u014d \u014ce",
     "year": 1994,
@@ -8435,6 +8357,19 @@
     "place_of_death": null,
     "gender": "female",
     "award_age": 25
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/William_C._Campbell_(scientist)",
+    "name": "William C. Campbell",
+    "year": 2015,
+    "category": "Physiology or Medicine",
+    "country": "Ireland",
+    "text": "William C. Campbell , Physiology or Medicine, 2015",
+    "date_of_birth": "1930-06-28T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Ramelton",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 85
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Rigoberta_Mench%C3%BA",
     "name": "Rigoberta Mench\u00fa",
@@ -8657,19 +8592,6 @@
     "gender": "male",
     "award_age": 58
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Daniel_Bovet",
-    "name": "Daniel Bovet",
-    "year": 1957,
-    "category": "Physiology or Medicine",
-    "country": "Italy",
-    "text": "Daniel Bovet ,  born in Switzerland , Physiology or Medicine, 1957",
-    "date_of_birth": "1907-03-23T00:00:00.000Z",
-    "date_of_death": "1992-04-08T00:00:00.000Z",
-    "place_of_birth": "Fleurier",
-    "place_of_death": "Rome",
-    "gender": "male",
-    "award_age": 50
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Enrico_Fermi",
     "name": "Enrico Fermi",
     "year": 1938,
@@ -8774,6 +8696,19 @@
     "gender": "male",
     "award_age": 65
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Shmuel_Yosef_Agnon",
+    "name": "Shmuel Yosef Agnon",
+    "year": 1966,
+    "category": "Literature",
+    "country": "Israel",
+    "text": "Shmuel Yosef Agnon ,  born in  Austria-Hungary , now  Ukraine , Literature, 1966",
+    "date_of_birth": "1888-07-17T00:00:00.000Z",
+    "date_of_death": "1970-02-17T00:00:00.000Z",
+    "place_of_birth": "Buchach",
+    "place_of_death": "Jerusalem",
+    "gender": "male",
+    "award_age": 78
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Samuel_Beckett",
     "name": "Samuel Beckett",
     "year": 1969,
@@ -8826,6 +8761,19 @@
     "gender": "male",
     "award_age": 70
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Arieh_Warshel",
+    "name": "Arieh Warshel",
+    "year": 2013,
+    "category": "Chemistry",
+    "country": "Israel",
+    "text": "Arieh Warshel , Chemistry, 2013",
+    "date_of_birth": "1940-11-20T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Sde Nahum",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 73
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Se%C3%A1n_MacBride",
     "name": "Se\u00e1n MacBride",
     "year": 1974,
@@ -8838,6 +8786,19 @@
     "place_of_death": "Dublin",
     "gender": "male",
     "award_age": 70
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Michael_Levitt",
+    "name": "Michael Levitt",
+    "year": 2013,
+    "category": "Chemistry",
+    "country": "Israel",
+    "text": "Michael Levitt ,  born in South Africa , Chemistry, 2013",
+    "date_of_birth": "1947-05-09T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Pretoria",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 66
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Ada_Yonath",
     "name": "Ada Yonath",
@@ -8969,6 +8930,19 @@
     "gender": "male",
     "award_age": 43
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Betty_Williams_(Nobel_laureate)",
+    "name": "Betty Williams",
+    "year": 1976,
+    "category": "Peace",
+    "country": "Ireland",
+    "text": "Betty Williams , Peace, 1976",
+    "date_of_birth": "1943-05-22T00:00:00.000Z",
+    "date_of_death": "2020-03-17T00:00:00.000Z",
+    "place_of_birth": "Belfast",
+    "place_of_death": "Belfast",
+    "gender": "female",
+    "award_age": 33
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Gustav_Ludwig_Hertz",
     "name": "Gustav Ludwig Hertz",
     "year": 1925,
@@ -8981,6 +8955,19 @@
     "place_of_death": "East Berlin",
     "gender": "male",
     "award_age": 38
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Albert_Einstein",
+    "name": "Albert Einstein",
+    "year": 1921,
+    "category": "Physics",
+    "country": "Germany",
+    "text": "Albert Einstein , Physics, 1921",
+    "date_of_birth": "1879-03-14T00:00:00.000Z",
+    "date_of_death": "1955-04-18T00:00:00.000Z",
+    "place_of_birth": "Ulm",
+    "place_of_death": "Princeton",
+    "gender": "male",
+    "award_age": 42
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Otto_Fritz_Meyerhof",
     "name": "Otto Fritz Meyerhof",
@@ -9112,10 +9099,23 @@
     "gender": "male",
     "award_age": 44
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Richard_Adolf_Zsigmondy",
+    "name": "Richard Adolf Zsigmondy",
+    "year": 1925,
+    "category": "Chemistry",
+    "country": "Hungary",
+    "text": "Richard Adolf Zsigmondy , Chemistry, 1925",
+    "date_of_birth": "1865-04-01T00:00:00.000Z",
+    "date_of_death": "1929-09-23T00:00:00.000Z",
+    "place_of_birth": "Vienna",
+    "place_of_death": "G\u00f6ttingen",
+    "gender": "male",
+    "award_age": 60
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/R%C3%B3bert_B%C3%A1r%C3%A1ny",
     "name": "R\u00f3bert B\u00e1r\u00e1ny",
     "year": 1914,
-    "category": "Medicine",
+    "category": "Physiology or Medicine",
     "country": "Hungary",
     "text": "R\u00f3bert B\u00e1r\u00e1ny ,  born in Austria , Medicine, 1914",
     "date_of_birth": "1876-04-22T00:00:00.000Z",
@@ -9150,6 +9150,19 @@
     "place_of_death": "Mosfellsb\u00e6r",
     "gender": "male",
     "award_age": 53
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Eugene_Wigner",
+    "name": "Eugene Wigner",
+    "year": 1963,
+    "category": "Physics",
+    "country": "Hungary",
+    "text": "Eugene Wigner , Physics, 1963",
+    "date_of_birth": "1902-11-17T00:00:00.000Z",
+    "date_of_death": "1995-01-01T00:00:00.000Z",
+    "place_of_birth": "Budapest",
+    "place_of_death": "Princeton",
+    "gender": "male",
+    "award_age": 61
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/George_de_Hevesy",
     "name": "George de Hevesy",
@@ -9424,19 +9437,6 @@
     "gender": "male",
     "award_age": 68
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/John_Harsanyi",
-    "name": "John Harsanyi",
-    "year": 1994,
-    "category": "Economics",
-    "country": "Hungary",
-    "text": "John Harsanyi , Economics, 1994",
-    "date_of_birth": "1920-05-29T00:00:00.000Z",
-    "date_of_death": "2000-08-09T00:00:00.000Z",
-    "place_of_birth": "Budapest",
-    "place_of_death": "Berkeley",
-    "gender": "male",
-    "award_age": 74
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/John_Polanyi",
     "name": "John Polanyi",
     "year": 1986,
@@ -9449,6 +9449,19 @@
     "place_of_death": null,
     "gender": "male",
     "award_age": 57
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Dennis_Gabor",
+    "name": "Dennis Gabor",
+    "year": 1971,
+    "category": "Physics",
+    "country": "Hungary",
+    "text": "Dennis Gabor , Physics, 1971",
+    "date_of_birth": "1900-06-05T00:00:00.000Z",
+    "date_of_death": "1979-02-09T00:00:00.000Z",
+    "place_of_birth": "Budapest",
+    "place_of_death": "London",
+    "gender": "male",
+    "award_age": 71
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Reinhard_Selten",
     "name": "Reinhard Selten",
@@ -10399,6 +10412,19 @@
     "gender": "female",
     "award_age": 36
 }, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Henry_Dunant",
+    "name": "Henry Dunant",
+    "year": 1901,
+    "category": "Peace",
+    "country": "France",
+    "text": "Henry Dunant ,  born in the Swiss Confederation , Peace, 1901",
+    "date_of_birth": "1828-05-08T00:00:00.000Z",
+    "date_of_death": "1910-10-30T00:00:00.000Z",
+    "place_of_birth": "Geneva",
+    "place_of_death": "Heiden",
+    "gender": "male",
+    "award_age": 73
+}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Henri_Moissan",
     "name": "Henri Moissan",
     "year": 1906,
@@ -10593,19 +10619,6 @@
     "place_of_death": "Neuilly-sur-Seine",
     "gender": "male",
     "award_age": 79
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Joachim_Frank",
-    "name": "Joachim Frank",
-    "year": 2017,
-    "category": "Chemistry",
-    "country": "Germany",
-    "text": "Joachim Frank , Chemistry, 2017",
-    "date_of_birth": "1940-09-12T00:00:00.000Z",
-    "date_of_death": null,
-    "place_of_birth": "Weidenau",
-    "place_of_death": null,
-    "gender": "male",
-    "award_age": 77
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Fr%C3%A9d%C3%A9ric_Joliot-Curie",
     "name": "Fr\u00e9d\u00e9ric Joliot-Curie",
@@ -10957,6 +10970,19 @@
     "place_of_death": "Saint-Cloud",
     "gender": "male",
     "award_age": 77
+}, {
+    "link": "http:\/\/en.wikipedia.org\/wiki\/G%C3%A9rard_Debreu",
+    "name": "G\u00e9rard Debreu",
+    "year": 1983,
+    "category": "Economics",
+    "country": "France",
+    "text": "G\u00e9rard Debreu , Economics, 1983",
+    "date_of_birth": "1921-07-04T00:00:00.000Z",
+    "date_of_death": "2004-12-31T00:00:00.000Z",
+    "place_of_birth": "Calais",
+    "place_of_death": "Paris",
+    "gender": "male",
+    "award_age": 62
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Claude_Simon",
     "name": "Claude Simon",
@@ -11530,19 +11556,6 @@
     "gender": "male",
     "award_age": 47
 }, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Ernest_Rutherford",
-    "name": "Ernest Rutherford",
-    "year": 1908,
-    "category": "Chemistry",
-    "country": "Canada",
-    "text": "Ernest Rutherford ,  born in New Zealand,  Chemistry, 1908",
-    "date_of_birth": "1871-08-30T00:00:00.000Z",
-    "date_of_death": "1937-10-19T00:00:00.000Z",
-    "place_of_birth": "Nelson",
-    "place_of_death": "Groove Street",
-    "gender": "male",
-    "award_age": 37
-}, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Pablo_Neruda",
     "name": "Pablo Neruda",
     "year": 1971,
@@ -11958,19 +11971,6 @@
     "place_of_death": "Vienna",
     "gender": "male",
     "award_age": 70
-}, {
-    "link": "http:\/\/en.wikipedia.org\/wiki\/Richard_Adolf_Zsigmondy",
-    "name": "Richard Adolf Zsigmondy",
-    "year": 1925,
-    "category": "Chemistry",
-    "country": "Austria",
-    "text": "Richard Adolf Zsigmondy , Chemistry, 1925",
-    "date_of_birth": "1865-04-01T00:00:00.000Z",
-    "date_of_death": "1929-09-23T00:00:00.000Z",
-    "place_of_birth": "Vienna",
-    "place_of_death": "G\u00f6ttingen",
-    "gender": "male",
-    "award_age": 60
 }, {
     "link": "http:\/\/en.wikipedia.org\/wiki\/Fritz_Pregl",
     "name": "Fritz Pregl",

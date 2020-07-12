@@ -44,7 +44,7 @@
         <div class="site-overlay"></div>
 
         <main id="container"
-            class="container p-8 md:p-6 max-w-2xl md:max-w-3xl min-h-screen">
+            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen">
             <button id="menu"
                 class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
                 Menü</button>
@@ -3039,6 +3039,688 @@ g.add_legend()</code><button id="copy"
                         többször is megjelennek, lehetőséget nyújt arra, hogy többféle ábrát is használhassunk, többféleképpen
                         vizsgálva a kapcsolatokat, a főátló szerint.
                     </p>
+                </section>
+
+                <section id="4explore">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Fedezzük fel az adatunkat Pandas-al</h2>
+                    <p class="text-lg font-normal">Korábban elkészítettük az akkori tudásunk szerint teljesen megtisztított
+                        Nobel-díj adatsort. Következő lépésben nem más a feladatunk, mint tűzetesen átnézni azt, hogy mivel
+                        rendelkezünk és mik lehetnek azok az érdekes történetek és minták, amelyeket érdemes lenne ábrázolni és
+                        interaktívan vizualizálni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code>{
+    "link": "http:\/\/en.wikipedia.org\/wiki\/Peter_C._Doherty",
+    "name": "Peter C. Doherty",
+    "year": 1996,
+    "category": "Physiology or Medicine",
+    "country": "Australia",
+    "text": "Peter C. Doherty , Physiology or Medicine, 1996",
+    "date_of_birth": "1940-10-15T00:00:00.000Z",
+    "date_of_death": null,
+    "place_of_birth": "Brisbane",
+    "place_of_death": null,
+    "gender": "male",
+    "award_age": 56
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Továbbá, rendelkezünk még az összevont adatsorral is, amely tartalmazza
+                        Nobel-győztesek rövid életrajzait, esetenként képüket is. Tehát, rendelkezünk az adatsorunkban
+                        kategorikus, időszaki és földrajzi adatokkal is. A fenti adatunk rámutatt néhány történetre, amelyet
+                        érdemes lenne kivizsgálni a következőkben: nem szerinti eloszlás, nemzeti trendek (pl. melyik ország
+                        nyerte a legtöbb díjat a Fizika kategóriában), egyéni győztesekről különböző adatok (pl. a győztesek
+                        átlagéletkora, vagy várható élettartama), és végül akár a földrajzi életútjukat is megvizsgálhatjuk,
+                        hiszen van számos olyan nyertesünk, aki egy adott országban született, de más ország állampolgáraként
+                        nyerte meg.
+                    </p>
+                    <p class="text-lg font-normal">Mielőtt elkezdhetnénk a felfedezésünket, hozzuk létre az ehhez szükséges
+                        környezetet, indítsunk el egy IPython Notebook-ot. Majd a megszokott módon az IPython Notebook-ban
+                        használjuk a 'magic' matplotlib parancsot, hogy engedélyezzük az inline ábrázolást, végül pedig a
+                        szükséges importok:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import json
+# a seaborn importálása befogja állítani a Seaborn jobban kinéző ábráit minden ábrára, nem csak
+# a Seaborn specifikusokra
+import seaborn as sb
+
+# beállítjuk az alapértelmezett figure méretet
+plt.rcParams['figure.figsize'] = 8, 4</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Nem szükséges fájlokkal vacakolnunk már, hiszen korábban lementettük a
+                        megtisztított adatsorunkat MongoDB-re, és használva egy korábbi kiegészítő függvényünket betudjuk olvasni
+                        az adatsorunkat egy DataFrame-be, hogy elkezdhessük a munkát:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df = mongo_to_dataframe('nobel_prize', 'winners_cleaned')
+
+df.info()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Mind a Pandas Series-eknek és a DataFrame-knek is van beépített, integrált
+                        ábrázolása, amely magába sűríti a leggyakoribb Matplotlib ábrákat, amelyek közül néhányat korábban meg is
+                        vizsgáltunk. Ez lényegében lehetővé teszi, hogy egy vizuális feedback-et kapjunk, miközben a
+                        DataFrame-ünkben interaktálunk. Ugyanakkor, ha valami komplexebbet szeretnénk ábrázolni, abban az esetben
+                        is szerencsénk van, hiszen a DataFrame típus nagyszerűen működik együtt a Matplotlib-el. Végül, pedig azt
+                        is megkell említsük, hogy képesek vagyunk alakítani ábráinkon a beépített Matplotlib testreszabhatósági
+                        lehetőségekkel.
+                    </p>
+                    <p class="text-lg font-normal">Nézzük is meg a Pandas ábrázolási lehetőségeket, kezdve a korábban említett
+                        nemek közötti egyenlőtlenségekről. A Nobel-díj esetében híresen egyoldalú a párharc a nemek között,
+                        építsünk fel hát egy gyors ábrát, amely bemutatja ezt, felhasználva egy oszlopdiagrammot a nem kategórián:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># kiválasszuk a nem kategóriát, ami így egy Series-hez vezet minket
+by_gender = df.groupby('gender')
+
+# a size()-al lekérjük számokban a kategóriákat,
+# majd a plot()-al ábrázoljuk, meghatározva annak típusát, az oszlopot
+by_gender.size().plot(kind='bar')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig39.png"
+                            alt="Ábra 39">
+                        <figcaption class="text-center pt-3 pb-4 text-md">39. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Ahogy azt megfigyelhettük, az alapértelmezett vonaldiagram mellett, a
+                        Pandas <em>plot</em> metódusa bevesz egy <em>kind</em> argumentumot is, amellyel választhatunk a
+                        rendelkezésünkre álló típusok között: bar, barh, box, scatter, stb.
+                    </p>
+                    <p class="text-lg font-normal">De, bontsuk le méginkább korábbi vizsgálatunkat, díjkategóriára. A Pandas
+                        groupby metódusa nem csak egyetlen, hanem egy egész listányi oszlopot képes bevenni és aszerint
+                        csoportosítani, ahol mindegyik csoportot több kulcs segítségével tudunk elérni, ahogy azt a következő
+                        példa is szemlélteti:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># létrehozzuk a csoportokat, kategória és nem szerint, tehát lesz az 6 kategória és 2 nem, összesen 12 csoport
+by_cat_gen = df.groupby(['category', 'gender'])
+
+# elérjük azt a csoportot, amely fizikából nyert Nobel-díjat és nő volt, majd kiválasztjuk azok nevét és az évet, amikor
+# megnyerték
+by_cat_gen.get_group(('Physics', 'female'))[['name', 'year']]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Használva ez után a <em>size</em> metódust, hogy elérjük a létrehozott
+                        csoportok méretét, visszatérít egy Series-t MultiIndex-ekkel, amely címkézi az értékeket kategória és nem
+                        szerint:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">by_cat_gen.size()
+""" output:
+category gender
+Chemistry female 5
+        male 180
+Economics female 2
+        male 82
+Literature female 15
+        male 100
+Medicine male 1
+Peace female 17
+        male 90
+Physics female 3
+        male 211
+Physiology or Medicine female 12
+        male 209 """</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Képesek vagyunk a fent kapott multi-indexelt Series-et közvetlenül ábrázolni,
+                        használva egy barh-t, mint kind argumentum, hogy létrehozzunk egy horizontális oszlopdiagrammot:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">by_cat_gen.size().plot(kind='barh')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig40.png"
+                            alt="Ábra 40">
+                        <figcaption class="text-center pt-3 pb-4 text-md">40. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A fenti ábránk azonban nem tökéletes, kicsit nehezen olvasható, így nehezebbé
+                        teszi a nemek közötti egyenlőtlenség elemzését, mint amennyire nehéznek kellene annak lennie.
+                        Szerencsénkre, a Pandas Series rendelkezik egy <em>unstack</em> metódussal, amely bevesz több indexet, a
+                        mi esetünkben a nemet és a kategóriát, és ezeket fogja használni, mint oszlopok és indexek, sorrendben,
+                        hogy létrehozzon egy új DataFrame-t. Majd ezt az új DataFrame-t ábrázolva egy sokkal kellemesebben
+                        leolvasható ábrát kapunk, amely összehasonlítja a különböző kategóriákban a nyertesek számát nem szerint:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># létrehoz egy új DataFrame-t, amely esetében a megadott csoportok oszlopokká és indexekké válnak, a nemek jelenleg oszlopok
+# és a kategóriák indexek
+by_cat_gen.size().unstack()
+
+# majd ezt az új DataFrame-t ábrázolhatjuk az előző módon
+by_cat_gen.size().unstack().plot(kind='barh')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig41.png"
+                            alt="Ábra 41">
+                        <figcaption class="text-center pt-3 pb-4 text-md">41. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Most a színezett ábrán észrevehettünk az adatsorunkban egy hibát, mely szerint
+                        van 1 győztes, aki csak Medicine kategóriában van, ez így nem épp a legoptimálisabb, ki is javíthatnánk,
+                        majd frissíthetjük a Mongo mentésünket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># elérjük azt a győztest, akinek kategóriája rosszul van írva
+df[df.category == 'Medicine']
+# érdekes, magyar az illető
+
+# majd kijavítjuk a hibát és frissítjük az adatbázist
+# és akár le is menthetjük javítva állományba is
+df.loc[df.category == 'Medicine', 'category'] = 'Physiology or Medicine'
+
+# mostmár üres
+df[df.category == 'Medicine']
+
+# le is ellenőrízhetjük a korábbi ábra megismétlésével
+
+by_cat_gen = df.groupby(['category', 'gender'])
+by_cat_gen.size().unstack().plot(kind='barh')
+# eltűnt a Medicine kategória egyetlen férfi győztessel
+
+def dataframe_mongo_compatible(df):
+    # a MongoDB-n való tárolás miatt vissza kell alakítani object-é az oszlopot, és NaN-ra állítani a NaT-okat,
+    # mert másképp nem engedi feltölteni, ValueError miatt
+    df.date_of_death = df.date_of_death.astype(object).where(df.date_of_death.notnull(), np.nan)
+
+    return df
+
+def dataframe_reverse_compatible(df):
+    # visszalakítjuk datetime objektummá az oszlopot
+    df.date_of_death = pd.to_datetime(df.date_of_death)
+
+    return df
+
+df = dataframe_mongo_compatible(df)
+
+# persze, ahhoz, hogy feltöltsük az idő oszlopokat Mongo kompatibilissá kell tennünk
+dataframe_to_mongo(df, 'nobel_prize', 'winners_cleaned', forceupdate=True)
+
+df = dataframe_reverse_compatible(df)
+
+# lementjük JSON állományba is, ne felejtsük el a date_format-ot beállítani
+df.to_json('winners_cleaned.json', orient='records', date_format='iso')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tovább javíthatjuk a korábbi ábránkat kétféleképpen is, egyrészt hozzáadunk egy
+                        új oszlopcsoportot 'total' néven, amely az adott kategória össznyerteseinek számát fogja jelölni, valamit
+                        rendezzük az oszlopsorrendet a női győztesek számának megfelelően növekvő sorrendben:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">cat_gen_sz = by_cat_gen.size().unstack()
+
+# oszlopok szerint summázuk, és létrehozunk egy 'total' új oszlopot
+cat_gen_sz['total'] = cat_gen_sz.sum(axis=1) 
+
+# a női oszlop szerint rendezzük
+cat_gen_sz = cat_gen_sz.sort_values(by='female', ascending=True)
+
+# képesek lehetnénk a lenti kiválasztás nélkül is ábrázolni,
+# azonban így meghatározhatjuk az oszlopok egymás közötti sorrendjét
+cat_gen_sz[['female', 'total', 'male']].plot(kind='barh')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig42.png"
+                            alt="Ábra 42">
+                        <figcaption class="text-center pt-3 pb-4 text-md">42. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A fenti ábrában már tűkröződik az a fajta egyenlőtlenség, ami a nemek
+                        között
+                        létezik a Nobel-díj tekintetében. Mindössze 2 női nyertese volt a közgazdaság Nobel-díjnak, de mégis a
+                        legnagyobb eltérés a fizika Nobel-díj esetén van, ahol több, mint 200 férfi győztessel szemben, mindössze
+                        3 női győztes volt.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Ilyen értelemben, az egyik női győztes nevét biztosan ismerni mindenki,
+                        Marie
+                        Curie-t, azonban a közgazdász nyertesekről és legfőképpen a másik két fizika nyertesről nem sokan
+                        hallottak (Maria Goeppert-Mayer és Donna Strickland), tehát akár megfogalmazható cél lehetne az is, hogy
+                        vizualizációnkkal elősegítsük azt, hogy az embereket megismerjék az említett győzteseket.
+                    </p>
+                    <p class="text-lg font-normal">Következőkben, akár érdekes lehetne megvizsgálni azt is, hogy időben
+                        hogyan alakultak a női győztesek, tehát megfigyelhető volt-e egy növekedés a női győztesek számában az
+                        elmúlt években. Egy mód arra, hogy vizualizáljuk a hipotézisünket, hogy csoportosított
+                        oszlopokdiagrammokat hozzunk létre, az x tengelyre az időt helyezve, az y tengelyre a nyert díjak számát
+                        nemenként. Megintcsak, a csoportok létrehozásával kezdjük, majd használjuk a bevált módon a size és
+                        unstack metódusokat, végül ábrázoljuk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># létrehozzuk a csoportokat év és nem szerint
+by_year_gender = df.groupby(['year', 'gender'])
+# megszámoljuk, majd unstack-el létrehozzuk az új DataFrame-t
+year_gen_sz = by_year_gender.size().unstack()
+# ábrázoljuk oszlopdiagrammon
+year_gen_sz.plot(kind='bar', figsize=(16, 4))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig43.png"
+                            alt="Ábra 43">
+                        <figcaption class="text-center pt-3 pb-4 text-md">43. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A fenti ábra röviden és tömören borzalmas, de funkcionális, hiszen azt mutatja
+                        be, amit vizsgálni szerettünk volna. Olvashatatlan az ábra, de használhatjuk a Matplotlib és Pandas
+                        könyvtárak rugalmasságát, hogy kijavítsuk a hibáit. Az első feladatunk egyből látszik, az x tengely
+                        túlságosan zsúfolt, nincs szükségünk ennyi címkére. Alapértelmezetten, a Matplotlib minden címkét
+                        megjelenít minden oszlopra, ahogy az látszódik, de jelen esetben több, mint 100 van, így az
+                        alapértelmezett beállítás nem igazán előnyös. Több megközelítés is van arra, hogy leszűkítsük a címkék
+                        számát, a továbbiakban is hasonló eseteknél ezt a megközelítést szeretnénk alkalmazni, tehát tanácsos,
+                        hogy egy erre dedikált függvénybe elkülönítsük és mobilissá tegyük:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">def thin_xticks(ax, tick_gap=10, rotation=45):
+    """ Kitörli az x tengely címkéinek egy részét és elforgatja őket """
+    
+    # lekéri a jelenlegi címkéket pozícióját
+    ticks = ax.xaxis.get_ticklocs()
+    
+    # megszerezzük a jelenlegi címkék szövegeit
+    ticklabels = [l.get_text() for l in ax.xaxis.get_ticklabels()]
+    
+    # beállítsuk, a tick_gap szerinti lépegetéssel az új címkéket
+    ax.xaxis.set_ticks(ticks[::tick_gap])
+    
+    # beállítsuk, a tick_gap szerinti lépegetéssel az új címkéket és elforgatja
+    ax.xaxis.set_ticklabels(ticklabels[::tick_gap], rotation=rotation)
+    
+    ax.figure.show()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Érdekes, nehezen kivehető, de az is megfigyelhető, hogy vannak hiányzó éveink,
+                        1940-1942 között nem osztottak Nobel-díjakat a 2. Világháború miatt. Az ábránkon akarunk látni ilyen
+                        kihagyásokat, tehát manuális kell beállítsuk az x tengely kiterjedését, hogy belefoglalja az összes évet a
+                        Nobel-díj kezdetétől a jelenévig, hiszen jelenleg ez így néz ki:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">by_year_gender.size().unstack()
+
+""" output:
+
+gender	female	male
+year		
+1901	NaN	6.0
+1902	NaN	7.0
+1903	1.0	6.0
+1904	NaN	5.0
+1905	1.0	4.0
+...	...	...
+2015	2.0	8.0
+2016	NaN	11.0
+2017	NaN	11.0
+2018	4.0	9.0
+2019	1.0	13.0
+
+"""</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, év szerint van az indexelés, tehát, ahhoz, hogy lássuk a hézagokat a
+                        végső ábrán, nem mást kell tennünk, mint újraindexelni a Series-t, a year-t az összes évvel, a
+                        következőképpen:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># létrehozunk egy NumPy range-ből egy új Index-et 'year' névvel
+new_index = pd.Index(np.arange(1901, 2020), name='year')
+# létrehozzuk a megszokott csoportokat
+by_year_gender = df.groupby(['year', 'gender'])
+# létrehozzuk az új csoportok szerinti DataFrame-t a size-ból, és ellássuk az új index-el, amely 1901-től 2019-ig megy
+year_gen_sz = by_year_gender.size().unstack().reindex(new_index)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Még egy probléma az ábránkkal az oszlopok túlnagy száma. Rengeteg oszlopunk
+                        van, jelenleg a női és a férfi egymás mellett. Sokkal jobb megközelítés lenne, ha lenne külön férfi és
+                        külön női ábránk, de egymásra tetejére helyezve így könnyebb őket összehasonlítani:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># létrehozzuk a subplot rendszerünket, 1 oszloppal és 2 sorral, valamint megosztott x és y tengelyekkel a normalizáltság miatt
+fig, axes = plt.subplots(nrows=2, ncols=1, sharex=True, sharey=True)
+
+# kiválasztjuk hol legyen a férfi és női ábra
+ax_f = axes[0]
+ax_m = axes[1]
+
+# címet adunk a figure-nak
+fig.suptitle('Nobel Prize-winners by gender', fontsize=16)
+
+# létrehozzuk a felső, női győzteseket bemutató oszlopdiagrammot, x érték az évek, y érték a nyertesek számai
+ax_f.bar(year_gen_sz.index, year_gen_sz.female)
+ax_f.set_ylabel('Female winners')
+
+# ugyanúgy férfi esetén is
+ax_m.bar(year_gen_sz.index, year_gen_sz.male)
+ax_m.set_ylabel('Male winners')
+
+# majd az alsó ábra esetén x tengelycímkét is beállítunk, felső esetén fölösleges
+ax_m.set_xlabel('Year')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig44.png"
+                            alt="Ábra 44">
+                        <figcaption class="text-center pt-3 pb-4 text-md">44. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Tehát, lezárván a nemvizsgálatunkat, kimondhatjuk azt, hogy valóban,
+                        létezik az
+                        egyenlőtlenség, azonban az utóbbi években javuló tendencia figyelhető meg, hiszen egyre több nő nyer
+                        Nobel-díjat. A továbbiakban, térjünk át a nemzeti trendekre, hátha abból valamilyen érdekes vizualizáció
+                        témát tudunk kihalászni.
+                    </p>
+                    <p class="text-lg font-normal">Egy egyértelmű kezdés a nemzeti trendek vizsgálatához, hogy ábrázoljuk a
+                        nyertesek abszolút számát. Ez nagyon egyszerűen megvalósítható akár egyetlen sornyi kóddal:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df.groupby('country').size().sort_values(ascending=True).plot(kind='bar', figsize=(12, 4))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig45.png"
+                            alt="Ábra 45">
+                        <figcaption class="text-center pt-3 pb-4 text-md">45. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Az abszolút számok nem mutatnak túl nagy újdonságot, az AEÁ rendelkezik a
+                        legtöbb Nobel-díjjal, azonban elfogult összehasonlítás ez, hiszen előnyösebb helyzetbe hozza azokat az
+                        országokat, amelyeket nagyobb lakosággal rendelkeznek, kicsit olyan, mintha a nominális GDP-ket
+                        hasonlítanánk össze, hiszen az meg függ a gazdaság nagyságától, megintcsak az lehet elmondani, mint a
+                        GDP-k esetén is, hogy az egy főre jutó statisztikák egy teljesebb képet mutatnának.
+                    </p>
+                    <p class="text-lg font-normal">Szóval, a következő feltevésünk az, hogy hogyan alakulna át az előbb látott
+                        ábra, ha azt is számításba vennénk melyik országban hányan laknak? Ahhoz, hogy megkapjuk ezt a
+                        statisztikát a nyertesek abszolút számát elkell osztanunk a lakosság számával, pont ahogy az egy főre jutó
+                        nominális GDP esetén is tennénk. Korábban, már nagyon régen letöltöttünk némi országadatot is, és
+                        MongoDB-n tároltuk. Utólag vettem észre, hogy csakis azokat az országokat kértük le, ahol a pénznem az
+                        amerikai dollár volt. Ezt kijavíthatjuk, és újra feltölthetjük a MongoDB-re:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import requests
+
+REST_EU_ROOT_URL = 'http://restcountries.eu/rest/v1'
+    
+def REST_country_request(field='all', name=None, params=None):
+    headers = { 'User-Agent' : 'Mozilla/5.0' }
+    # legtöbbször jó ötlet az, ha meghatározzunk egy valid 'User-Agent'-et a request fejlécében,
+    # annak érdekében tesszük ezt, hogy elkerüljek azt az esetet, amikor nem lehet az adatot elérni meghatározott fejléc nélkül
+    # a fejlécek nem mások, mint kiegészítő információk a HTTP csatlakozás során
+    # ebben az esetben az 'User-Agent' lényegében információt szolgáltat az API-nak arról, hogy milyen rendszer kéri le az információt,
+    # azonosítva ez által
+    	
+    if not params:
+    	params = {}
+
+    if field == 'all':
+            return requests.get(REST_EU_ROOT_URL + '/all')
+        
+    url = '{}/{}/{}'.format(REST_EU_ROOT_URL, field, name)
+    print('Requesting URL: {}'.format(url))
+    response = requests.get(url, params=params, headers=headers)
+    # egy REST countries URL így néz ki: https://restcountries.eu/rest/v1/&#60;field>/&#60;name>?&#60;params>
+
+    if not response.status_code == 200:
+        raise Exception('Request failed with status code {}'.format(response.status_code))
+    # mielőtt visszatérítenénk a választ, megnézzük érvényes-e
+
+    return response
+
+res = REST_country_request()
+
+from pymongo import MongoClient
+
+# alapértelmezett beállításokkal, csupán az adatbázisnév tetszőleges
+def get_mongo_database(
+    db_name, host="localhost", port=27017, username=None, password=None
+    ):
+    """ Elérjük a db_name-mel hivatkozott adatbázist MongoDB-ről, hitelesítő adatokkal vagy azok nélkül """
+
+    if username and password:
+        mongo_uri = "mongodb://{}:{}@{}/{}".format(username, password, host, db_name)
+        # URI = uniform resource identifier
+        conn = MongoClient(mongo_uri)
+    else:
+        conn = MongoClient(host, port)
+
+    return conn[
+        db_name
+    ] # itt már a második féle jelölést használjuk az adatbázis eléréséhez
+
+# elérjük az adatbázist
+db = get_mongo_database('nobel_prize')
+
+# töröljük a létező collectiont
+col = db['country_data']
+col.drop()
+
+# beillesztjük az újat
+col = db['country_data']
+col.insert_many(res.json())</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Mostmár lekérhetjük az országadatainkat és felhasználhatjuk arra, hogy
+                        kiszámoljuk a relatív győzteseket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">nat_group = df.groupby('country')
+nat_group.size() # kiírja indexként az országot, oszlopértékben pedig, hogy hány győztese van
+
+df_countries = mongo_to_dataframe('nobel_prize', 'country_data') # elérjük a lementett országadatainkat
+df_countries.head()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Alapvetően, ha az országadatokat tartalmazó DataFrame-ünk esetében
+                        megváltoztatjuk annak indexét a 'name' oszlopra, tehát az országnevekre, majd hozzáadjuk az 'ngsz'
+                        Series-ünket ehhez a DataFrame-hez, amely ugyancsak tartalmaz országneveket tartalmazó indexet, akkor a
+                        megosztott indexek alapján, az országadatainkat tartalmazó DataFrame kiegészül egy új oszloppal, a
+                        'nobel_wins'-el. Majd használhatjuk ezt az új oszlopot a számításhoz, hogy elosszuk a lakosság méretével,
+                        megkapva az általunk érdekelt oszlopot a 'nobel_wins_per_capita'-t:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># beállítjuk az új indexet, az egész számú indexelésről, a 'name' oszlopra
+# df_countries = df_countries.set_index('name')
+# hozzáadjuk az új oszlopot, amely az összevonódik a megosztott indexek miatt
+df_countries['nobel_wins'] = ngsz
+# hozzáadjuk az új oszlopot, felhasználva már két létező oszlopot
+df_countries['nobel_wins_per_capita'] = df_countries['nobel_wins'] / df_countries['population']
+
+# kitöröljük azokat az országokat a letöltött adatainkból, ahol nem volt Nobel-győztes
+df_countries = df_countries[df_countries.nobel_wins_per_capita.notnull()]
+
+# mostmár ábrázolhatjuk a relatív győzteseket
+df_countries.sort_values(by='nobel_wins_per_capita', ascending=False).nobel_wins_per_capita.plot(kind='bar', figsize=(16, 4))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig46.png"
+                            alt="Ábra 46">
+                        <figcaption class="text-center pt-3 pb-4 text-md">46. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A fenti ábra alapján, tehát láthatjuk azt, hogy Saint Lucia szigete viszi
+                        el az első helyet relatív Nobel tekintetében, azért történhetett ez meg, mert Saint Lucia-nak egyetlen
+                        Nobel győztese volt, Derek Walcott, és mindössze 175 ezer ember lakik a szigeten.
+                    </p>
+                    <p class="text-lg font-normal">Vizsgáljuk meg azt is, hogy hogyan alakul a statisztika olyan országok
+                        esetében, ahol legalább kettőnél több Nobel győztes volt:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df_countries[df_countries.nobel_wins > 2]\
+    .sort_values(by='nobel_wins_per_capita', ascending=False).nobel_wins_per_capita.plot(kind='bar', figsize=(16, 4))</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig47.png"
+                            alt="Ábra 47">
+                        <figcaption class="text-center pt-3 pb-4 text-md">47. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Ez alapján már képesek vagyunk azt látni, hogy a Skandináv országok,
+                        valamint Svájc, lakosságához mérve, relatíve sok Nobel-győztessel rendelkezik.
+                    </p>
+                    <p class="text-lg font-normal">Kicsit ássuk bele magunkat méginkább az abszolút díjadatokba, nézzük meg a
+                        kategória szerinti nyerések számát. Ez megint azt fogja megígényelni tőlünk, hogy csoportokat hozzunk
+                        létre, jelen esetben ország és kategória szerint, majd lekérjük annak méretét, unstackelve létrehozzuk az
+                        új DataFrame-t és majd végül ábrázoljuk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">nat_cat_sz = df.groupby(['country', 'category']).size().unstack()
+nat_cat_sz # indexelve az ország szerint, oszlopozva kategória szerint,
+            # így arról is kapunk információt, hogy melyik ország nem nyert melyik kategóriába Nobel-t, de másban igen
+    
+COL_NUM = 2
+ROW_NUM = 3
+# 6 díjtípus van összesen
+
+fig, axes = plt.subplots(nrows=ROW_NUM, ncols=COL_NUM, figsize=(12, 12))
+
+for i, (label, col) in enumerate(nat_cat_sz.iteritems()):
+    ax = axes[i // COL_NUM, i % COL_NUM]
+    col = col.sort_values(ascending=False, inplace=False)[:10]
+    col.plot(kind='barh', ax=ax)
+    ax.set_title(label)
+    
+plt.tight_layout()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig48.png"
+                            alt="Ábra 48">
+                        <figcaption class="text-center pt-3 pb-4 text-md">48. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A következőkben a díj eloszlását fogjuk vizsgálni évekre lebontva,
+                        országonként. Mivel tudjuk, hogy az években kihagyások vannak, megintcsak újraindexeljük. Alapvetően, a
+                        trend amit következőként vizsgálunk a díjak számának halmozott összege országonként, azok története alatt.
+                        Akár megnézhetnék kategóriákba lebontva is, de jelenesetben minket csak az összes érdekel:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># létrehozzuk az új indexeket
+new_index = pd.Index(np.arange(1901, 2020), name='year')
+
+# létrehozzuk a csoportokat, év és ország szerint, majd létrehozzuk unstackelés után az új DataFrame-t
+# végül hozzárendeljük az új indexeket, mostmár az összes évvel
+by_year_nat_sz = df.groupby(['year', 'country']).size().unstack().reindex(new_index)
+
+# már képesek is vagyunk ábrázolni
+# a fillna(0) segítségével, azokat az éveket, amikor nem volt amerikai Nobel-díj győztes 0-val tölti ki, így
+# megelőzve, hogy szakaszos legyen a vonalábránk
+by_year_nat_sz['United States'].fillna(0).cumsum().plot()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig49.png"
+                            alt="Ábra 49">
+                        <figcaption class="text-center pt-3 pb-4 text-md">49. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A továbbiakban hasonlítsuk össze az AEÁ győzelmi rátáját a világ többi
+                        részével:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">by_year_nat_sz = df.groupby(['year', 'country']).size().unstack().fillna(0)
+
+# létrehoz egy listát az országnevekből, majd kitörli az AEÁ-t
+not_US = by_year_nat_sz.columns.tolist()
+not_US.remove('United States')
+
+# hozzáfűz egy új oszlopot a DateFrame-hez, amely az AEÁ kivételével minden ország győzelmeinek összege
+by_year_nat_sz['Not US'] = by_year_nat_sz[not_US].sum(axis=1)
+
+# majd ábrázoljuk, csakis ezt a két csoportot kiválasztva
+ax = by_year_nat_sz[['United States', 'Not US']].cumsum().plot()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig50.png"
+                            alt="Ábra 50">
+                        <figcaption class="text-center pt-3 pb-4 text-md">50. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A fenti diagram által már érdekes következtetést tudunk levonni, mi
+                        szerint az AEÁ csakis a 2. Világháború után kezdett el gyors ütemben díjakat nyerni.
+                    </p>
+                    <p class="text-lg font-normal">Következőkben vizsgáljuk meg a regionális különbségeket, és fokuszáljunk
+                        minden régió 2-3 legnagyobb győztesére. Észak-Amerika esetében Kanadára és AEÁ-ra, Európa esetén NB-ra,
+                        Németországra és Franciaországra, végül Ázsia esetén Japánra, Oroszországra és Indiára:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">new_index = pd.Index(np.arange(1901, 2020), name='year')
+
+by_year_nat_sz = df.groupby(['year', 'country']).size().unstack().reindex(new_index).fillna(0)
+
+regions = [
+    {'label': 'N. America', 'countries': ['United States', 'Canada']},
+    {'label': 'Europe', 'countries': ['Germany', 'France', 'United Kingdom']},
+    {'label': 'Asia', 'countries': ['Japan', 'India', 'Russia and Soviet Union']}
+]
+
+for region in regions:
+    by_year_nat_sz[region['label']] = by_year_nat_sz[region['countries']].sum(axis=1)
+    
+by_year_nat_sz[['N. America', 'Europe', 'Asia']].cumsum().plot()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig51.png"
+                            alt="Ábra 51">
+                        <figcaption class="text-center pt-3 pb-4 text-md">51. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Még mindig mehetnék egy fokkal mélyebre, nézzük meg egy következő lépésben
+                        nemzeti szintre lebontva a történetet, a 16 legtöbb Nobel-díjat nyert országok ábráját elkészítve, évekre
+                        lebontva, ebben az esetben kihagyva az AEÁ-ot:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">COL_NUM = 4
+ROW_NUM = 4
+
+by_nat_sz = df.groupby(['country']).size()
+
+by_nat_sz.sort_values(ascending=False, inplace=True)
+
+fig, axes = plt.subplots(nrows=ROW_NUM, ncols=COL_NUM, sharex=True, sharey=True, figsize=(12, 12))
+
+# kihagyjuk az első sort, hiszen az az AEÁ
+for i, nat in enumerate(by_nat_sz.index[1:17]):
+    ax = axes[i // COL_NUM, i % ROW_NUM]
+    by_year_nat_sz[nat].cumsum().plot(ax=ax)
+    ax.set_title(nat)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig52.png"
+                            alt="Ábra 52">
+                        <figcaption class="text-center pt-3 pb-4 text-md">52. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Egy másik jó megközelítés arra, hogy szemléltessük az idők folyamán a nemzeti
+                        nyerési rátát, egy heatmap készítése, leosztva az össznyereséket évtizedekre. Ezt a leosztást angolul
+                        <em>binning</em>-nek is szokták nevezni, mert ún. 'bins of data'-t készít. A Pandas rendelkezik egy
+                        hasznos <em>cut</em> metódussal pont erre a feladatra kihegyezve, bevéve egy oszlopnyi folytonos értéket,
+                        a mi esetünkben a Nobel-díjak éveit, és visszatérít részhalmazokat (tartományokat) meghatározott hosszal,
+                        ezen folytonos értékekből. Majd átadhatjuk a DataFrame groupby metódusának a cut által visszatérített
+                        tartományokat, amely létrehozza a csoportokat az általunk meghatározott index szerint:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># létrehozzuk a bineket, felosztva 10 évente, (1901, 1911, 1921, ...)
+bins = np.arange(df.year.min(), df.year.max(), 10)
+
+# használjuk a cut metódust és létrehozzuk a csoportokat
+by_year_nat_binned = df.groupby(['country', pd.cut(df.year, bins, precision=0)]).size().unstack().fillna(0)
+
+plt.figure(figsize=(8, 8))
+
+# megszerkesztjük a heatmap-et azokra az országokra pontosítva, ahol legalább 2 Nobel nyertes volt
+sb.heatmap(by_year_nat_binned[by_year_nat_binned.sum(axis=1) > 2], cmap="YlGnBu")</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig53.png"
+                            alt="Ábra 53">
+                        <figcaption class="text-center pt-3 pb-4 text-md">53. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
                 </section>
             </section>
 
