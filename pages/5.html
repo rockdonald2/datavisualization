@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en"
+    class="text-black text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="A repo for studying a book.">
+        <meta name="keywords"
+            content="visualization,javascript,python,d3,flask,restful">
+        <meta name="author"
+            content="Lukács Zsolt">
+        <meta http-equiv="X-UA-Compatible"
+            content="ie=edge">
+        <title>5 Az adatok eljuttatása</title>
+        <link rel="stylesheet"
+            href="../css/style.css">
+        <!-- Safari-n az emoji favicon nem működik -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22
+                viewBox=%220
+                0
+                100
+                100%22><text y=%22.9em%22
+                    font-size=%2290%22>📕</text></svg>">
+    </head>
+
+    <body class="overflow-x-hidden">
+        <!-- navigáció -->
+        <nav class="pushy pushy-left">
+            <div class="pushy-content">
+                <ul>
+                    <li class="pushy-link"><a href="../index.html">1 Bevezetés</a></li>
+                    <li class="pushy-link"><a href="2.html">2 Első lépések az adatvizualizációban</a></li>
+                    <li class="pushy-link"><a href="3.html">3 Az adatok megszerzése</a></li>
+                    <li class="pushy-link"><a href="4.html">4 Az adatok tisztítása és feldolgozása</a></li>
+                    <li class="pushy-link"><a href="5.html">5 Az adatok eljuttatása</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Pushy-hoz site overlay -->
+        <div class="site-overlay"></div>
+
+        <main id="container"
+            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
+            <button id="menu"
+                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in rounded-md">&#9776;
+                Menü</button>
+
+            <!-- negyedik része eleje -->
+
+            <section class="pb-8">
+                <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">5 Az adatok eljuttatása</h1>
+
+                <section id="5staticvsdynamic">
+                    <h2 class="text-2xl pb-4 font-semibold text-gray-800">Az adatok eljuttatása</h2>
+                    <p id="firstPar"
+                        class="text-lg font-normal pb-3">Miután megszereztük az adatunkat és fel is dolgoztuk, megfigyelve belőle
+                        az érdekes részeket a tisztítás után, nincs más dolguk a valódi vizualizáció előtt, minthogy valamilyen
+                        módon statikusan vagy dinamikusan eljuttasuk azt a böngészőbe, ahol a JavaScript feldolgozhassa. A mi
+                        adatunk JSON formátumban van tárolva, tehát egy tömbnyi objektum. Alapvetően, jó hüvelykujj-szabály az,
+                        hogy egyrészt minden lehet adatelőkészítést a Python-on belül végzünk el, valamint a formátum amiben
+                        szolgáltassuk az adatot, a lehető legközelebb van ahhoz a formátumhoz, amit a JavaScript használ, a mi
+                        esetünkben ezek teljesülnek, hiszen a D3 által támogatott formátum az általunk is előállított JSON.</p>
+                    <p class="text-lg font-normal pb-3">Alapvetően, tehát szükségünk lesz egy web-szerverre, amely képes
+                        feldolgozni a
+                        HTTP lekérdezéseket egy böngészőből, mint tudjuk a HTML fájlokra, CSS fájlokra, amelyeket a weboldal
+                        felépítéséhez tud majd használni a böngésző, ugyanakkor ennek a szervernek kell kezelnie az AJAX
+                        lekérdezéseket is a megjelenített adatunkhoz.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Python esetében számos alternatívánk van web-szerverre nézve. Ott vannak
+                        az olyan egyszerű megoldások, mint a SimpleHTTPServer, illetve az olyan teljesértékű rendszereket támogató
+                        megoldások is, mint a Django. Azonban mi egy köztes megoldást fogunk választani a Flask-ot. A Flask a
+                        legjobb eszköz, amikor az ember csak egy egyszerű API-t akar létrehozni, hogy adatot szolgáltasson
+                        vizualizációjához.
+                    </p>
+                    <p class="text-lg font-normal">Első lépésben, tekinthetjük akár előkészítő lépésnek is, felmerül a kérdés,
+                        hogy hogyan szervezzük meg könyvtáraink összetételét, amit a Flask hostolni fog. Egy jó fájl elrendezés
+                        nagyban megkönnyítheti a munkát, legyen az egyéni vagy kollaboráció, a kulcsgondolat minden esetben, hogy
+                        legyen egy következetes mappaszerkezetünk, ahogyan elrendezzük fájlainkat. A következő ábra három típusú
+                        elrendezést mutat be, az egyszerű projektektől, az összetebbekig haladva:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig63.png"
+                            alt="Ábra 63">
+                        <figcaption class="text-center pt-3 pb-4 text-md">63. Ábra: A mappaorganizáció
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Amennyiben az Anaconda csomagot használjuk azzal már alapértelmezetten
+                        rendelkezésünkre áll a Flask, ha nem, akkor egy egyszerű pip telepítéssel elérhetővé válik:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install flask</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután megszereztük a Flask módult, semmi más dolgunk, minthogy néhány sornyi
+                        kóddal felállítsuk a szerverünket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">from flask import Flask
+
+app = Flask(__name__)
+
+# a Flask route-ok lehetőséget nyújtanak arra, hogy irányítsuk a webes forgalmunkat, ez a root route, jelenleg a http://localhost:8000
+@app.route('/')
+def hello():
+    return 'Hello World!'
+
+# beállítja a port-ot, amelyen a lokális szerverünk futni fog,
+# a debug módban pedig a Flask hasznos logokat fog kiírni a képernyőre, és error esetén egy böngésző-alapú jelentést fog adni
+if __name__ == "__main__":
+    app.run(port=8000, debug=True)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Következő lépésben belépve abba a mappába, ahol az előbb létrehozott Python
+                        kódunk van lefuttatjuk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ ipython .\nobel_viz.py
+ * Serving Flask app "nobel_viz" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Restarting with windowsapi reloader
+ * Debugger is active!
+ * Debugger PIN: 343-620-977
+ * Running on http://127.0.0.1:8000/ (Press CTRL+C to quit)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Ezután a fenti weboldalra felmenve, meg is kapjuk a kívánt eredményt.
+                        Fontos
+                        kitérni arra, hogy alapértelmezetten a Flask a nagyon kiterjedt és eléggé intuitív Jinja2 templatelési
+                        könyvtárat használja, amely segítségével Python változókat vagyunk képesek használni arra, hogy
+                        konfiguráljuk és meghatározzuk egy HTML oldal tartalmát.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A templatelés által dinamikus weboldalakat tudunk létrehozni, amelyek
+                        tartalmát a programkód szerveroldalt határozza meg. Ugyanakkor, a templatelés vizualizációkor is hasznos
+                        lehet, amikor összeállítunk lényegében statikus HTML oldalakat, teljesen szerveroldalt, de általában, és a
+                        mi megközelítésünk értelmében, mégsem így fogunk eljárni, hiszen inkább megírjuk mi az egyszerű HTML
+                        gerincet, amelyre JavaScript használatával fogjuk fektetni a vizualizációt. Ilyen esetben, valójában a
+                        szerver feladata nem az adat szolgáltatása és a statikus oldal létrehozása, hanem csakis kizárólag az adat
+                        szolgáltatására szűkül, a szerver lesz a köztes szereplő a rendszerünkben, amely dinamikusan fogja a
+                        szükséges adatot átvinni, és csereberélni a böngészővel, JavaScripten és AJAX lekérdezéseken keresztül.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Ugyanakkor, a Flask teljes mértékben képes teljesértékű weboldalakat
+                        futtatni, erőteljes HTML templateléssel, ún. blueprintekkel, tervrajzokkal modulárissá téve nagy
+                        oldalakat, és még egy rakásnyi hasznos pluginnal és kiegészítővel kibővítve. Azok az egyoldalas oldalak,
+                        amiken mi a vizualizációinkat fogjuk futtatni nem igényelnek sok munkát, ahhoz, hogy a szükséges statikus
+                        állományokat eljuttasák a böngészőbe. A fő célünk a Flaskkal szemben, hogy a lehető legkevesebb idő és
+                        energiabefektetéssel, a legkevesebb programkóddal hozzunk létre robusztus RESTful web API-kkal rendelkező
+                        hatékony, de egyszerű adatszervereket. Szerencsénkre, az előbb megfogalmazott cél, egyben a Flask egyik
+                        legnagyobb erőssége is.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Rengeteg olyan weboldal, amely nem igényli a dinamikus konfigurált adat
+                        bonyodalmait, dönthet úgy, hogy azokat statikus formában viszi át, amely lényegében azt jelenti, hogy
+                        minden HTML fájl, és döntően adat (általában JSON vagy CSV formátumban) az adatszerver fájlrendszerében
+                        található meg, mint állományok, amelyek így bármiféle külső hívás nélkül, példaképpen egy adatbázisba
+                        történő hívás nélkül könnyen elérhető.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Előnyük az, hogy a statikus weboldalakat könnyű cachelni, amely azt
+                        eredményezi, hogy azok kézbesítése is jelentősen felgyorsul. Továbbá, mindenképpen biztonságosabbak is
+                        lehetnek, hiszen a rendszeres adatbázishívások könnyű célpontokká válhatnak esetleges rosszindulatú
+                        támadások esetén. Az ár amit fizetnünk kell az említett előnyökért a rugalmasság hiánya. Az által, hogy
+                        önmagunkat korlátozzuk le néhány, előre meghatározott és összeállított oldalra azt jelenti, hogy
+                        megfosztjuk a felhasználót bármiféle interakciótól, amely akár megszükségeltetné azt, hogy valamilyen
+                        módon többváltozós adatkombinációk létrejöttét.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Egy kezdő adatvizualizációs programozó számára azonban mégis vonzó lehet
+                        első
+                        ránézésre a statikus kézbesítés, hiszen ez által nagyon könnyen létre tudunk hozni önálló projekteket,
+                        anélkül, hogy bármiféle webes API-t mellékelnünk kellene. Mindössze azt a néhány összeállított HTML, CSS,
+                        és JSON állományt kell kézbesítenünk a projekt futtatásához. Nagyjából úgy, ahogy ez a repo is működik.
+                        Minden fájl statikusan szolgáltatva van a GitHub számára, ahol annak Pages szolgáltatását felhasználva
+                        megjelenítem, nélkülözve bármifajta felhasználói interakciót, a néhány menügomb kivételével, amellyel
+                        újabb HTTP lekérdezéseket tud intézni a felhasználó már összeállított statikus fájlokra az adatszerveren.
+                    </p>
+                    <p class="text-lg font-normal">Hiába mondhattam el az előbb, hogy ez az oldal, amin most a szövegem írom
+                        valójában statikus, hozzunk a következőkben mégis létre még egyett csak a példa kedvéért. Létrehozunk a
+                        'flask_project' mappán belül egy új index.html oldalt, egy <em>h2</em> és egy <em>div</em> placeholderrel,
+                        valamint egy <em>script</em> taggel, amellyel betöltjük a helyi <em>script.js</em> fájlunkat. A JavaScript
+                        kódot külön mappába és állományba helyezzük, a CSS esetében a példában ez nem szükséges, hiszen mindössze
+                        egyetlen sornyi CSS-t írunk. A 'data' mappában pedig a Nobel győzteseket tartalmazó JSON állomány
+                        található meg:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="html">&#60;!DOCTYPE html>
+&#60;html lang="en">
+
+    &#60;head>
+        &#60;meta charset="UTF-8">
+        &#60;meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+        &#60;title>Basic Example&#60;/title>
+
+        &#60;style>
+            body { font-family: sans-serif; }
+        &#60;/style>
+    &#60;/head>
+
+    &#60;body>
+        &#60;h2 id="data-title">&#60;/h2>
+        &#60;div id="data">
+            &#60;pre>&#60;/pre>
+        &#60;/div>
+
+        &#60;script src="https://d3js.org/d3.v5.min.js">&#60;/script>
+        &#60;script src="js/script.js">&#60;/script>
+    &#60;/body>
+
+&#60;/html></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Az említett adatunk, a JSON állomány beolvasásához szükségünk lesz egy AJAX
+                        hívásra a szerverünkre. Mind a jQuery, de a D3 is rendelkezik natívan függvénnyekkel ennek megejtéséhez. A
+                        D3 formátum szerint (JSON, CSV, TSV) rendelkezik egy metódussal, a következő példa azt mutatja be, hogy
+                        hogyan tud a D3 a <em>json</em> metódussal beolvasni adatot, felhasználva egy callback függvényt:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">d3.json('../data/winners_cleaned.json', function (error) {
+    if (error) {
+        console.log(error); // ha hibát észlel írja ki a console-ba
+    }
+}).then(function(data) {
+    d3.select('h2#data-title').text('All the Nobel-winners');
+    // kiválasztjuk a h2 tag-et és megváltoztatjuk annak belső tartalmát
+    d3.select('div#data pre').html(JSON.stringify(data, null, 4));
+    // a stringify egy hasznos függvény, 
+    // amellyel egy JS objectet alakítunk outputolhatová
+    // kiválasztjuk a div tag-et és megváltoztatjuk annak belső tartalmát
+    // az adatunk tartalmára, a null paraméterrel azt határozzuk meg, hogy nincs egy függvény, amely átalakítja a tartalmat,
+    // a 4-es paraméterrel pedig annak indentációját állítjuk be, szóközökben pontosítva, a könnyebb olvashatóság miatt
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ezután dönthetünk, hogy Flask-al, vagy valamilyen egysoros HTTP szerverrel
+                        akarjuk futtatni a fent írt kódunkat. Az egyszerűség, és a Flask tudatlanságom miatt jelenleg elégséges
+                        lesz az egyszerű megoldás, futtatva a következő parancssori kódot az 'index.html' fájlt tartalmazó
+                        mappában:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ python -m http.server</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ha minden jól ment, akkor láthatjuk is az oldalra kinyomva a JSON állományunk
+                        tartalmát, olvashatóan rendezve. Fontos megemlíteni azt, hogy jelen esetben a Nobel-győzteseket tartalmazó
+                        adatsorunk nem túl nagy, de ha megpróbálnánk a képeket és életrajzi adatokat tartalmazó állományt
+                        betölteni, megtörténhetne, hogy elérjük a böngésző sávszélességének határait, és az adatbeolvasás
+                        lelassúlna. Egy stratégia a lassúlás elkerülésére, ha felosztjuk adatunkat kisebb részekre, különálló
+                        állományokba, legegyszerűbben dimenziókként felosztva. Egyértelmű megoldás lenne, ha ország szerint
+                        osztanánk szét a Nobel-győzteseket, néhány sornyi Pandas kód meg is tudja ezt tenni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import pandas as pd
+
+df_winners = pd.read_json('../data/winners_cleaned.json')
+
+# a name jelen esetben az ország lesz, a group pedig a győztesek
+# minden ország egy külön állomány lesz, amely tartalmazni fogja a győzteseket
+for name, group in df_winners.groupby('country'):
+    group.to_json('../data/winners_by_country/{}.json'.format(name), orient='records')
+# nem hozza létre a mappát, ha nincs még létrehozva error-t dob</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, a fenti kód létrehoz néhány tucatnyi új JSON állományt a
+                        'winners_by_country' almappán belül. Képesek vagyunk tehát mostmár országra lebontva lehívni az annak
+                        megfelelő állományt, megkímélve magunkat attól, hogy a teljes nehéz állományt minden alkalommal betöltsük:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">let loadWinnersCountryJson = function(country) {
+    d3.json('../data/winners_by_country/' + country + '.json', function(error) {
+        if (error) {
+            console.log(error);
+        }
+    }).then(function (data) {
+        d3.select('h2#data-title').text('All the Nobel-winners from ' + country);
+        d3.select('div#data pre').html(JSON.stringify(data, null, 4));
+    })
+}
+
+// egyszerűen a függvénnyel lehívhatjuk az érdekelt ország Nobel-adatait
+loadWinnersCountryJson('Saint Lucia');</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A megfelelően rugalmas vizualizációhoz elengedhetetlen a szortírozás,
+                        ahogy azt
+                        a fenti példa bemutatja, hogy elkerüljük a felesleges lekérdezéseket, egyúttal elkerülve azt is, hogy
+                        túlságosan leterheljük az adatszervert megnövelve a válaszidőt. Azonban, belegondolva, egyben
+                        veszélyforrás is a statikus felbontás, hiszen minden dimenzió szerint egy külön állományt kellene
+                        létrehozni, amely hosszú távon fenntarthatatlan. Ezen a ponton már elkell gondolkoznunk egy webszerver
+                        felállításán, amely képes lekérdezéseinket dinamikusan kezelni és a számunra szükséges adatot
+                        kiválasztani, általában felhasználói interakción keresztül. A következőkben ezt fogjok megtanulni a
+                        Flask-on keresztül.
+                    </p>
+                    <p class="text-lg font-normal">A statikus átvitelnek és kézbesítésnek megvan a maga létjogosultsága, a
+                        korábban említett okokból kifolyólag, és megkell hagyni tökéletes megoldás különböző demók és
+                        próbálkozások esetén. Azonban a rugalmasság hatalmas hátulütője, hiszen minden fájllal rendelkeznünk kell
+                        használata előtt, nem tudjuk azt dinamikusan, a programkód futása során elérni. Legfontosabb, hogy
+                        különböző felhasználói hitelesítések, példaképpen egy egyszerű bejelentkezés, vagy bármiféle session
+                        menedzselés, hogy korlátozzuk a felhasználók hozzáférését mondhatni sokkal bonyolúltabb lenne statikus
+                        állományokkal. Ha blokkolni akarod bizonyos felhasználók bizonyos fájlokhoz való hozzáférését, sokkal
+                        egyszerűbb és kulturáltabb megoldás, ha azt egy API híváson keresztül teszed. Összefoglalva, oka van
+                        annak, hogy az adatbázisok fel lettek találva, továbbá oka van annak is, hogy miért nyúlnál szívesebben
+                        API-khoz amikor komplex vagy nagyméretű adatokat és azokhoz való hozzáférést kezelsz.
+                    </p>
+                    <p class="text-lg font-normal">Ha dinamikus továbbítunk valamilyen adatot, abban az esetben szükségünk lesz
+                        valamilyen API-ra, hogy lehetővé tegye, hogy JavaScript-ből lekérjük az adatokat. A Flask esetében
+                        megfigyelhetjük, hogy mennyire is egyszerű felállítani egy RESTful API-t, amely kezelheti az ilyen
+                        hívásokat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">from flask import Flask, request, abort
+from pymongo import MongoClient
+from bson.json_util import dumps, default
+
+app = Flask(__name__)
+
+db = MongoClient().nobel_prize
+
+@app.route('/api/winners')
+
+def get_country_data():
+    query_dict = {}
+
+    for key in ['country', 'category', 'year']:
+        # a lenti metódus elréhetővé teszi számunkra a lekérdezés argumentumjait
+        # amely valahogy így néz ki: '?country=Australia&category=Chemistry'
+        arg = request.args.get(key)
+
+        # majd a lekérdezés argumentumjai szerint összeállítjuk az API hívás lekérdezését
+        if arg:
+            query_dict[key] = arg
+
+    # lehívjuk az adatbázisból a lekérdezés elemeit
+    winners = db.winners_cleaned.find(query_dict)
+
+    # ha sikerült
+    if winners:
+        # a dumps metódus nem úgy, mint a json.dumps metódus, képes szerializálni még dátum objektumokat is JSON-ná.
+        # a szerializálás mégegyszer az a folyamat, amely során a komplex adatszerkezeteket byte streammé alakítjuk
+        return dumps(winners)
+
+    # ha nem sikerült leállítjuk 404-es státuszkóddal
+    abort(404)
+
+if __name__ == '__main__':
+    app.run(port=8000, debug=True)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, a fenti app-unk lekér néhány győztest az adatbázis dokumentumjából vagy
+                        táblájából, a megadott argumentumok alapján. Nézzük is meg az API-nkat működés közben, először a korábban
+                        is használt módon elindítjuk az API-nkat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ ipython .\nobel_viz.py
+ * Serving Flask app "nobel_viz" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Restarting with windowsapi reloader
+ * Debugger is active!
+ * Debugger PIN: 343-620-977
+ * Running on http://127.0.0.1:8000/ (Press CTRL+C to quit)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Majd használva a Python interpreterjét megkezdjük a lekérdezéseket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import requests
+
+response = response.get('http://127.0.0.1:8000/api/winners', params={'country': 'Australia'})
+response.json()
+# ...</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Mivel a Flask-unk Debug módban fut, ezért érdekes részleteket figyelhetünk meg
+                        a parancssorban a lekérdezésünkről:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">[13/Jul/2020 23:22:10] "GET /api/winners?country=Australia HTTP/1.1" 200 -</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Nem úgy, mint a statikus adataink esetén az előző részből, most nem vagyunk
+                        egyetlen dimenzióra korlátozva, egyszerűen tehetünk olyant, hogy lekérjük az összes kémia Nobel-győztest
+                        Németországból:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">response = requests.get('http://127.0.0.1:8000/api/winners', params={'country': 'Germany', 'category': 'Chemistry'})</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Bekapcsolva az SQL adatbázisunkat, képesek vagyunk a fenti megközelítést SQL
+                        adatbázisokra is adaptálni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">from flask import Flask, request, abort
+import dataset
+from bson.json_util import dumps, default
+
+app = Flask(__name__)
+
+db = dataset.connect('mysql+pymysql://root@localhost/nobel_prize')
+
+@app.route('/api/winners')
+def get_country_data():
+    print('Request args: {}'.format(str(dict(request.args))))
+
+    query_dict = {}
+
+    for key in ['country', 'category', 'year']:
+        arg = request.args.get(key)
+
+        if arg:
+            query_dict[key] = arg
+
+    winners = db['winners_cleaned'].find(**query_dict)
+
+    if winners:
+        return dumps(winners)
+
+    abort(404)
+
+if __name__ == '__main__':
+    app.run(port=8000, debug=True)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A lekérdezések ugyanúgy működnek, mint a korábbi példában. Mostmár elmondható, hogy elkészítettük életünk első RESTful API-ját, amellyel lekérdezhetjük saját adatbázisukban tárolt adatsorunkat. Számos módon kilehetne egészíteni, mondhatni, ez csak a jéghegy csúcsa. Azonban, az említett egyszerű lekérdezéseken túl a RESTful API még számos funkcionalítással rendelkezik: pagination, hitelesítés. Szerencsénkre, nem kell mindent magunknak megírni, a Flask egy rendkívül népszerű platform, és szinte mindenre gondoltak már előttünk, így sok pluginnal rendelkezik. A továbbiakban a pluginok közül fogunk kettővel megismerkedni, egy SQL-el és egy MongoDB-alapú NoSQL-el. Ezek a pluginok/könyvtárok lehetővé teszik azt, hogy teljes értékű RESTful API-kat hozzunk létre, mindössze néhány sornyi Python-ból, biztosítva mindazon adat kiválasztásokat, amikre csak az utunk során szükségünk lehet.
+                    </p>
+                    <p class="text-lg font-normal">De, azonban felmerülhet a kérdés, hogy mikor szükséges egyik vagy másik megoldást választanunk, a statikus vs. dinamikus történetben. Nem lőhetünk nagy mellé, ha azt az alapszabályt fektessük le, hogy a helyzet válogatja. Amennyiben a megjelenítendő adatunk nagy, vagy jelentős interakciót tenne lehőtév mindenképp dinamikust válasszunk. De, ha egy kis várakozás, betöltés, az elején megengedhető, amíg az adat becachel, hogy utána villámgyors vizualizációt tegyen lehetővé, akkor jó a statikus is. Hüvelykujj-szabály, hogy ha az adatsorunk nem haladja meg a 200 KB-ot, rendben leszünk a statikus kézbesítéssel, azonban miután átlépünk a MB-nyi adatokba, talán jobb lenne, ha adatbázis-alapú API-kra térnénk át.
+                    </p>
+                </section>
+            </section>
+
+            <!-- ötödik része vége -->
+
+            <div class="my-8 flex content-center">
+                <button
+                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in rounded-md"><a
+                        class="block px-4 py-2"
+                        href="3.html"><span class="inline-block font-normal transform group-hover:-translate-x-1 transition
+                            duration-100 ease-in">&larr;</span>
+                        Előző</a></button>
+                <!-- <button class="flex-auto w-24 ml-4 py-2 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
+                    ease-in rounded-md"><a class="block px-4"
+                        href="5.html">Következő
+                        <span
+                            class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button> -->
+            </div>
+        </main>
+
+        <div id="arr"
+            class="fixed block transition duration-100 ease-in"><a class="inline-block text-3xl py-3 px-6 hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
+                opacity-50 hover:opacity-100"
+                href="#menu">&uarr;</a></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
+        <!-- cross-platform megoldás a smooth-scroll-ra, jQuery használatával -->
+        <script src="../javascript/smooth.js"></script>
+        <script src="../javascript/main.js"></script>
+        <script src="../javascript/introd3.js"></script>
+    </body>
+
+</html>
