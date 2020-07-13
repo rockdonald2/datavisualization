@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-    class="text-gray-800 text-base md:text-lg antialiased leading-normal tracking-normal break-normal bg-white">
+    class="text-black text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
 
     <head>
         <meta charset="UTF-8">
@@ -44,9 +44,9 @@
         <div class="site-overlay"></div>
 
         <main id="container"
-            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen">
+            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
             <button id="menu"
-                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
+                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in rounded-md">&#9776;
                 Menü</button>
 
             <!-- negyedik része eleje -->
@@ -3721,19 +3721,249 @@ sb.heatmap(by_year_nat_binned[by_year_nat_binned.sum(axis=1) > 2], cmap="YlGnBu"
                         <figcaption class="text-center pt-3 pb-4 text-md">53. Ábra: A fenti kód Matplotlib ábrázolása
                         </figcaption>
                     </figure>
+                    <p class="text-lg font-normal pb-3">Következőkben áttérhetünk a korvizsgálatra, hiszen megvan a 923
+                        Nobel-győztesnek a születési dátuma, abból a 633 elhunyt győztesnek az elhalálozási dátuma, valamint egy
+                        adott ponton még azt is hozzáfűztük az adatsorunkhoz, hogy ki hány éves volt, mikor részesült a díjban.
+                        Tehát, nyugodtszerrel megvizsgálhatjuk azt, hogy hogyan oszlik el korosztály tekintetében a nyerési ráta,
+                        valamint azt is kiragadhatjuk, hogy várhatóan mennyit élnek a győztesek.
+                    </p>
+                    <p class="text-lg font-normal">Tehát, korábban hozzáadtunk egy 'award_age' oszlopot az adatsorunkhoz, egy
+                        nagyon gyors és egyszerű hisztogram be is mutathatja számunkra a kor szerinti eloszlást:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># alapvetően a bins paraméter a jelenlegi felfogásom alapján azt határozza meg, hogy hány 'binje' = oszlopja legyen
+# a hisztogramnak
+df['award_age'].hist(bins=20)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig54.png"
+                            alt="Ábra 54">
+                        <figcaption class="text-center pt-3 pb-4 text-md">54. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Következtetés az ábra alapján az, hogy hozzávetőlegesen 50-60 között van a
+                        'sweet spot' a Nobel-győzelemhez. Valamint, valószínűleg, ha 95-100 éves korodig nem nyerted meg, már nem
+                        is fogod. Továbbá, használhatjuk a Seaborn <em>distplot</em> (distribution plot) metódusát is, hogy jobban
+                        megragadjuk a kor szerinti eloszlást, hozzáadva egy 'kernel density estimate'-t a hisztogrammunkhoz, tehát
+                        egy vonalat, ami leköveti az oszlopokat, megkapva egy normális eloszlású görbét, bemutatva azt, hogy a
+                        várható érték kor szerinti 60 körülre tehető:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">sb.distplot(df['award_age'])</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig55.png"
+                            alt="Ábra 55">
+                        <figcaption class="text-center pt-3 pb-4 text-md">55. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A 'box' ábra ugyancsak egy jó mód arra, hogy folytonos adatot szemléltessünk,
+                        amelyben majd meglássuk az első és harmadik vonal/jelölés a doboz széleit jelöli, valamint a középső
+                        kitöltött rész magát a doboz vonalait. Tehát, még tömörebben és számomra egyszerűbben a két szélső vonal a
+                        folytonos adat min és max értékeit, a középső rész pedig annak átlagát mutatja be:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># nem szerint létrehozunk egy figure-n két box plotot, nem szerint, mindkettő a kor szerinti eloszlást mutatja be,
+# tehát a két szélső vonal a min és max értékek, a középső pedig a medián átlag (median average)
+# tehát, a középső érték átlaga
+sb.boxplot(df.gender, df.award_age)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig56.png"
+                            alt="Ábra 56">
+                        <figcaption class="text-center pt-3 pb-4 text-md">56. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Az ábra bemutatja, hogy nincs lényeges eltérés a férfiak és nők
+                        átlagéletkora
+                        között, amikor megkapták díjukat, talán annyi, hogy a nők átlagban néhány évvel fiatalabbak voltak.
+                    </p>
+                    <p class="text-lg font-normal">A Seaborn a boxplot kivételével még rendelkezik egy vilonplot-al is, amely
+                        hasonló az előbb használthoz, annyi különbséggel, hogy megintcsak kiegészíti egy normális eloszlású
+                        görbéhez hasonló résszel, egy kernel density estimation-el, amely így egy pontosabb képet ad az
+                        eloszlásról:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">sb.violinplot(df.gender, df.award_age)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig57.png"
+                            alt="Ábra 57">
+                        <figcaption class="text-center pt-3 pb-4 text-md">57. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Miután megvizsgáltuk a kor szerinti eloszlást, rátérhetünk a várható élettartam
+                        vizsgálatára. Alapvetően, ahhoz, hogy megkapjuk az elhalálozási korukat a Nobel-győzteseknek,
+                        létrehozhatunk egy új oszlopot ennek tárolásához és egyszerűen kiszámolhatjuk az élt napok számát osztva
+                        365-el, ahogy azt a következő kódrészlet is bemutatja:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># azért használjuk a napot, mert így pontosabb számot kapunk
+df['age_at_death'] = (df.date_of_death - df.date_of_birth).dt.days / 365</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Aztán készíthetünk erről az oszlopról egy másolatot, kitörölve az összes üres
+                        értéket, majd létrehozhatjuk a korábban már megismert displotot, a görbével rendelkező hisztogrammot:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">age_at_death = df[df.age_at_death.notnull()].age_at_death
+sb.distplot(age_at_death, bins=40)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig58.png"
+                            alt="Ábra 58">
+                        <figcaption class="text-center pt-3 pb-4 text-md">58. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Könnyű következtetés jön, a Nobel-győztesek viszonylag sokat élnek, az
+                        átlagéletkor bőven meghaladja a nyolcvanat. Ez még inkább meglepő, ha azzal párosítjuk, hogy a győztesek
+                        többsége férfi, valamint a férfiak várható élettartama pedig kisebb a nőkénél. Továbbá, az ábra azt is
+                        láttatja, hogy a győztesek között volt olyan is, aki többet élt, mint 100 év, keressük is meg őket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df[df.age_at_death > 100][['name', 'category', 'year', 'age_at_death']]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A következőkben hozzunk létre két kdeplot-ot, hogy megvizsgáljuk a nő és férfi
+                        Nobel-győztesek közötti várható élettartambeli különbségeket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df2 = df[df.age_at_death.notnull()] # alapvetően azért kell kivegyük az üreseket, mert így az ábrázolás nem sikerülne, error
+sb.kdeplot(df2[df2.gender == 'male'].age_at_death, shade=True, label='male') # a shade beszínezi a görbe alatti területet
+sb.kdeplot(df2[df2.gender == 'female'].age_at_death, shade=True, label='female') # a label címkével látja el a görbét,
+# ami a jelmagyarázatban jelenik meg</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig59.png"
+                            alt="Ábra 59">
+                        <figcaption class="text-center pt-3 pb-4 text-md">59. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Ahogy az átlag lakosság esetében elmondható, hogy a nők túlélik a
+                        férfiakat, a Nobel-győztesek esetén ez már kevésbé igaz, hiszen a nők átlaga kissé alúlmarad a
+                        férfiakétól.
+                    </p>
+                    <p class="text-lg font-normal">Megismételve ugyanezt violinplottal is hasonlóan beszédes ábrát kaphatunk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">sb.violinplot(df2.gender, df2.age_at_death)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig60.png"
+                            alt="Ábra 60">
+                        <figcaption class="text-center pt-3 pb-4 text-md">60. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Kicsi történelmi kiutalás az, hogy a várható élettartam a múlt évszázad során
+                        folyamatosan nőtt, ezt legjobban a <em>gapminder</em> weboldalon található ábrák támasszák alá, amelyeket
+                        Hans Rosling és csapata hozott létre. Következőkben ennek érvényesülését akarjuk megvizsgálni a
+                        Nobel-győztesek esetén. Tehát, tömörebben azt, hogy aki később született Nobel-győztes, többet élt-e?
+                        Ehhez felhasználjuk a Seaborn lmplotját, amely ötvözi a lineáris regresszió elemzést a FacetGrid-el:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">data = pd.DataFrame({'age at death': df2.age_at_death,
+                    'date of birth': df2.date_of_birth.dt.year})
+sb.lmplot(x='date of birth', y='age at death', data=data, height=6, aspect=1.5)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig61.png"
+                            alt="Ábra 61">
+                        <figcaption class="text-center pt-3 pb-4 text-md">61. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Valóban, megfigyelhető volt egy növekedés a várható élettartamban.
+                    </p>
+                    <p class="text-lg font-normal">Végül, miközben alakítottuk a Nobel-díjas adatsorunkat, duplikátumokat
+                        fedeztünk fel, annak függvényében, hogy az olyan nyertesek, akik különböző országban születtek, mint
+                        amelynek állampolgárai voltak a nyerés pillanatában két helyre voltak bejegyezve. Ennek orvoslásául
+                        kitöröltük őket, de még ez előtt le is mentettük őket egy külön adatsorba. Egy jó mód arra, hogy a
+                        nyertesek mobilitását vizsgáljuk, ha létrehozunk egy heatmap-et, bemutatva a born_in/country párokat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df_born_in = mongo_to_dataframe('nobel_prize', 'winners_born_in') # beolvassuk a born_in adatbázist
+df_born_in = df_born_in.astype({'country': 'object'}) # átálítjuk a 'country' oszlop adattípusát, valamiért float64 volt
+df_born_in.date_of_death = pd.to_datetime(df_born_in.date_of_death) # átalakítjuk az időoszlopokat datetime64 típussá
+df_born_in.date_of_birth = pd.to_datetime(df_born_in.date_of_birth)
+
+# létrehozzuk az összevont adatsort, amely tartalmazza a tisztított adatsor 'name' és 'country' oszlopait,
+# és tartalmazza a nem tisztított born_in adatokat tartalmazó adatsor 'name' és 'born_in' oszlopait,
+# végül szűrjük azokat, akiknél a born_in oszlop NaN
+df_merged = df[['name', 'country']].merge(df_born_in[['name', 'born_in']], on='name', how='left')
+by_bornin_nat = df_merged[df_merged.born_in.notnull()]
+
+# létrehozzuk a csoportokat és ebből az új DataFrame-t
+by_bornin_nat = by_bornin_nat.groupby(['born_in', 'country']).size().unstack()
+# elnevezzük az index oszlopát
+by_bornin_nat.index.name = 'Born In'
+# elnevezzük az oszlop sorát
+by_bornin_nat.columns.name = 'Moved To'
+# feltöltjük az NaN értéket, tehát az olyan értékeket, amely pár esetében nem volt vándorlás, 0-val, hogy
+# a heatmap-en megjelenjen
+by_bornin_nat.fillna(0, inplace=True)
+
+plt.figure(figsize=(8, 8))
+plt.tight_layout()
+
+# létrehozzuk a heatmap-et és címet adunk neki
+ax = sb.heatmap(by_bornin_nat, vmin=0, vmax=8, cmap="YlGnBu")
+ax.set_title('The Nobel Diaspora')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Amely így a következő ábrát adja nekünk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig62.png"
+                            alt="Ábra 62">
+                        <figcaption class="text-center pt-3 pb-4 text-md">62. Ábra: A fenti kód Matplotlib ábrázolása
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Nagyon érdekes következtetésekre juthatunk a fenti ábra segítségével. Számos
+                        Lengyel, vagy Német tudós menekült a 2. Világháború során, vagy azt megelőzően az AEÁ-ba, vagy más
+                        országba, hiszen zsidó
+                        felmenőkkel rendelkeztek és ők maguk is zsidók voltak. Vizsgáljuk meg ezeket a személyeket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">df_born_in = mongo_to_dataframe('nobel_prize', 'winners_born_in') 
+df_born_in = df_born_in.astype({'country': 'object'})
+df_born_in.date_of_death = pd.to_datetime(df_born_in.date_of_death) 
+df_born_in.date_of_birth = pd.to_datetime(df_born_in.date_of_birth)
+
+df_merged = df[['name', 'country', 'year', 'category']].merge(df_born_in[['name', 'born_in']], on='name', how='left')
+df_merged = df_merged[df_merged.born_in.notnull()]
+
+df_merged[((df_merged.born_in == 'Germany') | (df_merged.born_in == 'Poland'))]\
+.sort_values(by='name')[['name', 'year', 'category']]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Érdekességként ellehet mondani, hogy a fenti lekérdezéssel megkapott nevek nagy
+                        része az ún. 'Kindertransport' révén jutott el a lehetőségek hazájába. A 'kindertransport' egy olyan
+                        szervezett mentési mozgalom volt, amely 9 hónappal a 2. Világháború kezdete előtt zajlódott le, és mintegy
+                        10 ezer zsidó gyereket mentettek ki Ausztriából, Németországból, Csehszlovákiából és Lengyelországból,
+                        Nagy-Britanniába. A 10 ezer gyerek közül később mintegy 4 Nobel-díjas tudós került ki.
+                    </p>
                 </section>
             </section>
 
             <!-- negyedik része vége -->
 
             <div class="my-8 flex content-center">
-                <button class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in"><a
+                <button
+                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in rounded-md"><a
                         class="block px-4 py-2"
                         href="3.html"><span class="inline-block font-normal transform group-hover:-translate-x-1 transition
                             duration-100 ease-in">&larr;</span>
                         Előző</a></button>
                 <!--<button class="flex-auto w-24 ml-4 py-2 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
-                    ease-in"><a class="block px-4"
+                    ease-in rounded-md"><a class="block px-4"
                         href="#">Következő
                         <span
                             class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button>-->
