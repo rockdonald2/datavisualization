@@ -400,9 +400,489 @@ def get_country_data():
 if __name__ == '__main__':
     app.run(port=8000, debug=True)</code><button id="copy"
     class="text-sm md:text-md font-semibold">Másold</button></pre>
-                    <p class="text-lg font-normal pb-3">A lekérdezések ugyanúgy működnek, mint a korábbi példában. Mostmár elmondható, hogy elkészítettük életünk első RESTful API-ját, amellyel lekérdezhetjük saját adatbázisukban tárolt adatsorunkat. Számos módon kilehetne egészíteni, mondhatni, ez csak a jéghegy csúcsa. Azonban, az említett egyszerű lekérdezéseken túl a RESTful API még számos funkcionalítással rendelkezik: pagination, hitelesítés. Szerencsénkre, nem kell mindent magunknak megírni, a Flask egy rendkívül népszerű platform, és szinte mindenre gondoltak már előttünk, így sok pluginnal rendelkezik. A továbbiakban a pluginok közül fogunk kettővel megismerkedni, egy SQL-el és egy MongoDB-alapú NoSQL-el. Ezek a pluginok/könyvtárok lehetővé teszik azt, hogy teljes értékű RESTful API-kat hozzunk létre, mindössze néhány sornyi Python-ból, biztosítva mindazon adat kiválasztásokat, amikre csak az utunk során szükségünk lehet.
+                    <p class="text-lg font-normal pb-3">A lekérdezések ugyanúgy működnek, mint a korábbi példában. Mostmár
+                        elmondható, hogy elkészítettük életünk első RESTful API-ját, amellyel lekérdezhetjük saját adatbázisukban
+                        tárolt adatsorunkat. Számos módon kilehetne egészíteni, mondhatni, ez csak a jéghegy csúcsa. Azonban, az
+                        említett egyszerű lekérdezéseken túl a RESTful API még számos funkcionalítással rendelkezik: pagination,
+                        hitelesítés. Szerencsénkre, nem kell mindent magunknak megírni, a Flask egy rendkívül népszerű platform,
+                        és szinte mindenre gondoltak már előttünk, így sok pluginnal rendelkezik. A továbbiakban a pluginok közül
+                        fogunk kettővel megismerkedni, egy SQL-el és egy MongoDB-alapú NoSQL-el. Ezek a pluginok/könyvtárok
+                        lehetővé teszik azt, hogy teljes értékű RESTful API-kat hozzunk létre, mindössze néhány sornyi Python-ból,
+                        biztosítva mindazon adat kiválasztásokat, amikre csak az utunk során szükségünk lehet.
                     </p>
-                    <p class="text-lg font-normal">De, azonban felmerülhet a kérdés, hogy mikor szükséges egyik vagy másik megoldást választanunk, a statikus vs. dinamikus történetben. Nem lőhetünk nagy mellé, ha azt az alapszabályt fektessük le, hogy a helyzet válogatja. Amennyiben a megjelenítendő adatunk nagy, vagy jelentős interakciót tenne lehőtév mindenképp dinamikust válasszunk. De, ha egy kis várakozás, betöltés, az elején megengedhető, amíg az adat becachel, hogy utána villámgyors vizualizációt tegyen lehetővé, akkor jó a statikus is. Hüvelykujj-szabály, hogy ha az adatsorunk nem haladja meg a 200 KB-ot, rendben leszünk a statikus kézbesítéssel, azonban miután átlépünk a MB-nyi adatokba, talán jobb lenne, ha adatbázis-alapú API-kra térnénk át.
+                    <p class="text-lg font-normal">De, azonban felmerülhet a kérdés, hogy mikor szükséges egyik vagy másik
+                        megoldást választanunk, a statikus vs. dinamikus történetben. Nem lőhetünk nagy mellé, ha azt az
+                        alapszabályt fektessük le, hogy a helyzet válogatja. Amennyiben a megjelenítendő adatunk nagy, vagy
+                        jelentős interakciót tenne lehetővé mindenképp dinamikust válasszunk. De, ha egy kis várakozás, betöltés,
+                        az elején megengedhető, amíg az adat becachel, hogy utána villámgyors vizualizációt tegyen lehetővé, akkor
+                        jó a statikus is. Hüvelykujj-szabály, hogy ha az adatsorunk nem haladja meg a 200 KB-ot, rendben leszünk a
+                        statikus kézbesítéssel, azonban miután átlépünk a MB-nyi adatokba, talán jobb lenne, ha adatbázis-alapú
+                        API-kra térnénk át.
+                    </p>
+                </section>
+
+                <section id="5datawithflask">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Folytassuk a RESTful API-t</h2>
+                    <p class="text-lg font-normal pb-3">Korábban megismerkedtünk azzal, hogy hogyan tudunk egy egyszerű
+                        webszervert létrehozni Flask-al, egy olyan RESTful API-val, amely kizárólag GET lekérdezésekre van
+                        korlátozva. A legtöbb egyszerű munkához és vizualizációhoz ez a fajta megközelítés bőven elegendő, legtöbb
+                        esetben elégséges az, ha az adatainkat az API-n keresztül elérhetjük, de nem tudjuk onnan változtatni is.
+                        De, még így is elmondható, hogy az API-nk hiányos volt több szempontból is, hiszen nem lehet vele úm.
+                        darabokra szedni az adatainkat, nem tudjuk egyszerűen azt befolyásolni és meghatározni, hogy mekkora
+                        darabokban adja vissza a lekérdezés az adatokat. Visszaadja az összeset, amely a beadott paraméterek
+                        értelmében azoknak megfelel. Ebben a fejezetben két Flask plugin-t fogunk megvizsgálni, amely biztosítja
+                        számunkra ezeket a funkciókat, mindössze néhány sornyi kódból.</p>
+                    <p class="text-lg font-normal pb-3">Korábban már említettem, hogy két fő felhasználási esetről fogunk
+                        beszélni: adatszolgáltatásról SQL-ről és NoSQL-ről, a Flask-Restless és Flask Eve pluginokról. Habár,
+                        léteznek olyan Flask pluginok, amelyeket tudnánk úgy alakítani, hogy mindkét környezetet egyszerre
+                        kiszolgálják, azok használata mégis nehézkes, így inkább a könnyebben használható, szakosodott pluginokra
+                        fogunk kitérni. Elsőként tehát vegyük a Flask Eve-t.</p>
+                    <p class="text-lg font-normal pb-3">A Flask Eve, mint ahogy már többször is említettük egy plugin, amely
+                        egyszerűvé teszi, hogy létrehozzunk és implementáljunk MongoDB-alapú RESTful API-kat. Ha a MongoDB az
+                        általad választott adatbázis megoldás, a Flask Eve az egyik legjobb megoldás, amit választhatsz, hiszen
+                        támogat olyan szolgáltatásokat, mint a pagination, a hitelesítés, és még számos olyan dolgot, amely lefed
+                        lényegében minden elképzelhetőt, amire szükséged lehet.</p>
+                    <p class="text-lg font-normal">Mivel a Flask Eve nem képezi az alap Anaconda csomag részét, egy egyszerű
+                        parancssori kóddal feltelepíthetjük:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install eve</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután telepítettük, képesek vagyunk a létező MongoDB 'nobel_prize'
+                        adatbázisunkat egy teljes értékű RESTful API-val felvértezni, mindössze az által, hogy létrehozunk egy
+                        <em>settings.py</em> állományt. Ehhez ajánlott, hogy létrehozzunk egy új mappát a 'flask_project'-en
+                        belül, hogy megmaradjon a rendezettségünk. A settings.py-ban meghatározzuk az általunk preferált URL
+                        prefixet az API-hoz (api), az adatbázis nevét, amit elérhetővé teszünk (nobel_prize), és végül a
+                        táblázatot (winners_cleaned), ezt az utolsót egy <em>DOMAIN</em> azonosítóval rendelkező dict-be:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># api/settings.py
+
+# opcionális MONGO változók az adatbázis eléréséhez és hitelesítéshez
+MONGO_HOST = 'localhost'
+MONGO_PORT = 27017
+# MONGO_USERNAME = 'user'
+# MONGO_PASSWORD = 'user'
+
+URL_PREFIX  = 'api'
+MONGO_DBNAME = 'nobel_prize'
+DOMAIN = {'winners_cleaned': {
+    'schema': {
+        'country': {'type': 'string'},
+        'category': {'type': 'string'},
+        'name': {'type': 'string'},
+        'year': {'type': 'integer'},
+        'gender': {'type': 'string'},
+        'award_age': {'type': 'integer'}
+    }
+}}
+# a schema lehetővé teszi, hogy 'felfedjük' azokat a mezőket a winners_cleaned dokumentumunkból, amelyeket elérhetővé akarunk tenni
+# valamint, azt is lehetővé teszi, hogy 'data validation'-t végezzünk</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A használtakon kívül még rengeteg paramétert vagyunk képesek beírni a
+                        settings.py-ba, ezek mind megtalálhatók magyarázatokkal együtt a dokumentációban, ahol egy kiterjedt rész
+                        a DOMAIN konfigurációnak van lefoglalva. Miután meghatároztuk a beállításainkat, nincs más dolgunk, mint
+                        egy kisméretű szerver módult létrehozni ugyanabban a könyvtárban:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># api/server_eve.py
+
+from eve import Eve
+
+app = Eve()
+
+if __name__ == '__main__':
+    app.run(debug=True)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Aztán képesek vagyunk szerverünket futtatni az api könyvtárba belépve a
+                        következőképpen:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ ipython server_eve.py</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Mostmár lekérhetjük az összes német Nobel-győztest, használva a where kikötést,
+                        hogy meghatározzuk a lekérdezésünket, mindezt egy Python interpreterrel. Fontos megjegyezni, hogy ebben az
+                        esetben a lekérdezésünk kikötéseit mégegyszer a where-el határozzuk meg, és nem a params-el, a params
+                        esetén az eredmény nem lesz korlátozva, mindig az összesből fog lekérdezni és váratlan eredményekhez
+                        vezethet. Valamint, az Eve esetén alapértelmezetten bevan állítva a pagination, ami azt jelenti, hogy nem
+                        egyidejűleg az összeset, hanem mindössze 25 győztest fog visszatéríteni, és a többit oldalanként lehet
+                        elérni:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">resp = requests.get('http://127.0.0.1:5000/api/winners_cleaned/?where={"country": "Germany"}')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Valamint a Flask Eve teljes mértékben támogatja a MongoDB query document-et és
+                        minden operátorját, lehetővé téve azt, hogy nagyon lebontva meghatározzuk azt, hogy mit is szeretnénk
+                        megkapni, példaképpen kérjük le az összes olyan győztest, aki idősebb volt, mint 75 év, amikor megkapta a
+                        díjat:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">resp = requests.get('http://127.0.0.1:5000/api/winners_cleaned/?where={"award_age": {"$gt": 75}}')</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, eddig használtuk a szokásos módot arra, hogy leellenőrízzük azt, hogy az
+                        Eve API-nk azt csinálja, amit mi szeretnénk, hogy csináljon. A következőkben nézzük meg azt is, hogyan
+                        tudjuk ezt az egészet hasznosítani AJAX lekérdezéseken keresztül a böngészőben, vagyis a Javascriptben.
+                        Ahhoz, hogy teljesen elfogulatlan legyen a tesztünk, és, hogy egyúttal azt is demonstráljuk, hogy mi a
+                        helyes eljárás tesztek esetén, az a szerver, ahonnan a lekérdezéseket fogjuk címezni nem fog megegyezni
+                        azzal a szerverrel, ahol az API fut. Tehát, létrehozunk egy új Flask webszervert, jelen esetben a
+                        'nobel_viz' mappában fog futni ez. Hozzuk létre első lépésben az új webszerver config állományát:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># nobel_viz.py
+
+from flask import Flask, send_from_directory
+
+app = Flask(__name__)
+
+@app.route('/')
+
+def root():
+    return send_from_directory('.', 'index.html')
+# a metódus az első argumentumban meghatározott mappából, a második argumentumban
+# meghatározott állományt szolgáltatja elérésre
+
+if __name__ == '__main__':
+    app.run(port=8000)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Valamint, hozzuk létre az index.html állományt is, amely tartalmazni fog néhány
+                        placeholdert a lekérdezés és válasz adatainak, valamit hozzáadja az állományhoz a jQuery és D3
+                        könyvtárakat is, együtt a script.js állománnyal, amely tartalmazni fogja az AJAX hívásunkat:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="html">&#60;html lang="en">
+
+    &#60;head>
+        &#60;meta charset="UTF-8">
+        &#60;meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+        &#60;title>Nobel Viz&#60;/title>
+
+        &#60;style>
+            body { font-family: sans-serif; }
+        &#60;/style>
+    &#60;/head>
+
+    &#60;body>
+        &#60;h3>Request&#60;/h3>
+        &#60;div id="query">
+            &#60;pre>&#60;/pre>
+        &#60;/div>
+
+        &#60;h3>Response&#60;/h3>
+        &#60;div id="data">
+            &#60;pre>&#60;/pre>
+        &#60;/div>
+
+        &#60;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">&#60;/script>
+        &#60;script src="https://d3js.org/d3.v5.min.js">&#60;/script>
+        &#60;script src="static/js/script.js">&#60;/script>
+    &#60;/body>
+
+&#60;/html></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ahhoz, hogy megejtsük az AJAX GET lekérdezést, használni fogjuk a D3 könyvtár
+                        egyik request metódusát, hogy létrehozzunk egy XMLHttpRequest-et, vagy XHR-t. A korábban használt json
+                        metódus kifejezetten XHR létrehozására szakosodott, de azokon keresztül JSON állományokat érhet el. Ha a
+                        lekérdezés sikeres, abban az esetben készen használható JSON állományokat kapunk, egy promise formájában.
+                        A következő kódrészlet egy AJAX példát mutat be, amelyen keresztül adatot fogunk elérni az Eve API-nkon
+                        keresztül az adatbázisunkból:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// static/js/script.js
+
+let API_URL = 'http://127.0.0.1:5000/api';
+
+let displayJSON = function(query) {
+    d3.json(API_URL + query, function(error) {
+        if (error) {
+            console.log(error);
+        }
+    }).then(function(data) {
+        d3.select('#query pre').html(query);
+        d3.select('#data pre').html(JSON.stringify(data, null, 4));
+
+        console.log(data);
+    });
+};
+
+let query = '/winners_cleaned?where=' + JSON.stringify({
+    "year": {"$gt": 2000},
+    "gender": "female"
+});
+
+displayJSON(query);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután minden a helyén van, el is indíthatjuk az új szerverünket, amellyel
+                        élőben is tesztelhetjük a létrehozott API-nkat:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ ipython nobel_viz.py</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Aztán megnyitva a szerverünk elérését, megfigyelhetjük azt, hogy a lehívás
+                        nem
+                        sikerült. Megnyitva a böngésző ablakát észrevehetjük, hogy az API lekérdezésünk a CORS korlátozás miatt
+                        kudarcot vallot. Röviden a CORS korlátozás, vagy a cross-origin resource sharing teljesen kiírva, egy
+                        biztonsági korlátozás, amely megakadályozza azt, hogy a JavaScript olyan weboldalról vagy szerverről
+                        kérjen le adatokat, amely nem egyenlő azzal, ahol ő maga fut. Alapértelmezetten ezek a lekérdezések tiltva
+                        vannak, ezért futhatunk a korábban látható hibába. Képesek vagyunk az Access-Control-Allow-Origin header
+                        módosításával beállítani azt, hogy mely oldalokról szabad adatot lekérnie a JavaScriptnek, elkerülve a
+                        hibát. Képesek vagyunk ezt átállítani *-ra, azaz összesre, vagy meghatározni domaineket, ahonnan szabad a
+                        lekérdezés. Production appok esetében jobb, ezt a köztes adatcserét egy HTTP szerverre bízni, Apache-re,
+                        vagy Nginx-re, de különböző tesztek esetében mégis a CORS-ot használjuk azért, hogy megkönnyítsük a
+                        folyamatot.</p>
+                    <p class="text-lg font-normal">A CORS korlátozásra vonatkozóan, az Eve számos változóval rendelkezik, amely
+                        lehetővé teszi számunkra, hogy felfedjünk egyedülálló API-kat bizonyos weboldalaknak. Példaképpen, a
+                        <em>X_DOMAINS</em> változó lehetővé teszi egy listányi domain meghatározását, amelyek számára így szabaddá
+                        válik a CORS lekérdezés. A változó bevehet egy stringet, vagy egy listányi stringet a domainekkel, ahonnan
+                        a hívások jöhetnek. Tehát, a mi esetünkben meghatározzuk azt az elérést, amelyen az index.html fájlunk van
+                        megjelenítve, és ahol kudarcot vallott a lekérdezés:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">X_DOMAINS = 'http://127.0.0.1:8000'</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">De az előbb említett logika mentén, akár *-ra is állíthattuk volna,
+                        lehetővé
+                        téve bárhonnan az API elérését. Miután ezt a beállítást megejtettük, újraindíthatjuk mindkét szerverünket,
+                        és utána a hívás lekellene fusson.</p>
+                    <p class="text-lg font-normal pb-3">Tehát, mostmár tudjuk azt, hogy hogyan lehet egy MongoDB RESTful API-t
+                        létrehozni mindössze néhány sornyi kódból, a továbbiakban nézzük meg azt, hogy hogyan tudjuk ezt
+                        kibővíteni, ahhoz, hogy eljuttassuk a Nobel-díjas adatsorunkat a vizualizációnkhoz.</p>
+                    <p class="text-lg font-normal pb-3">Ezen a ponton három adatsorral rendelkezünk, amelyekre szükségünk lesz a
+                        vizualizációnkhoz, a győzteseket tartalmazó 'winners_cleaned' adatsor, az életrajzi adatokat és a képeket
+                        tartalmazó 'winners_bios', végül pedig van nekünk egy 'country_data' adatsorunk is, az
+                        országadatokkal.</p>
+                    <p class="text-lg font-normal pb-3">A győzteseket és az országadatokat tartalmazó adatsorok méretben kicsik,
+                        mindössze 200-300 KB-osak, valamint a vizualizáció során végig szükségünk lesz rájuk, megérné egészükben
+                        letölteni őket. Azonban, az életrajzi adatokat tartalmazó adatsor ezzel szemben már MB-os kategória,
+                        valamint nincs is szükségünk rá minden pillanatban, egyidejűleg csakis egyre, tehát sokkal célszerűbb
+                        lenne, ha szükség esetén lennének csak letöltve, felhasználói interakcióra.</p>
+                    <p class="text-lg font-normal pb-3">A MongoDB-s és Eve-s megközelítésünket fogjuk használni, hogy az adatokat
+                        eljuttassuk. Azonban, tarthatnánk akár külön a 'winners_cleaned' és a 'winners_bios' adatsorainkat,
+                        azonban egy dokumentum-alapú adatbázisban logikailag helytállóbb, ha egy adott győztesről szóló minden
+                        adat, egyetlen dokumentumban található meg. Ez egyidejűleg le is egyszerűsíti az API-nkat egyetlen
+                        felfedett domainre és táblára. Tehát, inkább használni fogjuk a 'winners_cleaned_w_bios' adatbázisunkat,
+                        amely tartalmazza az összes Nobel-győztes adatát, együtt az életrajzi paragrafusokkal.</p>
+                    <p class="text-lg font-normal">Első lépésben adaptáljuk a settings.py állományunkat az új DOMAIN-hez,
+                        beállítva az X_DOMAINS változót, hogy szabadon engedjen bármilyen CORS lekérdezést (így bármilyen
+                        domainről történhet lekérdezés, azonban csak fejlesztés során ajánlott ez a megközelítés). Ugyanakkor, a
+                        HATEOAS változót is Hamisra állítjuk, mivel nem fogjuk ezeket a linkeket használni, valamint a pagination
+                        feature-t is kikapcsoljuk, így lekérdezéskor egyszerre megkapjuk az összes kért adatot:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># api/settings.py
+
+# opcionális MONGO változók az adatbázis eléréséhez és hitelesítéshez
+MONGO_HOST = 'localhost'
+MONGO_PORT = 27017
+# MONGO_USERNAME = 'user'
+# MONGO_PASSWORD = 'user'
+
+URL_PREFIX  = 'api'
+MONGO_DBNAME = 'nobel_prize'
+DOMAIN = {'winners_cleaned_w_bios': {
+    'schema': {
+        'country': {'type': 'string'},
+        'category': {'type': 'string'},
+        'name': {'type': 'string'},
+        'year': {'type': 'integer'},
+        'gender': {'type': 'string'},
+        'award_age': {'type': 'integer'},
+        'mini_bio': {'type': 'string'},
+        'bio_image': {'type': 'string'}
+    },
+    'url': 'winners'
+    # az url key lehetővé teszi azt, hogy eltérjünk az alapértelmezett eléréstől, ami a fenti hosszú,
+    # tehát a jelenlegi elérés /api/winners?where...
+}}
+# a schema lehetővé teszi, hogy 'felfedjük' azokat a mezőket a winners_cleaned dokumentumunkból, amelyeket elérhetővé akarunk tenni
+# valamint, azt is lehetővé teszi, hogy 'data validation'-t végezzünk
+
+X_DOMAINS = '*'
+HATEOAS = False
+# a HATEOAS kikapcsolja azokat a linkeket, amelyekkel a response-ban találkozhatnánk: _links,
+# ez a link arra vonatkozó információkat tartalmaz, hogy milyen a különböző elért erőforrások közötti kapcsolat: self, parent, next, prev, stb.
+# így úgy lennénk képesek dinamikusan frissíteni a UI-t, vagy navigálni az API-ban, hogy nem tudjuk előre annak struktúráját,
+# jelen esetben tudjuk, nincs szükség ezekre
+PAGINATION = False
+# minden eredményt egy állományban adjon vissza, nincs szükség oldalakra szedni őket</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Ugyanazt a szerver összetételt fogjuk használni, mint az előző teszt
+                        példában, felhasználva a <em>displayJSON</em> metódusunkat, hogy elküldjön egy URL-t és némi lekérdezési
+                        adatot egy AJAX GET lekérdezésbe. Ha a lekérdezés pedig sikeres, abban az esetben meg is jeleníti a
+                        weboldalon.</p>
+                    <p class="text-lg font-normal pb-3">A vizualizáción belül két féle lekérdezést fogunk megejteni az adatunkra:
+                        egyrészt, lekérjük az alapvető adatokat az összes Nobel-győztesről, kihagyva azonban a mini_bio mezőket,
+                        másodrészt, pedig lekérjük majd egy egyéni győztes teljes adatát.</p>
+                    <p class="text-lg font-normal">Ahhoz, hogy megejtsük a fent említett első lekérdezésünket, megkell mondanunk
+                        az API-nak, hogy tartsa vissza a mini_bio mezőt. Ezt képesek leszünk elérni felhasználva az Eve egyik
+                        funkcionalitását, a <em>projections</em>-t. A projections lehetővé teszi számunkra azt, hogy meghatározott
+                        mezőket "kikapcsoljunk". Szóval, ahhoz, hogy megkapjunk minden győztes adatot, kihagyva a mini_bio mezőt,
+                        csak hozzá kell adnunk a projection argumentumot az API lekérdezésünkhöz:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let query = '/winners?projection=' + JSON.stringify({
+    "mini_bio": 0
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Kis kiutaló az előző helyzetre. Alapvetően, problémába ütkőztem amikor
+                        megpróbáltam a lekérdezést megcsinálni, hiszen minden esetben egy <em>unexpected token</em> hibába
+                        futottam a böngésző console-jában. A probléma az volt, hogy azon esetekkor, amikor nem volt a győzteshez
+                        kép az üres 'bio_image' mező NaN-t tartalmazott. Alapjában véve ez nem kellene problémát okozzon, hiszen a
+                        számokat tartalmazó mezőknél nem volt gond, itt szerintem a string kavart be. A problémát meglehetett
+                        oldani az által, hogy kijavítottam az adatbázis adatsorát, az által, hogy az üres 'bio_image' mezőket
+                        NaN-ról None-ra állítottam, ami JSON esetében null-ként jelenik meg, így sikeresen lelehet kérni a
+                        Nobel-győztesek adatait az AJAX híváson keresztül.</p>
+                    <p class="text-lg font-normal">A vizualizációnk részeként azt akarjuk, hogy a felhasználó képes legyen
+                        kiválasztani egyet a győztesek közül egy listából, majd a kiválasztás után arról a győztesről nekünk
+                        megkell jelenítenünk, ha rendelkezésünkre áll egy fényképet, illetőleg minden esetben a rövid életrajzi
+                        kiutalókat. Namár most, képesek lennénk az egyéneket elérni akár névszerint a where kikötéssel, azonban
+                        ekkor fog képbe jönni a MongoDB által létrehozott id mező, amely minden győztes számára értelemszerűen
+                        egyedi:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">/* let query = '/winners?where=' + JSON.stringify({
+    "name": "Albert Einstein"
+}); */
+
+// másik elérési mód
+// Einstein ID-ja a = 5f0dcfe5b7fb6ee9b727573f
+// /api/winners/5f0dcfe5b7fb6ee9b727573f
+const albert_id = '5f0dcfe5b7fb6ee9b727573f'
+let query = '/winners/' + albert_id</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Tehát, már rendelkezünk azzal a RESTful API-val, amelynek használatával
+                        eljuthatunk a Nobel-díjas adatsorunk bármely részéhez. Azonban, ez még mindig csak az egyik plugin volt,
+                        amiről ebben a részben beszélnünk kellett, következzen tehát a Flask-Restless, amely egy SQL-képes plugin,
+                        szemben az Eve NoSQL elfogultságával.</p>
+                    <p class="text-lg font-normal">A Flask-Restless nem képezi az Anaconda csomag részét, de a megszokott módon
+                        könnyen telepíthető:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install flask-restless</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Azonban a Flask-Restless megfelelő működéséhez a Flask-SQLAlchemy pluginra is
+                        szükségünk lesz, tehát azt is telepítjük:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install flask-sqlalchemy</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután telepítettük a módulunkat, létre is hozhatjuk az API-t felhasználva a
+                        MySQL adatbázisunkat, ahová egy másolata a korábban az Eve esetében használt adatsornak megtalálható. A
+                        'winners_cleaned_w_bios' tábla tartalmazza a megtisztított adatunkat az életrajzzal együtt, tehát ezt
+                        fogjuk elérhetővé tenni az API-n keresztül, felhasználva egy SQLAlchemy sémát, hogy meghatározzuk a
+                        szükséges adatokat:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># server_flask_restless.py
+
+import flask
+import flask_sqlalchemy
+import flask_restless
+
+# létrehozzuk a Flask applikációt és a Flask-SQLAlchemy objektumot
+app = flask.Flask(__name__)
+app.config['DEBUG'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@localhost/nobel_prize'
+
+db = flask_sqlalchemy.SQLAlchemy(app)
+
+# ezután létrehozzuk a Flask-SQLAlchemy modelleket, a megszokott módon,
+# de két fontos resztrikcióval:
+#   1. Muszáj legyen ezeknek a modelleknek egy primary key oszlopja, vagy sqlalchemy.Integer vagy sqlalchemy.Unicode típusból
+#   2. Muszáj legyen egy __init__ metódusuk, amely az összes oszlopra fogad el kulcsszó argumentumokat
+# a 2. esetében elmondható, hogy a flask.ext.sqlalchemy.SQLAlchemy.Model biztosít egy ilyen __init__ metódust,
+# tehát nem kell újat létrehozzunk jelenesetben
+
+# alapértelmezetten a lenti modell neve a tábla neve kell legyen,
+# de ezt expliciten a lenti változóval is képesek vagyunk meghatározni
+class Winners(db.Model):
+    __tablename__ = 'winners_cleaned_w_bios'
+
+    index = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Unicode, unique=True)
+    category = db.Column(db.Unicode)
+    year = db.Column(db.Unicode)
+    country = db.Column(db.Unicode)
+    gender = db.Column(db.Unicode)
+    award_age = db.Column(db.Integer)
+
+# létrehozza az adatbázis táblákat
+db.create_all()
+
+# létrehozzunk egy Flask-Restless API managert
+manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
+
+# létrehozzuk az API endpointokat, amelyek elérhetők lesznek az /api/&#60;táblanév>-en alapértelmezetten
+# meghatározhatjuk a HTTP metódusokat is, amelyek elérhetők lesznek
+manager.create_api(Winners, methods=['GET'], max_results_per_page=1000)
+
+# elindítjuk a Flask loopot
+app.run()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A következőkben a CORS-al is foglalkoznunk kell megint. Természetesen
+                        production során valamilyen szerver intézi el ezt nekünk, azonban fejlesztés során mégis jól jön, ha mi
+                        magunk tudjuk beállítani a megengedett domaineket, azonban ehhez egy újabb Flask pluginra lesz szükségünk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install flask-cors</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután telepítettük csak néhány sorral kell kiegészítsük az előbbi
+                        szerverünket, hogy megkapjuk a CORS támogatást:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python"># server_flask_restless.py
+
+import flask
+import flask_sqlalchemy
+import flask_restless
+from flask_cors import CORS
+
+# létrehozzuk a Flask applikációt és a Flask-SQLAlchemy objektumot
+app = flask.Flask(__name__)
+app.config['DEBUG'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@localhost/nobel_prize'
+
+app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
+app.config['CORS_RESOURCES'] = {r"/api/*": {"origins": "*"}}
+
+db = flask_sqlalchemy.SQLAlchemy(app)
+
+
+# ezután létrehozzuk a Flask-SQLAlchemy modelleket, a megszokott módon,
+# de két fontos resztrikcióval:
+#   1. Muszáj legyen ezeknek a modelleknek egy primary key oszlopja, vagy sqlalchemy.Integer vagy sqlalchemy.Unicode típusból
+#   2. Muszáj legyen egy __init__ metódusuk, amely az összes oszlopra fogad el kulcsszó argumentumokat
+# a 2. esetében elmondható, hogy a flask.ext.sqlalchemy.SQLAlchemy.Model biztosít egy ilyen __init__ metódust,
+# tehát nem kell újat létrehozzunk jelenesetben
+
+# alapértelmezetten a lenti modell neve a tábla neve kell legyen,
+# de ezt expliciten a lenti változóval is képesek vagyunk meghatározni
+class Winners(db.Model):
+    __tablename__ = 'winners_cleaned_w_bios'
+
+    index = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Unicode, unique=True)
+    category = db.Column(db.Unicode)
+    year = db.Column(db.Unicode)
+    country = db.Column(db.Unicode)
+    gender = db.Column(db.Unicode)
+    award_age = db.Column(db.Integer)
+
+# létrehozza az adatbázis táblákat
+db.create_all()
+
+# létrehozzunk egy Flask-Restless API managert
+manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
+
+# létrehozzuk az API endpointokat, amelyek elérhetők lesznek az /api/<táblanév>-en alapértelmezetten
+# meghatározhatjuk a HTTP metódusokat is, amelyek elérhetők lesznek
+# a collection_name-el meglehet határozni az endpointokat, amelyen keresztül elérhető lesz az API
+manager.create_api(Winners, collection_name='winners', methods=['GET'], max_results_per_page=1000)
+
+cors = CORS(app)
+
+# elindítjuk a Flask loopot
+app.run()</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután mindent felállítottunk a működéshez, nincs más dolgunk mint elindítani a
+                        RESTful szerverünket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ python server_flask_restless.py</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A szerverünk mostmár sikeresen fut, a Flask-Restless API a lekérdezési
+                        operátorok széles körét támogatja, lehetővé téve, hogy egész pontosan meghatározd azokat az adatokat,
+                        amelyeket megakarnál szerezni. A Flask-Restless lekérdezési motorja nagyjából leköveti a szabvány SQL
+                        műveleteket:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig64.png"
+                            alt="Ábra 64">
+                        <figcaption class="text-center pt-3 pb-4 text-md">64. Ábra: A Flask-Restless által támogatott operátorok
+                            listája
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">Tehát, használhatjuk a korábban létrehozott <em>displayJSON</em> metódusunkat,
+                        hogy lekérjünk némi JSON adatot az API-nkból, egy query string segítségével:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let filters = [ {"name": "year", "op": "gte", "val": 2000},
+                {"name": "gender", "op": "==", "val": "female"}
+];
+
+let order_by = [ {"field": "year", "direction": "asc"}];
+
+let query = '/winners?' + 'q=' + JSON.stringify({'filters': filters, 'order_by': order_by});
+
+displayJSON(query);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ha minden jól működött a weboldalon megkell jelenjenek a 2000 után győzött női
+                        Nobel-győztesek. Érdekességként megfigyelhetjük azt, hogy sem metaadata, sem HATEOS linkek nem szerepelnek
+                        a lekérdezés válaszában, csakis azok a mezők, amelyeket az SQLAlchemy modellben meghatároztunk. Ez
+                        bizonyos applikációk számára hátrány lenne, azonban a legtöbb vizualizációs munkához elégséges.
                     </p>
                 </section>
             </section>
