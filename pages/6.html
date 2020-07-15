@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en"
+    class="text-black text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="A repo for studying a book.">
+        <meta name="keywords"
+            content="visualization,javascript,python,d3,flask,restful">
+        <meta name="author"
+            content="Lukács Zsolt">
+        <meta http-equiv="X-UA-Compatible"
+            content="ie=edge">
+        <title>6 Az adatok ábrázolása</title>
+        <link rel="stylesheet"
+            href="../css/style.css">
+        <!-- Safari-n az emoji favicon nem működik -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22
+                viewBox=%220
+                0
+                100
+                100%22><text y=%22.9em%22
+                    font-size=%2290%22>📕</text></svg>">
+    </head>
+
+    <body class="overflow-x-hidden">
+        <!-- navigáció -->
+        <nav class="pushy pushy-left">
+            <div class="pushy-content">
+                <ul>
+                    <li class="pushy-link"><a href="../index.html">1 Bevezetés</a></li>
+                    <li class="pushy-link"><a href="2.html">2 Első lépések az adatvizualizációban</a></li>
+                    <li class="pushy-link"><a href="3.html">3 Az adatok megszerzése</a></li>
+                    <li class="pushy-link"><a href="4.html">4 Az adatok tisztítása és feldolgozása</a></li>
+                    <li class="pushy-link"><a href="5.html">5 Az adatok eljuttatása</a></li>
+                    <li class="pushy-link"><a href="6.html">6 Az adatok ábrázolása</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Pushy-hoz site overlay -->
+        <div class="site-overlay"></div>
+
+        <main id="container"
+            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
+            <button id="menu"
+                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in rounded-md">&#9776;
+                Menü</button>
+
+            <!-- negyedik része eleje -->
+
+            <section class="pb-8">
+                <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">6 Az adatok ábrázolása</h1>
+
+                <section id="6imaginingnobelvizualization">
+                    <h2 class="text-2xl pb-4 font-semibold text-gray-800">Tervezzük meg a vizualizációnkat</h2>
+                    <p id="firstPar"
+                        class="text-lg font-normal pb-3">Korábban mondhatni végignéztük a Nobel-díjas adatsorunkat kutatva olyan
+                        részletek után, amelyeket megérné kiemelni a vizualizáció során. Az egyik érdekes részlet a női fizika
+                        Nobel-győztesek között volt, hiszen Maria Goeppertről és a mindössze 2 éve nyert Donna Stricklandről
+                        szinte senki sem hallott. A második érdekes dolog az amerikai Nobel-győztesek megugrása volt a 2.
+                        Világháború után. A harmadik a kontinentális győzelmek eloszlása volt, végül a negyedik a skandináv ország
+                        dominanciája az egy főre jutó Nobel-győztesek rangsorában.</p>
+                    <p class="text-lg font-normal pb-3">Alapvetően, a fent ábrázolt elemek ábrázolásához különböző vizualizációs
+                        elemekre van szükségünk. A nemzeti Nobel összehasonlítás legjobban egy konvencionális oszlopdiagrammal
+                        lehetne bemutatni, de ezzel szemben a földrajzi eloszlásra szükségünk lesz egy térképre. Ebben a részben
+                        megfogjuk előszöris tervezni az interaktív vizualizációnkat, amely magába foglalja a fent említett
+                        kulcstörténeteket, amelyeket felfedeztünk.</p>
+                    <p class="text-lg font-normal pb-3">Az első dolog, amit megkell fontolnunk amikor egy vizualizációt hozunk
+                        létre és
+                        egyúttal azt megelőzően meg is tervezünk, hogy kinek is szól az. Tehát, attól függően, hogy milyen
+                        környezetben kívánjuk azt megjeleníteni, eltérő módok közül választhatunk, még akkor is, ha elmondható az,
+                        hogy a háttérben ugyanaz az adatsor áll. Természetesen, a mi esetünk, egyfajta informális vizualizációról
+                        beszélhetünk, ahol úm. nincs semmiféle megkötés az ábrázolást tekintetően, a mi vizualizációnknak két fő
+                        célja van, hogy: informáljon és szórakoztasson.</p>
+                    <p class="text-lg font-normal pb-3">Tervezéskor az első dolgunk meghatározni azt, hogy milyen vizuális
+                        elemekkel fogunk dolgozni. A könyv szerint haladva, jelen esetben annyira egyszerű kellene, hogy legyen a
+                        vizualizáció, hogy bemutassa és megtanítsa a kulcsfontosságú D3 könyvtár elemeket, de még ha nem is
+                        beszélhetnénk erről a megkötésről, akkor is elmondható és betartandó szabály lehetne az, hogy próbáljuk
+                        lekorlátozni minden esetben a vizualizációnk elemeit. Természetesen, ez kontextusfüggő, azonban a
+                        vizualizációk esetén is elmondható rengeteg alkalommal az, hogy a kevesebb, néha több, túl sok
+                        interkativitás leterhelheti a felhasználót (paradox of choice), és ferdítheti azt a történetet, amit el
+                        szerettünk volna mondani.</p>
+                    <p class="text-lg font-normal pb-3">Ezt észbentartva gondolkozzunk el, hogy milyen kulcsfontosságú vizuális
+                        elemek kell szerepeljenek a vizualizációnkban.</p>
+                    <p class="text-lg font-normal pb-3">Egyfajta menübarra mindenképp szükségünk lesz, lehetővé téve a
+                        felhasználónak, hogy beleélje magát a vizualizációba és manipulálja az adatokat. Röviden és tömören, a
+                        menübar fogja szűrhetővé tenni az adatainkat. Ideális esetben a vizualizációnk megkellene, hogy jelenítse
+                        a díjakat, évekre lebontva, és ez a megjelenítés frissíteni kellene önmagát, attól függően, hogy a
+                        menübarban a felhasználó éppen mit választott ki. Itt jönne képbe a korábban említett térkép is, amely
+                        kiemelné a díjnyertes országokat, már említeni sem kell, hogy ez is frissítené önmagát a szűrésnek
+                        megfelelően. Az oszlopdiagram tudja legjobban bemutatni azt, hogy milyen különbségek figyelhetők meg az
+                        országok között díjak tekintetében. Valamint, egy olyan opciót is biztosítanunk kell, amely lehetőséget
+                        biztosít arra, hogy a felhasználó eldöntse abszolút, vagy egy főre jutó díjak tekintetében szeretné az
+                        összehasonlítást végezni.</p>
+                    <p class="text-lg font-normal pb-3">Hogy egyfajta személyességet is bevigyünk a történetben, képes kellene,
+                        hogy legyen a felhasználó, hogy kiválasszon egyéni győzteseket, és azután megjelenítsük neki a képet,
+                        amennyiben rendelkezésre áll, valamint az életrajzi bekezdéseket. Ehhez szükségünk lesz egy listára, az
+                        éppen kiválasztott győztesekről, és egy ablakra, ahol a kiválasztott győztest jelenítsük meg.</p>
+                    <p class="text-lg font-normal pb-3">A végső vizualizáció hasonlóképpen kellene, hogy kinézzen, azonban ez
+                        időközben még változhat:</p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig65.png"
+                            alt="Ábra 65">
+                        <figcaption class="text-center pt-3 pb-4 text-md">65. Ábra: A Nobel-vizualizációs dashboard mintája
+                        </figcaption>
+                    </figure>
+                </section>
+
+                <section id="6buildingvizualization">
+                    <h2 class="text-2xl pt-5 pb-4 font-semibold text-gray-800">Építsük meg a vizualizációnkat</h2>
+                    <p class="text-lg font-normal pb-3">Tehát, az előző részben megálmondtunk egy valamire való, de mondhatni
+                        rosszul kinéző vizualizációt, amire ráfoghatjuk, hogy első alkalomra elégséges lesz. Ebben a részben meg
+                        is írjuk, megfigyelve működés közben a már sokszor említett D3 könyvtárat.</p>
+                    <p class="text-lg font-normal pb-3">Mielőtt azonban nekifoghatnánk, előszöris gondoljuk végig melyek azok az
+                        alapvető komponensek, amelyekre szükségünk lesz, valamint mégfontosabb, hogy hogyan fogjuk a fájlainkat
+                        elrendezni. Ahogy azt korábban is láthattuk, egy web vizualizációhoz négy kulcselemre van szükségünk: egy
+                        HTML gerincre, amelyen a JavaScriptünk fog megjelenni, CSS stílusokra, JavaScript állományok, minden
+                        hozzájuk tartozó könyvtárral együtt, amit felhasználunk és végül maga az adat, amit megjelenítünk,
+                        statikus vagy dinamikus formában.</p>
+                    <p class="text-lg font-normal pb-3">A mappaorganizációra tekintettel, követni fogjuk a korábban említett
+                        szabványok egyikét, amely megfigyelhető a jegyzet mappái között.</p>
+                    <p class="text-lg font-normal pb-3">A megvalósítás során a statikus és dinamikus adatátvitel ötvözetét fogjuk
+                        használni. A statikus adatállományok a 'static' mappában kerülnek tárolásra, a dinamikus adatokat pedig
+                        MongoDB-n tároljuk, amelyeket a Python Eve RESTful API-ján keresztül fogunk igény szerint elérni.
+                        Igazából, a dinamikus adatátvitelre sem lenne nagy szükség, az adatsorunk, bárminemű tömörítés nélkül
+                        mindössze 3 MB körül van, kissé erőltetettnek is mondható, azonban e fölött, már gondokat okozhat a
+                        cachelés és rendkívül lelassíthatja a betöltést, felesleges frusztrálva a felhasználót. Azonban, jobb, ha
+                        megbarátkozunk a dinamikus adatátvitellel, hiszen így később, nagyobb projektek esetében nem okoz majd
+                        gondot, egy egyszerű és robosztus API felállítása sem.</p>
+                    <p class="text-lg font-normal pb-3">Habár, a Nobel vizualizációnk számos dinamikus komponenssel rendelkezik, a
+                        HTML gerinc amire szükségsünk lesz meglepően egyszerű. Megintcsak bebizonyítva azt, hogy meglehetőséges
+                        kevés hagyományos webfejlesztői tudás szükségünk az adatok képernyő viteléhez.</p>
+                    <p class="text-lg font-normal pb-3">Az 'index.html' állomány, amely gerincét képzi a vizualizációnknak három
+                        fő komponenssel rendelkezik: egy CSS stílus importtal, amely beállít bizonyos dolgokat, példaképpen a
+                        fontot, a tartalom-blokkok elhelyezkedését, stb., HTML placeholderekkel a vizuális elemeinkhez, amelyek
+                        mind <em>nobel-[foo]</em> id-kkal rendelkeznek, és végül JavaScript komponenssel is rendelkezni fog,
+                        előszöris a különböző könyvtárak importjával, majd a saját scriptjeinkkel.</p>
+                    <p class="text-lg font-normal pb-3">A létrehozott HTML gerincünk meghatározza a hierarchikus felépítését a
+                        Nobel-vizualizációs komponenseinknek, de bármiféle vizuális megjelenésük, stílusuk és elrendezésük a
+                        CSS-ből lesz
+                        meghatározva.</p>
+                    <p class="text-lg font-normal pb-3">A HTML-ben meghatározott valamennyi 'chart' komponenst külön fogjuk
+                        stílussal ellátni, a számunkra létrehozott részben. Az első probléma amibe már a CSS meghatározásának
+                        legelején belefuthatunk, hogy mekkora is legyen a vizualizációnk mérete. Manapság nagyon sok féle
+                        képernyőméret, és eszköz van a piacon. Egy érthető megfontolás manapság az, hogy feltételezzük, hogy egy
+                        eszköz legalább <em>1280x800</em> pixeles képernyőmérettel rendelkezik. A mi vizualizációnk
+                        hozzávetőlegesen 1000x800 pixelnyi lesz.</p>
+                    <p class="text-lg font-normal">Elsőként, általános stílusokat fogunk beállítani, amelyet a teljes
+                        dokumentumra értelmezünk:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* beállítjuk a fontot */
+    background: #fefefe; /* beállítjuk a hátteret */
+    width: 1000px; /* a vizualizációnk szélességét */
+    margin: 0 auto; /* felső és alsó margók 0px, még a szélsők auto-k, így középre rendeződik a vizualizációnk */
+}
+
+a:link {
+    color: royalblue;
+    text-decoration: none; /* linkek esetén megváltoztatjuk azok színét és kivesszük az aláhúzást */
+}
+
+a:hover {
+    text-decoration: underline; /* hover esetén aláhúzodnak a linkek */
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Három fő komponensünk van a #chart div-ünkön belül, amelyeket mind abszolút
+                        módon fogunk elhelyezni, ilyen értelemben a #chart div-hez relatíven: #title, #info és #nbviz. A cím pont
+                        szembe fog elhelyezkedni, valamint a main konténer az oldal tetejétől 90px-re lesz elhelyezve, hogy legyen
+                        egy kis helye levegőzni, valamint adunk neki egy 100%-os width-et, hogy elfoglalja a teljes szabad helyet:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#chart {
+    position: relative;
+}
+
+#nbviz {
+    position: absolute;
+    top: 90px;
+    width: 100%;
+}
+
+#title {
+    position: absolute;
+    font-size: 30px;
+    font-weight: 100;
+    top: 20px;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A 'chart-holder' 750px-es magassággal fog rendelkezni, valamit ugyancsak
+                        100%-os széleséggel a parent elemhez viszonyítva, végül egy pozíció relatív property-vel, ami azt fogja
+                        eredményezi, hogy a child elementjei hozzá visszonyítva lesznek abszóluton pozícionálva, annak bal-felső
+                        sarkához:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#chart-holder {
+    width: 100%;
+    height: 750px;
+    position: relative;
+}
+
+#chart-holder svg {
+    width: 100%;
+    height: 100%; /* erre azért van szükség, mert azt akarjuk, hogy az SVG elemek kontextusa a konténer teljes egészét elfoglalják */
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Az alábbi ábra bemutatja milyen lenne az optimális méretbeállítás a
+                        vizuális
+                        elemeinknek:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig66.png"
+                            alt="Ábra 66">
+                        <figcaption class="text-center pt-3 pb-4 text-md">66. Ábra: A Nobel-vizualizációs dashboard mintája
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A fent ábrázolt elosztást a következő CSS kóddal érhetjük el:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#nobel-map, #nobel-winner, #nobel-bar, #nobel-time, #nobel-list {
+    position: absolute;
+}
+
+#nobel-time {
+    top: 0;
+    height: 150px;
+    width: 100%;
+}
+
+#nobel-map {
+    background: azure;
+    top: 160px;
+    width: 700px;
+    height: 350px;
+}
+
+#nobel-winner {
+    top: 510px;
+    left: 700px;
+    height: 240px;
+    width: 300px;
+}
+
+#nobel-bar {
+    top: 510px;
+    height: 240px;
+    width: 700px;
+}
+
+#nobel-list {
+    top: 160px;
+    height: 340px;
+    width: 290px;
+    left: 700px;
+    padding-left: 10px; /* azért van szükség erre, hogy elválassza a térképtől */
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A többi elem CSS megoldásait akkor fogjuk beírni, amikor az elemek a
+                        helyükre kerülnek.
+                    </p>
+                    <p class="text-lg font-normal">
+                    </p>
+                </section>
+            </section>
+
+            <!-- ötödik része vége -->
+
+            <div class="my-8 flex content-center">
+                <button
+                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in rounded-md"><a
+                        class="block px-4 py-2"
+                        href="5.html"><span class="inline-block font-normal transform group-hover:-translate-x-1 transition
+                            duration-100 ease-in">&larr;</span>
+                        Előző</a></button>
+                <!-- <button class="flex-auto w-24 ml-4 py-2 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
+                    ease-in rounded-md"><a class="block px-4"
+                        href="5.html">Következő
+                        <span
+                            class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button> -->
+            </div>
+        </main>
+
+        <div id="arr"
+            class="fixed block transition duration-100 ease-in"><a class="inline-block text-3xl py-3 px-6 hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
+                opacity-50 hover:opacity-100"
+                href="#menu">&uarr;</a></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
+        <!-- cross-platform megoldás a smooth-scroll-ra, jQuery használatával -->
+        <script src="../javascript/smooth.js"></script>
+        <script src="../javascript/main.js"></script>
+        <script src="../javascript/introd3.js"></script>
+    </body>
+
+</html>
