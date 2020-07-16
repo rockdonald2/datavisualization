@@ -110,10 +110,57 @@
                         <figcaption class="text-center pt-3 pb-4 text-md">65. Ábra: A Nobel-vizualizációs dashboard mintája
                         </figcaption>
                     </figure>
+                    <p class="text-lg font-normal pb-3">Egy interaktív vizualizáció azért interaktív, mert a felhasználó képes
+                        befolyásolni a megjelenítést, attól függően, hogy a rendelkezésére bocsájtott opciók közül ő mit választ
+                        ki. Ilyen értelemben, a mi opcióinkkal is elsőként fog a felhasználó találkozni és a dashboard-unk tetején
+                        fog megjelenni. Egy egyszerű mód arra, hogy érdekes felfedezésekre vezessük a felhasználót, hogy
+                        lehetőséget adunk neki, hogy kulcsdimenziók szerint szűrje az adatokat, nálunk a kulcsdimenziók közé
+                        tartozik a kategória, a nem és végül az ország. Ezek a szűrök ugyanakkor halmozódnak is, tehát, ha
+                        kiválasztja a felhasználó, hogy a női fizikagyőzteseket akarja, akkor azokat is kapja vissza, két szűröt
+                        beállítva. Valamint, a szűrök mellé még hozzáfűzünk egy gombos választást is, ahol a felhasználó
+                        kiválaszthatja, hogy abszolút vagy egy főre jutó mutatókban szeretné látni a nemzeti győztesek arányát.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A következő elemünk a dashboardon az idősorunk. Az idősorra azért van
+                        szükség, mert ez a legjobb mód arra, hogy a nyertesek alakulását időben nyomon kövessük, valamint azt is
+                        bemutassuk egyúttal, hogy nemek tekintetében az egész hogyan alakult, vagy ország vagy kategória
+                        tekintetében is akár. A Nobel-vizualizációnk hozzávetőlegesen 1000px széles lesz, és 118 évet kell az
+                        idősor lefedjen, tehát hozzávetőlegesen 8px fog rendelkezésünkre állni díjakként, elegendő ahhoz, hogy
+                        megkülönböztessük őket. A legtöbb díjat 2000-ben osztották ki, mintegy 14-et, ez által meghatározhatjuk az
+                        idősorunk minimális magasság, ami 14x8=112px, tehát nagyjából 120px, hogy kicsit legyen magasabb. Ahogy a
+                        fenti ábra is bemutatja a díjak megkülönböztetése úgy a legkönnyebb, ha színkóduljuk őket. Az idősor a
+                        most következő térkép után a vizualizációnk egyik központi eleme, így viszonylag azonnal látható helyen, a
+                        dashboard-unk tetején fog elhelyezkedni a térkép fölött.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A térképezés a D3 egyik legnagyobb erőssége. Elmondható az, hogy a
+                        térképek teljesen magukkalragadók, azonban sok esetben túlhasznált ábrázolási formáról beszélhetünk, és
+                        nagyon vizsgázni kell azzal, hogy ne próbáljunk meg nem-földrajzi jellegű adatokat ilyen módon
+                        megjeleníteni. De a mi esetünkben, amikor a Nobel-győztesek arányát kontinensi eloszlásban akarjuk
+                        vizsgálni, ez a megjelenítés majdhogynem tökéletes. A térképezést úgy fogjuk megoldani, ahogy azt a fenti
+                        ábra is szemlélteti, tehát minden nyertes ország területére egy piros kört fogunk elhelyezni, amelyek
+                        mérete a nyertesek arányától fog függni, ugyanakkor az átlátszóságra azért van szükség, mert olyan
+                        kontinensek esetén, mint példaképpen Európa, ahol viszonylag sok nyertes van, de az országok egyenkénti
+                        földrajzi területe kicsi, ezek a körök egymásra fognak feküdni, de az átlátszósággal ezt a problémát
+                        megoldottuk, és egyfajta díj-sűrűséget is szemlélteti tudunk. A térkép esetében, még egy kis tooltip-et is
+                        fogunk létrehozni, a kurzorunkat az ország területére vive megkapjuk a nyertesek számát.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A következő elem az oszlopdiagram a dashboard alján, amely nemzetközi
+                        lebontásban mutatja be a győztesek számát. Az oszlopdiagram során azt szeretnénk, hogy mindkét tengely
+                        dinamikusan változni a felhasználói interakcióra, és mindezt egy animált 'transition'-el megoldva,
+                        szerencsére a D3 esetén egyszerű dolgunk van.
+                    </p>
+                    <p class="text-lg font-normal">Nem beszéltünk még a dashboard jobb oldalán megjelenő listáról, amely a
+                        felhasználó által megadott szűrök szerint megfelelő győzteseket tartalmazza. Ebben az esetben kicsit
+                        korlátozók leszünk, és habár megtudnánk azt csinálni, hogy a felhasználó képesl egyen oszlopok szerint
+                        rendezni a sorrendet, mi mégis év szerinti csökkenő sorrendre fogjuk korlátozni. A listával szoros
+                        összefüggésben van, az alatta megjelenő életrajzi dobozocska, amely az általunk scrapelt képet és
+                        életrajzi információkat fogja tartalmazni, annak a győztesnek, amelyet a fenti listából a felhasználó
+                        kiválasztott. Érdekességként, elfogunk helyezni a doboz tetején egy színes csíkot, amely annak a
+                        kategóriának a színkódjával fog megegyezni, amelyben a kiválasztott Nobel-díjas nyert.
+                    </p>
                 </section>
 
                 <section id="6buildingvizualization">
-                    <h2 class="text-2xl pt-5 pb-4 font-semibold text-gray-800">Építsük meg a vizualizációnkat</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Építsük meg a vizualizációnkat</h2>
                     <p class="text-lg font-normal pb-3">Tehát, az előző részben megálmondtunk egy valamire való, de mondhatni
                         rosszul kinéző vizualizációt, amire ráfoghatjuk, hogy első alkalomra elégséges lesz. Ebben a részben meg
                         is írjuk, megfigyelve működés közben a már sokszor említett D3 könyvtárat.</p>
@@ -141,7 +188,8 @@
                         fontot, a tartalom-blokkok elhelyezkedését, stb., HTML placeholderekkel a vizuális elemeinkhez, amelyek
                         mind <em>nobel-[foo]</em> id-kkal rendelkeznek, és végül JavaScript komponenssel is rendelkezni fog,
                         előszöris a különböző könyvtárak importjával, majd a saját scriptjeinkkel.</p>
-                    <p class="text-lg font-normal pb-3">A létrehozott HTML gerincünk meghatározza a hierarchikus felépítését a
+                    <p class="text-lg font-normal pb-3">A létrehozott HTML gerincünk, amely megtekinthető a 'final' mappán belül,
+                        meghatározza a hierarchikus felépítését a
                         Nobel-vizualizációs komponenseinknek, de bármiféle vizuális megjelenésük, stílusuk és elrendezésük a
                         CSS-ből lesz
                         meghatározva.</p>
@@ -261,8 +309,229 @@ a:hover {
                     <p class="text-lg font-normal pb-3">A többi elem CSS megoldásait akkor fogjuk beírni, amikor az elemek a
                         helyükre kerülnek.
                     </p>
-                    <p class="text-lg font-normal">
+                    <p class="text-lg font-normal pb-3">Bármilyen méretű és kiterjedésű vizualizáció esetén hasznos dolog, ha már
+                        az
+                        elején bevezetünk egyfokú modularitást, az által, hogy az említett komponenseket, a HTML-t, a CSS-t, a
+                        JavaScript-et és az adatokat külön oldalakra szedjük. Habár, számos mód és próbálkozás volt már arra, hogy
+                        egy érett import/include rendszert vezessenek be a JavaScript-be, ezek még nem teljesen működnek úgy,
+                        ahogy azok kellenének, így főleg kezdőként jobb, ha a megszokott script tag-es megoldásnál maradunk,
+                        ügyelve a tagek megfelelő sorrendjére. Ez egy megbizható megoldás, és nincs szükség túlkomplikált build
+                        scriptekre, meg hasonlókra, és egészen közepes méretű vagy akár kiterjedt vizualizációk esetén is teljesen
+                        rendben van.
                     </p>
+                    <p class="text-lg font-normal">Tehát, a JavaScript állományainkat script tagek segítségével fogjuk importálni,
+                        amelyek a body tag vége előtt, annak alján helyezkednek el:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="html">&#60;!-- könyvtárak -->
+&#60;script src="https://d3js.org/d3.v5.min.js">&#60;/script> &#60;!-- D3 könyvtár -->
+&#60;script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js">&#60;/script> &#60;!-- topojson könyvtár, amely a GeoJSON kiegészítője, topológiát enkódol -->
+&#60;script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/3.0.7/d3-queue.min.js">&#60;/script>
+&#60;script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js">&#60;/script>
+&#60;!-- saját scriptek -->
+&#60;script src="../static/js/nbviz_core.js">&#60;/script>
+&#60;script src="../static/js/nbviz_menu.js">&#60;/script>
+&#60;script src="../static/js/nbviz_map.js">&#60;/script>
+&#60;script src="../static/js/nbviz_bar.js">&#60;/script>
+&#60;script src="../static/js/nbviz_time.js">&#60;/script>
+&#60;script src="../static/js/nbviz_details.js">&#60;/script>
+&#60;script src="../static/js/nbviz_main.js">&#60;/script> &#60;!-- a fő elem kerül legalúlra, hiszen ez fogja az első lekérdezést megejteni az adatokra, és megjeleníteni --></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Még a legelején említettünk egyfajta megközelítést arra, hogy a JavaScript
+                        esetén elkerüljük a namespace collision-t, az által, hogy létrehozunk egy <em>nbviz</em> namespace-t,
+                        tisztán és szabadon hagyva a globális namespace-t, lehetővé téve megosztott metódusokat, paraméterek,
+                        konstansokat és minden egyebet. Minden fent látható módulunk felfog fedni minden szükséges metódust az
+                        nbviz objektumnak, lehetővé téve számunkra, hogy azokat más scriptekben is hasznosítsuk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">/* globális namespace, és _, crossfilter, d3 könyvtár hivatkozások */
+(function(nbviz) {
+    'use strict';
+
+    /* ... módulok, privát változók, stb.. */
+    nbviz.foo = function() {
+        /* ... */
+    };
+    /* ezt a metódust felfedi az nbviz objektumnak, így más scriptekben is használható, az nbviz namespacen belül */
+}(window.nbviz = window.nbviz || {}));
+/* létrehozza az nbviz objektumot, amennyiben nem áll rendelkezésre, másképp használja a meglévőt */</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A következő részekben részletesen megfogjuk beszélni azt a JavaScript-et
+                        és D3
+                        eseteket, amelyek létrehozzák a vizualizációnk különböző elemeit. De először, az adatáramlással fogunk
+                        foglalkozni, az adatszervertől egészen a kliens böngészőig, a kliensen belül, pedig a felhasználói
+                        interakció által vezérelve.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Számos mód és megközelítés van arra, hogy adatokat kezeljünk bármilyen
+                        kiterjedű és komplexitású projektben. Interaktív applikációkban és főleg adatvizualizációban az egyik
+                        legjobb és robusztusabb megközelítés az, ha van egy központi adatobjektumunk, amely cacheli az éppen
+                        használt adatot. A cachelt adat mellett, még lesz néhány aktív tűkrözése, vagy részhalmaza az éppen
+                        használt adatsornak, ugyanazon adatobjektumon belül. Egy példán keresztül lehet ezt az érthetetlen
+                        mondatot megfogni. A Nobel-vizualizációnkban a felhasználó képes az adatsorunk néhány részhalmazát
+                        kiválasztani, példaképpen csak azokat a győzteseket, akik a fizika kategóriában nyertek. Amennyiben, a
+                        felhasználó egy másik adat tűkrözését választja ki az opciókkal, példaképpen kiválasztja az abszolút
+                        mutató helyett, az egy főre jutó mutatót, egy ún. flag-et fogunk átállítani (ebben az esetben, a
+                        valuePerCapita-t 0-ról 1-re állítsuk). Majd minden vizuális komponensünk ennek a flag-nek megfelelően fog
+                        alkalmazkodni és alakulni. Tehát, az adatobjektumunk nem csak az aktív adatot, hanem néhány kapcsolódó
+                        részhalmazt is tartalmazni fog, amelyeket a flag-ekkel érhetünk el. A kulcsgondolat ezen a példán
+                        keresztül az, hogy úgy állítsuk össze a vizuális elemeket, hogy azok szinkronizálva legyenek bármilyen
+                        felhasználói adatváltozásra. Egy megbizható mód arra, hogy ezt elérjük, ha létrehozunk egyetlen ún. update
+                        metódust, amely az egész megjelenítést frissíti (mi esetünkben ez <em>onDataChange</em> lesz), amely
+                        minden olyan esetben le lesz hívva, amikor a felhasználó valami olyant tesz, amely megváltoztatja a
+                        megjelenítendő adatokat. Ez a metódus fogja 'értesíteni' a komponenseket, akik a változásnak megfelelően
+                        fognak arra válaszolni.
+                    </p>
+                    <p class="text-lg font-normal">A JavaScript állományok közül, amelyek betöltenek a legelső a
+                        <em>nbviz_core.js</em>. Ez a script fog tartalmazni minden olyan kódot, amelyet a különböző scriptek
+                        között megszeretnénk osztani. Példaképpen, rendelkezni fogunk egy <em>categoryFill</em> metódussal, amely
+                        visszatérít egy specifikus színt minden kategóriának. Ez a színkód aztán használva lesz mind az idősor,
+                        valamint az életrajzi doboz esetén. Továbbá, ez a core komponens fog tartalmazni minden olyan kódot is,
+                        amelyet tesztelésre használunk, vagy egyszerűen azért, mert egyik módulhoz sem köthető közvetlenül.
+                        Jelenleg a core JavaScript fájl a következőket tartalmazza:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">/* globális namespace, _, crossfilter, d3 hivatkozások */
+
+(function(nbviz) {
+    'use strict';
+
+    nbviz.data = {} // a fő adatobjektumunk
+    nbviz.valuePerCapita = 0; // mutató flag-ünk
+    nbviz.activeCountry = null; 
+    nbviz.ALL_CATS = 'All Categories' // konstans
+    nbviz.TRANS_DURATION = 2000; // milliszekundumban meghatározott hossza az animációknak
+    nbviz.MAX_CENTROID_RADIUS = 30;
+    nbviz.MIN_CENTROID_RADIUS = 2;
+    nbviz.COLORS = {palegold: '#E6BE8A'};  // bármely olyan szín, amelynek nevet akarunk adni és később használni
+    $EVE_API = 'http://localhost:5000/api/';
+
+    nbviz.CATEGORIES = [
+        "Chemistry", "Economics", "Literature", "Peace", "Physics", "Physiology or Medicine"
+    ];
+
+    nbviz.categoryFill = function(category) {
+        let i = nbviz.CATEGORIES.indexOf(category);
+        return d3.hcl(i / nbviz.CATEGORIES.length * 360, 60, 70);
+    };
+
+    nbviz.getDataFromAPI = function(resource, callback) {
+        d3.json($EVE_API + resource, function(error) {
+
+        }).then(function(data) {
+
+        });
+    };
+
+    /* az üres részek a kontextusuk során lesznek tartalommal feltöltve */
+    let nestDataByYear = function(entries) {
+        // ...
+    };
+
+    nbviz.makeFilterAndDimensions = function(winnersData) {
+        // ...
+    };
+
+    nbviz.filterByCountries = function(countryNames) {
+        // ...
+    };
+
+    nbviz.filterByCategory = function(cat) {
+        // ...
+    };
+
+    nbviz.getCountryData = function() {
+        // ...
+    };
+
+    /* ez a függvény kerül lehívásra, amikor az adatsor megváltozik, hogy frissítődjenek a vizualizációs elemek */
+    nbviz.onDataChange = function() {
+        let data = nbviz.getCountryData();
+        nbviz.updateBarChart(data);
+        nbviz.updateMap(data);
+        nbviz.updateList(nbviz.countryDim.top(Infinity));
+        data = nestDataByYear(nbviz.countryDim.top(Infinity));
+        nbviz.updateTimeChart(data);
+    };
+
+} (window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A Nobel-vizualizációs applikációnk egy sornyi adatlekérdezéssel fog elindulni
+                        az <em>nbviz_main.js</em>-ből. Használni fogjuk a D3 <em>queue</em> funkcióját, hogy szimultán
+                        lekérdezéseket ejtsünk a statikus adatfájlainkra és az összes győztes adatsorára. Amikor a queue összes
+                        hívása lefutott, az await metódus által meghatározott callback függvény kerül hívásra, az adat response-al
+                        és bármilyen error-al, amely jelentkezett időközben:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const query_winners = 'winners?projection=' + JSON.stringify({"mini_bio": 0, "bio_image": 0});
+
+queue()
+    /* a statikus fájlok magukba foglalnak egy világtérképet, némi országadatot, 
+    valamint egy dinamikus lehívást a Python Eve RESTful API-nkon keresztül a győztes-adatokra, kihagyva az életrajzot */
+    .defer(d3.json, "static/data/world-110m.json")
+    /* a fenti egy topojson-nál megkapható térkép, 1:110millióhoz skálával */
+    .defer(d3.csv, "static/data/world-country-names-nobel.csv")
+    .defer(d3.json, "static/data/winning_country_data.json")
+    .defer(nbviz.getDataFromAPI, query_winners)
+    .await(ready);
+
+function ready(error, world, countryNames, countryData, winnersData) {
+    // ...
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A queue hívásban felhasználjuk a korábban már látott
+                        <em>nbviz.getDataFromAPI</em> metódusunkat, amely magába foglal egy D3 AJAX hívást a Python Eve API-nkhoz:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">/* elfogad egy resource-t (pl. winners?projection={'mini_bio': 0, ...}) 
+    és egy callback függvényt, amelyet akkor hívunk le, amikor az API hívás már megoldódott*/
+    nbviz.getDataFromAPI = function(resource, callback) {
+        d3.json($EVE_API + resource, function(error) {
+            if (error) {
+                return callback(error);
+            }
+        }).then(function(data) {
+            /* ha a válaszul kapott adatnak van 'items' mezője, akkor abban az esetben több győztessel van dolgunk */
+            if ('_items' in data) {
+                callback(null, data._items);
+            } else {
+                callback(null, data); /* ellenkező esetben csakis egyetlen győztesről szóló adatot kértünk le */
+            }
+            /* a callback függvény bevesz egy error, és data argumentumot, ezért szükséges a null */
+        });
+    };</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Ha a szimultán lekérdezések sikeresek, abban az esetben a <em>ready</em>
+                        függvény fogja megkapni a lekért adatot, és utána képesek vagyunk azokat továbbküldeni a vizuális
+                        elemekhez.
+                    </p>
+                    <p class="text-lg font-normal">Amiután az 'elhalasztott (deferred)' lekérdezések az adatunkra megvoltak a
+                        queue metódus által, az ott meghatározott ready függvény kerül lehívásra, amely argumentumként megkapja az
+                        adatsorokat, a lekérdezések sorrendjében. Abban az esetben, ha az adat bármiféle hiba nélkül letöltésre
+                        került, felhasználjuk a győztes adatokat, hogy létrehozzuk az aktív szűröt (ekkor használjuk a crossfilter
+                        könyvtárat), az aktív szűröt fogjuk használni, hogy lehetővé tegyük, hogy a felhasználó kiválasszon
+                        részhalmazokat a Nobel-győztesek közül, kategória, nem és ország alapján. Ezután inicializáló metódusokat
+                        fogunk lehívni, és végül használjuk az onDataChange metódusunkat is, hogy elküldjük a kérést a vizuális
+                        elemek frissítésére:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">function ready(error, world, countryNames, countryData, winnersData) {
+    // logulunk bármiféle hibát a console-ra
+    if (error) {
+        return console.warn(error);
+    }
+
+    // tároljuk az országadat adatsorunkat
+    nbviz.data.countryData = countryData;
+    // létrehozzuk a szűrönket és annak dimenzióit
+    nbviz.makeFilterAndDimensions(winnersData);
+    // inicializáljuk a menüt és a térképet
+    nbviz.initMenu();
+    nbviz.initMap(worldMap, countryNames);
+    // triggereljük a frissítést a teljes győztes adatsorral
+    nbviz.onDataChange();
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig67.png"
+                            alt="Ábra 67">
+                        <figcaption class="text-center pt-3 pb-4 text-md">67. Ábra: Az applikációnk adatáramlása
+                        </figcaption>
+                    </figure>
                 </section>
             </section>
 
