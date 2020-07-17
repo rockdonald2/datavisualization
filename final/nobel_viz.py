@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/')
 
 def root():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory('.', './templates/index.html')
 # a metódus az első argumentumban meghatározott mappából, a második argumentumban
 # meghatározott állományt szolgáltatja elérésre
 

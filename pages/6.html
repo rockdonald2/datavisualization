@@ -532,6 +532,346 @@ function ready(error, world, countryNames, countryData, winnersData) {
                         <figcaption class="text-center pt-3 pb-4 text-md">67. Ábra: Az applikációnk adatáramlása
                         </figcaption>
                     </figure>
+                    <p class="text-lg font-normal">Miután a menü és a térkép kezdeti állapotába lett helyezve a ready
+                        függvényünkben, utána, ahogyan az az ábrán is látszódik, egy frissítési folyamatot indittatunk el a
+                        vizuális elemek irányába az onDataChange metódusunkkal, amelyet a nbviz_core.js-ben definiáltunk. Már
+                        többször is megemlítettük azt, hogy az onDataChange metódus egy megosztott metódus, amelyet minden olyan
+                        esetben lehívunk, amikor a megjelenítendő adatok sora megváltozott felhasználói interakció válaszául, vagy
+                        más esetben, amikor a felhasználó más mutatót választott, abszolút helyett egy főre jutót, vagy éppen
+                        fordítva. Az onDataChange metódusunk egyik fontos eleme az első sorban található:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let data = nbviz.getCountryData();</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A fő adatsor, amelyet az idővonal, a térkép és az oszlopdiagram is használ, a
+                        getCountryData metódussal van előállítva, amely csoportosítja a győzteseket ország szerint, hozzáad
+                        bizonyos nemzeti információkat, mint például az adott ország lakossága, és a nemzetközi azonósítókódja az
+                        országnak:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.getCountryData = function() {
+        // a countryDim az egyik Crossfilter dimenziónk lesz
+        let countryGroups = nbviz.countryDim.group().all();
+
+        // előállítjuk a fő adathalmazt
+        // használjuk a tömb map metódusát, hogy létrehozzunk egy új tömböt a hozzáadott elemekkel az országadatsorunkból
+        let data = countryGroups.map(function(c) {
+            // lekéri az adatot felhasználva a csoportkulcsot, pl. 'Australia'
+            let cData = nbviz.data.countryData[c.key];
+            let value = c.value;
+            // ha az egy főre jutó flag bevan állítva, akkor osztjuk a lakossággal
+            if (nbviz.valuePerCapita) {
+                value = value / cData.population;
+            }
+
+            return {
+                key: c.key, // pl. Németország
+                value: value, // pl. 16 díj
+                code: cData.alpha3Code, // pl. DEU
+            };
+        })
+            .sort(function(a, b) {
+                return b.value - a.value; // csökkenő sorrend
+            });
+
+        return data;
+    };</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Az előbb már láthattuk azt, hogy a getCountryData metódust a frissítő
+                        metódusunk hasznosítja, így valamennyi vizuális elemünk is egyben. Továbbá, a getCountryData metódusunk
+                        használja a Crossfilter által szűrt adatunkat. A következőkben nézzük meg azt, hogy ez a szűrés hogyan
+                        történik, ezzel az eddig ismeretlen könyvtárral.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A Crossfilter egy olyan magasan optimalizált könyvtár, amelyet nagyméretű,
+                        többváltozós adatsorok feldolgozására terveztek JavaScript segítségével. Nagyon gyorsan tekinthető, és
+                        könnyűszerrel kezel még olyan adatsorokat is, amelyek messze túlmutatnak a mi, kezdetleges Nobel-díjas
+                        adatsorunkon. A Crossfiltert a projektünk során arra fogjuk használni, hogy szűrjük a győztesek adatsorát
+                        kategória, nem és ország dimenziók szerint. Habár, a Crossfilter-ről elmondható az, hogy relatíve nehezen
+                        emészthető könyvtár, főleg akkor, amikor a dimenziók szerinti szűrök elkezdik keresztezni egymást, mégis a
+                        legtöbb 'use-case' egy közös mintát követ, amelyet mégis viszonylag könnyen meglehet érteni. A Crossfilter
+                        könyvtárat minden esetben fellehet használni, amikor nagy adatsorokból kell kis részleteket kivágni.
+                    </p>
+                    <p class="text-lg font-normal">Amikor inicializáltuk a Nobel-vizualizációnkat a ready metódusun belül lehívtuk
+                        a makeFilterAndDimensions metódust is, amelyet az nbviz_core.js állományban definiáltunk. A
+                        makeFilterAndDimensions felhasználja a betöltött Nobel-díjas adatsorunkat, hogy létrehozzon egy
+                        Crossfilter szűröt, és néhány dimenziót (pl. díjkategória) az adatra alapozva. Előszöris, létrehozzuk a
+                        szűrönket felhasználva a Nobel-győztesek adatsorát, amelyet a Python Eve RESTful API-nk térített vissza.
+                        Ahhoz, hogy létrehozzuk az említett szűröt, lehívjuk a <em>crossfilter</em> függvényt a győzteseket
+                        tartalmazó objektumok tömbjén:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.filter = crossfilter(winnersData);
+        // ...</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A Crossfilter úgy működik, hogy lehetővé teszi számunkra, hogy dimenzionális
+                        szűröket hozzunk létre az adatunkra alapozva. Ezt úgy tesszük meg, hogy egy függvényt használunk az
+                        objektumokon. A következő kódrészlet létrehoz egy nem dimenziót, amelyet arra fogunk használni, hogy a
+                        Nobel-győzteseket szűrjük nem szerint:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// ...
+
+nbviz.genderDim = nbviz.filter.dimension(function(o) {
+    return o.gender;
+});
+
+// ...</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A Crossfilter valódi ereje akkor mutatkozik meg, amikor több dimenzionális
+                        szűröt állítunk be, amely lehetővé teszi, hogy kedvünk szerint alkossunk részhalmazokat az adatsorunkból.
+                        A nem szerinti dimenzió után létrehozunk egy újabb kategória dimenziót is:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.categoryDim = nbviz.filter.dimension(function (o) {
+    return o.category;
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, ez után már képesek lennénk az adatunkat nem és kategória szerint
+                        darabolni. A mi Nobel-vizualizációnkban ezek a szűrések felhasználói interakcióra lesznek eszközölve a
+                        menübarból. A Crossfilter, amellett, hogy képes szűrt részhalmazokat visszatéríteni, képes csoportosítási
+                        műveleteket is végrehajtani az adatunkon:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// létrehozza a lent látható csoportokat
+let countryGroup = nbviz.countryDim.group();
+countryGroup.all();
+// visszatéríti az összes csoportot, key-value szerint.
+
+/* output:
+[
+    {key:"Argentina", value:5},
+    {key:"Australia", value:9},
+    ...
+] */
+// a fenti esetben a value a győztesek össz-számát jelöli az adott országból</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">És végül létrehozunk egy ország szerinti dimenziót is:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.countryDim = nbviz.filter.dimension(function (o) {
+    return o.country;
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Az előkészületek vége felé haladva észrevettem azt, hogy valójában azért nem
+                        működnek a korábban megírt kódok az én rendszeremen, mert a v5-ös D3-ban nagy változások jelentek meg,
+                        amelyek nem teszik egymással kompatibilissá a korábbi kódot az újjal. Ahhoz, hogy ezt a továbbiakban
+                        elkerüljem és a könyv szerint tudjak haladni, egy régebbi, v4-es, D3-at töltöttem be, azzal már ez a gond
+                        nem jelenik meg. A gondok az async folyamatokkal jelentkeztek legfőképpen. Egyetlen változást kellett
+                        eszközöljek a jelenlegi kódban ahhoz, hogy a régebbi verzióra való visszatérés után minden eddig megírt
+                        kód működjön:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.getDataFromAPI = function (resource, callback) {
+    d3.json($EVE_API + resource, function (error, data) {
+        if (error) {
+            return callback(error);
+        }
+
+        /* ha a válaszul kapott adatnak van 'items' mezője, akkor abban az esetben több győztessel van dolgunk */
+        if ('_items' in data) {
+            callback(null, data._items);
+        } else {
+            callback(null, data); /* ellenkező esetben csakis egyetlen győztesről szóló adatot kértünk le */
+        }
+        /* a callback függvény bevesz egy error, és data argumentumot, ezért szükséges a null */
+    });
+};</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                </section>
+
+                <section id="6d3">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Munka a D3-al</h2>
+                    <p class="text-lg font-normal pb-3">A következőkben megismerkedünk a D3 könyvtárral az által, hogy megépítsük
+                        az első vizuális elemünket, az oszlopdiagramot. Ahhoz, hogy megépítsünk egy ilyen összetevőt, előszöris
+                        végigkell gondoljuk azt, hogy miből is áll egy oszlopdiagram. Egy oszlopdiagramnak három fő komponense
+                        van: tengelyek, jelmagyarázat és a címkék, végül természetesen maguk az oszlopok. Mivel mi egy interaktív
+                        vizualizációt hozunk létre, ezért a tengelyeket és az oszlopokat úgy kell létrehozzuk, hogy azok később
+                        képesek legyen a felhasználói interakció szerint átalakulni. Lépésről lépésre fogjuk a diagrammot
+                        létrehozni, és csak a legvégén fogjuk az animációt is beépíteni. Alapvetően, a következő lépéseket fogjuk
+                        megismerni miközben létrehozzuk az oszlopdiagrammot: kiválasztunk DOM elemeket a weboldalról, lekérjük és
+                        akár be is állítjuk azok tulajdonságait, attributúmjait és stílusát, végül új DOM elemeket fűzünk hozzá,
+                        vagy illesztünk be a fába. Miután ezeket az alapvető lépéseket letudtuk, megismerkedhetünk az ún. 'data
+                        binding'-al, amely egyfajta adatszinkronizáció az adatszolgáltató és fogyasztó között, leginkább
+                        összekötésnek lehetne fordítani.</p>
+                    <p class="text-lg font-normal pb-3">Elsőként, a kiválasztások. A kiválasztások tekinthetők a D3 gerincének.
+                        jQuery-hez hasonló CSS selectorokon alapuló kiválasztást használ a D3, amely segítségével kiválaszthat és
+                        megváltoztathat egyenkénti vagy csoportos DOM elemeket. Minden láncolt D3 műveletsor egy DOM elem vagy egy
+                        csoportnyi DOM elem kiválasztásával kezdődik, használva a <em>select</em> vagy <em>selectAll</em>
+                        metódusokat. Az előbbi az első, a selectornak megfelelő elemet téríti vissza, míg az utóbbi az összeset,
+                        amely a selectornak megfelel. A következő ábra nagyszerűen szemlélteti a logikát:</p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig68.png"
+                            alt="Ábra 68">
+                        <figcaption class="text-center pt-3 pb-4 text-md">68. Ábra: A D3 kiválasztási logikája
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">A fenti példa azt szemlélteti miként tudja a kiválasztás után láncolva a
+                        D3 megváltoztatni a kiválasztott DOM elem magasságát, amely annak attribútuma. Az attribútumok beállítása
+                        mellett a D3 képes CSS stílust és tulajdonságokat is beállítani (pl. egy adott checkbox bevan-e jelölve
+                        vagy sem), de akár annak szövegét és HTML kódját is. A következő ábra azokat a módokat mutatja be, ahogyan
+                        a DOM elemeket képes megváltoztatni a D3:</p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig69.png"
+                            alt="Ábra 69">
+                        <figcaption class="text-center pt-3 pb-4 text-md">69. Ábra: DOM elem megváltoztatása a D3-al
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">De ahogy képes a D3 beállítani az említett dolgokat, úgy képes a meglévő
+                        beállításokat lekérni is, amelyet legjobban a következő ábra szemléltet:</p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig70.png"
+                            alt="Ábra 70">
+                        <figcaption class="text-center pt-3 pb-4 text-md">70. Ábra: Egy 'rect bar' elem részleteinek lekérése
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Az ábrán megjelenő mód szerint, akár az elemek HTML kódját vagy azok
+                        szöveges tartalmát is képesek vagyunk lekérni. Hogy a következő lépésre terjünk elmondható az, hogy eddig
+                        csak és kizárólag már meglévő elemeket változtattunk, ez természetesen nagyon hasznos tud lenni, azonban
+                        mégis nagyobb előnyt jelent az, ha a programból vagyunk képesek új DOM elemeket létrehozni, felhasználva a
+                        D3 <em>append</em> és <em>insert</em> metódusait.</p>
+                    <p class="text-lg font-normal">Ahhoz, hogy részletében megismerjük a technikát a következő HTML alappal
+                        indulunk el, amely tartalmaz egy 'nobel-bar' placeholdert:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="html">&#60;!DOCTYPE html>
+&#60;html>
+    &#60;head>
+        &#60;meta charset="UTF-8">
+        &#60;link rel="stylesheet" href="style.css">
+    &#60;/head>
+
+    &#60;body>
+        &#60;div id="nobel-bar">&#60;/div>
+
+        &#60;script src="https://d3js.org/d3.v4.min.js">&#60;/script>
+        &#60;script src="script.js">&#60;/script>
+    &#60;/body>
+&#60;/html></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Állítsuk be első lépésben a 'nobel-bar' elemünk méretét CSS-el:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#nobel-bar {
+    width: 600px;
+    height: 400px;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Általában az első lépés, amikor egy diagrammot hozunk létre D3-ban, hogy
+                        létrehozzuk azt az SVG keretet, amiben szerepelni fog. Ez azt jelenti, hogy hozzáfűzünk egy <em>svg</em>
+                        canvas elemet a 'nobel-bar' div-hez, majd egy <em>g</em> csoportot fogunk hozzáfűzni az svg canvas-hez,
+                        amely tartalmazni fogja a meghatározott diagramrészeket (a mi jelenlegi példák esetében a diagram
+                        oszlopait). Ennek a csoportnak szegélyeket fogunk beállítani, hogy elférjenek a különböző diagramelemek,
+                        példaképpen a tengelyek, a tengelycímkék és a cím is. Konvencionálisan, a diagrammunk szegélyeit egy
+                        <em>margin</em> objektumban határozzuk meg, majd használjuk a CSS specifikus magasságát és szélességét a
+                        diagrammunknak, amelyet a getBoundingClientRect vagy getBBox metódusokkal érünk el, és a kettőből tudjuk
+                        származtatni a csoportunk magasságát és szélességét:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let chartHolder = d3.select('#nobel-bar');
+
+let margin = {top: 20, right: 20, bottom: 30, left: 40};
+
+let boundingRect = chartHolder.node().getBoundingClientRect();
+
+let width = boundingRect.width - margin.left - margin.right;
+let height = boundingRect.height - margin.top - margin.bottom;</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután megkaptuk a fenti logika alapján az oszlopcsoportunk szélességét és
+                        magasságát, használjuk a D3-at, hogy létrehozzuk a diagram keretét, hozzáfűzve a szükséges svg és g
+                        tageket és meghatározva az SVG canvas méreteit, valamint a csoport eltolását is a translate használatával:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">chartHolder.append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g').classed('chart', true)
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután a keretünket a helyére illesztettük, használhatjuk megintcsak az
+                        append-et, hogy oszlopokat is hozzáadjunk. Ebben az esetben nem a valós, hanem egy próba adatsort fogunk
+                        használni, amely a következő:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const nobelData = [{
+        key: 'United States',
+        value: 336
+    },
+    {
+        key: 'United Kingdom',
+        value: 98
+    },
+    {
+        key: 'Germany',
+        value: 79
+    },
+    {
+        key: 'France',
+        value: 60
+    },
+    {
+        key: 'Sweden',
+        value: 29
+    },
+    {
+        key: 'Switzerland',
+        value: 23
+    },
+    {
+        key: 'Japan',
+        value: 21
+    },
+    {
+        key: 'Russia',
+        value: 19
+    },
+    {
+        key: 'Netherlands',
+        value: 17
+    },
+    {
+        key: 'Austria',
+        value: 14
+    }
+];</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Egy durva megoldás az oszlopok beillesztésére az, ha végigiterálunk a
+                        <em>nobelData</em> tömbünkön, és hozzáfűzünk egy oszlopot a 'chart' csoporthoz, ahogy haladunk. Az
+                        iterálás során, használjuk a tömbben megtalálható objektumok egyik mezőjét, a 'value'-t, ahhoz, hogy
+                        beállítsuk az oszlop magasságát és y-pozícióját. Fontos megjegyezni azt, hogy az SVG lefelé haladó
+                        y-tengelyt használ, ez lényegében azt eredményezi, hogy ahhoz, hogy a megfelelő helyre helyezzük az
+                        oszlopot, kikell vonnunk annak a magasságát a chart magasságából:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let buildCrudeBarChart = function() {
+    let chartHolder = d3.select('#nobel-bar');
+
+    let margin = {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 40
+    };
+
+    let boundingRect = chartHolder.node().getBoundingClientRect();
+
+    let width = boundingRect.width - margin.left - margin.right;
+    let height = boundingRect.height - margin.top - margin.bottom;
+
+    let barWidth = width / nobelData.length;
+
+    let svg = chartHolder.append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g').classed('chart', true)
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    nobelData.forEach(function(d, i) {
+        svg.append('rect').classed('bar', true)
+            .attr('height', d.value)
+            .attr('width', barWidth)
+            .attr('y', height - d.value)
+            .attr('x', i*(barWidth));
+    });
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Egy másik metódus arra, hogy D3 elemekt adjon hozzá a DOM fához az az insert.
+                        Az insert pontosan úgy működik, mint az append, azonban annak deklarációja bevesz egy második, selector
+                        argumentumot, amellyel meghatározhatjuk azt, hogy melyik létező pozíció elé szeretnék beilleszteni az
+                        elemünket, ahelyett, hogy azt valaminek a végéhez hozzáfűznénk:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig71.png"
+                            alt="Ábra 71">
+                        <figcaption class="text-center pt-3 pb-4 text-md">71. Ábra: Egy 'rect bar' elem részleteinek lekérése
+                        </figcaption>
+                    </figure>
                 </section>
             </section>
 
