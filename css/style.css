@@ -60275,13 +60275,17 @@ html {
   box-sizing: border-box; }
 
 pre {
-  position: relative; }
+  position: relative;
+  border-radius: 0 !important; }
   pre:hover #copy {
     opacity: 25%;
     visibility: visible; }
 
 code {
-  font-family: 'Fira Code', monospace !important; }
+  font-family: 'Fira Code', monospace !important;
+  background: none !important;
+  border-left: 4px solid #0048ab;
+  padding-left: 1em !important; }
 
 #copy {
   display: inline-block;

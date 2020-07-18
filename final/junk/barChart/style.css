@@ -1,0 +1,15 @@
+#nobel-bar {
+    width: 600px;
+    height: 400px;
+}
+
+.axis {
+    font-size: 10px;
+    font-family: sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}

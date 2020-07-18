@@ -672,7 +672,7 @@ countryGroup.all();
                 </section>
 
                 <section id="6d3">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Munka a D3-al</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Munka a D3-al és az oszlopdiagram</h2>
                     <p class="text-lg font-normal pb-3">A következőkben megismerkedünk a D3 könyvtárral az által, hogy megépítsük
                         az első vizuális elemünket, az oszlopdiagramot. Ahhoz, hogy megépítsünk egy ilyen összetevőt, előszöris
                         végigkell gondoljuk azt, hogy miből is áll egy oszlopdiagram. Egy oszlopdiagramnak három fő komponense
@@ -860,7 +860,8 @@ let height = boundingRect.height - margin.top - margin.bottom;</code><button id=
     });
 }</code><button id="copy"
     class="text-sm md:text-md font-semibold">Másold</button></pre>
-                    <p class="text-lg font-normal pb-3">Egy másik metódus arra, hogy D3 elemeket adjon hozzá a DOM fához az az insert.
+                    <p class="text-lg font-normal pb-3">Egy másik metódus arra, hogy D3 elemeket adjon hozzá a DOM fához az az
+                        insert.
                         Az insert pontosan úgy működik, mint az append, azonban annak deklarációja bevesz egy második, selector
                         argumentumot, amellyel meghatározhatjuk azt, hogy melyik létező pozíció elé szeretnék beilleszteni az
                         elemünket, ahelyett, hogy azt valaminek a végéhez hozzáfűznénk:
@@ -872,6 +873,582 @@ let height = boundingRect.height - margin.top - margin.bottom;</code><button id=
                         <figcaption class="text-center pt-3 pb-4 text-md">71. Ábra: Egy 'rect bar' elem részleteinek lekérése
                         </figcaption>
                     </figure>
+                    <p class="text-lg font-normal pb-3">A korábbi példában létrehoztunk egy nagyon kezdetleges oszlopdiagrammot
+                        D3-al, azonban ennek a diagramnak számos problémája van. Előszöris, maga a loop, ennek az oszlopdiagramnak
+                        alapfeltétele az, hogy végig lépegetünk a tömb elemein, ami a mi, bármiféle szűrő nélkül, 927 elemet
+                        tartalmazó tömbünkön nehézkes lenne. Valamilyen módon megkell oldanunk azt a problémát is, hogy számunkra
+                        szükséges az, hogy oszlopokat adjunk hozzá, és akár vegyünk ki, felhasználói interakció válaszául, aztán
+                        az új oszlopokat frissítenünk kell az új adatokkal, majd végül a teljes diagrammot újra kell így rajzolni.
+                        Ugyanakkor, a diagrammunk oszlopait állandóan skáláznunk is kell, hogy láthatóvá váljon az oszlopok eltérő
+                        szám a váltásra, valamint a különböző max érték. Valamint, jelenesetben az is probléma, hogy hol tároljuk
+                        az adatsort. Jelenleg, minden adatvezérelte váltás a diagrammunkban csak úgy valósulhat meg, hogy átadjuk
+                        az adatsort, majd létrehozunk egy loop-ot, amivel végigmegyünk rajta, létrehozva az oszlopokat. Ez által
+                        úgy érződik, mintha az adat a D3 láncolaton kívül létezne, holott logikusan annak részeként kellene.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A megoldás a fent felvetett valamennyi problémára a D3 'data binding'-ja.
+                        Továbbá, a skálázási gondokat a D3 kiegészítő könyvtárja, a <em>scale</em> fogja megoldani.
+                    </p>
+                    <p class="text-lg font-normal">Először megismerkedünk a D3 scale-jével. A scale alapvető ötlete az, hogy
+                        egy értéket feleltetünk meg az input tartományból az output skálára. A D3 számos skálát rendelkezésünkre
+                        bocsájt, amelyet három fő kategóriába oszthatunk: kvantitatív, ordinális és időskálák. A gyakorlatban a D3
+                        skálák enyhén furán jelennek meg, mivel egyrészt objektumok, másrészt függvények. Ez lényegében azt
+                        jelenti, hogy miután létrehoztad a skáládat, képes vagy különböző metódusokat lehívni rá, amellyel
+                        beállíthatod a tulajdonságait (pl. lehívod a <em>domain</em> függvényt, hogy beállítsd a skála input
+                        tartományát), de azonban képes vagy, mint függvény is lehívni azt, egy tartomány argumentummal, és ekkor
+                        visszatérít egy skála értéket:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// létrehozzuk a lineáris skálánkat
+let scale = d3.scaleLinear();
+// beállítjuk annak tartományát és skáláját
+// ez azt jelenti, hogy inputként 0 és 1 közötti értéket vesz be a skála, és ennek egy 0 és 100 közötti értéket feltet meg
+scale.domain([0, 1]).range([0, 100]);
+// függvényként lehívva, megkaphatjuk azt, hogy a jelenlegi beállítások alapján 0.5-nek 50-et feleltet meg a skálánk
+scale(0.5);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A következőkben vizsgáljuk meg a két legfontosabb D3 skálát, a kvantitatív
+                        és
+                        ordinális skálákat, és figyeljük meg azt, hogy hogyan tudjuk őket hasznosítani az oszlopaink
+                        létrehozásában.
+                    </p>
+                    <p class="text-lg font-normal">A D3 kvantitatív skáláit általában akkor fogjuk felhasználni, amikor vonal,
+                        oszlop vagy éppenséggel szórtdiagrammokat hozunk létre. A lineáris skálához hasonlóan egy folytonos
+                        tartományon folytonos értékeket feleltet meg. Példaképpen, azt szeretnénk, hogy az oszlopaink magassága a
+                        nobelData 'value' mezők lineáris függvénye legyen. Ilyen logika mentén, elkezdünk gondolkozni azon, hogy
+                        milyen tartomány felel meg ezeknek az értékeknek. Mivel a 'value' mezők az adott ország Nobel-nyerteseinek
+                        a száma, a logikailag elképzelhető min értéke a 0, és a max érték pedig a legtöbb nyertessel rendelkező
+                        ország értéke, jelen esetben az AEÁ 336 győztessel, tehát a tartományunk [0, 336] között van. Következő
+                        lépésben azt próbáljuk meg kitalálni, hogy milyen értékeket kellene ennek a tartománynak megfeleltetni. A
+                        skála jelen esetben az oszlopok min és max magasság között lesz, tehát 0px-től 400px-ig:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// megkeressük a tömb legnagyobb értékét
+let maxWinners = d3.max(nobelData, function(d) {
+    return +d.value;
+});
+
+// létrehozzuk a skálánkat, a megfelelő tartománnyal és skálával,
+// megfigyelhetjük a fordított sorrendet a skálában, hiszen lényegében egy eltólást jelöl lefelé,
+// a max értéket nem kell eltólni, hiszen 400px helyet fog elfoglalni,
+// míg a többi ennél kevesebbet és azokat a maradék pixel nagysággal lefelé tóljuk,
+// ezt az eltólást határozza meg a skála nekünk
+let yScale = d3.scaleLinear().domain([0, maxWinners]).range([height, 0]);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A példánkban a lineáris skála legegyszerűbb formáját használjuk, hogy
+                        létrehozzuk az oszlopdiagrammunk y tengelyét, értékeket feleltetve meg egy folytonos tartományból, a
+                        másikba, de a lineáris skálák ennél többre is képesek. Az egyik legérdekesebb trükkje az
+                        <em>interpolate</em> metódus, amely bevesz két értéket és visszatérít egy interpolátort a kettő között,
+                        leginkább közbeszúrásnak lehet érteni. A mi esetünkben, ez úgy nézne ki, hogy az interpolate metódus,
+                        visszatérít egy 400 és 0 közötti numerikus interpolátort, az interpolátoroknak alapértelmezettként a
+                        tartományuk [0, 1]:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let numInt = d3.interpolate(400, 0);
+
+numInt(1); // 0
+numInt(0.5); // 200
+numInt(0); // 400</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Az interpolate metódus nem csak számokkal képes dolgozni: akár stringekkel,
+                        színkódokkal, de akár objektumokkal is. Valamint, a tartományokban nem csak két elemet határozhatunk meg,
+                        hanem akár többet is, ekkor ügyelnünk kell arra, hogy a skála ennek a hossznak megfelelő legyen. Képesek
+                        vagyunk ezt a kettőt ötvözni és létrehozni egy hasznos kis colormapet:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let color = d3.scaleLinear().domain([-1, 0, 1]).range(['red', 'green', 'blue']);
+
+color(-0.5); // zöld és piros közötti szín
+color(0); // teljesen zöld
+color(0.5); // zöld és kék közötti szín</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A kvantitatív skálák sorába nem csak a lineáris skála tartozik, hanem sok
+                        más
+                        is, amelyekről részletesen a D3 dokumentációjában lehet olvasni: logaritmikus, exponenciális, kvantális
+                        (olyan skálák, amelyeknek folytonos tartománya van, de diszkrét skálája), kvantilis (olyan skálák,
+                        amelynek a tartománya is diszkrét) és végül identitás skálák (olyan lineáris skálák, amelyek megegyező
+                        tartománnyal és skálával rendelkeznek). A kvantititatív skálák nagyon hasznosak amikor folytonos
+                        értékekkel kell foglalkozni, de gyakran mi csak azt szeretnénk, hogy értékeket feleltessünk meg diszkrét
+                        tartományra, példaképpen értékeket kapjunk kategóriákra nézve. A D3 rendelkezik egy erre szakosodott skála
+                        kategóriával, az ordinális skálákkal.
+                    </p>
+                    <p class="text-lg font-normal">Az ordinális skálák bevesznek egy tömbnyi értéket tartományukként, és ezeknek
+                        az értékeknek feleltetnek meg egy másik értéket egy diszkrét vagy folytonos skálán, fontos azt
+                        megjegyezni, hogy minden értéknek pontosan egyetlen értéket feleltet meg:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let oScale = d3.scaleOrdinal().domain(['a', 'b', 'c', 'd', 'e']).range([1, 2, 3, 4, 5]);
+
+oScale('a'); // 1</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Az oszlopdiagrammunk esetében ez úgy nézne ki, hogy egy tömbnyi indexnek
+                        szeretnénk értékeket megfeleltetni egy folytonos skálán, hogy meghatározzuk az oszlopaink x koordinátáit.
+                        Ahhoz, hogy ezt elérjük megint elkell térnünk a könyvtől, hiszen ezek a metódusok már nem léteznek a D3
+                        könyvtár negyedik verziójától felfelé. Ahhoz, hogy diszkrét értékeknek folytonos skáláról feleltessünk meg
+                        értékeket használhatjuk a scaleBand skálatípust, valamint annak rangeRound metódusát:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let bScale = d3.scaleBand().domain([1, 2, 3, 4, 5]).rangeRound([0, 400]);
+
+bScale(5); // 320</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A kezdetleges oszlopdiagrammunkban, használtuk a barWidth változót, hogy
+                        méretezzük az oszlopainkat, pontosabban beállítsuk értelemszerűen azok szélességét. De észrevehettük azt,
+                        hogy abban az esetben nem volt levegős rész az oszlopok között, össze voltak ragadva, így is
+                        fogalmazhatnánk. Abban az esetben, ahhoz, hogy levegős részt adjunk az oszlop közé, szükséges lett volna
+                        egy kiegészítő változó használata, valamint némi igazítás az oszlop szélességét és pozícióját tekintve. A
+                        band típusú skála ezt a problémánkat egy-kettőre megoldja, hiszen rendelkezik egy <em>padding</em>
+                        metódussal, amellyel meghatározhatunk padding-et az oszlopok közé, a padding-et az oszlopméretek
+                        törtrészeként kell megadni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let oScale = d3.scaleBand().domain([1, 2]);
+
+oScale.rangeRound([0, 100]);
+oScale(2); // a 2-esnek az 50-et felelteti meg
+oScale.bandwidth(); // 50, visszaadja minden band szélességét, padding-el együtt, jelen esetben az 0
+
+// a paddinget törtrészként hatorázzuk meg: 0.1 * 50 = 5
+oScale.padding(0.1);
+oScale(2); // 52
+oScale.bandwidth(); // 42, tehát 5-5 a padding, és 42 a valódi szélessége az oszlopnak</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Miután megismertük a D3 által használt skálák egy nagyon kicsi részét,
+                        foglalkozhatunk a D3 fő koncepciójával a 'data binding'-al. Ahhoz, hogy teljes mértékben kihasználjuk a D3
+                        adta lehetőségeket, muszáj megismernünk az említett koncepciót, amely segítségével adatokat köthetünk az
+                        adatsorunkból az annak megfelelő DOM elemhez, majd frissíthetjük a weboldalunkat erre az egyesítésre
+                        alapozva. Az adat összekötése a DOM-al lehetővé tesz egy rakás extra funkcionalitást, amikor azt a két
+                        leghasznosabb D3 metódussal kombináljuk: az <em>enter</em> és <em>exit</em> metódusokkal. Az enter-el
+                        képesek vagyunk visszakapni minden olyan adatot, amely nincs hozzákötve egy DOM elemhez, és használhatjuk
+                        ezt, hogy létrehozzunk újakat, amelyek hozzá lesznek kötve. Az exit-el, amely az enter ellentétje,
+                        lehetővé teszi, hogy megtaláljunk bármely olyan DOM elemet, amely nincs hozzákötve egy adathoz. Tehát, ha
+                        ezt a kettőt kombináljuk, az oszlopdiagrammunk változtatása nagyon egyszerűvé válik.
+                    </p>
+                    <p class="text-lg font-normal">Ahhoz, hogy demonstráljuk a D3 'data binding' mechanizmusát, használjuk a
+                        korábban létrehozott SVG canvasünket, valamint a chart csoportunkat. Ahhoz, hogy összekössük az adatot a
+                        D3-al, az adatnak előszöris a megfelelő formátumban kell lennie, általánosságban beszélve az adat egy
+                        tömbnyi objektum lesz, ahogy az a nobelData esetén is van. Ha rendelkezünk minden említett elemmel, akkor
+                        azután az adatösszekötés a DOM-al már egy egyszerű dolog:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let margin = {
+    top: 20,
+    right: 20,
+    bottom: 30,
+    left: 40
+};
+
+let chartHolder = d3.select('#nobel-bar');
+let boundingRect = chartHolder.node().getBoundingClientRect();
+
+let width = boundingRect.width - margin.left - margin.right;
+let height = boundingRect.height - margin.top - margin.bottom;
+
+chartHolder.append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+let svg = d3.select('#nobel-bar svg')
+            .append('g').classed('chart', true).attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+let chart = d3.select('#nobel-bar .chart');
+let bars = chart.selectAll('.bar').data(nobelData);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A fenti példában az adatösszekötéskor érdekes dolgot tettünk.
+                        Kiválasztottuk
+                        előszöris, a diagrammunkat tartó konténert, amelyet egy chart változóba tároltunk. Majd ebből a
+                        konténerből kiválasztottuk az összes 'bar' class-ot tartalmazó DOM elemet, és itt vált a rendszer kevésbé
+                        intuitívvá, hiszen nincsen egy elem sem a chart csoporton belül, majd ezeket a nem létező oszlopokat
+                        hozzákötöttük a nobelData adatsorunkhoz. A magyarázat erre az, hogy a D3 a háttérben nyomon követi azt,
+                        hogy mely DOM elemekhez kötött hozzá adatot, a bars objektumban tudjuk ezt elérni, de még legalább ennyire
+                        fontos az is, hogy így azt is megtudhatjuk, hogy mely DOM elemekhez nem kötött hozzá. A következőkben
+                        megvizsgáljuk azt, hogy hogyan tudjuk ezt az egészet felhasználni.
+                    </p>
+                    <p class="text-lg font-normal">A D3 két nagyon fontos metódusát, az enter-t és az exit-et nem könnyű
+                        megérteni, de mégis megpróbáljuk egy kanonikusan egyszerű demonstráción keresztül, létrehozva egy oszlop
+                        téglalapot a nobelData adatsorunk minden elemére. Tehát, jelenleg megvan az adatsorunk, valamint
+                        kiválasztottuk a diagrammot tartó kontextust, a chart, végül pedig kiválasztottuk és hozzá is kötöttük az
+                        adatokat a még nemlétező oszlopainkhoz. Most, habár a kiválasztásunk üres, hiszen nem található bar
+                        classal rendelkező DOM elem a csoporton belül, a háttérben a D3 nyomon követi az adatot, amit hozzájuk
+                        rendeltünk. Ezen a ponton, képesek vagyunk élni ezzel az ismeretünkkel, és felhasználni az enter metódust,
+                        hogy létrehozzunk néhány oszlopot az adatunkkal. Ha lehívjuk az enter metódust, az visszatéríti az összes
+                        olyan adatot, amit nem kötöttünk még hozzá egy oszlophoz. Mivel, nem voltak oszlopok az eredeti
+                        kiválasztásunkban, egy adat sincs valamihez hozzákötve, tehát az enter visszatéríti az összes adatot egy
+                        tömb formájában, lényegében 10 darab placeholder node-ot:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">bars.enter(); // Array(10)</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Majd képesek vagyunk ezeket a placeholder node-okat felhasználni, hogy
+                        létrehozzuk a DOM elemeket. Jelenleg nem fogunk azzal foglalkozni, hogy helyesen felfelé állva helyezzük
+                        el őket, de felhasználjuk az adataink value mezőit és azok indexét is, hogy beállítsuk az oszlopok
+                        sorrendi pozícióját és magasságát:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">bars = bars.enter();
+
+bars.append('rect').classed('bar', true)
+    .attr('width', 10).attr('height', function(d) { return d.value; })
+    .attr('x', function(d, i) { return i * 12; })
+    /* .attr('y', function(d) { return height - d.value; }) */</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Mostmár tudjuk azt, hogy mi történik akkor, ha egy üres kiválasztással van
+                        dolgunk. Nézzük meg azt is mi történik akkor, ha már vannak DOM elemeink a kiválasztáson belül, amely
+                        akkor történne meg, ha az adatsorunk időközben megváltozik. Feltételezzük azt, hogy rendelkezünk két bar
+                        class-al ellátott rect-el a csoportunkon belül. Ha ezután végrehatjuk ugyanazt az adatösszekötési
+                        folyamatot, mint az előbb a data metódussal, akkor észrevehetjük azt, hogy a két placeholder rect-ünkhöz
+                        került hozzákötésre a nobelData tömbünk első két tagja. Ez azt eredményezi, hogy az enter csak és
+                        kizárólag a valamihez hozzá nem kötött adatokat téríti vissza, tehát a 10-ből jelen esetben csak 8-at. Ha
+                        ezután az előbbihez hasonlóan lehívnánk az append-et és hozzáfűznénk a DOM fához az oszlopokat, akkor
+                        ugyanazt kapnánk, mint az előbb, annyi kivétellel, hogy az első két oszlop nem szerepelne rajta, de a
+                        pozíciók rendben lennének, hiszen ahogy az a Chrome DevTools-ban is látható, hogy az indexünk megmarad és
+                        a korábbival megegyezik:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">bars.append('rect').classed('bar', true)
+    .attr('width', 10).attr('height', function (d) { return d.value; })
+    .attr('x', function(d, i) { return i * 12; });</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, a nobelData tömbünk első két tagja hozzá lett kötve a kezdeti állapotban
+                        létező rect-ekhez, csak még nem használtuk ezt fel, hogy beállítsuk azok attribútumjait. Ha megvizsgáljuk
+                        az első oszlopot jelentő rect DOM elemet, akkor észrevehetjük azt, hogy valóban az adat hozzá lett kötve,
+                        hiszen rendelkezik egy <em>__data__</em> objektummal, amely tartalmazza az AEÁ mezőit. A következő
+                        példában nézzük meg azt, hogy hogyan tudjuk az elem __data__ objektumának adatát felhasználni arra, hogy
+                        egy DOM elem name attribútumját beállítsuk. A name attribútum beállítása azért lehet hasznos, mert ez
+                        által specifikus kiválasztásokat tudunk megejteni, például ha a felhasználó kiválaszt egy országot,
+                        képesek vagyunk az összes elnevezett elemét annak az országnak kiválasztani és átállítani annak stílusát:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let bar = d3.select('#nobel-bar .bar');
+
+bar.attr('name', function(d, i) {
+    let sane_key = d.key.replace(/ /g, '_');
+    
+    console.log('__data__ is: ' + JSON.stringify(d) + ', index is ' + i);
+
+    return 'bar__' + sane_key;
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Már többször is láthattuk azt, hogy az összes 'setter' metódusa a D3
+                        második
+                        argumentumként bevehet egy függvényt, amely argumentumként megkapja a __data__ objektumot, tehát az
+                        elemhez hozzákötött adatot, illetőleg az elem tömbindexét. Majd a következőkben meglássuk azt is, hogy az
+                        új adathozzákötés után, ezt a logikát fogjuk használni az attribútumok beállításához a frissített
+                        adatokkal.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Mostmár tudjuk azt, hogy hogyan lehet adatobjektumokat hozzákötni DOM
+                        elemekhez, és hogyan tudjuk a hozzákötött adatokat használni arra, hogy hozzáadjunk új elemeket vagy
+                        módosítsunk meglévőket a DOM-on. A következőkben ismerjük meg azt is, hogy hogyan tudjuk a
+                        vizualizációnkat frissíteni ahogy az adat változik. Ehhez, lényegében felfogunk használni egy frissítési
+                        folyamatmintát, a D3 egyik alapkoncepcióját <em>'data-join'</em>-t. Az enter metódussal már láthattuk
+                        ennek a data-join-nak az egyik felét, most megnézzük azt, hogy hogyan lehet együtt használni az exit
+                        metódussal, hogy létrehozzuk az említett mintát. A következő ábra bemutatja azt, hogy hogyan néz ki a D3
+                        frissítési mintája:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig72.png"
+                            alt="Ábra 72">
+                        <figcaption class="text-center pt-3 pb-4 text-md">72. Ábra: Egy 'rect bar' elem részleteinek lekérése
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal pb-3">Tehát, a mi példánk esetében először hozzákötjük a nobelData adatunkat az
+                        oszlopok kiválasztásához, a kiválasztás tartalmaz 2 oszlopot kezdeti állapotában. Az első két adatobjektum
+                        hozzákötődik a két első oszlophoz, amelyek már léteztek, a többi adat pedig ekkor még nincs semmihez sem
+                        hozzákötve. Használjuk ezután az enter metódust az oszlopokon, hogy megkapjuk azokat az adatobjektumokat,
+                        amelyek nincsenek megkötve, majd felhasználjuk ezeket, hogy hozzáfűzzük a DOM-hoz, azon belül a chart
+                        csoporthoz, ezek oszlopait. Majd beállítjuk az összes oszlop attribútumjait. Végül, pedig használjuk az
+                        enter ellenkezőjét, az exit-et, hogy megkapjunk minden olyan oszlopot, amelyhez nem került adat
+                        hozzákötésre, majd a remove metódussal töröljük ezeket, hiszen nincs rájuk szükség.
+                    </p>
+                    <p class="text-lg font-normal">A következőkben nincs már más dolgunk, minthogy összeállítsuk az eddig
+                        tanult lépéseket és létrehozzuk a frissítési mintával ellátott oszlopdiagram kódunkat. Fontos észrevenni,
+                        hogy minden olyan lépést, amely független az adat változásától, példaképpen a canvas méretei, az
+                        <em>update</em> metóduson kívül helyeztünk el, és minden olyan utasítást, amely az adattól függ, az update
+                        metóduson belül:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// megszerezzük a chart méreteit
+let chartHolder = d3.select('#nobel-bar');
+const margin = {
+    top: 20,
+    right: 20,
+    bottom: 30,
+    left: 40
+};
+const boundingRect = chartHolder.node().getBoundingClientRect();
+const width = boundingRect.width - margin.left - margin.right;
+const height = boundingRect.height - margin.top - margin.bottom;
+
+// létrehozzuk a skáláinkat
+const xScale = d3.scaleBand().rangeRound([0, width]).padding(0.1);
+const yScale = d3.scaleLinear().rangeRound([height, 0]);
+
+// létrehozzuk a diagramtartó csoportot
+let svg = chartHolder.append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g').classed('chart', true)
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+// az update metódusunk, amely az adatokkal való frissítést végzi el a mintának megfelelően
+var update = function(data) {
+    // frissítjük a skáláink tartományát az adatnak megfelelően
+    xScale.domain(d3.range(data.length));
+    yScale.domain([0, d3.max(data.map(function (d) {
+        return d.value;
+    }))]);
+
+    // hozzákötjük az adatot az oszlopcsoporthoz
+    let bars = svg.selectAll('.bar').data(data);
+
+    // létrehozzuk az új oszlopokat és frissítjük az összes attribútumját
+    bars.enter().append('rect').classed('bar', true).attr('height', function (d, i) {
+            return height - yScale(d.value);
+        }).attr('width', xScale.bandwidth())
+        .attr('y', function (d) {
+            return yScale(d.value);
+        }).attr('x', function (d, i) {
+            return xScale(i);
+        });;
+
+    // kitöröljük a felesleges oszlopokat
+    bars.exit().remove();
+};</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A továbbiakban megnézzük azt, hogy hogyan tudjuk hozzáadni a tengelyeket
+                        és a
+                        tengely címkéket az oszlopdiagrammunkhoz. A D3 alapértelmezetten nem nyújt számunkra túl sok magasszintű
+                        diagramelemet, így a legtöbbet magunknak kell előállítanunk, azonban mégis biztosít egy kényelmes
+                        <em>axis</em> objektumot. Az axis objektumot viszonylag könnyű használni, nagyon jól működik együtt az
+                        előbb létrehozott frissítési mintánkkal, valamit ehhez lehetővé teszi, hogy a tengely bejegyzések és
+                        címkék dinamikusan változzanak a bemutatott adat változására.
+                    </p>
+                    <p class="text-lg font-normal">Ahhoz, hogy definiáljuk az x és y tengelyeinket, előszöris tudunk kell, hogy
+                        milyen tartományt és skálát kell a tengelyeinknek reprezentálniuk. A mi esetünkben ez megegyezzik az x és
+                        y skáláink skáláival és tartományaival, tehát ezeket fogjuk szolgáltatni a tengelyeink scale metódusának.
+                        A D3 axes azt is megengedi, hogy meghatározzuk az orientációt, amely lerögzíti a tengelybejegyzések és
+                        címkék relatív helyét. A mi oszlopdiagrammunk esetén természetesen azt akarjuk, hogy az x tengely az alján
+                        és az y tengely az ábra bal oldalán helyezkedjen el. Az ordinális x tengelyünk címkéket fog tartalmazni
+                        bejegyzésként minden oszlopra, de az y tengely esetén a bejegyzések mondhatni tetszőlegesek, jelen esetben
+                        10-esével lesznek:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// létrehozzuk az x tengelyt, az x skálát reprezentálva vele, az orientációt már a lehívásban megkell határozni
+let xAxis = d3.axisBottom().scale(xScale);
+// beállitjuk az y tengely tickjeit 10-esével, és a tickFormat-ra azért van szükség, mert az egy főre jutó
+// mutatót exponenciális alakra akarjuk hozni, hiszen azok viszonylag kicsi számok
+let yAxis = d3.axisLeft().scale(yScale).ticks(10).tickFormat(function (d) {
+    if (nbviz.valuePerCapita) {
+        return d.toExponential();
+    }
+
+    return d;
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Egy kevés CSS-re is szükségünk lesz, ahhoz, hogy megfelelően jelenjenek meg a
+                        tengelyeink:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">.axis {
+    font-size: 10px;
+    font-family: sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Mindeddig numerikus tartományt használtunk egyfajta helyettesítőként az
+                        ordinális x-tengelyünkhz. Most szükségünk lenne arra, hogy az x-tengely tartalmazza az oszlopcímkéinket,
+                        amelyek az x-tengely bejegyzéseit fogják képezni. Tehát, ebben az esetben az adatunk a következőképpen fog
+                        kinézni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">{key: "Argentina", value: 4, code: "ARG", population: 42669500}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A fent megjelenő három betűs azonósító kódokat szeretnénk használni, mint az
+                        x-tengely címkék, ami azt jelenti, hogy frissítenünk kell az ordinális x-tengelyünk tartományát:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">xScale.domain(data.map(function (d) {
+    return d.code;
+}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután beállítottuk a megfelelő tartományt, valamint megvannak a tengely
+                        generátoraink is, szükségünk van néhány SVG csoportra, amelyek a tengely tartói lesznek, amelyeket
+                        létrehozunk. Adjuk hozzá ezeket a csoportokat a fő svg selector-unkhoz, mint group-ok, megfelelő class
+                        nevekkel:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// az elmozdításra azért van szükség, mert másképp az svg canvas tetején helyezkedne el
+    svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')');
+    svg.append('g').attr('class', 'yaxis');</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Az oszlopdiagrammunk tengelyeinek fix skálája lesz (az ábra szélessége és
+                        magassága), de azok tartományai attól függően fognak változni, hogy a felhasználó hogyan szűri az
+                        adatokat. A következő példa azt fogja bemutatni, hogy hogyan fognak a tengelyek frissítődni az adatok
+                        változására. Első lépésben mindig beállítjuk az új tartományokat, majd ezek az új skálatartományok fognak
+                        tűkröződni, amikor a tengelygenerátorok lehívódnak a nekik megfelelő csoportra:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let updateAxis = function(data) {
+    // elsőként frissítjük a skálatartományok az új adatnak megfelelően
+    xScale.domain(data.map(function(d) {
+        return d.code;
+    }));
+    yScale.domain([0, d3.max(data, function(d) { return +d.value; })]);
+
+    // másodsorban pedig használjuk a tengelygenerátorokat
+    svg.select('.xaxis').call(xAxis)
+        .selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em')
+        .attr('dy', '.15em').attr('transform', 'rotate(-65)');
+    svg.select('.yaxis').call(yAxis);
+};</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután megvannak a működő tengelyeink, adjunk hozzá egy címkét az y-tengelyhez:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// azért van szükség erre, hogy elférjen a címke
+const X_PADDING_LEFT = 20;
+
+// ...
+
+const xScale = d3.scaleBand().rangeRound([X_PADDING_LEFT, width]).padding(0.1);
+
+// ...
+
+svg.append('g')
+    .attr('class', 'yaxis')
+    .append('text')
+    .attr('id', 'y-axis-label')
+    .attr('transform', 'rotate(-90)')
+    .attr('y', 6)
+    .attr('dy', '.71em')
+    .style('text-anchor', 'end')
+    .text('Number of Winners');
+
+// elrejtsük az alsó tengelyvonalat, csak a bejegyzések maradnak
+svg.select('.domain').style('display', 'none');</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Végül, korábban említettünk egy kiegészítő lépést is az ábránkhoz, az nem
+                        más,
+                        mint az animáció. Az eddig létrehozott ábránk teljesen funkcionális, az adat változására megfelelőképpen
+                        válaszol, azonban mondhatni a mozgása darabos. A váltások hirtelen ugrásokban jelenik meg. Szerencsénkre,
+                        a D3 rendelkezik ún. 'transition'-ökkel, amely lehetőséget nyújt számunkra arra, hogy az elemeink vizuális
+                        változásait mozgásilag kisimitsuk, az által, hogy folyamatosan változnak meg egy bizonyos időperiódus
+                        alatt.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Ezt a folyamatos átváltást viszonylag egyszerű elérni a D3 segítségével,
+                        azonban magába foglalja azt is, hogy értsük azt, hogy hogyan van az adat összekötve a D3-ban.
+                        Alapértelmezetten, amikor új adatot kötünk hozzá meglévő DOM elemekhez, ez a tömb index felhasználásával
+                        történik. Tehát, amennyiben a korábban első helyen levő elemünk, valamelyik más pozícióra kerül, akkor az
+                        első oszlop, már nem az új pozícióra került elemhez van hozzákötve, tehát a korábbi első helyhez, hanem
+                        ahhoz, amely az első helyre került. Ahhoz, hogy megkapjuk az említett átalakulási folytonosságot, ahhoz
+                        nekünk az adatot nem tömb index, hanem egy egyedi azonosító kulcs segítségével kell összekötnünk a DOM
+                        elemmel. Segítségünkre, a D3 data metódusa rendelkezik egy második argumentummal is, ahol meghatározhatunk
+                        egy függvényt, amely visszatérít egy kulcsot az adatobjektumból, hogy arra használjuk, hogy összekössük
+                        egy DOM elemmel. Tehát, ilyen értelemben az első oszlop mindig ugyanarra az adatra mutat, amennyiben az
+                        létezik az új adatsorban.
+                    </p>
+                    <p class="text-lg font-normal">Miután az adatokat kulcs szerint kötöttük oszlopokhoz, nincs más dolgunk,
+                        minthogy létrehozzuk az átmenetet. Ehhez használjuk a D3 két metódusát a <em>transition</em>-t és a
+                        <em>duration</em>-t:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">svg.selectAll('.bar').transition().duration(2000).attr('height', function (d, i) {
+            return height - yScale(d.value);
+        }).attr('width', xScale.bandwidth())
+        .attr('y', function (d) {
+            return yScale(d.value);
+        }).attr('x', function (d, i) {
+            /* return xScale(i); */
+            return xScale(d.code);
+        });
+// ...
+let bars = svg.selectAll('.bar').data(data, function (d) {
+    return d.code;
+});
+// ...
+svg.select('.xaxis').transition().duration(2000).call(xAxis)
+    .selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em')
+    .attr('dy', '.15em').attr('transform', 'rotate(-65)');
+svg.select('.yaxis').transition().duration(2000).call(yAxis);
+// ...</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Tehát, ha mindent helyesen csináltunk akkor a változások vizuális
+                        átmenetekben
+                        kell megvalósuljanak. A transition metódus ebben az esetben csak egy egyszerű lineáris átmenetet biztosít,
+                        azonban a D3 ennél többre is képes. Példaképpen képesek vagyunk a delay metódust használni, hogy
+                        meghatározzunk egy idősávot, aminek letelte után fog elkezdődni az átmeneti animáció. Ez a késleltetés,
+                        akár az adat függvényében is történhet. De, valószínűleg a leghasznosabb átmeneti metódus az
+                        <em>ease</em>. A metódus lehetővé teszi azt, hogy meghatározzuk milyen módon akarjuk, hogy az elemek
+                        attribútumjai megváltozzanak az animációs időtartam alatt. Az alapértelmezett easing függvény a
+                        cubic-in-out, de képesek vagyunk még akár quad-ot használni, amely felgyorsul az animáció alatt, vagy akár
+                        a bounce-ot és az elastic-ot is. Még van a sin is, amely az elején felgyorsul, majd ahogy halad egyre
+                        inkább lelassul. De, akár megtörténhet az is, hogy egyik easing függvény sem kedvünkre való, de
+                        szerencsénkre meghatározhatunk sajátokat is, ezt a <em>tween</em> metódus teszi lehetővé.
+                    </p>
+                    <p class="text-lg font-normal">A végső oszlopdiagram kód, amely a projektbe kerül a következőképpen néz ki,
+                        összesítve az eddig tanultakat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    const chartHolder = d3.select('#nobel-bar');
+    const margin = {
+        top: 20,
+        right: 20,
+        bottom: 35,
+        left: 40
+    };
+    const boundingRect = chartHolder.node().getBoundingClientRect();
+
+    const width = boundingRect.width - margin.left - margin.right;
+    const height = boundingRect.height - margin.top - margin.bottom;
+
+    const xPaddingLeft = 20;
+
+    const xScale = d3.scaleBand().rangeRound([xPaddingLeft, width]).padding(0.1);
+    const yScale = d3.scaleLinear().range([height, 0]);
+
+    const xAxis = d3.axisBottom().scale(xScale);
+    const yAxis = d3.axisLeft().scale(yScale).ticks(10).tickFormat(function (d) {
+        if (nbviz.valuePerCapita) {
+            return d.toExponential();
+        } else {
+            return d;
+        }
+    });
+
+    const svg = chartHolder.append('svg').attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')');
+    svg.append('g').attr('class', 'yaxis').append('text').attr('id', 'y-axis-label').attr('transform', 'rotate(-90)')
+        .attr('y', 6).attr('dy', '.71em').style('text-anchor', 'end');
+
+
+    nbviz.updateBarChart = function (data) {
+        xScale.domain(data.map(function (d) {
+            return d.code;
+        }));
+        yScale.domain([0, d3.max(data, function (d) {
+            return +d.value
+        })]);
+
+        svg.select('.xaxis').transition().duration(nbviz.TRANS_DURATION)
+            .call(xAxis).call(function(g) {
+                return g.select('.domain').remove();
+            }).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em')
+            .attr('dy', '.15em').attr('transform', 'rotate(-65)');
+        svg.select('.yaxis').transition().duration(nbviz.TRANS_DURATION)
+            .call(yAxis);
+
+        const bars = svg.selectAll('.bar').data(data, function (d) {
+            return d.code;
+        });
+
+        bars.enter().append('rect').classed('bar', true)
+            .merge(bars).classed('active', function (d) {
+                return d.key === nbviz.activeCountry;
+            }).transition().duration(nbviz.TRANS_DURATION).attr('x', function (d) {
+                return xScale(d.code);
+            }).attr('y', function (d) {
+                return yScale(d.value);
+            }).attr('width', xScale.bandwidth())
+            .attr('height', function (d) {
+                return height - yScale(d.value);
+            }).style('fill', '#0048ab');
+
+        bars.exit().remove();
+
+        setTimeout(function() {
+            const yLabel = svg.select('#y-axis-label').text('Number of Winners').style('fill', '#000');
+        }, 2000);
+    };
+
+}(window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
                 </section>
             </section>
 

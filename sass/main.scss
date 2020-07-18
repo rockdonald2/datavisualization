@@ -24,6 +24,7 @@ html {
 
 pre {
     position: relative;
+    border-radius: 0 !important;
 
     &:hover {
         #copy {
@@ -36,6 +37,10 @@ pre {
 code {
     font-family: 'Fira Code',
         monospace !important;
+
+    background: none !important;
+    border-left: 4px solid #0048ab;
+    padding-left: 1em !important;
 }
 
 #copy {

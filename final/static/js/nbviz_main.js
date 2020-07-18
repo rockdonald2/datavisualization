@@ -21,8 +21,8 @@ function ready(error, world, countryNames, countryData, winnersData) {
     // létrehozzuk a szűrönket és annak dimenzióit
     nbviz.makeFilterAndDimensions(winnersData);
     // inicializáljuk a menüt és a térképet
-    nbviz.initMenu();
-    nbviz.initMap(worldMap, countryNames);
+    /* nbviz.initMenu();
+    nbviz.initMap(worldMap, countryNames); */
     // triggereljük a frissítést a teljes győztes adatsorral
     nbviz.onDataChange();
 }
