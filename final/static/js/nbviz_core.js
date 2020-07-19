@@ -107,8 +107,8 @@
     nbviz.onDataChange = function () {
         let data = nbviz.getCountryData();
         nbviz.updateBarChart(data);
-        /* nbviz.updateMap(data);
-        nbviz.updateList(nbviz.countryDim.top(Infinity)); */
+        nbviz.updateMap(data);
+        /* nbviz.updateList(nbviz.countryDim.top(Infinity)); */
         data = nestDataByYear(nbviz.countryDim.top(Infinity));
         nbviz.updateTimeChart(data);
     };

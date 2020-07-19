@@ -1683,7 +1683,9 @@ winners.exit().remove();</code><button id="copy"
     }));
 
     svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')')
-        .call(xAxis).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em').attr('dy', '.15em')
+        .call(xAxis).call(function (g) {
+        return g.select('.domain').remove();
+        }).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em').attr('dy', '.15em')
         .attr('transform', 'rotate(-65)');
 
     const catLabels = chartHolder.select('svg').append('g')
@@ -1750,6 +1752,341 @@ winners.exit().remove();</code><button id="copy"
 
 }(window.nbviz = window.nbviz || {}));</code><button id="copy"
     class="text-sm md:text-md font-semibold">Másold</button></pre>
+                </section>
+
+                <section id="6d3map">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Térképkészítés a D3-al</h2>
+                    <p class="text-lg font-normal pb-3">Általánosságban elmondható az, hogy a D3 könyvtár egyik fő erőssége a
+                        térképkészítés. Rendelkezik néhány nagyon kifinomult kiegészítővel, amelyek lehetővé tesznek mindenféle
+                        ábrázolást. A térképkészítés első lépése, hogy megszerezzük azt a térképet, amit ábrázolni akarunk.
+                        Különböző térképészeti formátumokról beszélhetünk a gyakorlatban, ezek közül a legismertebb a Shapefile,
+                        amelyet az ún. földrajzi információs rendszer (GIS) szoftverek használnak. Számos olyan számitógépes
+                        alkalmazást vagyunk képesek találni, amelyek segítségével szoftveresen előállíthatunk hasonló fájlokat. A
+                        Shapefile-al az alapvető probléma az, hogy nem az webre lett tervezve, a webes megjelenítéshez sokkal
+                        kedvezőbb lenne egy JSON alapú formátum, amely segítségével viszonylag kis méretben és hatékonyan tudunk
+                        térképészetet reprezentálni. A jó hír az, hogy tudjuk a kettőt ötvözni, és számos olyan kényelmes megoldás
+                        létezik, amelyek segítségével Shapefile-okat képesek vagyunk az általunk választott TopoJSON formátumba
+                        alakítani, ez lényegében azt jelenti, hogy az általunk választott szoftverrel alakíthatjuk a Shapefile-t,
+                        majd miután végeztünk a web által elfogadott és használt formátumba vagyunk képesek azt alakítani.</p>
+                    <p class="text-lg font-normal pb-3">Azonban mégis a standard megoldás az, hogy keresünk egy térképet TopoJSON
+                        vagy
+                        GeoJSON formátumban az adatvizualizációnkhoz, ha nem találtunk megfelelőt akkor keresünk Shapefile-t, és
+                        ha végképp nincs kedvünknek megfelelő akkor létrehozunk egy sajátot, de ez nagyon ritka. A mi
+                        Nobel-térképünk esetén, amely a vizualizációnk központi eleme, szükségesünk van egy globális térképre,
+                        címkézett országokkal. A D3 pont biztosít egy ilyent, amely megtalálható a projekt statikus állományai
+                        között.</p>
+                    <p class="text-lg font-normal pb-3">A D3 két JSON alapú térképészeti formátumot használ: GeoJSON és annak
+                        továbbfejlesztett változata a TopoJSON. A leglényegesebb különbség az, hogy a GeoJSON-t intuitívabban
+                        lehet megérteni és olvasni, de a TopoJSON az esetek többségében hatékonyabbnak minősül. Tipikusan a
+                        folyamat úgy néz ki, hogy a térképeket TopoJSON formátumba alakítsuk, hogy eljuttassuk a web-re (kisebb a
+                        mérete ebben a formátumban), majd a weboldalon a TopoJSON-t a D3 alakítja GeoJSON-ná a böngészőben,
+                        bizonyos okok miatt, példaképpen, hogy leegyszerűsítse az SVG path létrehozásokat, stb.</p>
+                    <p class="text-lg font-normal pb-3">A következőkben kicsit nézzük meg részleteiben a két formátumot, hiszen
+                        azok
+                        megértése mondhatni elengedhetetlen a webes térképészetben.</p>
+                    <p class="text-lg font-normal pb-3">Minden GeoJSON állomány tartalmaz egy <em>type</em> objektumot, amely a
+                        következők valamelyike: Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon,
+                        GeometryCollection, Feature vagy FeatureCollection. Akár tartalmazhat egy <em>crs</em> tagot is,
+                        meghatározva egy bizonyos koordináta-referencia rendszert. A FeatureCollections a legnagyobb GeoJSON
+                        konténer, és általában olyan térképek esetében jelenik meg, ahol több régió van ábrázolva. A
+                        FeatureCollection tartalmaz egy <em>features</em> tömböt, amelynek minden eleme egy GeoJSON objektum, az
+                        előbb említett típusok valamelyikéből, egy standard térkép esetén ezek akár lehetnének országobjektumok
+                        is. Habár, a GeoJSON-ról elmondható, hogy tömörebb, mint a Shapefile, a megfelelő JSON formátumban,
+                        azonban rengeteg redundancia és felesleges elem van a térképek enkódolásában. Példaképpen, a megosztott
+                        határok kétszer vannak meghatározva, és a koordináták esetében lebegőpontos formátumot alkalmaz, amely
+                        habár merev, de az esetek többségében túl pontosnak bizonyul. A TopoJSON formátum hívatott az említett
+                        problémákat orvosolni, biztosítva egy sokkal hatékonyabb módot a térkép eljuttatására a böngészőbe.</p>
+                    <p class="text-lg font-normal pb-3">A D3 főfejlesztője által kifejlesztett TopoJSON a GeoJSON formátum
+                        kibővített
+                        és továbbfejleszett változata. A GeoJSON koordináta geometriáival szemben, a TopoJSON a mértani formákat
+                        arc-ok
+                        segítségével oldja meg, amelyek a különböző objektumok között megosztottak. Mivel, a TopoJSON formátumban
+                        reprezentált térképek újrahasználják ezeket az arc-okat, a TopoJSON állományok nagyságrendekkel, akár
+                        80%-al is, kisebbek GeoJSON megfelelőjüknél. Továbbá, a TopoJSON támogat olyan feature-öket is, mint
+                        például automatikus térképszínezés, kartogrammok, vagy olyan technikákat is, mint például a topológiát
+                        megőrző alakegyszerűsítés, amely akár a térképpontok 95%-át is képes kiiktatni, de mindeközben megőrzi a
+                        szűkséges részleteket.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Biztosan lehet azt állítani, hogy ritkák lesznek az olyan pillanatok,
+                        amikor
+                        közvetlenül kell TopoJSON állományokat változtatnunk, sokkal inkább a közvetett megoldást fogjuk
+                        választani, az általunk választott Shapefile-okat, vagy GeoJSON állományokat fogjuk TopoJSON-ba alakítani,
+                        pusztán az előbb említett méretbeli előnyéből kifolyólag, a böngészőben úgyis a D3 fogja a TopoJSON
+                        arc-alapú alakjait SVG path-ekké alakítani. Tehát, a legfontosabb az, ha megismerjük hogyan lehet létező
+                        GeoJSON állományokból vagy ESRI Shapefile-okból, hatékony TopoJSON fájlokat létrehozni. Szerencsénkre, a
+                        D3 biztosít egy <em>topojson</em> elnevezésű parancssori kiegészítőt, amely pontosan erre képes.
+                    </p>
+                    <p class="text-lg font-normal">A TopoJSON az NPM által nagyon könnyen telepíthető, jelen esetben globális
+                        szeretnénk azt telepíteni, hogy ne csak a jelenlegi környezetben lehessen majd azt elérni:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ npm install -g topojson</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután telepítettük használata végtelenül egyszerű:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ topojson -o topo_output.json geo_input.json</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Hasonlóképpen tud ESRI Shapefile-okat is átalakítani TopoJSON formátumba.
+                        A
+                        TopoJSON számos hasznos beállítással rendelkezik, mint példul a 'quantization', amellyel meghatározhatjuk
+                        a térkép pontosságát. Ezt az opciót kihasználva képesek vagyunk elérni, hogy minimális megjelenítésbeli
+                        veszteséggel sokkal kisebb fájlméretet érjünk el. Az egyszerűsítés egy hasonló beállítás, amellyel
+                        ugyancsak a részletesség és a fájlméret közötti átváltás válik lehetővé. Akár programból is lehetőségünk
+                        van térképeket átalakítani a formátumba, ehhez felhasználjuk a Python <em>topojson.py</em> könyvtárját.
+                    </p>
+                    <p class="text-lg font-normal pb-3">Miután minden felvezetőt megbeszéltünk, nincs más dolgunk, mint létrehozni
+                        a
+                        térképes ábrázolást a weboldalunkon. A D3 rendelkezik egy kliensoldali <em>topojson</em> könyvtárral,
+                        amely arra szakosodott, hogy értelemszerűen a TopoJSON adatokat kezelje. A könyvtár nem mást tesz, mint
+                        átalakítja az optimalizált, arc-alapú TopoJSON-t koordináta-alapú GeoJSON-ná, amelyet ez után kedvünk
+                        szerint alakíthatunk a D3 <em>projection</em>-jeivel és <em>path</em>-jeivel, amelyek a <em>d3.geo</em>
+                        objektumjai.
+                    </p>
+                    <p class="text-lg font-normal">Ahhoz, hogy kinyerjük a számunkra szükséges GeoJSON feature-öket (amelyek a
+                        GeoJSON objektumai, azok egy típusa), a böngészőbe eljuttatott TopoJSON world objetumból, használjuk az
+                        előbb említett topojson kiegésítő <em>feature</em> és <em>mesh</em> metódusait. A feature metódus
+                        visszatéríti a megadott objektum GeoJSON Feature vagy FeatureCollection-jét, a mesh pedig a megadott
+                        objektum mesh-jének, hálójának, megfelelő GeoJSON MultiLineString-et téríti vissza. Az említett metódusok
+                        első argumentumként bevesznek egy-egy TopoJSON objektumot, második argumentumként pedig egy hivatkozást
+                        arra a feature-re, amit kiszeretnénk nyerni. Továbbá, a mesh metódusnak van egy harmadik argumentuma is,
+                        amely meghatároz egy szűrő függvényt. Ez a szűrő függvény argumentumaiként két mértani objektumot vesz be,
+                        amelyek egymás között megosztják a mesh arc-ot. Ha az arc nincs a kettő között megosztva, akkor az a és b
+                        objektum megegyezik, így lehetővé válik számunkra, hogy kiszűrjük a világtérképünk külső határait:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    nbviz.initMap = function(world, countryNames) {
+        // kinyerjük a földrészeket
+        const land = topojson.feature(world, world.objects.land);
+        // kinyerjük az országokat, arra használjuk a features mezőt, hogy kinyerjük a FeatureCollection egyenkénti Feature-jeit, mint tömb
+        const countries = topojson.feature(world, world.objects.countries).features;
+        // kinyerjük a határokat
+        // amennyiben az a és b mértani objektum nem egyezik meg, abban az esetben közös határról beszélhetünk
+        // amennyiben megegyezik, akkor külső határról
+        const borders = topojson.mesh(world, world.objects.countries, function(a, b) {
+            return a !== b;
+        });
+
+        console.log(land, countries, borders);
+    }
+
+} (window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A térképprezentáció a D3-ban általában egy szabvány mintát követ.
+                        Előszöris,
+                        létrehozzunk egy D3 projection-t, felhasználva a D3 valamelyik választását. Aztán létrehozunk egy path-et
+                        felhasználva az előbb kiválasztott projection-t. Majd ezt a path-et használjuk arra, hogy átalakítsuk az
+                        előbb kinyert feature-eket és mesh-eket SVG path-ekké, amelyek megjelenhetnek a böngészőben.
+                    </p>
+                    <p class="text-lg font-normal pb-3">A térképészet egyik meghatározó kihívása mindig is az volt, hogy hogyan
+                        tudjuk a geoid alakú háromdimeziós teret, kétdimenzióba levetíteni. Mindig is valamilyen szintű
+                        torzítással fogunk találkozni, és lényegében a <em>projection</em> azt határozza meg, hogy miként
+                        ábrázoljuk magát a térképet. Szerencsénkre, a D3-ban az a jó, hogy mindig több választási lehetőséget
+                        biztosít, így a projection-ök tekintetében is bőven van választék, mindig megtalálhatjuk a munkának
+                        megfelelő legjobb megjelenítést:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig73.png"
+                            alt="Ábra 73">
+                        <figcaption class="text-center pt-3 pb-4 text-md">73. Ábra: A D3 különböző térképmegjelenítései közül
+                            néhány
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A fent vázolt alternatívák közül mi az <em>equirectangular</em>-t fogjuk
+                        használni, több okból kifolyólag is. Egyrészt, azért mert ebben a megjelenítési formában minden ország
+                        látható, elfogadható méretben, ami a Nobel-díj tekintetében szükséges, valamint maximalizálni szerettük
+                        volna Európa területét is, hiszen a nyertesek jelentős része arról a kontinensről származik. Ahhoz, hogy
+                        létrehozzunk egy projection-t csak használnunk kell az ábrán látható d3.geo metódusok egyikét:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const projection = d3.geoEquirectangular();</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A D3 projection-ök számos hasznos metódussal rendelkeznek. Ilyen akár a
+                        translate metódus, de megemlíthető még az 'adaptive resampling' is a precision metódus által, amely egy
+                        olyan technikát jelent, amellyel úgy növelhetjük a kivetített vonalak pontosságát, hogy mindeközben
+                        minimális veszítünk a hatékonyságból. De akár beállíthatjuk különböző metódusokkal, mint például a scale
+                        és center, a térképünk skáláját és annak földrajzi szélesség és hosszúság által meghatározott középpontját
+                        is. A végső projection kódunk a mi vizualizációnk esetében valahogy így nézne ki:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// a scalefaktor lineárisan megfelel a kivetített pontok közötti távolsággal,
+// alapértelmezetten a magasság 480, míg a scalefaktor 153, a mi scalefaktorunk ennél nagyobb 193, és a magasságunk kisebb,
+// így kissé felnagyítsa ez a beállítás a térképet
+// a center a térképünk középpontját határozza meg, 15fok keletre és 15fok északra
+// a translate a projection középpontjának pixelkoordinátáit határozza meg, az alapértelmezett a 480 és 250
+// a precision az adaptive samplinget állítsa be
+const projection = d3.geoEquirectangular().scale(193 * (height / 480)).center([15, 15])
+    .translate([width / 2, height / 2]).precision(.1);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Miután meghatároztuk a projection-ünket, nézzük meg, hogy hogyan tudjuk
+                        létrehozni a szükséges path-et, amelyet felhasználunk ahhoz, hogy létrehozzuk az SVG térképünket.
+                    </p>
+                    <p class="text-lg font-normal">Tehát, alapvetően miután kiválasztottuk a megfelelő projection-t a
+                        térképünkhöz, fogjuk és egy D3 földrajzi path generátort hozunk létre vele, amely a D3 SVG path
+                        generátorának egy szakosodott variánsa. Ez a path bevesz bármilyen GeoJSON feature vagy geometriai
+                        objektumot, mint például FeatureCollection, Polygon vagy Point, és visszatéríti az SVG path adatstringet a
+                        d attribútumhoz. Példaképpen, korábban létrehoztunk egy borders objektumot, az objektum egy
+                        MultiLineString, amelynek koordinátáit, amelyek az országok határait jelentik, a path átalakítja SVG path
+                        koordinátákká, amely így megjeleníthető a böngészőben. A path-et hasonlóképpen hozzuk létre:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const path = d3.geoPath().projection(projection);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Általában az előbb említett logika mentén a path-et egy függvényként
+                        használjuk, amellyel letudjuk generálni a különböző svg elemek d attribútumjait, felhasználva a GeoJSON
+                        adatösszekötését a <em>datum</em> metódussal (egyetlen adat kötésére használhatjuk, nem egy tömbnyire,
+                        egyfajta rövidítése a data([objects])-nek). Szóval, ahhoz, hogy használjuk a borders objektumot, amit
+                        kinyertünk a topojson.mesh metódus használatával, arra, hogy megrajzoljuk az országhatárokat a következőt
+                        kell írnunk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">svg.insert('path', '.graticule') // beilleszti a graticule class-al rendelkező tag elé
+            .datum(borders).attr('class', 'boundary').attr('d', path);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">A következő hasznos d3.geo komponens, amelyet a Nobel-térképünkön fogunk
+                        használni az a <em>graticule</em>, egyike a geo shape generátoroknak, a graticule-t map grid-nek is szokás
+                        hívni. Alapvetően, a graticule létrehoz egy globális hálót a térképünkre hosszúsági és szélességi
+                        körökből, alapértelmezetten 10 fokonként elhelyezve. Amikor a path-ünket használjuk a graticule-n, egy a
+                        térképre megfelelő rácselrendezés jön létre, ahogy az a következő ábrán is látszik:
+                    </p>
+                    <figure>
+                        <img class="mx-auto"
+                            src="../img/fig74.png"
+                            alt="Ábra 74">
+                        <figcaption class="text-center pt-3 pb-4 text-md">74. Ábra: A hosszúsági és szélességi körökből alkotott
+                            háló a térképünkön
+                        </figcaption>
+                    </figure>
+                    <p class="text-lg font-normal">A következő kódrészlet azt mutatja meg, hogy hogyan tudjuk ezt a graticule-t
+                        hozzáadni a térképünkhöz. Fontos megjegyezni azt, hogy ha azt akarjuk, hogy a térkép path-eket a háló
+                        átfedje, akkor a háló SVG path-je a térkép path-ek után kell elhelyezkedjen a DOM fában:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// 20 fokonként fognak a hálórácsok elhelyezkedni, nem az alapértelmezett 10-esével
+const graticule = d3.geoGraticule().step([20, 20]);
+
+// datum(graticule) == datum([graticule])
+svg.append('path').datum(graticule)
+    .attr('class', 'graticule').attr('d', path);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Megismerkedtünk nagyjából az összes komponenssel, amely a térképünkön
+                        megjelenik, valamint tudjuk azt, hogy hogyan tudnánk a térkép JSON állományonkat SVG-vé alakítani, tehát
+                        nincs más dolgunk, mint összeállítani a darabkákat.
+                    </p>
+                    <p class="text-lg font-normal">Alapvetően, elvárjuk a térképünktől azt, hogy reagáljon a felhasználói
+                        interakcióra, kiemelve azokat az országokat, ahonnan a kiválasztott Nobel-nyertesek származnak, tűkrözve a
+                        nyertesek számát egy az országra elhelyezett, változó átmérőjű kör által:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    // a konténer méretei, valamint az SVG kontextus hozzáadása a DOM-hoz
+    const mapContainer = d3.select('#nobel-map');
+    const boundingRect = mapContainer.node().getBoundingClientRect();
+    const width = boundingRect.width;
+    const height = boundingRect.height;
+
+    const svg = mapContainer.append('svg');
+
+    // a scalefaktor lineárisan megfelel a kivetített pontok közötti távolsággal,
+    // alapértelmezetten a magasság 480, míg a scalefaktor 153, a mi scalefaktorunk ennél nagyobb 193, és a magasságunk kisebb,
+    // így kissé felnagyítsa ez a beállítás a térképet
+    // a center a térképünk középpontját határozza meg, 15fok keletre és 15fok északra
+    // a translate a projection középpontjának pixelkoordinátáit határozza meg, az alapértelmezett a 480 és 250
+    // a precision az adaptive samplinget állítsa be
+    const projection = d3.geoEquirectangular().scale(193 * (height / 480)).center([15, 15])
+        .translate([width / 2, height / 2]).precision(.1);
+
+    const path = d3.geoPath().projection(projection);
+
+    // 20 fokonként fognak a hálórácsok elhelyezkedni, nem az alapértelmezett 10-esével
+    const graticule = d3.geoGraticule().step([20, 20]);
+
+    // kiválasztottuk a projection-t, létrehoztuk a path-et a kiválasztott projection-el, valamint hozzáadtuk a graticule-t is
+    // a projection azt határozza meg, hogyan jelenítsük meg a térképet
+    // a path a megjelenítésnek megfelelően fogja a JSON állomány koordinátáit SVG path-kké alakítani
+    // a graticule a hálót adja hozzá a térképhez a path-nek megfelelően
+
+    // datum(graticule) == datum([graticule])
+    svg.append('path').datum(graticule)
+        .attr('class', 'graticule').attr('d', path);
+
+    const radiusScale = d3.scaleSqrt().range([nbviz.MIN_CENTROID_RADIUS, nbviz.MAX_CENTROID_RADIUS]);
+
+    // egy objektum, amellyel az országnévnek egy GeoJSON objektumot feleltetünk meg
+    const cnameToCountry = {};
+
+    nbviz.initMap = function(world, countryNames) {
+        // kinyerjük a földrészeket
+        const land = topojson.feature(world, world.objects.land);
+        // kinyerjük az országokat, arra használjuk a features mezőt, hogy kinyerjük a FeatureCollection egyenkénti Feature-jeit, mint tömb
+        const countries = topojson.feature(world, world.objects.countries).features;
+        // kinyerjük a határokat
+        // amennyiben az a és b mértani objektum nem egyezik meg, abban az esetben közös határról beszélhetünk
+        // amennyiben megegyezik, akkor külső határról
+        const borders = topojson.mesh(world, world.objects.countries, function(a, b) {
+            return a !== b;
+        });
+
+        // hozzáadja a világtérképet
+        svg.insert('path', '.graticule').datum(land).attr('class', 'land').attr('d', path);
+
+        // országpath-ek
+        svg.insert('g', '.graticule').attr('class', 'countries');
+
+        // az értékindikátorok, amelyek az ország nyerteseit fogják jelölni == piros körök
+        svg.insert('g').attr('class', 'centroids');
+
+        // határvonalak
+        svg.insert('path', '.graticule') // beilleszti a graticule class-al rendelkező tag elé
+            .datum(borders).attr('class', 'boundary').attr('d', path);
+
+        // országnévnek GeoJSON shape-t megfeleltetni
+        const idToCountry = {};
+
+        countries.forEach(function (c) {
+            idToCountry[c.id] = c;
+        });
+
+        countryNames.forEach(function (n) {
+            cnameToCountry[n.name] = idToCountry[n.id];
+        });
+
+        // tehát, a fenti objektum, egy adott országnévnek megfelelteti a GeoJSON shape-jét
+        // ez azt jelenti, hogy ha beadjuk például Ausztráliát, visszatéríti annak a GeoJSON megfelelőjét
+    }
+
+    nbviz.updateMap = function (data) {
+
+    };
+
+} (window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Majd hozzáadhatunk egy kis CSS stílust is, hogy alakítsuk a térképünk
+                        kínézetét:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#nobel-map {
+    background: azure;
+    top: 160px;
+    width: 700px;
+    height: 350px;
+}
+
+.graticule {
+    fill: none;
+    stroke: #777;
+    stroke-width: .5px;
+    stroke-opacity: .5;
+}
+
+.land {
+    fill: #ddd;
+}
+
+.boundary {
+    fill: none;
+    stroke: #fff;
+    stroke-width: .5px;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">
+                    </p>
                 </section>
             </section>
 

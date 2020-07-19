@@ -10,7 +10,7 @@ d3.queue()
     .defer(nbviz.getDataFromAPI, query_winners)
     .await(ready);
 
-function ready(error, world, countryNames, countryData, winnersData) {
+function ready(error, worldMap, countryNames, countryData, winnersData) {
     // logulunk bármiféle hibát a console-ra
     if (error) {
         return console.warn(error);
@@ -21,8 +21,8 @@ function ready(error, world, countryNames, countryData, winnersData) {
     // létrehozzuk a szűrönket és annak dimenzióit
     nbviz.makeFilterAndDimensions(winnersData);
     // inicializáljuk a menüt és a térképet
-    /* nbviz.initMenu();
-    nbviz.initMap(worldMap, countryNames); */
+    /* nbviz.initMenu(); */
+    nbviz.initMap(worldMap, countryNames);
     // triggereljük a frissítést a teljes győztes adatsorral
     nbviz.onDataChange();
 }

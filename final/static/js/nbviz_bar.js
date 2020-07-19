@@ -46,9 +46,7 @@
         })]);
 
         svg.select('.xaxis').transition().duration(nbviz.TRANS_DURATION)
-            .call(xAxis).call(function(g) {
-                return g.select('.domain').remove();
-            }).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em')
+            .call(xAxis).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em')
             .attr('dy', '.15em').attr('transform', 'rotate(-65)');
         svg.select('.yaxis').transition().duration(nbviz.TRANS_DURATION)
             .call(yAxis);
@@ -77,7 +75,7 @@
 
         setTimeout(function() {
             const yLabel = svg.select('#y-axis-label').text('Number of Winners').style('fill', '#000');
-        }, 2000);
+        }, nbviz.TRANS_DURATION);
     };
 
 }(window.nbviz = window.nbviz || {}));

@@ -70,6 +70,27 @@ a:hover {
     height: 350px;
 }
 
+.graticule {
+    fill: none;
+    stroke: #777;
+    stroke-width: .5px;
+    stroke-opacity: .5;
+}
+
+.land {
+    fill: #ddd;
+}
+
+.boundary {
+    fill: none;
+    stroke: #fff;
+    stroke-width: .5px;
+}
+
+#map-tooltip {
+    display: none;
+}
+
 #nobel-winner {
     top: 510px;
     left: 700px;
@@ -105,4 +126,12 @@ a:hover {
     fill: none;
     stroke: #000;
     shape-rendering: crispEdges;
+}
+
+.xaxis .domain {
+    display: none;
+}
+
+#nobel-menu {
+    display: flex;
 }
