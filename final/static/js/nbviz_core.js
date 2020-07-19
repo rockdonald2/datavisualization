@@ -16,7 +16,7 @@
     const $EVE_API = 'http://localhost:5000/api/';
 
     nbviz.CATEGORIES = [
-        "Chemistry", "Economics", "Literature", "Peace", "Physics", "Physiology or Medicine"
+        "Physiology or Medicine", "Chemistry", "Economics", "Literature", "Peace", "Physics"
     ];
 
     nbviz.categoryFill = function (category) {
@@ -44,7 +44,11 @@
 
     /* az üres részek a kontextusuk során lesznek tartalommal feltöltve */
     let nestDataByYear = function (entries) {
-        // ...
+        return nbviz.data.years = d3.nest()
+            .key(function (w) {
+                return w.year;
+            })
+            .entries(entries);
     };
 
     nbviz.makeFilterAndDimensions = function (winnersData) {
@@ -103,8 +107,8 @@
     nbviz.onDataChange = function () {
         let data = nbviz.getCountryData();
         nbviz.updateBarChart(data);
-        nbviz.updateMap(data);
-        nbviz.updateList(nbviz.countryDim.top(Infinity));
+        /* nbviz.updateMap(data);
+        nbviz.updateList(nbviz.countryDim.top(Infinity)); */
         data = nestDataByYear(nbviz.countryDim.top(Infinity));
         nbviz.updateTimeChart(data);
     };

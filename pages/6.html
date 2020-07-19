@@ -671,7 +671,7 @@ countryGroup.all();
     class="text-sm md:text-md font-semibold">Másold</button></pre>
                 </section>
 
-                <section id="6d3">
+                <section id="6d3bar">
                     <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Munka a D3-al és az oszlopdiagram</h2>
                     <p class="text-lg font-normal pb-3">A következőkben megismerkedünk a D3 könyvtárral az által, hogy megépítsük
                         az első vizuális elemünket, az oszlopdiagramot. Ahhoz, hogy megépítsünk egy ilyen összetevőt, előszöris
@@ -1175,7 +1175,7 @@ let svg = chartHolder.append('svg')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 // az update metódusunk, amely az adatokkal való frissítést végzi el a mintának megfelelően
-var update = function(data) {
+const update = function(data) {
     // frissítjük a skáláink tartományát az adatnak megfelelően
     xScale.domain(d3.range(data.length));
     yScale.domain([0, d3.max(data.map(function (d) {
@@ -1231,16 +1231,20 @@ let yAxis = d3.axisLeft().scale(yScale).ticks(10).tickFormat(function (d) {
                     <p class="text-lg font-normal">Egy kevés CSS-re is szükségünk lesz, ahhoz, hogy megfelelően jelenjenek meg a
                         tengelyeink:
                     </p>
-                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">.axis {
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">.yaxis,
+.xaxis {
     font-size: 10px;
     font-family: sans-serif;
 }
 
-.axis path, .axis line {
+.yaxis path,
+.xaxis path,
+.yaxis line,
+.xaxis line {
     fill: none;
     stroke: #000;
     shape-rendering: crispEdges;
-}</code><button id="copy"
+}}</code><button id="copy"
     class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal">Mindeddig numerikus tartományt használtunk egyfajta helyettesítőként az
                         ordinális x-tengelyünkhz. Most szükségünk lenne arra, hogy az x-tengely tartalmazza az oszlopcímkéinket,
@@ -1431,7 +1435,11 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
         bars.enter().append('rect').classed('bar', true)
             .merge(bars).classed('active', function (d) {
                 return d.key === nbviz.activeCountry;
-            }).transition().duration(nbviz.TRANS_DURATION).attr('x', function (d) {
+            })
+            .attr('height', height)
+            .attr('x', 2 * xPaddingLeft)
+            .transition().duration(nbviz.TRANS_DURATION)
+            .attr('x', function (d) {
                 return xScale(d.code);
             }).attr('y', function (d) {
                 return yScale(d.value);
@@ -1445,6 +1453,299 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
         setTimeout(function() {
             const yLabel = svg.select('#y-axis-label').text('Number of Winners').style('fill', '#000');
         }, 2000);
+    };
+
+}(window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                </section>
+
+                <section id="6d3individual">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Az idősor, és az egyéni díjak megjelenítése</h2>
+                    <p class="text-lg font-normal">A következő lépésben az oldal tetején elhelyezkedő idősort fogjuk felépíteni,
+                        megismerkedve újabb D3 technikákkal. Első lépésben, az idősor HTML gerincét fogjuk megírni, az előző
+                        oszlopdiagramhoz hasonlóan:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    const chartHolder = d3.select('#nobel-time');
+    const margin = {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 40
+    };
+
+    const boundingRect = chartHolder.node().getBoundingClientRect();
+    const width = boundingRect.width - margin.left - margin.right;
+    const height = boundingRect.height - margin.top - margin.bottom;
+
+    const svg = chartHolder.append('svg').attr('height', height + margin.top + margin.bottom)
+        .attr('width', width + margin.left + margin.right).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    nbviz.updateTimeChart = function (data) {
+        // ...
+    };
+
+}(window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután az svg csoportunk a helyén van, adjunk hozzá a skálákat és a
+                        tengelyeket, hiszen azokra is szükségünk lesz. Ahhoz, hogy elhelyezzük a körszerű jelzőket két ordinális
+                        skálát fogunk használni. Az x-tengelyen elhelyezkedő csoportok között 10%-os padding lesz, valamit
+                        ugyancsak az x-tengelyt fogjuk használni arra is, hogy meghatározzuk a körök átmérőjét. Az y-tengely
+                        magasságát úgy kell meghatározzuk, hogy elférjen az összes jelző, de ugyanakkor egy kis padding is kell
+                        közéjűk esztétikailag. Ebben az esetben, mivel a paraméterek rögzítettek, s minden esetben 1901-től
+                        2019-ig kell az x-tengely tartománya tartson, illetve az y-tengely tartománya mindig az egy évben kapott
+                        díjak számának maximuma lesz, ezek egyike sem fog változni felhasználói interakcióra, tehát nyugodtan
+                        meghatározhatjuk az update metódusunkon kívül:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const MAX_WINNERS_PER_YEAR = 15
+    const xScale = d3.scaleBand().range([0, width]).padding(0.1).domain(d3.range(1900, 2020));
+    const yScale = d3.scalePoint().range([height, 0]).domain(d3.range(MAX_WINNERS_PER_YEAR));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Mivel, a díjak kis-körökként fognak megjelenni, ahonnan relatíve egyszerű dolog
+                        leolvasni azt, hogy éppen hány nyertesről van szó az adott évben, teljesen felesleges y-tengelyt
+                        létrehoznunk, szemben az előző oszlopdiagrammunkkal. A hangsúly a jelenlegi ábránk esetében arra van
+                        helyezve, hogy bemutassa a relatív díjeloszlást az évek során. Az x-tengely esetében ahhoz, hogy könnyen
+                        lelehessen olvasni az évet, valamint, hogy azt is észben tartsuk mekkora a rendelkezésünkre álló hely, a
+                        címkék az évtizedeket fogják jelölni. A tengely létrehozásához megint a D3 axis objektumát fogjuk
+                        használni, ahol felülírjuk a bejegyzésértékeket a <em>tickValues</em> metódussal, kiszűrve azokat az
+                        éveket a range-ből, amelyek nem nullával végződnek:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const xAxis = d3.axisBottom().scale(xScale).tickValues(xScale.domain().filter(function (d, i){
+        return !(d % 10);
+    }));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ahogy elmondtuk azt a skálák esetében is, nem számítunk arra, hogy felhasználói
+                        interakcióra a tengelyek változzanak, szóval megintcsak az update metóduson kívül jeleníthetjük meg az
+                        x-tengelyt:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')')
+        .call(xAxis).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em').attr('dy', '.15em')
+        .attr('transform', 'rotate(-65)');</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Mielőtt ténylegesen eltudnánk helyezni a nyerteseket jelképező köröket, előtte
+                        egy jelmagyarázatot, amely a legutolsó statikus komponense az ábránknak. Ahhoz, hogy létrehozzuk a
+                        jelmagyarázatot, először létrehozunk egy csoportot, 'labels' class-al, ez fogja tartalmazni értelemszerűen
+                        a címkéket. Majd ezekhez a címkékhez hozzákössük az 'nbviz.CATEGORIES' adatunkat, majd az enter metódust
+                        használva, minden kategóriához hozzáillesztünk egy újabb csoportot, az y-tengelyen elhelyezve, indexenként
+                        haladva, mindeniket 10px-re elhelyezve a másiktól:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const catLabels = chartHolder.select('svg').append('g')
+        .attr('transform', 'translate(10, 10)').attr('class', 'labels')
+        .selectAll('label').data(nbviz.CATEGORIES)
+        .enter().append('g').attr('transform', function(d, i){
+            return 'translate(0,' + i * 10 + ')';
+        });</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután megvan a 'catLabels' kiválasztásunk, adjunk hozzá mindegyikhez egy
+                        körindikátort, valamint egy címkét:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">catLabels.append('circle')
+    .attr('fill', nbviz.categoryFill)
+    .attr('r', xScale.bandwidth() / 2);
+
+catLabels.append('text')
+    .text(function (d) {
+        return d;
+    })
+    .attr('dy', '.4em')
+    .attr('x', 10)
+    .style('font-size', 10);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Az előbb használt categoryFill függvény az 'nbviz_core.js' állományban van
+                        meghatározva, lényegében egy függvény, amely biztosítja a színeket a Nobel-kategóriákhoz. Felhasználja a
+                        D3 hcl metódusát, hogy egyenletesen elosztott színeket biztosítson egy [0, 360] hue skálán, amelyeket a D3
+                        fog CSS RGB színekké átalakítani.</p>
+                    <p class="text-lg font-normal">Ahhoz, hogy elkészítsük az idősor komponenst, kissé a Nobel-díjas adatsorunkat
+                        is átkell alakítsuk egy másik formátumba. Lényegében arra van szükségünk, hogy csoportokat hozzunk létre
+                        év szerint. Tehát, a nyerteseket év szerinti csoportokra
+                        kell osszuk. Első meggondolásra azt hinnénk, hogy létre kell hozzunk egy újabb állományt, ilyesfajta
+                        elrendezésben, azonban ez nem szükséges, hiszen JavaScript-en belül is megtudjuk ejteni az átalakítást,
+                        anélkül, hogy bármit is módosítanunk kellene a MongoDB-n tárolt adatsorunkon. Végig tudunk iterálni az
+                        adatsort tartalmazó tömbön, és hozzáfűzni egy évre vonatkozó csoportot, majd abba a nyerteseket, és ezek a
+                        csoportok fogják az ábránk oszlopait képezni. A D3 biztosít egy hasznos nest operátort, hogy átalakítsunk
+                        adatsorokat egy kívánt, beágyazott formátumba. A következő kódrészletben a key-el létrehozunk egy
+                        csoportot, majd az entries-el elhelyezzük az adott key-nek megfelelő elemeket a csoportokba:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let nestDataByYear = function (entries) {
+        return nbviz.data.years = d3.nest()
+            .key(function (w) {
+                return w.year;
+            })
+            .entries(entries);
+    };</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Tehát, megfigyelhetjük azt, hogy az onDataChange metódusunkon belül a fent
+                        látható nestDataByYear függvény fogja az adattömbünket a komponens szerinti szükséges formátumba
+                        átalakítani, ahhoz, hogy év szerint az idősoron tudjuk ábrázolni.</p>
+                    <p class="text-lg font-normal">Az immár beágyazott adattömbünket úgy szeretnénk az ábra során használni, hogy
+                        minden évcsoport egy oszlopot képezzen, a csoport minden nyertese pedig egy újabb kört az ábrán. Ahogy
+                        minden komponensünk esetében, úgy az idősor esetében is alkalmazni fogjuk a korábban megismert frissítési
+                        mintét (update pattern), hasonló formában, de ebben az esetben egy plusz elemet is bekell építenünk. Amíg
+                        az oszlopdiagrammunk estében minden ország számára egy egyszerú rect elemet hoztunk létre, addig itt
+                        minden évre egy díjcsoportot kell létrehozzunk, és azon belül a díjakat. Emiatt szükségünk lesz egy extra
+                        data-join-ra a frissítési körünkben:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.updateTimeChart = function (data) {
+        // hozzákössük az adatot a neki megfelelő évoszlopnak, nem index, hanem év szerint, így az esetleges
+        // hézagok nem okoznak megjelenítésbeli hibákat, amikoris az index megváltozik
+        const years = svg.selectAll('.year')
+            .data(data, function (d) {
+                return d.key;
+            });
+
+        // a hozzákötött adatoknak megfelelően létrehozzuk az oszlopokat
+        years.enter().append('g')
+            .classed('year', true)
+            .merge(years)
+            .attr('name', function (d) { return d.key; })
+            .attr('transform', function (year) {
+                return "translate(" + xScale(+year.key) + ",-3)"; // azért használjuk a +year-t, hogy átalakítsuk az str-t int-té
+            });
+
+        // töröl minden olyan évoszlopot, amelyhez nem került adat hozzákötésre
+        years.exit().remove();
+};</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Kész van az első data-join körünk, amikoris létrehoztuk a díjakat tartó
+                        évoszlopokat. Most ezeket az oszlopokat felhasználva hozzáillesszük a körindikátorokat:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const winners = svg.selectAll('.year').selectAll('.winner').data(function (d) {
+    return d.values;
+}, function (d) {
+    return d.name;
+});
+
+winners.enter().append('circle').classed('winner', true).merge(winners)
+    .attr('fill', function (d) {
+        return nbviz.categoryFill(d.category);
+    })
+    .attr('cx', xScale.bandwidth() / 2)
+    .attr('r', xScale.bandwidth() / 2)
+    .attr('cy', function (d, i) {
+        return yScale(i);
+    });
+
+winners.exit().remove();</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután megvan a teljesen jól működő ábránk nincs már más dolgunk, minthogy
+                        néhány sornyi kóddal ennek is egy átmeneti animációt adjunk. A dolgok jelenlegi állása szerint, ahogy a
+                        felhasználó kiválaszt egy újabb részhalmazt az adatsorunkból, a frissítési minták automatikusan beállítja
+                        a releváns körök új pozícióját az y-tengelyen. Amit most szeretnénk tenni nem más, mint ezt az
+                        átrendeződést meganimáljuk valamelyest. Bármilyen felhasználó vezérelte szűrés három féle képpen jelenhet
+                        meg: meghagy néhány létező kört, hozzáad újakat vagy a kettő egyszerre. Tehát, lényegében, valamint
+                        röviden és tömören azt szeretnénk, hogy a szűrés után a megmaradt körök "leessenek" a szűrés utáni
+                        megfelelő helyükre, és ehhez nem kell mást tennünk, mint egy transition-t hozzáadni a 'cy' attribútum
+                        változásához:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">winners.enter().append('circle').classed('winner', true).merge(winners)
+    .attr('fill', function (d) {
+        return nbviz.categoryFill(d.category);
+    })
+    .attr('cx', xScale.bandwidth() / 2)
+    .attr('r', xScale.bandwidth() / 2)
+    .transition().duration(nbviz.TRANS_DURATION)
+    .attr('cy', function (d, i) {
+        return yScale(i);
+    });</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Azonban jelenleg működik az animáció, azonban mondhatni rossz helyről indulnak
+                        el a körök. Mi azt szeretnénk, hogy lentről-felfelé mozogjanak a körök, nem fentről lefelé, ami furán hat.
+                        Egyszerű a megoldás:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">winners.enter().append('circle').classed('winner', true).merge(winners)
+    .attr('fill', function (d) {
+        return nbviz.categoryFill(d.category);
+    })
+    .attr('cy', height)
+    .attr('cx', xScale.bandwidth() / 2)
+    .attr('r', xScale.bandwidth() / 2)
+    .transition().duration(nbviz.TRANS_DURATION)
+    .attr('cy', function (d, i) {
+        return yScale(i);
+    });</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, a végső kódunk a Nobel-idővonalhoz a következőképpen nézne ki:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    const chartHolder = d3.select('#nobel-time');
+    const margin = {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 40
+    };
+
+    const boundingRect = chartHolder.node().getBoundingClientRect();
+    const width = boundingRect.width - margin.left - margin.right;
+    const height = boundingRect.height - margin.top - margin.bottom;
+
+    const svg = chartHolder.append('svg').attr('height', height + margin.top + margin.bottom)
+        .attr('width', width + margin.left + margin.right).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    const MAX_WINNERS_PER_YEAR = 15
+    const xScale = d3.scaleBand().range([0, width]).padding(0.1).domain(d3.range(1900, 2020));
+    const yScale = d3.scalePoint().range([height, 0]).domain(d3.range(MAX_WINNERS_PER_YEAR));
+
+    const xAxis = d3.axisBottom().scale(xScale).tickValues(xScale.domain().filter(function (d, i) {
+        return !(d % 10);
+    }));
+
+    svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')')
+        .call(xAxis).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em').attr('dy', '.15em')
+        .attr('transform', 'rotate(-65)');
+
+    const catLabels = chartHolder.select('svg').append('g')
+        .attr('transform', 'translate(10, 10)').attr('class', 'labels')
+        .selectAll('label').data(nbviz.CATEGORIES)
+        .enter().append('g').attr('transform', function (d, i) {
+            return 'translate(0,' + i * 10 + ')';
+        });
+
+    catLabels.append('circle')
+        .attr('fill', nbviz.categoryFill)
+        .attr('r', xScale.bandwidth() / 2);
+
+    catLabels.append('text')
+        .text(function (d) {
+            return d;
+        })
+        .attr('dy', '.4em')
+        .attr('x', 10)
+        .style('font-size', 10);
+
+    nbviz.updateTimeChart = function (data) {
+        // hozzákössük az adatot a neki megfelelő évoszlopnak, nem index, hanem év szerint, így az esetleges
+        // hézagok nem okoznak megjelenítésbeli hibákat, amikoris az index megváltozik
+        const years = svg.selectAll('.year')
+            .data(data, function (d) {
+                return d.key;
+            });
+
+        // a hozzákötött adatoknak megfelelően létrehozzuk az oszlopokat
+        years.enter().append('g')
+            .classed('year', true)
+            .merge(years)
+            .attr('name', function (d) {
+                return d.key;
+            })
+            .attr('transform', function (year) {
+                return "translate(" + xScale(+year.key) + ",-3)"; // azért használjuk a +year-t, hogy átalakítsuk az str-t int-té
+            });
+
+        // töröl minden olyan évoszlopot, amelyhez nem került adat hozzákötésre
+        years.exit().remove();
+
+        const winners = svg.selectAll('.year').selectAll('.winner').data(function (d) {
+            return d.values;
+        }, function (d) {
+            return d.name;
+        });
+
+        winners.enter().append('circle').classed('winner', true).merge(winners)
+            .attr('fill', function (d) {
+                return nbviz.categoryFill(d.category);
+            })
+            .attr('cy', height)
+            .attr('cx', xScale.bandwidth() / 2)
+            .attr('r', xScale.bandwidth() / 2)
+            .transition().duration(nbviz.TRANS_DURATION)
+            .attr('cy', function (d, i) {
+                return yScale(i);
+            });
+
+        winners.exit().remove();
     };
 
 }(window.nbviz = window.nbviz || {}));</code><button id="copy"

@@ -1,7 +1,7 @@
 hljs.initHighlightingOnLoad();
 
 const modified = document.querySelector('#modified') ? document.querySelector('#modified') : null;
-const lastModified = '2020 Július 18.'
+const lastModified = '2020 Július 19.'
 
 modified != null ? modified.textContent = 'Utolsó modósítás: ' + lastModified : null;
 

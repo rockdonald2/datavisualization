@@ -60,7 +60,11 @@
         bars.enter().append('rect').classed('bar', true)
             .merge(bars).classed('active', function (d) {
                 return d.key === nbviz.activeCountry;
-            }).transition().duration(nbviz.TRANS_DURATION).attr('x', function (d) {
+            })
+            .attr('height', height)
+            .attr('x', 2 * xPaddingLeft)
+            .transition().duration(nbviz.TRANS_DURATION)
+            .attr('x', function (d) {
                 return xScale(d.code);
             }).attr('y', function (d) {
                 return yScale(d.value);
