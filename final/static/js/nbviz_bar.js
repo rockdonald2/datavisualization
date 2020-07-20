@@ -38,6 +38,11 @@
 
 
     nbviz.updateBarChart = function (data) {
+        // megelőzi azt, hogy a 0-ás országok bentmaradjanak a tömbben
+        data = data.filter(function (d) {
+            return d.value > 0;
+        })
+
         xScale.domain(data.map(function (d) {
             return d.code;
         }));
@@ -56,11 +61,11 @@
         });
 
         bars.enter().append('rect').classed('bar', true)
+            .attr('x', 2 * xPaddingLeft)
+            .attr('height', height)
             .merge(bars).classed('active', function (d) {
                 return d.key === nbviz.activeCountry;
             })
-            .attr('height', height)
-            .attr('x', 2 * xPaddingLeft)
             .transition().duration(nbviz.TRANS_DURATION)
             .attr('x', function (d) {
                 return xScale(d.code);
@@ -73,7 +78,7 @@
 
         bars.exit().remove();
 
-        setTimeout(function() {
+        setTimeout(function () {
             const yLabel = svg.select('#y-axis-label').text('Number of Winners').style('fill', '#000');
         }, nbviz.TRANS_DURATION);
     };

@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport"
             content="width=device-width, initial-scale=1.0">
-        <title>{{config.APP_TITLE}}</title>
+        <title>{{ title }}</title>
         <link rel="stylesheet"
             href="../static/css/style.css">
     </head>
@@ -37,17 +37,18 @@
                             id=""></select>
                     </div>
                     <div id="metric-radio">
+                        Number of Winners:&nbsp;
                         <form action="">
-                            <label for="">absolute
+                            <label>absolute
                                 <input type="radio"
                                     name="mode"
-                                    id="0"
+                                    value="0"
                                     checked>
                             </label>
-                            <label for="">per-capita
+                            <label>per-capita
                                 <input type="radio"
                                     name="mode"
-                                    id="1">
+                                    value="1">
                             </label>
                         </form>
                     </div>
@@ -83,7 +84,7 @@
                     </div>
                     <!-- Életrajzi doboz -->
                     <div id="nobel-winner">
-                        <div id="picbox"></div>
+                        <div id="picbox"><img></div>
                         <div id="winner-title"></div>
                         <div id="infobox">
                             <div class="property">

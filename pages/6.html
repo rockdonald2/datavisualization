@@ -396,6 +396,7 @@ a:hover {
     nbviz.valuePerCapita = 0; // mutató flag-ünk
     nbviz.activeCountry = null; 
     nbviz.ALL_CATS = 'All Categories' // konstans
+    nbviz.activeCategory = nbviz.ALL_CATS;
     nbviz.TRANS_DURATION = 2000; // milliszekundumban meghatározott hossza az animációknak
     nbviz.MAX_CENTROID_RADIUS = 30;
     nbviz.MIN_CENTROID_RADIUS = 2;
@@ -1193,7 +1194,7 @@ const update = function(data) {
             return yScale(d.value);
         }).attr('x', function (d, i) {
             return xScale(i);
-        });;
+        });
 
     // kitöröljük a felesleges oszlopokat
     bars.exit().remove();
@@ -1413,6 +1414,11 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
 
 
     nbviz.updateBarChart = function (data) {
+        // megelőzi azt, hogy a 0-ás országok bentmaradjanak a tömbben
+        data = data.filter(function (d) {
+            return d.value > 0;
+        })
+
         xScale.domain(data.map(function (d) {
             return d.code;
         }));
@@ -1421,9 +1427,7 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
         })]);
 
         svg.select('.xaxis').transition().duration(nbviz.TRANS_DURATION)
-            .call(xAxis).call(function(g) {
-                return g.select('.domain').remove();
-            }).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em')
+            .call(xAxis).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em')
             .attr('dy', '.15em').attr('transform', 'rotate(-65)');
         svg.select('.yaxis').transition().duration(nbviz.TRANS_DURATION)
             .call(yAxis);
@@ -1433,11 +1437,11 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
         });
 
         bars.enter().append('rect').classed('bar', true)
+            .attr('x', 2 * xPaddingLeft)
+            .attr('height', height)
             .merge(bars).classed('active', function (d) {
                 return d.key === nbviz.activeCountry;
             })
-            .attr('height', height)
-            .attr('x', 2 * xPaddingLeft)
             .transition().duration(nbviz.TRANS_DURATION)
             .attr('x', function (d) {
                 return xScale(d.code);
@@ -1452,15 +1456,15 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
 
         setTimeout(function() {
             const yLabel = svg.select('#y-axis-label').text('Number of Winners').style('fill', '#000');
-        }, 2000);
+        }, nbviz.TRANS_DURATION);
     };
 
 }(window.nbviz = window.nbviz || {}));</code><button id="copy"
     class="text-sm md:text-md font-semibold">Másold</button></pre>
                 </section>
 
-                <section id="6d3individual">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Az idősor, és az egyéni díjak megjelenítése</h2>
+                <section id="6d3time">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Az idővonal</h2>
                     <p class="text-lg font-normal">A következő lépésben az oldal tetején elhelyezkedő idősort fogjuk felépíteni,
                         megismerkedve újabb D3 technikákkal. Első lépésben, az idősor HTML gerincét fogjuk megírni, az előző
                         oszlopdiagramhoz hasonlóan:</p>
@@ -1675,37 +1679,39 @@ winners.exit().remove();</code><button id="copy"
         .attr('width', width + margin.left + margin.right).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     const MAX_WINNERS_PER_YEAR = 15
-    const xScale = d3.scaleBand().range([0, width]).padding(0.1).domain(d3.range(1900, 2020));
+    const xScale = d3.scaleBand().range([0, width]).padding(0.1).domain(d3.range(1900, 2021));
     const yScale = d3.scalePoint().range([height, 0]).domain(d3.range(MAX_WINNERS_PER_YEAR));
 
     const xAxis = d3.axisBottom().scale(xScale).tickValues(xScale.domain().filter(function (d, i) {
         return !(d % 10);
     }));
 
-    svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')')
-        .call(xAxis).call(function (g) {
-        return g.select('.domain').remove();
-        }).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em').attr('dy', '.15em')
-        .attr('transform', 'rotate(-65)');
+    setTimeout(function () {
+        svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')')
+            .call(xAxis).call(function (g) {
+                return g.select('.domain').remove();
+            }).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em').attr('dy', '.15em')
+            .attr('transform', 'rotate(-65)');
 
-    const catLabels = chartHolder.select('svg').append('g')
-        .attr('transform', 'translate(10, 10)').attr('class', 'labels')
-        .selectAll('label').data(nbviz.CATEGORIES)
-        .enter().append('g').attr('transform', function (d, i) {
-            return 'translate(0,' + i * 10 + ')';
-        });
+        const catLabels = chartHolder.select('svg').append('g')
+            .attr('transform', 'translate(10, 10)').attr('class', 'labels')
+            .selectAll('label').data(nbviz.CATEGORIES)
+            .enter().append('g').attr('transform', function (d, i) {
+                return 'translate(0,' + i * 10 + ')';
+            });
 
-    catLabels.append('circle')
-        .attr('fill', nbviz.categoryFill)
-        .attr('r', xScale.bandwidth() / 2);
+        catLabels.append('circle')
+            .attr('fill', nbviz.categoryFill)
+            .attr('r', xScale.bandwidth() / 2);
 
-    catLabels.append('text')
-        .text(function (d) {
-            return d;
-        })
-        .attr('dy', '.4em')
-        .attr('x', 10)
-        .style('font-size', 10);
+        catLabels.append('text')
+            .text(function (d) {
+                return d;
+            })
+            .attr('dy', '.4em')
+            .attr('x', 10)
+            .style('font-size', 10);
+    }, nbviz.TRANS_DURATION);
 
     nbviz.updateTimeChart = function (data) {
         // hozzákössük az adatot a neki megfelelő évoszlopnak, nem index, hanem év szerint, így az esetleges
@@ -1735,13 +1741,19 @@ winners.exit().remove();</code><button id="copy"
             return d.name;
         });
 
-        winners.enter().append('circle').classed('winner', true).merge(winners)
+        /* a merge függvényre azért van szükség, mert ötvözi a winners és a winners.enter() szelekciókat
+            alapvetően, úgy lehet felfogni, hogy a merge metódus előtti attribútumok az újonnan hozzáadott DOM elemekre lesznek applikálva,
+            míg az az utániak a meglévőkre is, az újak mellett
+            más alakban írva akár felfogható a merge, mint: (winners.enter()).merge(winners) */
+
+        winners.enter().append('circle').classed('winner', true)
             .attr('fill', function (d) {
                 return nbviz.categoryFill(d.category);
             })
             .attr('cy', height)
             .attr('cx', xScale.bandwidth() / 2)
             .attr('r', xScale.bandwidth() / 2)
+            .merge(winners)
             .transition().duration(nbviz.TRANS_DURATION)
             .attr('cy', function (d, i) {
                 return yScale(i);
@@ -1966,7 +1978,7 @@ svg.append('path').datum(graticule)
     .attr('class', 'graticule').attr('d', path);</code><button id="copy"
     class="text-sm md:text-md font-semibold">Másold</button></pre>
                     <p class="text-lg font-normal pb-3">Megismerkedtünk nagyjából az összes komponenssel, amely a térképünkön
-                        megjelenik, valamint tudjuk azt, hogy hogyan tudnánk a térkép JSON állományonkat SVG-vé alakítani, tehát
+                        megjelenik, valamint tudjuk azt, hogy hogyan tudnánk a térkép JSON állományokat SVG-vé alakítani, tehát
                         nincs más dolgunk, mint összeállítani a darabkákat.
                     </p>
                     <p class="text-lg font-normal">Alapvetően, elvárjuk a térképünktől azt, hogy reagáljon a felhasználói
@@ -2085,8 +2097,953 @@ svg.append('path').datum(graticule)
     stroke-width: .5px;
 }</code><button id="copy"
     class="text-sm md:text-md font-semibold">Másold</button></pre>
-                    <p class="text-lg font-normal">
+                    <p class="text-lg font-normal">Azonban, a térképünk jelenleg mondhatni statikus, valamint semmilyen módon nem
+                        tűkröz bármilyen Nobel-adatot. Tehát, a következő feladatunk annak frissítésének megoldása, illetőleg a
+                        Nobel-adatok beépítése és megjelenítése. Az első alkalom, amikor frissülni fog a térképvizualizációnk, az
+                        inicializáskor történik. Ekkor, még az adatsorunk szűretlen, tehát minden Nobel-győztest tartalmaz,
+                        összesen 927-et. Majd felhasználói interakcióra különböző szűrök fognak megjelenni, amellyel
+                        értelemszerűen szűkül a győztesek sora, illetve ezt a térképünknek is tűkröznie kell. Tehát, a frissítés
+                        magába foglalja a countryData átadását, amely tartalmazza a Nobel-győztes országok adatait, ilyen
+                        értelemben azt, hogy hány győztes származott a jelenlegi szűrő alapján az adott országból. Összefoglalva,
+                        az updateMap a countryData tömböt fogja megkapni, amely az országadatokat tartalmazza, azok 3 betűs
+                        azonosító kódját, az országnevet, és a lakosság is. Ezt a tömböt kissé átszeretnénk alakítani, mielőtt a
+                        térképünk megkapná. Röviden és tömören kiszeretnénk egészíteni az adatsort az országok GeoJSON
+                        shape-jével, amit az initMap metódus során tároltunk egy objektumban:
                     </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.updateMap = function (countryData) {
+    const mapData = countryData.filter(function (d) {
+        return d.value > 0;
+    })
+    .map(function (d) {
+        return {
+            geo: cnameToCountry[d.key],
+            name: d.key,
+            number: d.value
+        };
+    });
+};</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Már többször is említettük, hogy szeretnénk egy piros kört a győztes országok
+                        közepére szemléltetve grafikusan azt, hogy a győztesek mekkora része származott az adott országból. Tehát,
+                        a kör területe arányos kellene legyen a győztesek számával (mind abszolút, mind egy főre jutó mutató
+                        esetében). A kör területének képlete ugye, &pi; * r<sup>2</sup>, ahonnan nekünk az r kellene, és ha
+                        feltételezzük, hogy a terület egyenlő a díjak számával, akkor megkapjuk, hogy a kör sugara megegyezik a
+                        díjak számának győkével. A D3 biztosít egy hasznos <em>sqrt</em> skálát, pont ilyen feladatokra, lehetővé
+                        téve számunkra, hogy beállítsunk egy tartományt (ebben az esetben a díjak min és max száma), és egy
+                        számunkra megfelelő skálát (jelen esetben a kör sugarainak minje és maxja):
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// 2 és 30 közötti min és max sugár a köröknek
+const radiusScale = d3.scaleSqrt().range([nbviz.MIN_CENTROID_RADIUS, nbviz.MAX_CENTROID_RADIUS]);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ahhoz, hogy megkapjuk a skálánk tartományát, használjuk a korábban létrehozott
+                        mapData tömbünket, hogy megkapjuk a max és min értékeket a győztesek számainak, a min érték természetesen
+                        0:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// 0 és maxWinners közötti tartományra 2px és 30px közötti sugárt fog megfeleltetni
+radiusScale.domain([0, maxWinners]);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ahhoz, hogy hozzáadjuk az ország shape-jeinket a meglévő térképünkhöz,
+                        megintcsak egy frissítési mintát fogunk létrehozni. Első lépésben a 'countries' szelekcióhoz hozzákötjük a
+                        mapData adatunkat, amely után először hozzáadunk bármilyen ország shape-t, amelyre a mapData alapján
+                        szükségünk van. Azonban, jelen esetben, ahelyett, hogy törölnénk az olyan shape-eket, amelyekhez nem
+                        került adat hozzákötésre, CSS property-t fogunk alkalmazni, láthatóvá vagy éppen láthatatlanná téve az
+                        országokat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const countries = svg.select('.countries').selectAll('.country').data(mapData, function (d) {
+    return d.name;
+});
+
+countries.enter().append('path').attr('class', 'country').on('mouseenter', function(d) {
+        d3.select(this).classed('active', true);
+    }).on('mouseout', function (d) {
+        d3.select(this).classed('active', false);
+    })
+    .merge(countries)
+    .attr('name', function (d) {
+        return d.name;
+    }).classed('visible', true)
+    .transition().duration(nbviz.TRANS_DURATION)
+    .style('opacity', 1)
+    .attr('d', function (d) {
+        return path(d.geo);
+    });
+
+countries.exit().classed('visible', false).transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A fenti kódrészletben hasznátunk egy olyan D3 metódust, amit eddig nem, és ez
+                        nem más, mint az <em>on</em> metódus. Az on különböző eventekre reagál, és az első argumentumban
+                        meghatározott eventre, a callback függvényben meghatározott módon válaszol, ebben az esetben CSS-el fogjuk
+                        megoldani azt, hogy ha az egeret rávisszük az adott ország területére, akkor az színt váltson:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">.country {
+    fill: rgb(175, 195, 186);
+}
+
+.country.active {
+    fill: rgb(155, 175, 166);
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, mostmár a térképünk megjelenitésben válaszol a felhasználói
+                        interakcióra, már csak két dolog hiányzik, egyrészt a piros indikátor, valamint a tooltip. Ahhoz, hogy
+                        hozzáadjuk az indikátorunkat, egy az előbbihez hasonló frissítési mintára van szükségünk. Ebben az esetben
+                        is a mapData adatsorunkat használjuk, hiszen hozzáadtunk egy 'number' mezőt, amely a győztesek számát
+                        tartja nyilván, hozzáadjuk a szükséges köröket, frissítjük, majd kitöröljük, azonban ahogy az előbb is
+                        tettük, valójában nem töröljük ki őket a DOM fából, hanem csak láthatatlanná tesszük CSS-el. Az
+                        indikátorokat a nekik megfelelő országok területének közepére szeretnénk elhelyezni. Szerencsénkre, a D3
+                        path generátorja számos hasznos kiegészítő metódussal rendelkezik, amelyekkel foglalkozhatunk GeoJSON
+                        geometriával. Az egyike ezeknek a metódusoknak a <em>centroid</em>, amely kiszámolja egy kivetített shape
+                        középpontját:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// adva a GeoJSON geometriája egy országnak
+// kiszámolja az x és y koordinátáit annak középpontjának
+const center = path.centroid(country.geo);
+// center = [x, y]</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Akár a path-et is használhatnánk, azonban néha nagyon fura eredményeket tud
+                        produkálni, főleg erősen konkáv geometriák esetében. Szerencsénkre, a korábban megszerzett országadataink
+                        tartalmaznak egy <em>latlng</em> mezőt, amelyek az országok középpontjainak a koordinátái, tehát nekünk
+                        jelenesetben teljesen felesleges lenne kiszámolni. Tehát, először írunk egy kiegészítő függvényt, amellyel
+                        megkaphatjuk ezeket a középpontokat:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const getCentroid = function (d) {
+    const latlng = nbviz.data.countryData[d.name].latlng;
+    return projection([latlng[1], latlng[0]]); // átalakítjuk a megszerzett koordinátákat SVG koordinátákká a projection-nek megfelelően
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután megvannak a SVG középpont koordináták, nincs más dolgunk, mint megírni a
+                        frissítési mintát:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const centroids = svg.select('.centroids').selectAll('.centroid').data(mapData, function (d) {
+    return d.name;
+});
+
+centroids.enter().append('circle').attr('class', 'centroid').merge(centroids)
+    .attr('name', function (d) {
+        return d.name;
+    })
+    .attr('cx', function (d) {
+        return getCentroid(d)[0];
+    })
+    .attr('cy', function (d) {
+        return getCentroid(d)[1];
+    })
+    .classed('active', function (d) {
+        return d.name === nbviz.activeCountry;
+    })
+    .transition().duration(nbviz.TRANS_DURATION)
+    .style('opacity', 1)
+    .attr('r', function (d) {
+        return radiusScale(+d.number)
+    });
+
+centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Jelenleg az indikátoraink feketék, valamint teljesen láthatók, amely számunkra
+                        nem kedvező, de egy kevés CSS-el ez könnyen megoldható:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">.centroid {
+    fill: red;
+    fill-opacity: .3;
+    pointer-events: none; /* ez ahhoz kell, hogy a kör ellenére is kilehessen választani majd az országot */
+}
+
+.centroid.active {
+    fill: goldenrod;
+    fill-opacity: .6;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Következőkben megnézzük azt, hogy hogyan tudjuk az egyszerű tooltip-ünket
+                        hozzáadni a térképhez, amikor egy adott országra visszük az egeret. Ez a tooltip néhány információt
+                        kellene kiírjon: melyik országra vittük az egeret és onnan hány győztes származott. Ha visszaemlékezünk,
+                        amikor létrehoztuk az országshape-eket, akkor az eventkezelést is hozzájuk fűztük, hozzájuk adva az
+                        'active' class-t, vagy éppen törölve róluk. Ahhoz, hogy a térképen létrehozzuk a tooltip-et három dolgot
+                        kell tennünk: először, létre kell hozzunk egy tooltip dobozt HTML-ben, placeholder tag-ekkel azokhoz az
+                        információkhoz, amiket kiszeretnénk írni a tooltip-ben, másodsorban, amikor a felhasználó az egeret
+                        ráviszi az adott országra megjelenítjük a dobozt, amikor leviszi arról akkor eltüntetjük, végül, harmadik
+                        lépésben pedig a doboz tartalmát frissítenünk kell az aktuális ország adatait szerint. Előszöris,
+                        létrehozzuk az említett HTML placeholder-t:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="html">&#60;!-- Térkép és tooltip -->
+&#60;div id="nobel-map">
+    &#60;div id="map-tooltip">
+        &#60;h2>&#60;/h2>
+        &#60;p>&#60;/p>
+    &#60;/div>
+&#60;/div></code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Némi CSS-re is szükségünk lesz, hogy a tooltip kinézetét beállítsuk:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#map-tooltip {
+    position: absolute;
+    pointer-events: none; /* megintcsak azért van szükségünk erre, hogy lehessen a tooltip alá is klikkelni */
+    color: #eee;
+    font-size: 12px;
+    opacity: 0.7;
+    background: #222;
+    border: 2px solid #555;
+    border-color: goldenrod;
+    padding: 10px;
+    left: -9999px; /* jelenleg nem fog látszódni a pozíció miatt */
+}
+
+#map-tooltip h2 {
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután az első lépéssel végeztünk, nincs más dolgunk, mint kiegészíteni az
+                        országok on metódusainak callback függvényeit:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">countries.enter().append('path').attr('class', 'country').on('mouseenter', function(d) {
+        const country = d3.select(this);
+
+        // ne csináljon semmit, ha az adott ország nem látható
+        if (!country.classed('visible')) { return; }
+
+        // megszerezzük az adott ország adatobjektumát
+        const cData = country.datum();
+
+        // ha csak 1 győztes van az adott országban
+        const prize_string = (cData.number === 1) ? ' prize in ' : ' prizes in ';
+
+        // beállítjuk a tooltip fejlécét és szövegét
+        tooltip.select('h2').text(cData.name);
+        tooltip.select('p').text(cData.number + prize_string + nbviz.activeCategory);
+
+        // beállítja a tooltip keretszínét, a kategóriának megfelelően
+        const borderColor = (nbviz.activeCategory === nbviz.ALL_CATS) ? 'goldenrod' : nbviz.categoryFill(nbviz.activeCategory);
+
+        tooltip.style('border-color', borderColor);
+
+        const mouseCoords = d3.mouse(this);
+
+        const w = parseInt(tooltip.style('width'));
+        const h = parseInt(tooltip.style('height'));
+        tooltip.style('top', (mouseCoords[1] - h) + 'px');
+        tooltip.style('left', (mouseCoords[0] - w / 2) + 'px');
+
+        d3.select(this).classed('active', true);
+    }).on('mouseout', function (d) {
+        tooltip.style('left', '-9999px');
+
+        d3.select(this).classed('active', false);
+    })
+    .merge(countries)
+    .attr('name', function (d) {
+        return d.name;
+    }).classed('visible', true)
+    .transition().duration(nbviz.TRANS_DURATION)
+    .style('opacity', 1)
+    .attr('d', function (d) {
+        return path(d.geo);
+    });</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, mostmár a térképünk is teljes, hiszen megjeleníti az éppen aktuális
+                        adatokat, valamint a felhasználói interakcióra is reagál. A teljes térképkód valahogy így nézne ki:
+                    </p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    // a konténer méretei, valamint az SVG kontextus hozzáadása a DOM-hoz
+    const mapContainer = d3.select('#nobel-map');
+    const boundingRect = mapContainer.node().getBoundingClientRect();
+    const width = boundingRect.width;
+    const height = boundingRect.height;
+
+    const svg = mapContainer.append('svg');
+
+    // a scalefaktor lineárisan megfelel a kivetített pontok közötti távolsággal,
+    // alapértelmezetten a magasság 480, míg a scalefaktor 153, a mi scalefaktorunk ennél nagyobb 193, és a magasságunk kisebb,
+    // így kissé felnagyítsa ez a beállítás a térképet
+    // a center a térképünk középpontját határozza meg, 15fok keletre és 15fok északra
+    // a translate a projection középpontjának pixelkoordinátáit határozza meg, az alapértelmezett a 480 és 250
+    // a precision az adaptive samplinget állítsa be
+    const projection = d3.geoEquirectangular().scale(193 * (height / 480)).center([15, 15])
+        .translate([width / 2, height / 2]).precision(.1);
+
+    const path = d3.geoPath().projection(projection);
+
+    // 20 fokonként fognak a hálórácsok elhelyezkedni, nem az alapértelmezett 10-esével
+    const graticule = d3.geoGraticule().step([20, 20]);
+
+    // kiválasztottuk a projection-t, létrehoztuk a path-et a kiválasztott projection-el, valamint hozzáadtuk a graticule-t is
+    // a projection azt határozza meg, hogyan jelenítsük meg a térképet
+    // a path a megjelenítésnek megfelelően fogja a JSON állomány koordinátáit SVG path-kké alakítani
+    // a graticule a hálót adja hozzá a térképhez a path-nek megfelelően
+
+    // datum(graticule) == datum([graticule])
+    svg.append('path').datum(graticule)
+        .attr('class', 'graticule').attr('d', path);
+
+    const radiusScale = d3.scaleSqrt().range([nbviz.MIN_CENTROID_RADIUS, nbviz.MAX_CENTROID_RADIUS]);
+
+    // egy objektum, amellyel az országnévnek egy GeoJSON objektumot feleltetünk meg
+    const cnameToCountry = {};
+
+    const getCentroid = function (d) {
+        const latlng = nbviz.data.countryData[d.name].latlng;
+        return projection([latlng[1], latlng[0]]); // átalakítjuk a megszerzett koordinátákat SVG koordinátákká a projection-nek megfelelően
+    }
+
+    nbviz.initMap = function(world, countryNames) {
+        // kinyerjük a földrészeket
+        const land = topojson.feature(world, world.objects.land);
+        // kinyerjük az országokat, arra használjuk a features mezőt, hogy kinyerjük a FeatureCollection egyenkénti Feature-jeit, mint tömb
+        const countries = topojson.feature(world, world.objects.countries).features;
+        // kinyerjük a határokat
+        // amennyiben az a és b mértani objektum nem egyezik meg, abban az esetben közös határról beszélhetünk
+        // amennyiben megegyezik, akkor külső határról
+        const borders = topojson.mesh(world, world.objects.countries, function(a, b) {
+            return a !== b;
+        });
+
+        // hozzáadja a világtérképet
+        svg.insert('path', '.graticule').datum(land).attr('class', 'land').attr('d', path);
+
+        // országpath-ek
+        svg.insert('g', '.graticule').attr('class', 'countries');
+
+        // az értékindikátorok, amelyek az ország nyerteseit fogják jelölni == piros körök
+        svg.insert('g').attr('class', 'centroids');
+
+        // határvonalak
+        svg.insert('path', '.graticule') // beilleszti a graticule class-al rendelkező tag elé
+            .datum(borders).attr('class', 'boundary').attr('d', path);
+
+        // országnévnek GeoJSON shape-t megfeleltetni
+        const idToCountry = {};
+
+        countries.forEach(function (c) {
+            idToCountry[c.id] = c;
+        });
+
+        countryNames.forEach(function (n) {
+            cnameToCountry[n.name] = idToCountry[n.id];
+        });
+
+        // tehát, a fenti objektum, egy adott országnévnek megfelelteti a GeoJSON shape-jét
+        // ez azt jelenti, hogy ha beadjuk például Ausztráliát, visszatéríti annak a GeoJSON megfelelőjét
+    }
+
+    const tooltip = d3.select('#map-tooltip');
+
+    nbviz.updateMap = function (countryData) {
+        const mapData = countryData.filter(function (d) {
+            return d.value > 0;
+        })
+        .map(function (d) {
+            return {
+                geo: cnameToCountry[d.key],
+                name: d.key,
+                number: d.value
+            };
+        });
+
+        const maxWinners = d3.max(mapData.map(function (d) {
+            return d.number;
+        }));
+
+        // 0 és maxWinners közötti tartományra 2px és 30px közötti sugárt fog megfeleltetni
+        radiusScale.domain([0, maxWinners]);
+
+        const countries = svg.select('.countries').selectAll('.country').data(mapData, function (d) {
+            return d.name;
+        });
+
+        countries.enter().append('path').attr('class', 'country').on('mouseenter', function(d) {
+            const country = d3.select(this);
+
+            // ne csináljon semmit, ha az adott ország nem látható
+            if (!country.classed('visible')) { return; }
+
+            // megszerezzük az adott ország adatobjektumát
+            const cData = country.datum();
+
+            // ha csak 1 győztes van az adott országban
+            const prize_string = (cData.number === 1) ? ' prize in ' : ' prizes in ';
+
+            // beállítjuk a tooltip fejlécét és szövegét
+            tooltip.select('h2').text(cData.name);
+            tooltip.select('p').text(cData.number + prize_string + nbviz.activeCategory);
+
+            // beállítja a tooltip keretszínét, a kategóriának megfelelően
+            const borderColor = (nbviz.activeCategory === nbviz.ALL_CATS) ? 'goldenrod' : nbviz.categoryFill(nbviz.activeCategory);
+
+            tooltip.style('border-color', borderColor);
+
+            const mouseCoords = d3.mouse(this);
+
+            const w = parseInt(tooltip.style('width'));
+            const h = parseInt(tooltip.style('height'));
+            tooltip.style('top', (mouseCoords[1] - h) + 'px');
+            tooltip.style('left', (mouseCoords[0] - w / 2) + 'px');
+
+            d3.select(this).classed('active', true);
+        }).on('mouseout', function (d) {
+            tooltip.style('left', '-9999px');
+
+            d3.select(this).classed('active', false);
+        })
+        .merge(countries)
+        .attr('name', function (d) {
+            return d.name;
+        }).classed('visible', true)
+        .transition().duration(nbviz.TRANS_DURATION)
+        .style('opacity', 1)
+        .attr('d', function (d) {
+            return path(d.geo);
+        });
+
+        countries.exit().classed('visible', false).transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);
+
+        const centroids = svg.select('.centroids').selectAll('.centroid').data(mapData, function (d) {
+            return d.name;
+        });
+
+        centroids.enter().append('circle').attr('class', 'centroid').merge(centroids)
+            .attr('name', function (d) {
+                return d.name;
+            })
+            .attr('cx', function (d) {
+                return getCentroid(d)[0];
+            })
+            .attr('cy', function (d) {
+                return getCentroid(d)[1];
+            })
+            .classed('active', function (d) {
+                return d.name === nbviz.activeCountry;
+            })
+            .transition().duration(nbviz.TRANS_DURATION)
+            .style('opacity', 1)
+            .attr('r', function (d) {
+                return radiusScale(+d.number)
+            });
+
+        centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);
+    };
+
+} (window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                </section>
+
+                <section id="d3individual">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Az egyéni nyertesek vizualizációja</h2>
+                    <p class="text-lg font-normal pb-3">Vizualizációnk két következő eleme a győztes-lista és az életrajzi doboz.
+                        Alapvetően, azt szeretnénk, hogy a győztes-lista helyén megjelenjen értelemszerűen egy lista, a jelenleg
+                        beállított szűrők alapján megfelelő Nobel-győztesekkel. Majd ebből a listából a felhasználó kitud
+                        választani egy győztest, és róla jelennének meg az életrajzi információk az életrajzi dobozban.</p>
+                    <p class="text-lg font-normal">A győztesek listáját HTML-ben egy egyszerű táblázat létrehozásával fogjuk
+                        megoldani, 'Year', 'Category' és 'Name' oszlopokkal. Ennek a HTML gerince megtalálható az 'index.html'
+                        állományban. Miután a HTML placeholder-ünk a helyén van, megint egy kis CSS-t alkalmazunk, hogy beállítsuk
+                        annak általános megjelenését:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#nobel-list {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+#nobel-list table {
+    font-size: 10px;
+    text-align: center;
+}
+
+#nobel-list table th#year {
+    width: 30px;
+}
+
+#nobel-list table th#category {
+    width: 120px;
+}
+
+#nobel-list table th#name {
+    width: 120px;
+}
+
+#nobel-list h2 {
+    font-size: 14px;
+    margin: 8px;
+    text-align: center;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ahhoz, hogy ez az egész lényegében megvalósuljon minden egyes díjnyertest
+                        egy újabb tr tagként fogunk elhelyezni a tbody-n belül. A lista létrehozásáért felelős metódus az
+                        <em>updateList</em> metódus, amelyet a központi onDataChange metódusunk fog lehívni, amikor az app
+                        inicializálásra kerül, de akkor is, ha valamilyen változás következik be az adatsorban felhasználói
+                        interakcióra. Alapvetően, mivel az updateList metódus paraméterként az nbviz.countryDim.top(Infinity)-t
+                        kapja, ezért lényegében megkapja a jelenleg aktív országok szerint a győztesek listáját, azok nevével,
+                        kategóriájával, stb. adataival. A következő kódrészlet az updateList metódus deklarációját mutatja be.
+                        Megkapja a metódus az adatot, majd első lépésben az adat év szerint rendezi, majd kiután kitörölt
+                        bármilyen már létező sort a táblázatból, hozzáadja az újakat:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.updateList = function (winnersData) {
+    let rows, cells;
+
+    // rendezi a győztes adatokat év szerint
+    const data = winnersData.sort(function (a, b) {
+        return +b.year - +a.year;
+    });
+
+    // hozzáköti a győztes adatokat a táblasorokhoz
+    rows = d3.select('#nobel-list tbody').selectAll('tr').data(data);
+
+    // a törlendő sorok először elhalványulnak, majd törlődnek
+    rows.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0).remove();
+
+    // hozzáadjuk az új sorokat, valamint egy eventListener-t is
+    rows.enter().append('tr').on('click', function (d) {
+        nbviz.displayWinner(d);
+    });
+
+    // feltöltjük a sorokat adatokkal
+    cells = d3.selectAll('#nobel-list tbody tr').selectAll('td').data(function (d) {
+        return [d.year, d.category, d.name];
+    });
+
+    cells.enter().append('td').merge(cells).text(function (d) {
+        return d;
+    });
+
+    // ha nincs kiválasztva jelenleg győztes a listából, akkor random mutasson egyet
+    if (data.length) {
+        nbviz.displayWinner(data[Math.floor(Math.random() * data.length)]);
+    }
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Továbbá, azt is szeretnénk, ha a tábla sora megváltozna, amikor a felhasználó
+                        az egerét föléje viszi, ezt egyszerűen megtudjuk valósítani CSS-el:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#nobel-list tr:hover {
+    cursor: pointer;
+    background: lightblue;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Megfigyelhetjük azt, hogy egy újabb eventListener jelenik meg a kódunkban,
+                        miszerint amikor a tábla egyik sorára klikkel a felhasználó, akkor abban az esetben lehívódik a
+                        displayWinner metódus, az adott nyertes adataival. A következőkben nézzük meg mit is kell tennie ennek a
+                        metódusnak.</p>
+                    <p class="text-lg font-normal">Namár most, az életrajzi doboz esetében, amelyet a displayWinner metódus fog
+                        előhívni, szükségünk lesz egy AJAX lekérdezésre is, mert amikor lekértük a győztes adatokat, az életrajzi
+                        szövegecskéket és az esetleges képet kihagytuk. Most arra is szükségünk lesz. Az AJAX lekérdezést a
+                        MongoDB adatbázisunkra a Python EVE RESTful API-nkon keresztül a győztes id-jával fogja megejteni. Mint
+                        mindig, most is a HTML placeholderrel kezdenénk, de ez már megtalálható az 'index.html' állományban. A
+                        következő lépés a stílus beállítása CSS-el:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#nobel-winner {
+    font-size: 11px;
+    overflow: auto;
+    overflow-x: hidden;
+    border-top: 4px solid;
+}
+
+#nobel-winner #winner-title {
+    font-size: 12px;
+    text-align: center;
+    padding: 2px;
+    font-weight: bold;
+}
+
+#nobel-winner #infobox .label {
+    display: inline-block;
+    width: 60px;
+    font-weight: bold;
+}
+
+#nobel-winner #biobox {
+    font-size: 11px;
+}
+
+#nobel-winner #biobox p {
+    text-align: justify;
+}
+
+#nobel-winner #picbox {
+    float: right;
+    margin-left: 5px;
+}
+
+#nobel-winner #picbox img {
+    width: 100px;
+}
+
+#nobel-winner #readmore {
+    font-weight: bold;
+    text-align: center;
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Miután a tartalomblokkunk a helyén van, nincs más dolgunk, mint megírni a
+                        mögöttés logikát. Alapvetően, megkell ejtenünk egy callback hívást az adat API-nkra a szükséges adatokért,
+                        amelyekkel a tartalomblokkot feltöltjük:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.displayWinner = function (_wData) {
+    nbviz.getDataFromAPI('winners/' + _wData._id, function(error, wData) {
+        if (error) {
+            return console.warn(error);
+        }
+
+        const nw = d3.select('#nobel-winner');
+
+        nw.style('border-color', nbviz.categoryFill(wData.category));
+        nw.select('#winner-title').text(wData.name);
+
+        nw.selectAll('.property span').text(function (d) {
+            const property = d3.select(this).attr('name');
+            return wData[property];
+        });
+
+        nw.select('#biobox').html(wData.mini_bio);
+
+        if (wData.bio_image) {
+            nw.select('#picbox img').attr('src', '../static/images/' + wData.bio_image).style('display', 'inline');
+        } else {
+            nw.select('#picbox img').style('display', 'none');
+        }
+
+        nw.select('#readmore a').attr('href', 'https://en.wikipedia.org/wiki/' + wData.name)
+    });
+}</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">A végső kód ezen két vizualizációs elemünkhöz valahogy így nézne ki:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    nbviz.updateList = function (winnersData) {
+        let rows, cells;
+
+        // rendezi a győztes adatokat év szerint
+        const data = winnersData.sort(function (a, b) {
+            return +b.year - +a.year;
+        });
+
+        // hozzáköti a győztes adatokat a táblasorokhoz
+        rows = d3.select('#nobel-list tbody').selectAll('tr').data(data);
+
+        // a törlendő sorok először elhalványulnak, majd törlődnek
+        rows.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0).remove();
+
+        // hozzáadjuk az új sorokat, valamint egy eventListener-t is
+        rows.enter().append('tr').on('click', function (d) {
+            console.log('You clicked a row ' + JSON.stringify(d));
+            nbviz.displayWinner(d);
+        });
+
+        // feltöltjük a sorokat adatokkal
+        cells = d3.selectAll('#nobel-list tbody tr').selectAll('td').data(function (d) {
+            return [d.year, d.category, d.name];
+        });
+
+        cells.enter().append('td').merge(cells).text(function (d) {
+            return d;
+        });
+
+        // ha nincs kiválasztva jelenleg győztes a listából, akkor random mutasson egyet
+        if (data.length) {
+            nbviz.displayWinner(data[Math.floor(Math.random() * data.length)]);
+        }
+    }
+
+    nbviz.displayWinner = function (_wData) {
+        nbviz.getDataFromAPI('winners/' + _wData._id, function(error, wData) {
+            if (error) {
+                return console.warn(error);
+            }
+
+            const nw = d3.select('#nobel-winner');
+
+            nw.style('border-color', nbviz.categoryFill(wData.category));
+            nw.select('#winner-title').text(wData.name);
+
+            nw.selectAll('.property span').text(function (d) {
+                const property = d3.select(this).attr('name');
+                return wData[property];
+            });
+
+            nw.select('#biobox').html(wData.mini_bio);
+
+            if (wData.bio_image) {
+                nw.select('#picbox img').attr('src', '../static/images/' + wData.bio_image).style('display', 'inline');
+            } else {
+                nw.select('#picbox img').style('display', 'none');
+            }
+
+            nw.select('#readmore a').attr('href', 'https://en.wikipedia.org/wiki/' + wData.name)
+        });
+    }
+
+}(window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                </section>
+
+                <section id="d3menu">
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">A menübar</h2>
+                    <p class="text-lg font-normal pb-3">Vizualizációnk utolsó eleme az egyik legfontosabb, az oldal tetején
+                        elhelyezkedő menübar. Tehát, már többször megbeszéltük azt, hogy a menübar egyfajta szűrőként fog
+                        funkcionálni, amelyekkel, hiszen a szűrők halmozódnak, a felhasználó beállíthatja a különböző dimenziókat,
+                        melyek szerint a megjelenített Nobel-győztesek sora korlátozódik. Korábban, már a győztes-lista esetén is
+                        látszódott az, hogy a D3 nem csak grafikai primitívek (körök, vonalak és egyebek) DOM fához való
+                        hozzáadására hasznos, hanem normális HTML elemek létrehozására is, mint például táblázatok kitöltése, stb.
+                        Emellett, a D3 nagyszerűen alkalmas felhasználói interakciók és választások kezelésére is.</p>
+                    <p class="text-lg font-normal pb-3">Általános szabály az azonban, hogy minden olyan HTML elemet, amely nem
+                        függ az adattól, sokkal tisztább megoldás, ha vanilla HTML-ben fogalmazunk meg, egyszerűbben tartva a
+                        kódbázist.</p>
+                    <p class="text-lg font-normal">Első feladatunk a menübarban a kategória választó létrehozása. Előszöris,
+                        ahhoz, hogy létrehozzuk a választót, tudnunk kell azt, hogy milyen kategóriák közül lehet választani.
+                        Alapvetően, ugye rendelkezünk a 6 Nobel-díj kategóriával, illetve ehhez hozzáfűzünk még egyet, ami az
+                        összes kategóriát jelenti, mondhatni ezzel állítjuk vissza a kategóriaszűrőt:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    const catList = [nbviz.ALL_CATS].concat(nbviz.CATEGORIES);
+
+    nbviz.initMenu = function (data) {
+
+    }
+} (window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ezután, használjuk a létrehozott kategória listánkat, hogy feltöltsük a
+                        kategóriaválasztót, tehát, hogy a tömb elemeiből option tag-et hozzunk létre:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const catSelect = d3.select('#cat-select select');
+
+catSelect.selectAll('option').data(catList).enter().append('option').attr('value', function (d) {
+    return d;
+}).html(function (d) {
+    return d;
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, miután a kategóriák a fenti eljárással sikeresen a DOM fához lettek
+                        illesztve, utána nincs más dolgunk ahhoz, hogy a szűrés működjön, minthogy hozzájuk rendeljük a szükséges
+                        eventListenereket:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">catSelect.on('change', function (d) {
+    const category = d3.select(this).property('value');
+    nbviz.filterByCategory(category);
+    nbviz.onDataChange();
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal pb-3">Nem történik más a fentiben, minthogy a kategória kiválasztása után a
+                        fenti
+                        folyamat zajlódik le. Előszöris, a crossfilter-el létrehozzuk a győztesek új részhalmazát, majd elindítjuk
+                        az onDataChange metódussal a frissítési folyamatot, amelynek eredményeként a 'time', 'map', 'list' és
+                        'bar' összetevők frissülnek.</p>
+                    <p class="text-lg font-normal pb-3">Következő lépés lenne a nemválasztó. A nemválasztó HTML-jét nem kell D3
+                        biztosítsuk, hiszen mondhatni ez a 2 dimenzió adott, mint mondtuk általános szabály nem túlbonyolítani az
+                        applikációkódot, a lehető legtöbb statikus elemet a HTML-ben jobb meghatározni, akár a kategóriák esetében
+                        is tehettünk volna hasonlóképp, ráfoghatjuk arra, hogy sok idő lett volna kiírkálni, programkódból
+                        viszonylag gyorsabb.</p>
+                    <p class="text-lg font-normal">Tehát, mindössze annyit kell tennünk, hogy az előbb használt logika mentén,
+                        hozzáadjuk az eventListenereket, azokhoz pedig a megfelelő választ:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">d3.select('#gender-select select').on('change', function (d) {
+    const gender = d3.select(this).property('value');
+
+    if (gender == 'All') {
+        nbviz.genderDim.filter(); // visszaállítja a szűrő nélküli állapotot
+    } else {
+        nbviz.genderDim.filter(gender);
+    }
+
+    nbviz.onDataChange();
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Harmadik lépés pedig az országválasztó beépítése a menübe. Ennél a lépésnél
+                        azonban kicsit le kell állnunk az előbbi kettőnél megfogalmazott logikától, hiszen, ha belegondolunk a
+                        Nobel-győztes országok listája viszonylag hosszú, 50 körüli országból származnak nyertesek. Tehát,
+                        ahelyett, hogy a listába belefoglalnánk minden országot, csoportokat alkothatunk különböző feltevések
+                        mentén. Ilyen értelemben, lenne például két csoport, egy olyan csoport, amely olyan országokat foglal
+                        magába, ahonnan mindössze egyetlen Nobel-győztes származott, valamint egy csoport, ahonnan legalább kettő,
+                        vagy annál több, végül egy összes ország csoport, legvégül pedig minden olyan neve, ahonnan több, mint
+                        három győztes származott. De, ehhez szükségünk lesz az országok listájára, valamint arra is, hogy adott
+                        országból hány győztes származott. Természetesen ilyen listával már többször is találkoztunk a
+                        vizualizáció során, hiszen ezt használja az alsó oszlopdiagrammunk is:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const ALL_WINNERS = 'All Winners';
+const SINGLE_WINNERS = 'Single Winning Countries';
+const DOUBLE_WINNERS = 'Double Winning Countries';
+
+// létrehozzuk az országcsoportokat, ahol mindenik tömbelemnek van egy key és egy value property-je, csökkenő sorrend
+const nats = nbviz.countryDim.group().all().sort(function (a, b) {
+    return b.value - a.value;
+});
+
+// nyilván tartjuk a keveset nyert országokat
+let fewWinners = {
+    1: [],
+    2: []
+};
+let selectData = [ALL_WINNERS];
+
+// hozzáadjuk a selectData-hez azokat, ahol min. 3 győztes volt,
+// hozzáadjuk a fewWinners-hez azokat, ahol max. 2 győztes volt, a megfelelő mezőhöz
+nats.forEach(function (o) {
+    if (o.value >= 3) {
+        selectData.push(o.key);
+    } else {
+        fewWinners[o.value].push(o.key);
+    }
+});
+
+selectData.push(DOUBLE_WINNERS, SINGLE_WINNERS);</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, miután megvan a selectData tömbünk az őt kiegészítő fewWinners tömbbel,
+                        mostmár létrehozhatjuk a választónkban megjelenő opciókat:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const countrySelect = d3.select('#country-select select');
+
+countrySelect.selectAll('option').data(selectData).enter().append('option').attr('value', function (d) {
+    return d;
+}).html(function(d) {
+    return d;
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Végül, hozzáadhatjuk a callback függvényt is, amely a felhasználói interakció
+                        kezeli, és akkor hívódik le, amikor a felhasználói kiválasztja az opciók valamelyikét:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">countrySelect.on('change', function (d) {
+    let countries;
+
+    let country = d3.select(this).property('value');
+
+    if (country === ALL_WINNERS) {
+        countries = [];
+    } else if (country === DOUBLE_WINNERS) {
+        countries = fewWinners[2];
+    } else if (country === SINGLE_WINNERS) {
+        countries = fewWinners[1];
+    } else {
+        countries = [country];
+    }
+
+    nbviz.filterByCountries(countries);
+    nbviz.onDataChange();
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Ez után már nekifoghatunk a különböző szűrőfüggvények megírásának is,
+                        az előző kódrészletben látható filterByCountries metódust, valamint a filterByCategory metódust:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.filterByCountries = function (countryNames) {
+    if (!countryNames.length) {
+        nbviz.countryDim.filter();
+    } else {
+        nbviz.countryDim.filter(function (name) {
+            return countryNames.indexOf(name) > -1;
+        });
+    }
+
+    if (countryNames.length === 1) {
+        nbviz.activeCountry = countryNames[0];
+    } else {
+        nbviz.activeCountry = null;
+    }
+};
+
+nbviz.filterByCategory = function (cat) {
+    nbviz.activeCategory = cat;
+
+    if (nbviz.activeCategory === nbviz.ALL_CATS) {
+        nbviz.categoryDim.filter();
+    } else {
+        nbviz.categoryDim.filter(nbviz.activeCategory);
+    }
+};</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Következő elem, amivel foglalkoznunk kell az abszolút és egy főre jutó mutatók
+                        közötti választást lehetővé tevő radió-gomb. Ennek HTML gerince megtalálható az 'index.html' állományban
+                        természetesen, tehát nincs más dolgunk, mint megírni annak viszonylag egyszerű kódját:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">d3.selectAll('#metric-radio input').on('change', function () {
+    const val = d3.select(this).property('value');
+    nbviz.valuePerCapita = parseInt(val);
+    nbviz.onDataChange();
+});</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">Tehát, mivel az nbviz objektumban tároljuk a jelenlegi állapotot, minden
+                        szükséges elem az onDataChange metódus hatására értesül a mutatóbeli választásról. Végül, a menübarunk
+                        esetében a végleges kód valahogy így nézne ki:</p>
+                    <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
+    'use strict';
+
+    const catList = [nbviz.ALL_CATS].concat(nbviz.CATEGORIES);
+    const catSelect = d3.select('#cat-select select');
+
+    catSelect.selectAll('option').data(catList).enter().append('option').attr('value', function (d) {
+        return d;
+    }).html(function (d) {
+        return d;
+    });
+
+    catSelect.on('change', function (d) {
+        const category = d3.select(this).property('value');
+        nbviz.filterByCategory(category);
+        nbviz.onDataChange();
+    });
+
+    d3.select('#gender-select select').on('change', function (d) {
+        const gender = d3.select(this).property('value');
+
+        if (gender == 'All') {
+            nbviz.genderDim.filter(); // visszaállítja a szűrő nélküli állapotot
+        } else {
+            nbviz.genderDim.filter(gender);
+        }
+
+        nbviz.onDataChange();
+    });
+
+    nbviz.initMenu = function () {
+        const ALL_WINNERS = 'All Winners';
+        const SINGLE_WINNERS = 'Single Winning Countries';
+        const DOUBLE_WINNERS = 'Double Winning Countries';
+
+        // létrehozzuk az országcsoportokat, ahol mindenik tömbelemnek van egy key és egy value property-je, csökkenő sorrend
+        const nats = nbviz.countryDim.group().all().sort(function (a, b) {
+            return b.value - a.value;
+        });
+
+        // nyilván tartjuk a keveset nyert országokat
+        let fewWinners = {
+            1: [],
+            2: []
+        };
+        let selectData = [ALL_WINNERS];
+
+        // hozzáadjuk a selectData-hez azokat, ahol min. 3 győztes volt,
+        // hozzáadjuk a fewWinners-hez azokat, ahol max. 2 győztes volt, a megfelelő mezőhöz
+        nats.forEach(function (o) {
+            if (o.value >= 3) {
+                selectData.push(o.key);
+            } else {
+                fewWinners[o.value].push(o.key);
+            }
+        });
+
+        selectData.push(DOUBLE_WINNERS, SINGLE_WINNERS);
+
+        const countrySelect = d3.select('#country-select select');
+
+        countrySelect.selectAll('option').data(selectData).enter().append('option').attr('value', function (d) {
+            return d;
+        }).html(function (d) {
+            return d;
+        });
+
+        countrySelect.on('change', function (d) {
+            let countries;
+
+            let country = d3.select(this).property('value');
+
+            if (country === ALL_WINNERS) {
+                countries = [];
+            } else if (country === DOUBLE_WINNERS) {
+                countries = fewWinners[2];
+            } else if (country === SINGLE_WINNERS) {
+                countries = fewWinners[1];
+            } else {
+                countries = [country];
+            }
+
+            nbviz.filterByCountries(countries);
+            nbviz.onDataChange();
+        });
+
+        d3.selectAll('#metric-radio input').on('change', function () {
+            const val = d3.select(this).property('value');
+            nbviz.valuePerCapita = parseInt(val);
+            nbviz.onDataChange();
+        });
+    }
+}(window.nbviz = window.nbviz || {}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold">Másold</button></pre>
+                    <p class="text-lg font-normal">És ezzel mondhatni végeztünk a Nobel-vizualizációnkkal, ezután már csak az
+                        apróbb hibákat javítjuk ki, valamint felkészítsük arra is, hogy mi történne abban az esetben, ha ezt
+                        valahol, mint működő weboldalon publikálni szeretnénk.</p>
                 </section>
             </section>
 

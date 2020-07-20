@@ -79,13 +79,19 @@
             return d.name;
         });
 
-        winners.enter().append('circle').classed('winner', true).merge(winners)
+        /* a merge függvényre azért van szükség, mert ötvözi a winners és a winners.enter() szelekciókat
+            alapvetően, úgy lehet felfogni, hogy a merge metódus előtti attribútumok az újonnan hozzáadott DOM elemekre lesznek applikálva,
+            míg az az utániak a meglévőkre is, az újak mellett
+            más alakban írva akár felfogható a merge, mint: (winners.enter()).merge(winners) */
+
+        winners.enter().append('circle').classed('winner', true)
             .attr('fill', function (d) {
                 return nbviz.categoryFill(d.category);
             })
             .attr('cy', height)
             .attr('cx', xScale.bandwidth() / 2)
             .attr('r', xScale.bandwidth() / 2)
+            .merge(winners)
             .transition().duration(nbviz.TRANS_DURATION)
             .attr('cy', function (d, i) {
                 return yScale(i);

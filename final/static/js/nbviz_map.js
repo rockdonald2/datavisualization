@@ -37,6 +37,11 @@
     // egy objektum, amellyel az országnévnek egy GeoJSON objektumot feleltetünk meg
     const cnameToCountry = {};
 
+    const getCentroid = function (d) {
+        const latlng = nbviz.data.countryData[d.name].latlng;
+        return projection([latlng[1], latlng[0]]); // átalakítjuk a megszerzett koordinátákat SVG koordinátákká a projection-nek megfelelően
+    }
+
     nbviz.initMap = function(world, countryNames) {
         // kinyerjük a földrészeket
         const land = topojson.feature(world, world.objects.land);
@@ -77,8 +82,101 @@
         // ez azt jelenti, hogy ha beadjuk például Ausztráliát, visszatéríti annak a GeoJSON megfelelőjét
     }
 
-    nbviz.updateMap = function (data) {
+    const tooltip = d3.select('#map-tooltip');
 
+    nbviz.updateMap = function (countryData) {
+        const mapData = countryData.filter(function (d) {
+            return d.value > 0;
+        })
+        .map(function (d) {
+            return {
+                geo: cnameToCountry[d.key],
+                name: d.key,
+                number: d.value
+            };
+        });
+
+        const maxWinners = d3.max(mapData.map(function (d) {
+            return d.number;
+        }));
+
+        // 0 és maxWinners közötti tartományra 2px és 30px közötti sugárt fog megfeleltetni
+        radiusScale.domain([0, maxWinners]);
+
+        const countries = svg.select('.countries').selectAll('.country').data(mapData, function (d) {
+            return d.name;
+        });
+
+        countries.enter().append('path').attr('class', 'country').on('mouseenter', function(d) {
+            const country = d3.select(this);
+
+            // ne csináljon semmit, ha az adott ország nem látható
+            if (!country.classed('visible')) { return; }
+
+            // megszerezzük az adott ország adatobjektumát
+            const cData = country.datum();
+
+            // ha csak 1 győztes van az adott országban
+            const prize_string = (cData.number === 1) ? ' prize in ' : ' prizes in ';
+
+            // beállítjuk a tooltip fejlécét és szövegét
+            tooltip.select('h2').text(cData.name);
+            tooltip.select('p').text(cData.number + prize_string + nbviz.activeCategory);
+
+            // beállítja a tooltip keretszínét, a kategóriának megfelelően
+            const borderColor = (nbviz.activeCategory === nbviz.ALL_CATS) ? 'goldenrod' : nbviz.categoryFill(nbviz.activeCategory);
+
+            tooltip.style('border-color', borderColor);
+
+            const mouseCoords = d3.mouse(this);
+
+            const w = parseInt(tooltip.style('width'));
+            const h = parseInt(tooltip.style('height'));
+            tooltip.style('top', (mouseCoords[1] - h) + 'px');
+            tooltip.style('left', (mouseCoords[0] - w / 2) + 'px');
+
+            d3.select(this).classed('active', true);
+        }).on('mouseout', function (d) {
+            tooltip.style('left', '-9999px');
+
+            d3.select(this).classed('active', false);
+        })
+        .merge(countries)
+        .attr('name', function (d) {
+            return d.name;
+        }).classed('visible', true)
+        .transition().duration(nbviz.TRANS_DURATION)
+        .style('opacity', 1)
+        .attr('d', function (d) {
+            return path(d.geo);
+        });
+
+        countries.exit().classed('visible', false).transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);
+
+        const centroids = svg.select('.centroids').selectAll('.centroid').data(mapData, function (d) {
+            return d.name;
+        });
+
+        centroids.enter().append('circle').attr('class', 'centroid').merge(centroids)
+            .attr('name', function (d) {
+                return d.name;
+            })
+            .attr('cx', function (d) {
+                return getCentroid(d)[0];
+            })
+            .attr('cy', function (d) {
+                return getCentroid(d)[1];
+            })
+            .classed('active', function (d) {
+                return d.name === nbviz.activeCountry;
+            })
+            .transition().duration(nbviz.TRANS_DURATION)
+            .style('opacity', 1)
+            .attr('r', function (d) {
+                return radiusScale(+d.number)
+            });
+
+        centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);
     };
 
 } (window.nbviz = window.nbviz || {}));

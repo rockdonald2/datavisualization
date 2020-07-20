@@ -7,6 +7,7 @@
     nbviz.valuePerCapita = 0; // mutató flag-ünk
     nbviz.activeCountry = null;
     nbviz.ALL_CATS = 'All Categories' // konstans
+    nbviz.activeCategory = nbviz.ALL_CATS;
     nbviz.TRANS_DURATION = 2000; // milliszekundumban meghatározott hossza az animációknak
     nbviz.MAX_CENTROID_RADIUS = 30;
     nbviz.MIN_CENTROID_RADIUS = 2;
@@ -42,7 +43,6 @@
         });
     };
 
-    /* az üres részek a kontextusuk során lesznek tartalommal feltöltve */
     let nestDataByYear = function (entries) {
         return nbviz.data.years = d3.nest()
             .key(function (w) {
@@ -68,11 +68,29 @@
     };
 
     nbviz.filterByCountries = function (countryNames) {
-        // ...
+        if (!countryNames.length) {
+            nbviz.countryDim.filter();
+        } else {
+            nbviz.countryDim.filter(function (name) {
+                return countryNames.indexOf(name) > -1;
+            });
+        }
+
+        if (countryNames.length === 1) {
+            nbviz.activeCountry = countryNames[0];
+        } else {
+            nbviz.activeCountry = null;
+        }
     };
 
     nbviz.filterByCategory = function (cat) {
-        // ...
+        nbviz.activeCategory = cat;
+
+        if (nbviz.activeCategory === nbviz.ALL_CATS) {
+            nbviz.categoryDim.filter();
+        } else {
+            nbviz.categoryDim.filter(nbviz.activeCategory);
+        }
     };
 
     nbviz.getCountryData = function () {
@@ -94,6 +112,7 @@
                     key: c.key, // pl. Németország
                     value: value, // pl. 16 díj
                     code: cData.alpha3Code, // pl. DEU
+                    population: cData.population
                 };
             })
             .sort(function (a, b) {
@@ -108,7 +127,7 @@
         let data = nbviz.getCountryData();
         nbviz.updateBarChart(data);
         nbviz.updateMap(data);
-        /* nbviz.updateList(nbviz.countryDim.top(Infinity)); */
+        nbviz.updateList(nbviz.countryDim.top(Infinity));
         data = nestDataByYear(nbviz.countryDim.top(Infinity));
         nbviz.updateTimeChart(data);
     };

@@ -45,7 +45,7 @@ id,name
 144,"Sri Lanka"
 148,Chad
 152,Chile
-156,China
+156,"China, (People's Republic of China)"
 158,Taiwan
 162,"Christmas Island"
 166,"Cocos (Keeling) Islands"
@@ -53,7 +53,7 @@ id,name
 174,Comoros
 175,Mayotte
 178,Congo
-180,"Congo, the Democratic Republic of the"
+180,"Congo, Democratic Republic"
 184,"Cook Islands"
 188,"Costa Rica"
 191,Croatia
@@ -84,7 +84,7 @@ id,name
 266,Gabon
 268,Georgia
 270,Gambia
-275,"Palestinian Territory"
+275,"Palestine"
 276,Germany
 288,Ghana
 292,Gibraltar
@@ -118,7 +118,7 @@ id,name
 400,Jordan
 404,Kenya
 408,"Korea, Democratic People's Republic of"
-410,"Korea, South"
+410,"South Korea"
 414,Kuwait
 417,Kyrgyzstan
 418,"Lao People's Democratic Republic"
@@ -186,7 +186,7 @@ id,name
 634,Qatar
 638,Réunion
 642,Romania
-643,Russia
+643,"Russia and Soviet Union"
 646,Rwanda
 652,"Saint Barthélemy"
 654,"Saint Helena, Ascension and Tristan da Cunha"

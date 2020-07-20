@@ -88,7 +88,26 @@ a:hover {
 }
 
 #map-tooltip {
-    display: none;
+    position: absolute;
+    pointer-events: none; /* megintcsak azért van szükségünk erre, hogy lehessen a tooltip alá is klikkelni */
+    color: #eee;
+    font-size: 12px;
+    opacity: 0.7;
+    background: #222;
+    border: 2px solid #555;
+    border-color: goldenrod;
+    padding: 10px;
+    left: -9999px; /* jelenleg nem fog látszódni a pozíció miatt */
+}
+
+#map-tooltip h2 {
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+#map-tooltip p {
+    text-align: center;
 }
 
 #nobel-winner {
@@ -134,4 +153,111 @@ a:hover {
 
 #nobel-menu {
     display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#nobel-menu div {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#nobel-menu div select,
+#nobel-menu div form {
+    margin-top: 5px;
+}
+
+.country {
+    fill: rgb(175, 195, 186);
+}
+
+.country.active {
+    fill: rgb(155, 175, 166);
+}
+
+.centroid {
+    fill: red;
+    fill-opacity: .3;
+    pointer-events: none; /* ez ahhoz kell, hogy a kör ellenére is kilehessen választani majd az országot */
+}
+
+.centroid.active {
+    fill: goldenrod;
+    fill-opacity: .6;
+}
+
+#nobel-list {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+#nobel-list table {
+    font-size: 10px;
+    text-align: center;
+}
+
+#nobel-list table th#year {
+    width: 30px;
+}
+
+#nobel-list table th#category {
+    width: 120px;
+}
+
+#nobel-list table th#name {
+    width: 120px;
+}
+
+#nobel-list h2 {
+    font-size: 14px;
+    margin: 8px;
+    text-align: center;
+}
+
+#nobel-list tr:hover {
+    cursor: pointer;
+    background: lightblue;
+}
+
+#nobel-winner {
+    font-size: 11px;
+    overflow: auto;
+    overflow-x: hidden;
+    border-top: 4px solid;
+}
+
+#nobel-winner #winner-title {
+    font-size: 12px;
+    text-align: center;
+    padding: 2px;
+    font-weight: bold;
+}
+
+#nobel-winner #infobox .label {
+    display: inline-block;
+    width: 60px;
+    font-weight: bold;
+}
+
+#nobel-winner #biobox {
+    font-size: 11px;
+}
+
+#nobel-winner #biobox p {
+    text-align: justify;
+}
+
+#nobel-winner #picbox {
+    float: right;
+    margin-left: 5px;
+}
+
+#nobel-winner #picbox img {
+    width: 100px;
+}
+
+#nobel-winner #readmore {
+    font-weight: bold;
+    text-align: center;
 }
