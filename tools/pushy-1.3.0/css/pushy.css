@@ -5,7 +5,7 @@
 /* Menu Appearance */
 .pushy {
   position: fixed;
-  width: 350px;
+  width: 300px;
   height: 100%;
   top: 0;
   z-index: 9999;
@@ -19,8 +19,7 @@
     padding: 15px 30px;
     text-decoration: none; }
   .pushy a:hover {
-    color: #FFF;
-    background: #2c5282; }
+    color: #FFF; }
   .pushy ul:first-child {
     margin-top: 10px; }
   .pushy.pushy-left {
@@ -33,18 +32,18 @@
 
 /* Menu Movement */
 .pushy-left {
-  transform: translate3d(-350px, 0, 0); }
+  transform: translate3d(-300px, 0, 0); }
 
 .pushy-open-left #container,
 .pushy-open-left .push {
-  transform: translate3d(350px, 0, 0); }
+  transform: translate3d(300px, 0, 0); }
 
 .pushy-right {
-  transform: translate3d(350px, 0, 0); }
+  transform: translate3d(300px, 0, 0); }
 
 .pushy-open-right #container,
 .pushy-open-right .push {
-  transform: translate3d(-350px, 0, 0); }
+  transform: translate3d(-300px, 0, 0); }
 
 .pushy-open-left .pushy,
 .pushy-open-right .pushy {

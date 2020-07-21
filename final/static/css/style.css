@@ -3,7 +3,7 @@ body {
     /* beállítjuk a fontot */
     background: #fefefe;
     /* beállítjuk a hátteret */
-    width: 1000px;
+    width: 1150px;
     /* a vizualizációnk szélességét */
     margin: 0 auto;
     /* felső és alsó margók 0px, még a szélsők auto-k, így középre rendeződik a vizualizációnk */
@@ -26,15 +26,15 @@ a:hover {
 
 #nbviz {
     position: absolute;
-    top: 90px;
+    top: 70px;
     width: 100%;
 }
 
 #title {
     position: absolute;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 100;
-    top: 20px;
+    top: 15px;
 }
 
 #chart-holder {
@@ -59,78 +59,42 @@ a:hover {
 
 #nobel-time {
     top: 0;
-    height: 150px;
+    height: 165px;
     width: 100%;
 }
 
 #nobel-map {
     background: azure;
-    top: 160px;
-    width: 700px;
+    top: 175px;
+    width: 800px;
     height: 350px;
 }
 
-.graticule {
-    fill: none;
-    stroke: #777;
-    stroke-width: .5px;
-    stroke-opacity: .5;
-}
-
-.land {
-    fill: #ddd;
-}
-
-.boundary {
-    fill: none;
-    stroke: #fff;
-    stroke-width: .5px;
-}
-
-#map-tooltip {
-    position: absolute;
-    pointer-events: none; /* megintcsak azért van szükségünk erre, hogy lehessen a tooltip alá is klikkelni */
-    color: #eee;
-    font-size: 12px;
-    opacity: 0.7;
-    background: #222;
-    border: 2px solid #555;
-    border-color: goldenrod;
-    padding: 10px;
-    left: -9999px; /* jelenleg nem fog látszódni a pozíció miatt */
-}
-
-#map-tooltip h2 {
-    text-align: center;
-    padding: 0px;
-    margin: 0px;
-}
-
-#map-tooltip p {
-    text-align: center;
-}
-
 #nobel-winner {
-    top: 510px;
-    left: 700px;
-    height: 240px;
-    width: 300px;
+    top: 525px;
+    left: 800px;
+    height: 250px;
+    width: 350px;
 }
 
 #nobel-bar {
-    top: 510px;
-    height: 240px;
-    width: 700px;
+    top: 525px;
+    height: 250px;
+    width: 800px;
 }
 
 #nobel-list {
-    top: 160px;
-    height: 340px;
-    width: 290px;
-    left: 700px;
+    top: 175px;
+    height: 350px;
+    width: 340px;
+    left: 800px;
     padding-left: 10px;
     /* azért van szükség erre, hogy elválassza a térképtől */
 }
+
+
+
+/* Nobel-Chart elemek stílusa, kivétel dimenziók */
 
 .yaxis,
 .xaxis {
@@ -151,6 +115,8 @@ a:hover {
     display: none;
 }
 
+/* Nobel-Menu elemek stílusa, kivétel dimenziók */
+
 #nobel-menu {
     display: flex;
     justify-content: space-between;
@@ -168,6 +134,50 @@ a:hover {
     margin-top: 5px;
 }
 
+/* Nobel-Map elemek stílusa, kivétel dimenziók */
+
+.graticule {
+    fill: none;
+    stroke: #777;
+    stroke-width: .5px;
+    stroke-opacity: .5;
+}
+
+.land {
+    fill: #ddd;
+}
+
+.boundary {
+    fill: none;
+    stroke: #fff;
+    stroke-width: .5px;
+}
+
+#map-tooltip {
+    position: absolute;
+    pointer-events: none;
+    /* megintcsak azért van szükségünk erre, hogy lehessen a tooltip alá is klikkelni */
+    color: #eee;
+    font-size: 12px;
+    opacity: 0.7;
+    background: #222;
+    border: 2px solid #555;
+    border-color: goldenrod;
+    padding: 10px;
+    left: -9999px;
+    /* jelenleg nem fog látszódni a pozíció miatt */
+}
+
+#map-tooltip h2 {
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+#map-tooltip p {
+    text-align: center;
+}
+
 .country {
     fill: rgb(175, 195, 186);
 }
@@ -179,13 +189,16 @@ a:hover {
 .centroid {
     fill: red;
     fill-opacity: .3;
-    pointer-events: none; /* ez ahhoz kell, hogy a kör ellenére is kilehessen választani majd az országot */
+    pointer-events: none;
+    /* ez ahhoz kell, hogy a kör ellenére is kilehessen választani majd az országot */
 }
 
 .centroid.active {
     fill: goldenrod;
     fill-opacity: .6;
 }
+
+/* Nobel-List elemek stílusa, kivétel dimenziók */
 
 #nobel-list {
     overflow: scroll;
@@ -219,6 +232,8 @@ a:hover {
     cursor: pointer;
     background: lightblue;
 }
+
+/* Nobel-Winner elemek stílusa, kivétel dimenziók */
 
 #nobel-winner {
     font-size: 11px;

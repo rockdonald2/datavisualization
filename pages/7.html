@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"
+    class="text-black text-base antialiased leading-relaxed tracking-normal break-normal bg-white">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="A repo for studying a book.">
+        <meta name="keywords"
+            content="visualization,javascript,python,d3,flask,restful">
+        <meta name="author"
+            content="Lukács Zsolt">
+        <meta http-equiv="X-UA-Compatible"
+            content="ie=edge">
+        <title>7 Végső simítások</title>
+        <link rel="stylesheet"
+            href="../css/style.css">
+        <!-- Safari-n az emoji favicon nem működik -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22
+                viewBox=%220
+                0
+                100
+                100%22><text y=%22.9em%22
+                    font-size=%2290%22>📕</text></svg>">
+    </head>
+
+    <body class="overflow-x-hidden">
+        <!-- navigáció -->
+        <nav class="pushy pushy-left">
+            <div class="pushy-content">
+                <ul>
+                    <li class="pushy-link"><a href="../index.html">1 Bevezetés</a></li>
+                    <li class="pushy-submenu">
+                        <button>2 Első lépések az adatvizualizációban</button>
+                        <ul>
+                            <li class="pushy-link"><a href="2.html#2adviz">Az adatvizualizáció folyamata</a></li>
+                            <li class="pushy-link"><a href="2.html#2prog">A programozási nyelvek, amelyekkel dolgozunk</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2progkul">Különbségeik a gyakorlati felhasználásban</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2python">Adatok írása és olvasása Python-al</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2webd">Webdev 101</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>3 Az adatok megszerzése</button>
+                        <ul>
+                            <li class="pushy-link"><a href="3.html#3python">Szerezzük meg az adatot a netről Python-nal</a>
+                            </li>
+                            <li class="pushy-link"><a href="3.html#3scrapy">A komoly scrapelés Scrapy-vel</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>4 Az adatok tisztítása és feldolgozása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="4.html#4numpy">Bevezetés a NumPy-ba</a></li>
+                            <li class="pushy-link"><a href="4.html#4pandas">Bevezetés a Pandas-ba</a></li>
+                            <li class="pushy-link"><a href="4.html#4cleaning">Tisztítsuk meg az adatunkat Pandas-al</a></li>
+                            <li class="pushy-link"><a href="4.html#4visualizing">Vizualizáljuk adatunkat Matplotlib-el</a>
+                            </li>
+                            <li class="pushy-link"><a href="4.html#4explore">Fedezzük fel az adatunkat Pandas-al</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>5 Az adatok eljuttatása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="5.html#5staticvsdynamic">Az adatok eljuttatása</a></li>
+                            <li class="pushy-link"><a href="5.html#5datawithflask">Folytassuk a RESTful API-t</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>6 Az adatok ábrázolása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="6.html#6imaginingnobelvizualization">Tervezzük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="6.html#6buildingvizualization">Építsük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3bar">Munka a D3-al és az oszlopdiagram</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3time">Az idővonal</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3map">Térképkészítés a D3-al</a></li>
+                            <li class="pushy-link"><a href="6.html#d3individual">Az egyéni nyertesek vizualizációja</a></li>
+                            <li class="pushy-link"><a href="6.html#d3menu">A menübar</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>7 Végső simítások</button>
+                        <ul>
+                            <li class="pushy-link"><a href="7.html#7adatok">Első hiba: a Nobel-adatok</a></li>
+                            <li class="pushy-link"><a href="7.html#7design">Második hiba: a Nobel-vizalizáció dizájna</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Pushy-hoz site overlay -->
+        <div class="site-overlay"></div>
+
+        <main id="container"
+            class="container p-8 lg:px-6 lg:pb-6 lg:pt-2 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
+            <button id="menu"
+                class="menu-btn px-4 pb-2 pt-6 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
+                Menü</button>
+
+            <!-- hetedik része eleje -->
+
+            <section class="pb-8">
+                <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">7 Végső simítások</h1>
+
+                <section id="7adatok">
+                    <h2 class="text-2xl pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Első hiba: a Nobel-adatok</h2>
+                    <p id="firstPar"
+                        class="text-lg font-normal pb-3">Miközben a Nobel-vizualizációnk dolgoztunk észrevettünk egy hibát, mi
+                        szerint eredetileg elszámoltuk a Nobel-győzteseket, valójában nem 923 egyéni győztes van, valamint a
+                        kétszeres győzteseket beleszámolva 927, hanem mindössze 919 és a kétszeres győztesekkel lesz ez a szám
+                        923. Tehát, röviden és tömören vissza kell térnünk a Pandas-be, és az adatsorunkat átkutatva meg kell
+                        keressük azt, hogy hol van bármiféle duplikátum az adatsorunkban.</p>
+                    <p class="text-lg font-normal pb-3">Egy gyanúnk az, hogy 1996-ban túl sok győztes látszik a
+                        Nobel-idővonalunkon, miközben tudjuk azt, hogy a 2010-es évek előtt 2000-ben volt a legtöbb Nobel-győztes,
+                        tehát kiindulási alapnak ez megteszi.</p>
+                    <p class="text-lg font-normal">Végül, egész délutános munka során sikerült végre a helyes, 923 győztes számot
+                        elérni, sőt, kiderült, hogy mindeközben volt 1 orvostan Nobel-győztesünk, aki két teljesen különböző néven
+                        szerepelt, valamint volt egy Jugoszláv 1961-ból származó irodalmár győztesünk, aki egyáltalán nem volt az
+                        adatsorunkban jelen. Az ő adatait, időszűke miatt, manuális korrigáltam és frissítettem adataival mindkét
+                        adatsorunkat, mind az életrajzi adatokat tartalmazó, mind azokat nem tartalmazó adatsorunkat is. Legtöbb
+                        esetben a problémát az okozta, hogy három névvel rendelkező győztesek voltak, és megjelentek rövidítve és
+                        teljesen kiírva is. A teljes korrigálási folyamat végignézhető a <em>findingDuplicates</em> névvel
+                        ellátott jupyter notebook-ban.</p>
+                </section>
+
+                <section id="7design">
+                    <h2 class="text-2xl pb-4 pt-8 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Második hiba: a Nobel-vizalizáció dizájna</h2>
+                    <p class="text-lg font-normal">A vizualizációnk jelen esetben mondhatni teljesen funkcionális, sőt, a tekintetben is erőteljesen hiányos. Következő lépések közé tartozik a dizájnbeli átalakítás, valamint újabb vizualizációs funkció beépítése.</p>
+                </section>
+            </section>
+
+            <!-- hetedik része vége -->
+
+            <div class="my-8 flex content-center">
+                <button class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in"><a
+                        class="block px-4 py-2"
+                        href="6.html"><span class="inline-block font-normal transform group-hover:-translate-x-1 transition
+                            duration-100 ease-in">&larr;</span>
+                        Előző</a></button>
+                <!-- <button class="flex-auto w-24 ml-4 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
+                    ease-in"><a class="block px-4 py-2"
+                        href="5.html">Következő
+                        <span
+                            class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button> -->
+            </div>
+        </main>
+
+        <div id="arr"
+            class="fixed block transition duration-100 ease-in"><a class="inline-block text-3xl py-3 px-6 hover:text-blue-800 transition duration-100 ease-in transform hover:scale-125
+                opacity-50 hover:opacity-100"
+                href="#menu">&uarr;</a></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
+        <script src="../javascript/main.js"></script>
+        <script src="../javascript/introd3.js"></script>
+    </body>
+
+</html>

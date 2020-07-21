@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-    class="text-black text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+    class="text-black text-base antialiased leading-relaxed tracking-normal break-normal bg-white">
 
     <head>
         <meta charset="UTF-8">
@@ -33,11 +33,67 @@
             <div class="pushy-content">
                 <ul>
                     <li class="pushy-link"><a href="../index.html">1 Bevezetés</a></li>
-                    <li class="pushy-link"><a href="2.html">2 Első lépések az adatvizualizációban</a></li>
-                    <li class="pushy-link"><a href="3.html">3 Az adatok megszerzése</a></li>
-                    <li class="pushy-link"><a href="4.html">4 Az adatok tisztítása és feldolgozása</a></li>
-                    <li class="pushy-link"><a href="5.html">5 Az adatok eljuttatása</a></li>
-                    <li class="pushy-link"><a href="6.html">6 Az adatok ábrázolása</a></li>
+                    <li class="pushy-submenu">
+                        <button>2 Első lépések az adatvizualizációban</button>
+                        <ul>
+                            <li class="pushy-link"><a href="2.html#2adviz">Az adatvizualizáció folyamata</a></li>
+                            <li class="pushy-link"><a href="2.html#2prog">A programozási nyelvek, amelyekkel dolgozunk</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2progkul">Különbségeik a gyakorlati felhasználásban</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2python">Adatok írása és olvasása Python-al</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2webd">Webdev 101</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>3 Az adatok megszerzése</button>
+                        <ul>
+                            <li class="pushy-link"><a href="3.html#3python">Szerezzük meg az adatot a netről Python-nal</a>
+                            </li>
+                            <li class="pushy-link"><a href="3.html#3scrapy">A komoly scrapelés Scrapy-vel</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>4 Az adatok tisztítása és feldolgozása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="4.html#4numpy">Bevezetés a NumPy-ba</a></li>
+                            <li class="pushy-link"><a href="4.html#4pandas">Bevezetés a Pandas-ba</a></li>
+                            <li class="pushy-link"><a href="4.html#4cleaning">Tisztítsuk meg az adatunkat Pandas-al</a></li>
+                            <li class="pushy-link"><a href="4.html#4visualizing">Vizualizáljuk adatunkat Matplotlib-el</a>
+                            </li>
+                            <li class="pushy-link"><a href="4.html#4explore">Fedezzük fel az adatunkat Pandas-al</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>5 Az adatok eljuttatása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="5.html#5staticvsdynamic">Az adatok eljuttatása</a></li>
+                            <li class="pushy-link"><a href="5.html#5datawithflask">Folytassuk a RESTful API-t</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>6 Az adatok ábrázolása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="6.html#6imaginingnobelvizualization">Tervezzük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="6.html#6buildingvizualization">Építsük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3bar">Munka a D3-al és az oszlopdiagram</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3time">Az idővonal</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3map">Térképkészítés a D3-al</a></li>
+                            <li class="pushy-link"><a href="6.html#d3individual">Az egyéni nyertesek vizualizációja</a></li>
+                            <li class="pushy-link"><a href="6.html#d3menu">A menübar</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>7 Végső simítások</button>
+                        <ul>
+                            <li class="pushy-link"><a href="7.html#7adatok">Első hiba: a Nobel-adatok</a></li>
+                            <li class="pushy-link"><a href="7.html#7design">Második hiba: a Nobel-vizalizáció dizájna</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -46,10 +102,9 @@
         <div class="site-overlay"></div>
 
         <main id="container"
-            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
+            class="container p-8 lg:px-6 lg:pb-6 lg:pt-2 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
             <button id="menu"
-                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in
-                rounded-md">&#9776;
+                class="menu-btn px-4 pb-2 pt-6 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
                 Menü</button>
 
             <!-- harmadik része eleje -->
@@ -58,7 +113,10 @@
                 <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">3 Az adatok megszerzése</h1>
 
                 <section id="3python">
-                    <h2 class="text-2xl pb-4 font-semibold text-gray-800">Szerezzük meg az adatot a netről Python-nal</h2>
+                    <h2 class="text-2xl pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Szerezzük meg az adatot a netről Python-nal</h2>
                     <p id="firstPar"
                         class="text-lg font-normal pb-3">A könyv ennek a részében nekikezdünk a valódi adat-vizualizációs
                         folyamatnak
@@ -85,7 +143,7 @@
                         először
                         le kell azt töltsük a következő paranccsal:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install requests</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután letöltöttük neki is foghatunk a folyamatnak. Első lépésben próbáljuk a
                         könyvtár segítségével letölteni egy Wikipédia oldalt. Használhatjuk erre a requests könyvtár get
                         metódusát,
@@ -97,14 +155,14 @@ response = requests.get('https://en.wikipedia.org/wiki/Nobel_Prize')
 response # output: &#60;Response [200]>
 
 dir(response) # output: a response objektum attribútumjai</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A fenti 200-as HTTP státusz kód lényegében a HTTP megfelelője a 'minden
                         rendben
                         volt'-nak. Ebben a kontextusban ez azt jelenti, hogy bizonyosan valamilyen információt a GET request
                         visszatérített, a következő paranccsal akár meg is vizsgálhatjuk mit:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                             class="python">response.headers</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Néhány nagyon érdekes dolgot tudunk megfigyelni a headers attribútummal,
                         például
                         azt, hogy a weboldalt tartalma <em>text/html</em>, a tartalom enkódolása <em>gzip</em>, stb:</p>
@@ -114,13 +172,13 @@ dir(response) # output: a response objektum attribútumjai</code><button id="cop
 'Set-Cookie': 'WMF-Last-Access=05-Jul-2020;Path=/;HttpOnly;secure;Expires=Thu, 06 Aug 2020 12:00:00 GMT, WMF-Last-Access-Global=05-Jul-2020;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Thu, 06 Aug 2020 12:00:00 GMT, GeoIP=MD:CU:Chisinau:47.01:28.86:v4; Path=/; secure; Domain=.wikipedia.org', 
 'X-Client-IP': '178.17.168.163', 'Cache-Control': 'private, s-maxage=0, max-age=0, must-revalidate', 
 'Accept-Ranges': 'bytes', 'Content-Length': '81973', 'Connection': 'keep-alive'}</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mivel, a fenti vizsgálattal megtudtuk azt, hogy az eredmény egy szöveg, akár
                         le is
                         kérhetjük a valódi tartalmát:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                             class="python">response.text</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A fenti kódrészlet visszatéríti a GET requests által lekért teljes HTML
                         szöveget.
                         Összeségébenn a requests egy elég kényelmes megoldás arra, hogy gyorsan szerezzünk webes adatot a Python
@@ -129,7 +187,7 @@ dir(response) # output: a response objektum attribútumjai</code><button id="cop
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">response = requests.get('http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/nama_10_gdp?geo=EU28&precision=1&na_item=B1GQ&unit=CP_MEUR&time=2018&time=2019')
 
 response # output: &#60;Response [200]></code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mivel a fenti esetben a kapott fájl egy JSON állomány, a requests könyvtár
                         rendelkezik egy metódussal, amely lehetővé teszi azt, hogy elérjük a válasz adatját, mint egy Python
                         dict. Ez
@@ -165,7 +223,7 @@ output:
  'id': ['unit', 'na_item', 'geo', 'time'],
  'size': [1, 1, 1, 2]}
 """</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Az előző példákban mindig 'nyers' módon weboldalakat, vagy JSON
                         állományokat
                         értünk
@@ -231,7 +289,7 @@ def make_OECD_request(dsname, dimensions, params=None, root_dir=OECD_ROOT_URL):
 response = make_OECD_request('QNA', (('USA', 'AUS'), ('GDP', 'B1_GE'), ('CUR', 'VOBARSA'), ('Q')), {'startTime': '2009-Q1', 'endTime': '2010-Q1'})
 # output: Requesting OECD URL: http://stats.oecd.org/sdmx-json/data/QNA/USA+AUS.GDP+B1_GE.CUR+VOBARSA.Q/all</code><button
     id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután létrehoztuk a linket és a lekérdezés után megkaptuk rá a választ is,
                         amely
                         tartalmazza a gazdasági adatait az AEÁ-nak és Ausztráliának 2009 első negyedévétől 2010 első negyedévéig,
@@ -240,7 +298,7 @@ response = make_OECD_request('QNA', (('USA', 'AUS'), ('GDP', 'B1_GE'), ('CUR', '
 	json = response.json()
 	json.keys()
     # output: dict_keys(['header', 'dataSets', 'structure'])</code><button id="copy"
-        class="text-sm md:text-md font-semibold">Másold</button></pre>
+        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A kapott JSON adat SDMX formátumban van, amely statisztikai adatok
                         közlésére
                         volt tervezve. Nem a legintuítivabb formátum, de ez gyakran megtörténik az adatokkal való munka során.
@@ -280,12 +338,12 @@ def REST_country_request(field='all', name=None, params=None):
     # mielőtt visszatérítenénk a választ, megnézzük érvényes-e
 
     return response</code><button id="copy"
-        class="text-sm md:text-md font-semibold">Másold</button></pre>
+        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután megvan a függvény, amellyel az OECD példához hasonlóan lekéréseket
                         intézhetünk az API-hoz, kérjük le az összes országot, amelynek dollár a pénzneme:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">response = REST_country_request('currency', 'usd')
 response.json()</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">További gyakorlásképpen mivel a REST országok adatsorja elég kicsi, csináljunk
                         belőle egy helyi másolatot és tároljuk MongoDB-n a nobel-prize adatbázisban, elérve az adatbázist a
                         korábban
@@ -308,13 +366,13 @@ col = db['country_data'] # egy collection az országadatokkal
 
 col.insert_many(response.json())
 # beillesztjük a kapott JSON állományt a collectionbe</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután elhelyeztük az országos adatokat a MongoDB collection-ükbe, kérjük le
                         az
                         adatbázisból az összes olyan országot, ahol dollár a pénznem:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">res = col.find({'currencies': {'$in': ['USD']}})
 list(res)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Na már most, miután megírtünk néhány saját API kezelőt, nézzünk meg
                         néhány
                         összetetebb API kezelésére dedikált könyvtárat, amelyek a nagy API-kat könnyen kezelhetővé teszik. A
@@ -351,7 +409,7 @@ list(res)</code><button id="copy"
                         klienssel is rendelkeznünk kell:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install gspread
 $ pip install --upgrade oauth2client</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A megszerzett credentials-al bármely spreadsheet-et képes kellene legyél
                         elérni
                         mindössze néhány sorral. A következő példa azt szemlélteti hogyan lehet betölteni egy ilyen
@@ -377,7 +435,7 @@ gc = gspread.authorize(credentials)
 ss =
 gc.open_by_url('https://docs.google.com/spreadsheets/d/1kHCEWY-d9HXlWrft9jjRQ2xf6WHQlmwyrXel6wjxkW8/edit#gid=0')</code><button
     id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután, sikeresen elértük a Google Spreadsheet-et Pythonból, létrehozva a
                         service
                         account-ot, letöltve annak hitelesítő JSON állományát az applikációnk hitelesítéséhez, valamint
@@ -386,21 +444,21 @@ gc.open_by_url('https://docs.google.com/spreadsheets/d/1kHCEWY-d9HXlWrft9jjRQ2xf
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="python">ss.worksheets()</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ez után akár egy munkalapot ki is választhatunk, hogy elérjük a celláiban
                         található
                         adatokat:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="python">ws = ss.worksheet('bugs')</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A következőkben akár tényleges le is kérhetjük az adatokat, lekérve a teljes
                         első
                         oszlop célláit:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="python">ws.col_values(1)</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Akár gspread-ből közvetlenül és képesek vagyunk ábrázolni a munkalapon
                         található
                         információkat, de mégis jobb szakosodott könyvtárakat használni erre, mint a Pandas-t. A gspread
@@ -412,7 +470,7 @@ gc.open_by_url('https://docs.google.com/spreadsheets/d/1kHCEWY-d9HXlWrft9jjRQ2xf
                         class="python">import pandas as pd
 
 df = pd.DataFrame(ws.get_all_records())</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Áttérve a következő könyvtárra, amelyet bonyolultabb API-kkal való
                         munkákra
                         használhatunk, beszélnünk kell a Tweepy-ről. A közösségi média fénykorában rengeteg adat generálódik
@@ -473,7 +531,7 @@ df = pd.DataFrame(ws.get_all_records())</code><button id="copy"
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="shell">$ pip install beautifulsoup4</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Minden rendelkezésünkre áll, hogy megszerezzüök magunknak a neveiket,
                         nyerésüknek évét, kategoriájukat és végül nemzetiségüket a Nobel-győzteseknek, mindössze BeautifulSoup-ot
                         és requests-et használva. Kiindulásképpen használjuk a Wikipédia Nobel-díj oldalát, ahol egy táblázatban
@@ -530,7 +588,7 @@ def get_Nobel_soup():
 	return BeautifulSoup(response.content, 'lxml')
 	# ebben az esetben már megmutatkozik az, hogy a két könyvtár képes egymás parserjét használni,
         # a második argumentum a parsert lxml-re állítja</code><button id="copy"
-            class="text-sm md:text-md font-semibold">Másold</button></pre>
+            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután megvan a soup, nézzük meg hogyan tudjuk megtalálni a céltageket,
                         amelyre szükségünk van az érdemi adat kinyeréséhez. A BeautifulSoup néhány módot biztosít arra, hogy
                         tageket válasszunk ki egy már parselt soup-ból. Megfigyelhetjük az Chrome DevTools Elements tabjében azt,
@@ -543,7 +601,7 @@ def get_Nobel_soup():
                         class="python">soup = get_Nobel_soup()
 
 soup.find('table', {'class': 'wikitable sortable'})</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Habár, a fenti példa ebben az esetben működik, mégsem robusztus a
                         megoldás,
                         elég, ha csak a classok sorrendjét megváltoztatjuk a dict-en belül, és máris más eredményt fogunk kapni.
@@ -558,7 +616,7 @@ soup.find('table', {'class': 'wikitable sortable'})</code><button id="copy"
                         class="python">soup.select('table.sortable.wikitable')
 # ugyanazt az eredményt kapjunk, mint az előbb, azonban ebben az esetben nem okoz jövőbeli gondot az, ha a sorrend
 megváltozik</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Az előbbi esetben egy listányi elemet térített vissza a select metódus,
                         amennyiben egyetlen elemet szeretnék kiválasztani használhatjuk a select_one metódust:
                     </p>
@@ -566,14 +624,14 @@ megváltozik</code><button id="copy"
                         class="python">table = soup.select_one('table.sortable.wikitable')
 table.select('th')
 # kiválasztja az összes table-header elemet a táblázaton belül</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Érdekesség:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="python">table.select('th')
 # a két jelölés ekvivalens
 table('th')</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Az lxml parserjével a BeautifulSoup könyvtár számos lehetőséget biztosít
                         arra,
                         hogy szűrjük a keresett tageket, az előbb használt egyszerű string név mellett, akár használhatunk
@@ -612,12 +670,12 @@ table('th')</code><button id="copy"
 			cols.append({'name': th.text, 'href': None})
 
     return cols</code><button id="copy"
-        class="text-sm md:text-md font-semibold">Másold</button></pre>
+        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Akár meg is bizonyosodhatunk arról, hogy a függvény valóban jól működik:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="python">print(get_column_titles(table))</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Tehát, már alapvetően ismerjük a táblázat felépítését, és ki is nyertük
                         belőle
                         az első releváns adatot.
@@ -655,7 +713,7 @@ table('th')</code><button id="copy"
                     )
 
     return winners</code><button id="copy"
-        class="text-sm md:text-md font-semibold">Másold</button></pre>
+        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Összeségében, a fenti függvény esetében nem mást teszünk, mint előszöris
                         megszerezzük az évet, amelyre az adott sor vonatkozik, majd ezt az oszlopot kihagyva, a többin végig
                         iterálva lementjük a győzteseket. Az iteráció esetében azért használunk enumerate-ot, mert így az indexet
@@ -666,7 +724,7 @@ table('th')</code><button id="copy"
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="python">print(get_Nobel_winners(table))</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Megvan a Nobel-győztesek teljes listája, és mindegyik győztesnek a
                         Wikipédia-életrajzának a hyperlinkje. Felhasználjuk mostmár ezeket a linkeket, hogy megszerezzük az
                         egyének életrajzának szövegét is, ugyanakkor mivel ez egy hosszadalmas és erőforrásigényes folyamat, jobb
@@ -680,7 +738,7 @@ table('th')</code><button id="copy"
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="shell">$ pip install --upgrade requests-cache</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Itt tekinthető meg a legegyszerűbb formája a requests-cache-nek:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
@@ -689,7 +747,7 @@ import requests_cache
 
 requests_cache.install_cache()
 # használjuk a továbbiakban a szokásos módon a requests könyvtárat ...</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Az install_cache metódus jónéhány hasznos beállítással is rendelkezik,
                         amelyekben olyan dolgokat tudunk meghatározni, mint például a backend, hol kerüljön tárolásra a cache,
                         például sqlite, memory, mongodb, stb, vagy akár lejárati időt is meghatározhatunk neki másodpercekben,
@@ -698,7 +756,7 @@ requests_cache.install_cache()
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code
                         class="python"># elindít egy nobel_pages nevű cachet, sqlite backend-el és 2 órás lejárati idővel
 requests_cache.install_cache('nobel_pages', backend='sqlite', expire_after=7200)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, már minden a helyén van ahhoz, hogy megszerezzük a győztesek
                         nemzetiségét, jelenleg csak az első ötvenét, próbálkozásképpen. Előszöris, figyeljük meg hogyan épül fel
                         megint az adat, amit megakarnánk szerezni.
@@ -745,7 +803,7 @@ for w in wdata:
 		missing_nationality.append(w)
 
 print(missing_nationality)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Az utolsó teszt rávilágít arra, hogy nem minden esetben volt sikeres. A
                         probléma oka az, hogy nincs egy szabvány életrajzi forma, vagy akár szinonimákat is használhatnak, amely
                         további bonyodalmakat okoz. Alapvetően, így azt lehet kikövetkeztetni, hogy gyakran a megfelelő minta
@@ -754,7 +812,10 @@ print(missing_nationality)</code><button id="copy"
                 </section>
 
                 <section id="3scrapy">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">A komoly scrapelés Scrapy-vel</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">A komoly scrapelés Scrapy-vel</h2>
                     <p class="text-lg font-normal pb-3">Ahogy egyre összetetebb scrapelési célokat tűzöl ki magad elé, úgy
                         bonyolódik a folyamat, és egy idő után már sajnos a BeautifulSoup és reqeuests páros nem lesz elég
                         ambícióid eléréséhez. Alapvetően, a legnagyobb problémát a szinkron lekérdezésekkel van, amikoris a dolgok
@@ -785,7 +846,7 @@ print(missing_nationality)</code><button id="copy"
                         szabványkönyvtárnak nem része, de pip-el könnyedén feltelepíthető:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install scrapy</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután sikeresen feltelepítettük a Scrapy-t, mostmár elérhetjük a scrapy
                         parancsot. Ellentétben a legtöbb Python könyvtárral, a Scrapy-t úgy tervezték, hogy a parancssorból
                         futhasson a scraping projekt kontextusán belül, meghatározva konfigurációs fájlokkal, 'scraping spiders',
@@ -800,7 +861,7 @@ New Scrapy project 'nobel_winners', using template directory 'd:\github\misc\ana
 You can start your first spider with:
     cd nobel_winners
     scrapy genspider example example.com</code><button id="copy"
-        class="text-sm md:text-md font-semibold">Másold</button></pre>
+        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Tehát, ahogy a fenti utasítás is hangoztatja, a nobel_winners mappába kell
                         belépnünk ahhoz, hogy használhassuk a scrapy-t. A projekt mappában belül megfigyelhető, hogy egész szép
                         struktúrát inicializált a scrapy, különböző fájlokkal. Emellett, létrehozott egy config állományt is, a
@@ -852,19 +913,19 @@ You can start your first spider with:
 # a /div/h3 kiválasztja az említett elemen belüli div child elemet, majd azon belül a h3 child elemet
 # a [1] pedig az első ilyen elemet jelöli, érdekesség, itt nem 0 kezdésű indexek vannak, hanem 1-től kezdődőek</code><button
     id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A megfelelő xpath target megtalálása kulcsfontosságú a sikeres scrapehez,
                         és sok esetben magába foglal néhány próbálkozást. A Scrapy ezt a folyamatot nagyban megkönnyíti, hiszen
                         biztosít egy parancssori shell-t, amely bevesz egy URL-t és létrehoz egy válasz-kontextust (response
                         context), ahol kipróbálhatjuk az xpath-jeinket:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy shell https://en.wikipedia.org/wiki/List_of_Nobel_laureates_by_country</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mostmár, hogy megvan a shell-ünk, kisérletezhetünk. Próbáljuk meg megszerezni
                         az összes h2 taget az oldalról:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [2]: h2s = response.xpath('//h2')</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, ebben az esetben kaptunk egy listányi h2 elemet, amely az adott HTML
                         oldalon megtalálható. Most válasszunk ki a listából egyet, mondjuk az elsőt, és a Shell 'code-complete' és
                         'syntax-highlighting' adottságait kihasználva vizsgáljuk meg annak metódusait és tulajdonságait, ehhez
@@ -883,7 +944,7 @@ In [7]: h2.
             extract()            namespaces           register_namespace() response             text
 In [6]: h2.extract()
 Out[6]: '&#60;h2 id="mw-toc-heading">Contents&#60;/h2>'</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Gyakran fogjuk használni az extract metódust, amely segítségével elérhetjük a
                         'nyers eredményét' egy xpath selectornak. Így megmutatja azt, hogy az elért első h2 tag, valójában a
                         tartalomjegyzéket tartalmazza. Ugyanakkor, a valódi tartalom ami számunkra érdekes h3 tagekben van:
@@ -891,7 +952,7 @@ Out[6]: '&#60;h2 id="mw-toc-heading">Contents&#60;/h2>'</code><button id="copy"
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [16]: h3s = response.xpath('//h3')
 In [18]: len(h3s)
 Out[18]: 88</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ebből a megfigyelésünkből azt is képesek vagyunk kikövetkeztetni, hogy a
                         fejlécek egy 'mw-headline' classal rendelkeznek, amely nagyban megkönnyíti az elemek szűrését. Próbáljuk
                         ki egy xpath-en a text metódust, amellyel kinyerhetjük a szöveget egy 'mw-headline' classal rendelkező
@@ -903,7 +964,7 @@ In [21]: country = h3_arg.xpath('span[@class="mw-headline"]/text()').extract()
 
 In [22]: country
 Out[22]: ['Argentina']</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Megfigyelhettük, hogy az extract metódus visszatérít egy listányi
                         találatot,
                         ebben az esetben egyetlen stringet tartalmazó listát. Ez által megtudtuk azt, hogy ha végig iterálunk a
@@ -919,7 +980,7 @@ Out[22]: ['Argentina']</code><button id="copy"
 In [24]: ol_arg
 Out[24]: [&#60;Selector xpath='following-sibling::ol[1]' data='&#60;ol>&#60;li>&#60;a
 href="/wiki/C%C3%A9sar_Mil...'>]</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A fenti esetben hiába mondható el az, hogy valójában egyetlen Selector van,
                         mégis egy SelectorList-et térít vissza az xpath, ezt a problémát megoldhatjuk úgy, hogy közvetlenül
                         kiválasztjuk már lekérdezéskor az első elemet:
@@ -929,7 +990,7 @@ href="/wiki/C%C3%A9sar_Mil...'>]</code><button id="copy"
 In [26]: ol_arg
 Out[26]: [&#60;Selector xpath='following-sibling::ol[1]' data='&#60;ol>&#60;li>&#60;a
 href="/wiki/C%C3%A9sar_Mil...'>]</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Megvan a listánk, mostmár meg is szerezhetjük a benne található lista elemeket:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="">In [27]: lis_arg = ol_arg.xpath('li')
@@ -941,7 +1002,7 @@ Out[28]:
  &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/Luis_Federico_Lelo...'>,
  &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/Bernardo_Houssay" ...'>,
  &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/Carlos_Saavedra_La...'>]</code><button id="copy"
-     class="text-sm md:text-md font-semibold">Másold</button></pre>
+     class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Vizsgáljuk meg az egyiket az extract metódussal. Elsőként, megszeretnénk
                         szerezni a nyertes nevét és a lista elemben található szöveget:
                     </p>
@@ -953,7 +1014,7 @@ Out[30]: &#60;Selector xpath='li' data='&#60;li>&#60;a href="/wiki/C%C3%A9sar_Mi
 In [31]: li.extract()
 Out[31]: '&#60;li>&60;a href="/wiki/C%C3%A9sar_Milstein" title="César Milstein">César Milstein&#60;/a>*, Physiology or Medicine,
 1984&#60;/li>'</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A fenti részből kiderül, hogy a lista elemek egy mintát követnek szerkezetileg,
                         a név egy anchor tag-en belül van, a győztes Wikipédia oldalára hivatkozva, majd vesszővel elválasztva
                         található meg a kategória, illetőleg az év. Egy robusztus megoldás a győztes nevének scrapelésére, ha
@@ -963,7 +1024,7 @@ Out[31]: '&#60;li>&60;a href="/wiki/C%C3%A9sar_Milstein" title="César Milstein"
 
 In [33]: name
 Out[33]: 'César Milstein'</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Gyakran hasznos lehet, ha képesek vagyunk egy valamilyen elemben található
                         összes szöveget kinyerni egyidejűleg, kihagyva bármilyen HTML tag jelölést, csakis a valódi tartalmat,
                         erre használható a <em>descendent-or-self</em>:
@@ -972,7 +1033,7 @@ Out[33]: 'César Milstein'</code><button id="copy"
 
 In [35]: list_text
 Out[35]: ['César Milstein', '*, Physiology or Medicine, 1984']</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Megalkottuk az összes szükséges xpath-et a scrapelési targetjeinkhez, most
                         foglaljuk bele őket egy Scrapy spiderbe.
                     </p>
@@ -989,7 +1050,7 @@ Out[35]: ['César Milstein', '*, Physiology or Medicine, 1984']</code><button id
     ...
  &#60;/ul>
 &#60;/div></code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Alapvetően, képesek lennénk elérni a tartalomjegyzéket a következő xpath
                         query-vel:
                     </p>
@@ -997,7 +1058,7 @@ Out[35]: ['César Milstein', '*, Physiology or Medicine, 1984']</code><button id
 
 In [37]: toc
 Out[37]: &#60;Selector xpath='//div[@id="toc"]' data='&#60;div id="toc" class="toc" role="navig...'></code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ha megszeretnénk szerezni az összes ország &#60li> lista tagjét, abban az
                         esetben használhatnánk egy relatív xpath-et a kiválasztott toc div-en. A következőképpen:
                     </p>
@@ -1005,7 +1066,7 @@ Out[37]: &#60;Selector xpath='//div[@id="toc"]' data='&#60;div id="toc" class="t
 
 In [47]: len(lis)
 Out[47]: 80</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Gyakori hiba az, hogy nem-relatív xpath selectort használunk a jelenlegi
                         kiválasztáson, amely a teljes dokumentumból választ ki elemeket és nem a jelenlegi kontextuson belül:
                     </p>
@@ -1013,7 +1074,7 @@ Out[47]: 80</code><button id="copy"
 
 In [52]: len(lis)
 Out[52]: 240</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Felfegyverkezve a szükséges xpath tudással, létre is hozhatjuk az első
                         scraperünket, amelynek célja az lesz, hogy megszerezze nekünk az országneveket és illetőleg az
                         országneveken belüli listából a teljes szöveget.
@@ -1064,7 +1125,7 @@ class NWinnerSpider(scrapy.Spider):
                     # hogy úm. szüneteltessük a függvényt és megőrzi állapotát ahová visszatérhet
                     # a végrehajtás
                     yield NWinnerItem(country = country[0], name=text[0], link_text = ' '.join(text))</code><button id="copy"
-                        class="text-sm md:text-md font-semibold">Másold</button></pre>
+                        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A létrehozott parse metódus megkapja a Wikipédia oldalhoz intézett HTTP
                         request
                         válaszát, és Scrapy Itemeket yield-el, amelyek JSON objektumokká lesznek átalakítva és hozzáfűzve az
@@ -1076,13 +1137,13 @@ class NWinnerSpider(scrapy.Spider):
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy list
 nwinners_list</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ahogy az várható volt egyetlen spider-rel rendelkezünk <em>nwinners_list</em>
                         néven. Ahhoz, hogy elkezdjük a scrapelést, használnunk kell a crawl parancsot és megjelöljük az output
                         állományt, amely jelenesetben a nwinners.json lesz:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy crawl nwinners_list -o nwinners.json</code><button id="copy"
-                            class="text-sm md:text-md font-semibold">Másold</button></pre>
+                            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Kellemes esetben egy elég szép log-ot is társít a crawl parancs mellé a
                         scrapy,
                         amelyben úm. beszámol mindenről, amit ő tett, ebben az esetben azt is megmutatja, hogy mit sikerült
@@ -1110,7 +1171,7 @@ nwinners_list</code><button id="copy"
     place_of_birth = scrapy.Field()
     place_of_death = scrapy.Field()
     text = scrapy.Field()</code><button id="copy"
-        class="text-sm md:text-md font-semibold">Másold</button></pre>
+        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ugyanakkor, az is jó ötlet lenne, ha leegyszerűsítenénk egy kicsit a kódot, az
                         által, hogy létrehozunk egy <em>process_winner_li</em> nevű függvényt, amely feldolgozza a győztes
                         linkjének szövegét. Alapvetően, egy link selectort és egy országnevet fogunk átadni neki és visszatérít
@@ -1197,7 +1258,7 @@ def process_winner_li(w, country=None):
     # lementünk egy másolatot a szövegből, hogy akár később manuálisan is tudjunk az adatokon korrigálni
     wdata['text'] = text
     return wdata</code><button id="copy"
-        class="text-sm md:text-md font-semibold">Másold</button></pre>
+        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Következő lépésben a <em>wdata</em>-ban visszatérített link mező lesz a
                         fontos,
                         hiszen azt fogjuk felhasználni a hiányzó adatok pótlására. A fő Wikipédia Nobel-díj győztesek listája
@@ -1280,7 +1341,7 @@ HTTPCACHE_ENABLED = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Nem ez az egyetlen middleware, amivel a Scrapy rendelkezik, a teljes lista
                         itt
                         megtekinthető: <a
@@ -1337,7 +1398,7 @@ HTTPCACHE_ENABLED = True
 
                     # az által, hogy yield-eljük a request-et, a parse metódus egy generátorrá válik, amely felhasználható request-eket térít
                     yield request</code><button id="copy"
-                        class="text-sm md:text-md font-semibold">Másold</button></pre>
+                        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Korábban tehát megfigyeltük azt, hogy az életrajzi oldalon a Wikidata
                         részt
                         kell megtalálnunk, hiszen abban az adattárolóban minden számunkra releváns információ megtalálható. Tehát,
@@ -1397,7 +1458,7 @@ HTTPCACHE_ENABLED = True
 
         # végül yieldeljük az item-et, amely ezen a ponton már minden adatot tartalmaznia kellene a wiki-ről
         yield item</code><button id="copy"
-            class="text-sm md:text-md font-semibold">Másold</button></pre>
+            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Aztán nézzük meg megfelelően működik-e a scraper, amit írtunk:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ scrapy crawl nwinners_full
@@ -1405,7 +1466,7 @@ HTTPCACHE_ENABLED = True
 # ROBOTSTXT_OBEY = False
 # a fenti settings.py módosítást eszközölni kellett, másképp nem működik a scrap, a crawl először letölti ezt a robots.txt-t, mielőtt megtörténne a scrape
 # ebben az esetben ez megakadályozza a lefutást</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A log fájlból kiderül, hogy minden jól futott le. Mostmár tényleg minden
                         adat rendelkezésünkre áll, ami alapvető adatot illet. Ugyanakkor, az alapvető adatokon túl szeretnénk akár
                         képeket és életrajzi történeteket is, ahol az lehetséges.
@@ -1441,14 +1502,14 @@ class DropNonPerson(object):
 
         # muszáj visszatérítenünk az elemet a metódusból, további pipeline-ok miatt vagy akár azért, mert a Scrapy-nek lekell mentenie
         return item</code><button id="copy"
-            class="text-sm md:text-md font-semibold">Másold</button></pre>
+            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Végül, ahhoz, hogy hozzáadjuk a fent megírt pipeline-t a projektünk
                         spider-jeihez, bekell azt jegyeznünk a settings.py-ban, a következőképpen:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">ITEM_PIPELINES = {
     'nobel_winners.pipelines.DropNonPerson': 1, # az 1-essel aktíváljuk a pipeline-t
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Miután megismerkedtünk a pipeline-okkal, létrehozhatjuk azokat, amelyekkel
                         tényleges dolgozni fogunk. A problémánk megoldásához előszöris, az életrajzi szöveget a már megszokott
                         módon megszerezhetjük, de a képekkel jobb, ha az ImagePipeline foglalkozik.
@@ -1570,7 +1631,7 @@ class NWinnerSpiderBio(scrapy.Spider):
 
         yield item
 </code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Miután sikeresen megírtuk az újabb spider-ünket, létrekell hozzuk a
                         kiegészítő pipeline-ját, amely átalakítja a kép URL-ket és lementi, mint kép, ehhez fogjuk a már többször
                         is említett ImagesPipeline-t használni.
@@ -1604,7 +1665,7 @@ class NobelImagesPipeline(ImagesPipeline):
             item['bio_image'] = image_paths[0]
 
         return item</code><button id="copy"
-            class="text-sm md:text-md font-semibold">Másold</button></pre>
+            class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Nincs más dolgunk, mint lefuttatni a létrehozott új spider-ünket, és
                         megvizsgálni annak output-ját.
                     </p>
@@ -1634,7 +1695,7 @@ class NobelImagesPipeline(ImagesPipeline):
     }
 
     ...</code><button id="copy"
-        class="text-sm md:text-md font-semibold">Másold</button></pre>
+        class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, ebben az esetben a NobelImagesPipeline csakis erre a spider-re
                         vonatkozna, a többiben nem lenne elérhető scrapelés közben.
                     </p>
@@ -1645,13 +1706,13 @@ class NobelImagesPipeline(ImagesPipeline):
 
             <div class="my-8 flex content-center">
                 <button
-                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in rounded-md"><a
+                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in"><a
                         class="block px-4 py-2"
                         href="2.html"><span class="inline-block font-normal transform group-hover:-translate-x-1 transition
                             duration-100 ease-in">&larr;</span>
                         Előző</a></button>
-                <button class="flex-auto w-24 ml-4 py-2 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
-                    ease-in rounded-md"><a class="block px-4"
+                <button class="flex-auto w-24 ml-4 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
+                    ease-in"><a class="block px-4 py-2"
                         href="4.html">Következő
                         <span
                             class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button>
@@ -1668,8 +1729,6 @@ class NobelImagesPipeline(ImagesPipeline):
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
         <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
-        <!-- cross-platform megoldás a smooth-scroll-ra, jQuery használatával -->
-        <script src="../javascript/smooth.js"></script>
         <script src="../javascript/main.js"></script>
         <script src="../javascript/introd3.js"></script>
     </body>

@@ -52,6 +52,8 @@
     }, nbviz.TRANS_DURATION);
 
     nbviz.updateTimeChart = function (data) {
+        data.sort()
+
         // hozzákössük az adatot a neki megfelelő évoszlopnak, nem index, hanem év szerint, így az esetleges
         // hézagok nem okoznak megjelenítésbeli hibákat, amikoris az index megváltozik
         const years = svg.selectAll('.year')

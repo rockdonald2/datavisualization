@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-    class="text-black text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+    class="text-black text-base antialiased leading-relaxed tracking-normal break-normal bg-white">
 
     <head>
         <meta charset="UTF-8">
@@ -33,11 +33,67 @@
             <div class="pushy-content">
                 <ul>
                     <li class="pushy-link"><a href="../index.html">1 Bevezetés</a></li>
-                    <li class="pushy-link"><a href="2.html">2 Első lépések az adatvizualizációban</a></li>
-                    <li class="pushy-link"><a href="3.html">3 Az adatok megszerzése</a></li>
-                    <li class="pushy-link"><a href="4.html">4 Az adatok tisztítása és feldolgozása</a></li>
-                    <li class="pushy-link"><a href="5.html">5 Az adatok eljuttatása</a></li>
-                    <li class="pushy-link"><a href="6.html">6 Az adatok ábrázolása</a></li>
+                    <li class="pushy-submenu">
+                        <button>2 Első lépések az adatvizualizációban</button>
+                        <ul>
+                            <li class="pushy-link"><a href="2.html#2adviz">Az adatvizualizáció folyamata</a></li>
+                            <li class="pushy-link"><a href="2.html#2prog">A programozási nyelvek, amelyekkel dolgozunk</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2progkul">Különbségeik a gyakorlati felhasználásban</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2python">Adatok írása és olvasása Python-al</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2webd">Webdev 101</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>3 Az adatok megszerzése</button>
+                        <ul>
+                            <li class="pushy-link"><a href="3.html#3python">Szerezzük meg az adatot a netről Python-nal</a>
+                            </li>
+                            <li class="pushy-link"><a href="3.html#3scrapy">A komoly scrapelés Scrapy-vel</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>4 Az adatok tisztítása és feldolgozása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="4.html#4numpy">Bevezetés a NumPy-ba</a></li>
+                            <li class="pushy-link"><a href="4.html#4pandas">Bevezetés a Pandas-ba</a></li>
+                            <li class="pushy-link"><a href="4.html#4cleaning">Tisztítsuk meg az adatunkat Pandas-al</a></li>
+                            <li class="pushy-link"><a href="4.html#4visualizing">Vizualizáljuk adatunkat Matplotlib-el</a>
+                            </li>
+                            <li class="pushy-link"><a href="4.html#4explore">Fedezzük fel az adatunkat Pandas-al</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>5 Az adatok eljuttatása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="5.html#5staticvsdynamic">Az adatok eljuttatása</a></li>
+                            <li class="pushy-link"><a href="5.html#5datawithflask">Folytassuk a RESTful API-t</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>6 Az adatok ábrázolása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="6.html#6imaginingnobelvizualization">Tervezzük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="6.html#6buildingvizualization">Építsük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3bar">Munka a D3-al és az oszlopdiagram</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3time">Az idővonal</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3map">Térképkészítés a D3-al</a></li>
+                            <li class="pushy-link"><a href="6.html#d3individual">Az egyéni nyertesek vizualizációja</a></li>
+                            <li class="pushy-link"><a href="6.html#d3menu">A menübar</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>7 Végső simítások</button>
+                        <ul>
+                            <li class="pushy-link"><a href="7.html#7adatok">Első hiba: a Nobel-adatok</a></li>
+                            <li class="pushy-link"><a href="7.html#7design">Második hiba: a Nobel-vizalizáció dizájna</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -46,18 +102,18 @@
         <div class="site-overlay"></div>
 
         <main id="container"
-            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
+            class="container p-8 lg:px-6 lg:pb-6 lg:pt-2 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
             <button id="menu"
-                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in rounded-md">&#9776;
+                class="menu-btn px-4 pb-2 pt-6 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
                 Menü</button>
 
-            <!-- negyedik része eleje -->
+            <!-- hatodik része eleje -->
 
             <section class="pb-8">
                 <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">6 Az adatok ábrázolása</h1>
 
                 <section id="6imaginingnobelvizualization">
-                    <h2 class="text-2xl pb-4 font-semibold text-gray-800">Tervezzük meg a vizualizációnkat</h2>
+                    <h2 class="text-2xl pb-4 font-semibold text-gray-800" role="button" tabindex="0" aria-pressed="false">Tervezzük meg a vizualizációnkat</h2>
                     <p id="firstPar"
                         class="text-lg font-normal pb-3">Korábban mondhatni végignéztük a Nobel-díjas adatsorunkat kutatva olyan
                         részletek után, amelyeket megérné kiemelni a vizualizáció során. Az egyik érdekes részlet a női fizika
@@ -160,7 +216,10 @@
                 </section>
 
                 <section id="6buildingvizualization">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Építsük meg a vizualizációnkat</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Építsük meg a vizualizációnkat</h2>
                     <p class="text-lg font-normal pb-3">Tehát, az előző részben megálmondtunk egy valamire való, de mondhatni
                         rosszul kinéző vizualizációt, amire ráfoghatjuk, hogy első alkalomra elégséges lesz. Ebben a részben meg
                         is írjuk, megfigyelve működés közben a már sokszor említett D3 könyvtárat.</p>
@@ -216,7 +275,7 @@ a:link {
 a:hover {
     text-decoration: underline; /* hover esetén aláhúzodnak a linkek */
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Három fő komponensünk van a #chart div-ünkön belül, amelyeket mind abszolút
                         módon fogunk elhelyezni, ilyen értelemben a #chart div-hez relatíven: #title, #info és #nbviz. A cím pont
                         szembe fog elhelyezkedni, valamint a main konténer az oldal tetejétől 90px-re lesz elhelyezve, hogy legyen
@@ -238,7 +297,7 @@ a:hover {
     font-weight: 100;
     top: 20px;
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A 'chart-holder' 750px-es magassággal fog rendelkezni, valamit ugyancsak
                         100%-os széleséggel a parent elemhez viszonyítva, végül egy pozíció relatív property-vel, ami azt fogja
                         eredményezi, hogy a child elementjei hozzá visszonyítva lesznek abszóluton pozícionálva, annak bal-felső
@@ -254,7 +313,7 @@ a:hover {
     width: 100%;
     height: 100%; /* erre azért van szükség, mert azt akarjuk, hogy az SVG elemek kontextusa a konténer teljes egészét elfoglalják */
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Az alábbi ábra bemutatja milyen lenne az optimális méretbeállítás a
                         vizuális
                         elemeinknek:
@@ -305,7 +364,7 @@ a:hover {
     left: 700px;
     padding-left: 10px; /* azért van szükség erre, hogy elválassza a térképtől */
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A többi elem CSS megoldásait akkor fogjuk beírni, amikor az elemek a
                         helyükre kerülnek.
                     </p>
@@ -335,7 +394,7 @@ a:hover {
 &#60;script src="../static/js/nbviz_time.js">&#60;/script>
 &#60;script src="../static/js/nbviz_details.js">&#60;/script>
 &#60;script src="../static/js/nbviz_main.js">&#60;/script> &#60;!-- a fő elem kerül legalúlra, hiszen ez fogja az első lekérdezést megejteni az adatokra, és megjeleníteni --></code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Még a legelején említettünk egyfajta megközelítést arra, hogy a JavaScript
                         esetén elkerüljük a namespace collision-t, az által, hogy létrehozunk egy <em>nbviz</em> namespace-t,
                         tisztán és szabadon hagyva a globális namespace-t, lehetővé téve megosztott metódusokat, paraméterek,
@@ -353,7 +412,7 @@ a:hover {
     /* ezt a metódust felfedi az nbviz objektumnak, így más scriptekben is használható, az nbviz namespacen belül */
 }(window.nbviz = window.nbviz || {}));
 /* létrehozza az nbviz objektumot, amennyiben nem áll rendelkezésre, másképp használja a meglévőt */</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A következő részekben részletesen megfogjuk beszélni azt a JavaScript-et
                         és D3
                         eseteket, amelyek létrehozzák a vizualizációnk különböző elemeit. De először, az adatáramlással fogunk
@@ -452,7 +511,7 @@ a:hover {
     };
 
 } (window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A Nobel-vizualizációs applikációnk egy sornyi adatlekérdezéssel fog elindulni
                         az <em>nbviz_main.js</em>-ből. Használni fogjuk a D3 <em>queue</em> funkcióját, hogy szimultán
                         lekérdezéseket ejtsünk a statikus adatfájlainkra és az összes győztes adatsorára. Amikor a queue összes
@@ -474,7 +533,7 @@ queue()
 function ready(error, world, countryNames, countryData, winnersData) {
     // ...
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A queue hívásban felhasználjuk a korábban már látott
                         <em>nbviz.getDataFromAPI</em> metódusunkat, amely magába foglal egy D3 AJAX hívást a Python Eve API-nkhoz:
                     </p>
@@ -495,7 +554,7 @@ function ready(error, world, countryNames, countryData, winnersData) {
             /* a callback függvény bevesz egy error, és data argumentumot, ezért szükséges a null */
         });
     };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Ha a szimultán lekérdezések sikeresek, abban az esetben a <em>ready</em>
                         függvény fogja megkapni a lekért adatot, és utána képesek vagyunk azokat továbbküldeni a vizuális
                         elemekhez.
@@ -525,7 +584,7 @@ function ready(error, world, countryNames, countryData, winnersData) {
     // triggereljük a frissítést a teljes győztes adatsorral
     nbviz.onDataChange();
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <figure>
                         <img class="mx-auto"
                             src="../img/fig67.png"
@@ -542,7 +601,7 @@ function ready(error, world, countryNames, countryData, winnersData) {
                         fordítva. Az onDataChange metódusunk egyik fontos eleme az első sorban található:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let data = nbviz.getCountryData();</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A fő adatsor, amelyet az idővonal, a térkép és az oszlopdiagram is használ, a
                         getCountryData metódussal van előállítva, amely csoportosítja a győzteseket ország szerint, hozzáad
                         bizonyos nemzeti információkat, mint például az adott ország lakossága, és a nemzetközi azonósítókódja az
@@ -575,7 +634,7 @@ function ready(error, world, countryNames, countryData, winnersData) {
 
         return data;
     };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Az előbb már láthattuk azt, hogy a getCountryData metódust a frissítő
                         metódusunk hasznosítja, így valamennyi vizuális elemünk is egyben. Továbbá, a getCountryData metódusunk
                         használja a Crossfilter által szűrt adatunkat. A következőkben nézzük meg azt, hogy ez a szűrés hogyan
@@ -600,7 +659,7 @@ function ready(error, world, countryNames, countryData, winnersData) {
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.filter = crossfilter(winnersData);
         // ...</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A Crossfilter úgy működik, hogy lehetővé teszi számunkra, hogy dimenzionális
                         szűröket hozzunk létre az adatunkra alapozva. Ezt úgy tesszük meg, hogy egy függvényt használunk az
                         objektumokon. A következő kódrészlet létrehoz egy nem dimenziót, amelyet arra fogunk használni, hogy a
@@ -613,7 +672,7 @@ nbviz.genderDim = nbviz.filter.dimension(function(o) {
 });
 
 // ...</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A Crossfilter valódi ereje akkor mutatkozik meg, amikor több dimenzionális
                         szűröt állítunk be, amely lehetővé teszi, hogy kedvünk szerint alkossunk részhalmazokat az adatsorunkból.
                         A nem szerinti dimenzió után létrehozunk egy újabb kategória dimenziót is:
@@ -621,7 +680,7 @@ nbviz.genderDim = nbviz.filter.dimension(function(o) {
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.categoryDim = nbviz.filter.dimension(function (o) {
     return o.category;
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, ez után már képesek lennénk az adatunkat nem és kategória szerint
                         darabolni. A mi Nobel-vizualizációnkban ezek a szűrések felhasználói interakcióra lesznek eszközölve a
                         menübarból. A Crossfilter, amellett, hogy képes szűrt részhalmazokat visszatéríteni, képes csoportosítási
@@ -639,13 +698,13 @@ countryGroup.all();
     ...
 ] */
 // a fenti esetben a value a győztesek össz-számát jelöli az adott országból</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">És végül létrehozunk egy ország szerinti dimenziót is:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.countryDim = nbviz.filter.dimension(function (o) {
     return o.country;
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Az előkészületek vége felé haladva észrevettem azt, hogy valójában azért nem
                         működnek a korábban megírt kódok az én rendszeremen, mert a v5-ös D3-ban nagy változások jelentek meg,
                         amelyek nem teszik egymással kompatibilissá a korábbi kódot az újjal. Ahhoz, hogy ezt a továbbiakban
@@ -669,11 +728,14 @@ countryGroup.all();
         /* a callback függvény bevesz egy error, és data argumentumot, ezért szükséges a null */
     });
 };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                 </section>
 
                 <section id="6d3bar">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Munka a D3-al és az oszlopdiagram</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Munka a D3-al és az oszlopdiagram</h2>
                     <p class="text-lg font-normal pb-3">A következőkben megismerkedünk a D3 könyvtárral az által, hogy megépítsük
                         az első vizuális elemünket, az oszlopdiagramot. Ahhoz, hogy megépítsünk egy ilyen összetevőt, előszöris
                         végigkell gondoljuk azt, hogy miből is áll egy oszlopdiagram. Egy oszlopdiagramnak három fő komponense
@@ -741,13 +803,13 @@ countryGroup.all();
         &#60;script src="script.js">&#60;/script>
     &#60;/body>
 &#60;/html></code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Állítsuk be első lépésben a 'nobel-bar' elemünk méretét CSS-el:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#nobel-bar {
     width: 600px;
     height: 400px;
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Általában az első lépés, amikor egy diagrammot hozunk létre D3-ban, hogy
                         létrehozzuk azt az SVG keretet, amiben szerepelni fog. Ez azt jelenti, hogy hozzáfűzünk egy <em>svg</em>
                         canvas elemet a 'nobel-bar' div-hez, majd egy <em>g</em> csoportot fogunk hozzáfűzni az svg canvas-hez,
@@ -765,7 +827,7 @@ let boundingRect = chartHolder.node().getBoundingClientRect();
 
 let width = boundingRect.width - margin.left - margin.right;
 let height = boundingRect.height - margin.top - margin.bottom;</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután megkaptuk a fenti logika alapján az oszlopcsoportunk szélességét és
                         magasságát, használjuk a D3-at, hogy létrehozzuk a diagram keretét, hozzáfűzve a szükséges svg és g
                         tageket és meghatározva az SVG canvas méreteit, valamint a csoport eltolását is a translate használatával:
@@ -775,7 +837,7 @@ let height = boundingRect.height - margin.top - margin.bottom;</code><button id=
     .attr('height', height + margin.top + margin.bottom)
     .append('g').classed('chart', true)
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután a keretünket a helyére illesztettük, használhatjuk megintcsak az
                         append-et, hogy oszlopokat is hozzáadjunk. Ebben az esetben nem a valós, hanem egy próba adatsort fogunk
                         használni, amely a következő:
@@ -821,7 +883,7 @@ let height = boundingRect.height - margin.top - margin.bottom;</code><button id=
         value: 14
     }
 ];</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Egy durva megoldás az oszlopok beillesztésére az, ha végigiterálunk a
                         <em>nobelData</em> tömbünkön, és hozzáfűzünk egy oszlopot a 'chart' csoporthoz, ahogy haladunk. Az
                         iterálás során, használjuk a tömbben megtalálható objektumok egyik mezőjét, a 'value'-t, ahhoz, hogy
@@ -860,7 +922,7 @@ let height = boundingRect.height - margin.top - margin.bottom;</code><button id=
             .attr('x', i*(barWidth));
     });
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Egy másik metódus arra, hogy D3 elemeket adjon hozzá a DOM fához az az
                         insert.
                         Az insert pontosan úgy működik, mint az append, azonban annak deklarációja bevesz egy második, selector
@@ -905,7 +967,7 @@ let scale = d3.scaleLinear();
 scale.domain([0, 1]).range([0, 100]);
 // függvényként lehívva, megkaphatjuk azt, hogy a jelenlegi beállítások alapján 0.5-nek 50-et feleltet meg a skálánk
 scale(0.5);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A következőkben vizsgáljuk meg a két legfontosabb D3 skálát, a kvantitatív
                         és
                         ordinális skálákat, és figyeljük meg azt, hogy hogyan tudjuk őket hasznosítani az oszlopaink
@@ -932,7 +994,7 @@ let maxWinners = d3.max(nobelData, function(d) {
 // míg a többi ennél kevesebbet és azokat a maradék pixel nagysággal lefelé tóljuk,
 // ezt az eltólást határozza meg a skála nekünk
 let yScale = d3.scaleLinear().domain([0, maxWinners]).range([height, 0]);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A példánkban a lineáris skála legegyszerűbb formáját használjuk, hogy
                         létrehozzuk az oszlopdiagrammunk y tengelyét, értékeket feleltetve meg egy folytonos tartományból, a
                         másikba, de a lineáris skálák ennél többre is képesek. Az egyik legérdekesebb trükkje az
@@ -946,7 +1008,7 @@ let yScale = d3.scaleLinear().domain([0, maxWinners]).range([height, 0]);</code>
 numInt(1); // 0
 numInt(0.5); // 200
 numInt(0); // 400</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Az interpolate metódus nem csak számokkal képes dolgozni: akár stringekkel,
                         színkódokkal, de akár objektumokkal is. Valamint, a tartományokban nem csak két elemet határozhatunk meg,
                         hanem akár többet is, ekkor ügyelnünk kell arra, hogy a skála ennek a hossznak megfelelő legyen. Képesek
@@ -957,7 +1019,7 @@ numInt(0); // 400</code><button id="copy"
 color(-0.5); // zöld és piros közötti szín
 color(0); // teljesen zöld
 color(0.5); // zöld és kék közötti szín</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A kvantitatív skálák sorába nem csak a lineáris skála tartozik, hanem sok
                         más
                         is, amelyekről részletesen a D3 dokumentációjában lehet olvasni: logaritmikus, exponenciális, kvantális
@@ -975,7 +1037,7 @@ color(0.5); // zöld és kék közötti szín</code><button id="copy"
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let oScale = d3.scaleOrdinal().domain(['a', 'b', 'c', 'd', 'e']).range([1, 2, 3, 4, 5]);
 
 oScale('a'); // 1</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Az oszlopdiagrammunk esetében ez úgy nézne ki, hogy egy tömbnyi indexnek
                         szeretnénk értékeket megfeleltetni egy folytonos skálán, hogy meghatározzuk az oszlopaink x koordinátáit.
                         Ahhoz, hogy ezt elérjük megint elkell térnünk a könyvtől, hiszen ezek a metódusok már nem léteznek a D3
@@ -985,7 +1047,7 @@ oScale('a'); // 1</code><button id="copy"
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let bScale = d3.scaleBand().domain([1, 2, 3, 4, 5]).rangeRound([0, 400]);
 
 bScale(5); // 320</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A kezdetleges oszlopdiagrammunkban, használtuk a barWidth változót, hogy
                         méretezzük az oszlopainkat, pontosabban beállítsuk értelemszerűen azok szélességét. De észrevehettük azt,
                         hogy abban az esetben nem volt levegős rész az oszlopok között, össze voltak ragadva, így is
@@ -1005,7 +1067,7 @@ oScale.bandwidth(); // 50, visszaadja minden band szélességét, padding-el egy
 oScale.padding(0.1);
 oScale(2); // 52
 oScale.bandwidth(); // 42, tehát 5-5 a padding, és 42 a valódi szélessége az oszlopnak</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Miután megismertük a D3 által használt skálák egy nagyon kicsi részét,
                         foglalkozhatunk a D3 fő koncepciójával a 'data binding'-al. Ahhoz, hogy teljes mértékben kihasználjuk a D3
                         adta lehetőségeket, muszáj megismernünk az említett koncepciót, amely segítségével adatokat köthetünk az
@@ -1042,7 +1104,7 @@ let svg = d3.select('#nobel-bar svg')
 
 let chart = d3.select('#nobel-bar .chart');
 let bars = chart.selectAll('.bar').data(nobelData);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A fenti példában az adatösszekötéskor érdekes dolgot tettünk.
                         Kiválasztottuk
                         előszöris, a diagrammunkat tartó konténert, amelyet egy chart változóba tároltunk. Majd ebből a
@@ -1066,7 +1128,7 @@ let bars = chart.selectAll('.bar').data(nobelData);</code><button id="copy"
                         tömb formájában, lényegében 10 darab placeholder node-ot:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">bars.enter(); // Array(10)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Majd képesek vagyunk ezeket a placeholder node-okat felhasználni, hogy
                         létrehozzuk a DOM elemeket. Jelenleg nem fogunk azzal foglalkozni, hogy helyesen felfelé állva helyezzük
                         el őket, de felhasználjuk az adataink value mezőit és azok indexét is, hogy beállítsuk az oszlopok
@@ -1078,7 +1140,7 @@ bars.append('rect').classed('bar', true)
     .attr('width', 10).attr('height', function(d) { return d.value; })
     .attr('x', function(d, i) { return i * 12; })
     /* .attr('y', function(d) { return height - d.value; }) */</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mostmár tudjuk azt, hogy mi történik akkor, ha egy üres kiválasztással van
                         dolgunk. Nézzük meg azt is mi történik akkor, ha már vannak DOM elemeink a kiválasztáson belül, amely
                         akkor történne meg, ha az adatsorunk időközben megváltozik. Feltételezzük azt, hogy rendelkezünk két bar
@@ -1094,7 +1156,7 @@ bars.append('rect').classed('bar', true)
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">bars.append('rect').classed('bar', true)
     .attr('width', 10).attr('height', function (d) { return d.value; })
     .attr('x', function(d, i) { return i * 12; });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, a nobelData tömbünk első két tagja hozzá lett kötve a kezdeti állapotban
                         létező rect-ekhez, csak még nem használtuk ezt fel, hogy beállítsuk azok attribútumjait. Ha megvizsgáljuk
                         az első oszlopot jelentő rect DOM elemet, akkor észrevehetjük azt, hogy valóban az adat hozzá lett kötve,
@@ -1113,7 +1175,7 @@ bar.attr('name', function(d, i) {
 
     return 'bar__' + sane_key;
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Már többször is láthattuk azt, hogy az összes 'setter' metódusa a D3
                         második
                         argumentumként bevehet egy függvényt, amely argumentumként megkapja a __data__ objektumot, tehát az
@@ -1199,7 +1261,7 @@ const update = function(data) {
     // kitöröljük a felesleges oszlopokat
     bars.exit().remove();
 };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A továbbiakban megnézzük azt, hogy hogyan tudjuk hozzáadni a tengelyeket
                         és a
                         tengely címkéket az oszlopdiagrammunkhoz. A D3 alapértelmezetten nem nyújt számunkra túl sok magasszintű
@@ -1228,7 +1290,7 @@ let yAxis = d3.axisLeft().scale(yScale).ticks(10).tickFormat(function (d) {
 
     return d;
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Egy kevés CSS-re is szükségünk lesz, ahhoz, hogy megfelelően jelenjenek meg a
                         tengelyeink:
                     </p>
@@ -1246,21 +1308,21 @@ let yAxis = d3.axisLeft().scale(yScale).ticks(10).tickFormat(function (d) {
     stroke: #000;
     shape-rendering: crispEdges;
 }}</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mindeddig numerikus tartományt használtunk egyfajta helyettesítőként az
                         ordinális x-tengelyünkhz. Most szükségünk lenne arra, hogy az x-tengely tartalmazza az oszlopcímkéinket,
                         amelyek az x-tengely bejegyzéseit fogják képezni. Tehát, ebben az esetben az adatunk a következőképpen fog
                         kinézni:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">{key: "Argentina", value: 4, code: "ARG", population: 42669500}</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A fent megjelenő három betűs azonósító kódokat szeretnénk használni, mint az
                         x-tengely címkék, ami azt jelenti, hogy frissítenünk kell az ordinális x-tengelyünk tartományát:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">xScale.domain(data.map(function (d) {
     return d.code;
 }));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután beállítottuk a megfelelő tartományt, valamint megvannak a tengely
                         generátoraink is, szükségünk van néhány SVG csoportra, amelyek a tengely tartói lesznek, amelyeket
                         létrehozunk. Adjuk hozzá ezeket a csoportokat a fő svg selector-unkhoz, mint group-ok, megfelelő class
@@ -1269,7 +1331,7 @@ let yAxis = d3.axisLeft().scale(yScale).ticks(10).tickFormat(function (d) {
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// az elmozdításra azért van szükség, mert másképp az svg canvas tetején helyezkedne el
     svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')');
     svg.append('g').attr('class', 'yaxis');</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Az oszlopdiagrammunk tengelyeinek fix skálája lesz (az ábra szélessége és
                         magassága), de azok tartományai attól függően fognak változni, hogy a felhasználó hogyan szűri az
                         adatokat. A következő példa azt fogja bemutatni, hogy hogyan fognak a tengelyek frissítődni az adatok
@@ -1289,7 +1351,7 @@ let yAxis = d3.axisLeft().scale(yScale).ticks(10).tickFormat(function (d) {
         .attr('dy', '.15em').attr('transform', 'rotate(-65)');
     svg.select('.yaxis').call(yAxis);
 };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután megvannak a működő tengelyeink, adjunk hozzá egy címkét az y-tengelyhez:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// azért van szükség erre, hogy elférjen a címke
@@ -1313,7 +1375,7 @@ svg.append('g')
 
 // elrejtsük az alsó tengelyvonalat, csak a bejegyzések maradnak
 svg.select('.domain').style('display', 'none');</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Végül, korábban említettünk egy kiegészítő lépést is az ábránkhoz, az nem
                         más,
                         mint az animáció. Az eddig létrehozott ábránk teljesen funkcionális, az adat változására megfelelőképpen
@@ -1357,7 +1419,7 @@ svg.select('.xaxis').transition().duration(2000).call(xAxis)
     .attr('dy', '.15em').attr('transform', 'rotate(-65)');
 svg.select('.yaxis').transition().duration(2000).call(yAxis);
 // ...</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Tehát, ha mindent helyesen csináltunk akkor a változások vizuális
                         átmenetekben
                         kell megvalósuljanak. A transition metódus ebben az esetben csak egy egyszerű lineáris átmenetet biztosít,
@@ -1460,11 +1522,14 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
     };
 
 }(window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                 </section>
 
                 <section id="6d3time">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Az idővonal</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Az idővonal</h2>
                     <p class="text-lg font-normal">A következő lépésben az oldal tetején elhelyezkedő idősort fogjuk felépíteni,
                         megismerkedve újabb D3 technikákkal. Első lépésben, az idősor HTML gerincét fogjuk megírni, az előző
                         oszlopdiagramhoz hasonlóan:</p>
@@ -1491,7 +1556,7 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
     };
 
 }(window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután az svg csoportunk a helyén van, adjunk hozzá a skálákat és a
                         tengelyeket, hiszen azokra is szükségünk lesz. Ahhoz, hogy elhelyezzük a körszerű jelzőket két ordinális
                         skálát fogunk használni. Az x-tengelyen elhelyezkedő csoportok között 10%-os padding lesz, valamit
@@ -1502,9 +1567,9 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
                         díjak számának maximuma lesz, ezek egyike sem fog változni felhasználói interakcióra, tehát nyugodtan
                         meghatározhatjuk az update metódusunkon kívül:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const MAX_WINNERS_PER_YEAR = 15
-    const xScale = d3.scaleBand().range([0, width]).padding(0.1).domain(d3.range(1900, 2020));
-    const yScale = d3.scalePoint().range([height, 0]).domain(d3.range(MAX_WINNERS_PER_YEAR));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+const xScale = d3.scaleBand().range([0, width]).padding(0.1).domain(d3.range(1900, 2020));
+const yScale = d3.scalePoint().range([height, 0]).domain(d3.range(MAX_WINNERS_PER_YEAR));</code><button id="copy"
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mivel, a díjak kis-körökként fognak megjelenni, ahonnan relatíve egyszerű dolog
                         leolvasni azt, hogy éppen hány nyertesről van szó az adott évben, teljesen felesleges y-tengelyt
                         létrehoznunk, szemben az előző oszlopdiagrammunkkal. A hangsúly a jelenlegi ábránk esetében arra van
@@ -1514,16 +1579,16 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
                         használni, ahol felülírjuk a bejegyzésértékeket a <em>tickValues</em> metódussal, kiszűrve azokat az
                         éveket a range-ből, amelyek nem nullával végződnek:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const xAxis = d3.axisBottom().scale(xScale).tickValues(xScale.domain().filter(function (d, i){
-        return !(d % 10);
-    }));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    return !(d % 10);
+}));</code><button id="copy"
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ahogy elmondtuk azt a skálák esetében is, nem számítunk arra, hogy felhasználói
                         interakcióra a tengelyek változzanak, szóval megintcsak az update metóduson kívül jeleníthetjük meg az
                         x-tengelyt:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')')
         .call(xAxis).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em').attr('dy', '.15em')
         .attr('transform', 'rotate(-65)');</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mielőtt ténylegesen eltudnánk helyezni a nyerteseket jelképező köröket, előtte
                         egy jelmagyarázatot, amely a legutolsó statikus komponense az ábránknak. Ahhoz, hogy létrehozzuk a
                         jelmagyarázatot, először létrehozunk egy csoportot, 'labels' class-al, ez fogja tartalmazni értelemszerűen
@@ -1536,7 +1601,7 @@ svg.select('.yaxis').transition().duration(2000).call(yAxis);
         .enter().append('g').attr('transform', function(d, i){
             return 'translate(0,' + i * 10 + ')';
         });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután megvan a 'catLabels' kiválasztásunk, adjunk hozzá mindegyikhez egy
                         körindikátort, valamint egy címkét:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">catLabels.append('circle')
@@ -1550,7 +1615,7 @@ catLabels.append('text')
     .attr('dy', '.4em')
     .attr('x', 10)
     .style('font-size', 10);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Az előbb használt categoryFill függvény az 'nbviz_core.js' állományban van
                         meghatározva, lényegében egy függvény, amely biztosítja a színeket a Nobel-kategóriákhoz. Felhasználja a
                         D3 hcl metódusát, hogy egyenletesen elosztott színeket biztosítson egy [0, 360] hue skálán, amelyeket a D3
@@ -1572,7 +1637,7 @@ catLabels.append('text')
             })
             .entries(entries);
     };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Tehát, megfigyelhetjük azt, hogy az onDataChange metódusunkon belül a fent
                         látható nestDataByYear függvény fogja az adattömbünket a komponens szerinti szükséges formátumba
                         átalakítani, ahhoz, hogy év szerint az idősoron tudjuk ábrázolni.</p>
@@ -1603,7 +1668,7 @@ catLabels.append('text')
         // töröl minden olyan évoszlopot, amelyhez nem került adat hozzákötésre
         years.exit().remove();
 };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Kész van az első data-join körünk, amikoris létrehoztuk a díjakat tartó
                         évoszlopokat. Most ezeket az oszlopokat felhasználva hozzáillesszük a körindikátorokat:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const winners = svg.selectAll('.year').selectAll('.winner').data(function (d) {
@@ -1623,7 +1688,7 @@ winners.enter().append('circle').classed('winner', true).merge(winners)
     });
 
 winners.exit().remove();</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután megvan a teljesen jól működő ábránk nincs már más dolgunk, minthogy
                         néhány sornyi kóddal ennek is egy átmeneti animációt adjunk. A dolgok jelenlegi állása szerint, ahogy a
                         felhasználó kiválaszt egy újabb részhalmazt az adatsorunkból, a frissítési minták automatikusan beállítja
@@ -1643,7 +1708,7 @@ winners.exit().remove();</code><button id="copy"
     .attr('cy', function (d, i) {
         return yScale(i);
     });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Azonban jelenleg működik az animáció, azonban mondhatni rossz helyről indulnak
                         el a körök. Mi azt szeretnénk, hogy lentről-felfelé mozogjanak a körök, nem fentről lefelé, ami furán hat.
                         Egyszerű a megoldás:</p>
@@ -1658,7 +1723,7 @@ winners.exit().remove();</code><button id="copy"
     .attr('cy', function (d, i) {
         return yScale(i);
     });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, a végső kódunk a Nobel-idővonalhoz a következőképpen nézne ki:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
     'use strict';
@@ -1763,11 +1828,14 @@ winners.exit().remove();</code><button id="copy"
     };
 
 }(window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                 </section>
 
                 <section id="6d3map">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Térképkészítés a D3-al</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Térképkészítés a D3-al</h2>
                     <p class="text-lg font-normal pb-3">Általánosságban elmondható az, hogy a D3 könyvtár egyik fő erőssége a
                         térképkészítés. Rendelkezik néhány nagyon kifinomult kiegészítővel, amelyek lehetővé tesznek mindenféle
                         ábrázolást. A térképkészítés első lépése, hogy megszerezzük azt a térképet, amit ábrázolni akarunk.
@@ -1832,11 +1900,11 @@ winners.exit().remove();</code><button id="copy"
                         szeretnénk azt telepíteni, hogy ne csak a jelenlegi környezetben lehessen majd azt elérni:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ npm install -g topojson</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután telepítettük használata végtelenül egyszerű:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ topojson -o topo_output.json geo_input.json</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Hasonlóképpen tud ESRI Shapefile-okat is átalakítani TopoJSON formátumba.
                         A
                         TopoJSON számos hasznos beállítással rendelkezik, mint példul a 'quantization', amellyel meghatározhatjuk
@@ -1883,7 +1951,7 @@ winners.exit().remove();</code><button id="copy"
     }
 
 } (window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A térképprezentáció a D3-ban általában egy szabvány mintát követ.
                         Előszöris,
                         létrehozzunk egy D3 projection-t, felhasználva a D3 valamelyik választását. Aztán létrehozunk egy path-et
@@ -1912,7 +1980,7 @@ winners.exit().remove();</code><button id="copy"
                         létrehozzunk egy projection-t csak használnunk kell az ábrán látható d3.geo metódusok egyikét:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const projection = d3.geoEquirectangular();</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A D3 projection-ök számos hasznos metódussal rendelkeznek. Ilyen akár a
                         translate metódus, de megemlíthető még az 'adaptive resampling' is a precision metódus által, amely egy
                         olyan technikát jelent, amellyel úgy növelhetjük a kivetített vonalak pontosságát, hogy mindeközben
@@ -1928,7 +1996,7 @@ winners.exit().remove();</code><button id="copy"
 // a precision az adaptive samplinget állítsa be
 const projection = d3.geoEquirectangular().scale(193 * (height / 480)).center([15, 15])
     .translate([width / 2, height / 2]).precision(.1);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Miután meghatároztuk a projection-ünket, nézzük meg, hogy hogyan tudjuk
                         létrehozni a szükséges path-et, amelyet felhasználunk ahhoz, hogy létrehozzuk az SVG térképünket.
                     </p>
@@ -1941,7 +2009,7 @@ const projection = d3.geoEquirectangular().scale(193 * (height / 480)).center([1
                         koordinátákká, amely így megjeleníthető a böngészőben. A path-et hasonlóképpen hozzuk létre:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const path = d3.geoPath().projection(projection);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Általában az előbb említett logika mentén a path-et egy függvényként
                         használjuk, amellyel letudjuk generálni a különböző svg elemek d attribútumjait, felhasználva a GeoJSON
                         adatösszekötését a <em>datum</em> metódussal (egyetlen adat kötésére használhatjuk, nem egy tömbnyire,
@@ -1951,7 +2019,7 @@ const projection = d3.geoEquirectangular().scale(193 * (height / 480)).center([1
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">svg.insert('path', '.graticule') // beilleszti a graticule class-al rendelkező tag elé
             .datum(borders).attr('class', 'boundary').attr('d', path);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A következő hasznos d3.geo komponens, amelyet a Nobel-térképünkön fogunk
                         használni az a <em>graticule</em>, egyike a geo shape generátoroknak, a graticule-t map grid-nek is szokás
                         hívni. Alapvetően, a graticule létrehoz egy globális hálót a térképünkre hosszúsági és szélességi
@@ -1976,7 +2044,7 @@ const graticule = d3.geoGraticule().step([20, 20]);
 // datum(graticule) == datum([graticule])
 svg.append('path').datum(graticule)
     .attr('class', 'graticule').attr('d', path);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Megismerkedtünk nagyjából az összes komponenssel, amely a térképünkön
                         megjelenik, valamint tudjuk azt, hogy hogyan tudnánk a térkép JSON állományokat SVG-vé alakítani, tehát
                         nincs más dolgunk, mint összeállítani a darabkákat.
@@ -2069,7 +2137,7 @@ svg.append('path').datum(graticule)
     };
 
 } (window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Majd hozzáadhatunk egy kis CSS stílust is, hogy alakítsuk a térképünk
                         kínézetét:
                     </p>
@@ -2096,7 +2164,7 @@ svg.append('path').datum(graticule)
     stroke: #fff;
     stroke-width: .5px;
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Azonban, a térképünk jelenleg mondhatni statikus, valamint semmilyen módon nem
                         tűkröz bármilyen Nobel-adatot. Tehát, a következő feladatunk annak frissítésének megoldása, illetőleg a
                         Nobel-adatok beépítése és megjelenítése. Az első alkalom, amikor frissülni fog a térképvizualizációnk, az
@@ -2122,7 +2190,7 @@ svg.append('path').datum(graticule)
         };
     });
 };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Már többször is említettük, hogy szeretnénk egy piros kört a győztes országok
                         közepére szemléltetve grafikusan azt, hogy a győztesek mekkora része származott az adott országból. Tehát,
                         a kör területe arányos kellene legyen a győztesek számával (mind abszolút, mind egy főre jutó mutató
@@ -2134,14 +2202,14 @@ svg.append('path').datum(graticule)
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// 2 és 30 közötti min és max sugár a köröknek
 const radiusScale = d3.scaleSqrt().range([nbviz.MIN_CENTROID_RADIUS, nbviz.MAX_CENTROID_RADIUS]);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ahhoz, hogy megkapjuk a skálánk tartományát, használjuk a korábban létrehozott
                         mapData tömbünket, hogy megkapjuk a max és min értékeket a győztesek számainak, a min érték természetesen
                         0:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">// 0 és maxWinners közötti tartományra 2px és 30px közötti sugárt fog megfeleltetni
 radiusScale.domain([0, maxWinners]);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ahhoz, hogy hozzáadjuk az ország shape-jeinket a meglévő térképünkhöz,
                         megintcsak egy frissítési mintát fogunk létrehozni. Első lépésben a 'countries' szelekcióhoz hozzákötjük a
                         mapData adatunkat, amely után először hozzáadunk bármilyen ország shape-t, amelyre a mapData alapján
@@ -2169,7 +2237,7 @@ countries.enter().append('path').attr('class', 'country').on('mouseenter', funct
     });
 
 countries.exit().classed('visible', false).transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A fenti kódrészletben hasznátunk egy olyan D3 metódust, amit eddig nem, és ez
                         nem más, mint az <em>on</em> metódus. Az on különböző eventekre reagál, és az első argumentumban
                         meghatározott eventre, a callback függvényben meghatározott módon válaszol, ebben az esetben CSS-el fogjuk
@@ -2182,7 +2250,7 @@ countries.exit().classed('visible', false).transition().duration(nbviz.TRANS_DUR
 .country.active {
     fill: rgb(155, 175, 166);
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, mostmár a térképünk megjelenitésben válaszol a felhasználói
                         interakcióra, már csak két dolog hiányzik, egyrészt a piros indikátor, valamint a tooltip. Ahhoz, hogy
                         hozzáadjuk az indikátorunkat, egy az előbbihez hasonló frissítési mintára van szükségünk. Ebben az esetben
@@ -2198,7 +2266,7 @@ countries.exit().classed('visible', false).transition().duration(nbviz.TRANS_DUR
 // kiszámolja az x és y koordinátáit annak középpontjának
 const center = path.centroid(country.geo);
 // center = [x, y]</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Akár a path-et is használhatnánk, azonban néha nagyon fura eredményeket tud
                         produkálni, főleg erősen konkáv geometriák esetében. Szerencsénkre, a korábban megszerzett országadataink
                         tartalmaznak egy <em>latlng</em> mezőt, amelyek az országok középpontjainak a koordinátái, tehát nekünk
@@ -2209,7 +2277,7 @@ const center = path.centroid(country.geo);
     const latlng = nbviz.data.countryData[d.name].latlng;
     return projection([latlng[1], latlng[0]]); // átalakítjuk a megszerzett koordinátákat SVG koordinátákká a projection-nek megfelelően
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután megvannak a SVG középpont koordináták, nincs más dolgunk, mint megírni a
                         frissítési mintát:
                     </p>
@@ -2237,7 +2305,7 @@ centroids.enter().append('circle').attr('class', 'centroid').merge(centroids)
     });
 
 centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Jelenleg az indikátoraink feketék, valamint teljesen láthatók, amely számunkra
                         nem kedvező, de egy kevés CSS-el ez könnyen megoldható:
                     </p>
@@ -2251,7 +2319,7 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
     fill: goldenrod;
     fill-opacity: .6;
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Következőkben megnézzük azt, hogy hogyan tudjuk az egyszerű tooltip-ünket
                         hozzáadni a térképhez, amikor egy adott országra visszük az egeret. Ez a tooltip néhány információt
                         kellene kiírjon: melyik országra vittük az egeret és onnan hány győztes származott. Ha visszaemlékezünk,
@@ -2270,7 +2338,7 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
         &#60;p>&#60;/p>
     &#60;/div>
 &#60;/div></code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Némi CSS-re is szükségünk lesz, hogy a tooltip kinézetét beállítsuk:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#map-tooltip {
@@ -2291,7 +2359,7 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
     padding: 0px;
     margin: 0px;
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután az első lépéssel végeztünk, nincs más dolgunk, mint kiegészíteni az
                         országok on metódusainak callback függvényeit:
                     </p>
@@ -2338,7 +2406,7 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
     .attr('d', function (d) {
         return path(d.geo);
     });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, mostmár a térképünk is teljes, hiszen megjeleníti az éppen aktuális
                         adatokat, valamint a felhasználói interakcióra is reagál. A teljes térképkód valahogy így nézne ki:
                     </p>
@@ -2524,11 +2592,14 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
     };
 
 } (window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                 </section>
 
                 <section id="d3individual">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Az egyéni nyertesek vizualizációja</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Az egyéni nyertesek vizualizációja</h2>
                     <p class="text-lg font-normal pb-3">Vizualizációnk két következő eleme a győztes-lista és az életrajzi doboz.
                         Alapvetően, azt szeretnénk, hogy a győztes-lista helyén megjelenjen értelemszerűen egy lista, a jelenleg
                         beállított szűrők alapján megfelelő Nobel-győztesekkel. Majd ebből a listából a felhasználó kitud
@@ -2564,7 +2635,7 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
     margin: 8px;
     text-align: center;
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ahhoz, hogy ez az egész lényegében megvalósuljon minden egyes díjnyertest
                         egy újabb tr tagként fogunk elhelyezni a tbody-n belül. A lista létrehozásáért felelős metódus az
                         <em>updateList</em> metódus, amelyet a központi onDataChange metódusunk fog lehívni, amikor az app
@@ -2607,14 +2678,14 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
         nbviz.displayWinner(data[Math.floor(Math.random() * data.length)]);
     }
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Továbbá, azt is szeretnénk, ha a tábla sora megváltozna, amikor a felhasználó
                         az egerét föléje viszi, ezt egyszerűen megtudjuk valósítani CSS-el:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="css">#nobel-list tr:hover {
     cursor: pointer;
     background: lightblue;
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Megfigyelhetjük azt, hogy egy újabb eventListener jelenik meg a kódunkban,
                         miszerint amikor a tábla egyik sorára klikkel a felhasználó, akkor abban az esetben lehívódik a
                         displayWinner metódus, az adott nyertes adataival. A következőkben nézzük meg mit is kell tennie ennek a
@@ -2666,7 +2737,7 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
     font-weight: bold;
     text-align: center;
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután a tartalomblokkunk a helyén van, nincs más dolgunk, mint megírni a
                         mögöttés logikát. Alapvetően, megkell ejtenünk egy callback hívást az adat API-nkra a szükséges adatokért,
                         amelyekkel a tartalomblokkot feltöltjük:</p>
@@ -2697,7 +2768,7 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
         nw.select('#readmore a').attr('href', 'https://en.wikipedia.org/wiki/' + wData.name)
     });
 }</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A végső kód ezen két vizualizációs elemünkhöz valahogy így nézne ki:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">(function (nbviz) {
     'use strict';
@@ -2766,11 +2837,14 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
     }
 
 }(window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                 </section>
 
                 <section id="d3menu">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">A menübar</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">A menübar</h2>
                     <p class="text-lg font-normal pb-3">Vizualizációnk utolsó eleme az egyik legfontosabb, az oldal tetején
                         elhelyezkedő menübar. Tehát, már többször megbeszéltük azt, hogy a menübar egyfajta szűrőként fog
                         funkcionálni, amelyekkel, hiszen a szűrők halmozódnak, a felhasználó beállíthatja a különböző dimenziókat,
@@ -2794,7 +2868,7 @@ centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0)
 
     }
 } (window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ezután, használjuk a létrehozott kategória listánkat, hogy feltöltsük a
                         kategóriaválasztót, tehát, hogy a tömb elemeiből option tag-et hozzunk létre:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const catSelect = d3.select('#cat-select select');
@@ -2804,7 +2878,7 @@ catSelect.selectAll('option').data(catList).enter().append('option').attr('value
 }).html(function (d) {
     return d;
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, miután a kategóriák a fenti eljárással sikeresen a DOM fához lettek
                         illesztve, utána nincs más dolgunk ahhoz, hogy a szűrés működjön, minthogy hozzájuk rendeljük a szükséges
                         eventListenereket:</p>
@@ -2813,7 +2887,7 @@ catSelect.selectAll('option').data(catList).enter().append('option').attr('value
     nbviz.filterByCategory(category);
     nbviz.onDataChange();
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Nem történik más a fentiben, minthogy a kategória kiválasztása után a
                         fenti
                         folyamat zajlódik le. Előszöris, a crossfilter-el létrehozzuk a győztesek új részhalmazát, majd elindítjuk
@@ -2837,7 +2911,7 @@ catSelect.selectAll('option').data(catList).enter().append('option').attr('value
 
     nbviz.onDataChange();
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Harmadik lépés pedig az országválasztó beépítése a menübe. Ennél a lépésnél
                         azonban kicsit le kell állnunk az előbbi kettőnél megfogalmazott logikától, hiszen, ha belegondolunk a
                         Nobel-győztes országok listája viszonylag hosszú, 50 körüli országból származnak nyertesek. Tehát,
@@ -2875,7 +2949,7 @@ nats.forEach(function (o) {
 });
 
 selectData.push(DOUBLE_WINNERS, SINGLE_WINNERS);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, miután megvan a selectData tömbünk az őt kiegészítő fewWinners tömbbel,
                         mostmár létrehozhatjuk a választónkban megjelenő opciókat:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">const countrySelect = d3.select('#country-select select');
@@ -2885,7 +2959,7 @@ countrySelect.selectAll('option').data(selectData).enter().append('option').attr
 }).html(function(d) {
     return d;
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Végül, hozzáadhatjuk a callback függvényt is, amely a felhasználói interakció
                         kezeli, és akkor hívódik le, amikor a felhasználói kiválasztja az opciók valamelyikét:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">countrySelect.on('change', function (d) {
@@ -2906,7 +2980,7 @@ countrySelect.selectAll('option').data(selectData).enter().append('option').attr
     nbviz.filterByCountries(countries);
     nbviz.onDataChange();
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ez után már nekifoghatunk a különböző szűrőfüggvények megírásának is,
                         az előző kódrészletben látható filterByCountries metódust, valamint a filterByCategory metódust:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">nbviz.filterByCountries = function (countryNames) {
@@ -2934,7 +3008,7 @@ nbviz.filterByCategory = function (cat) {
         nbviz.categoryDim.filter(nbviz.activeCategory);
     }
 };</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Következő elem, amivel foglalkoznunk kell az abszolút és egy főre jutó mutatók
                         közötti választást lehetővé tevő radió-gomb. Ennek HTML gerince megtalálható az 'index.html' állományban
                         természetesen, tehát nincs más dolgunk, mint megírni annak viszonylag egyszerű kódját:</p>
@@ -2943,7 +3017,7 @@ nbviz.filterByCategory = function (cat) {
     nbviz.valuePerCapita = parseInt(val);
     nbviz.onDataChange();
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, mivel az nbviz objektumban tároljuk a jelenlegi állapotot, minden
                         szükséges elem az onDataChange metódus hatására értesül a mutatóbeli választásról. Végül, a menübarunk
                         esetében a végleges kód valahogy így nézne ki:</p>
@@ -3040,27 +3114,27 @@ nbviz.filterByCategory = function (cat) {
         });
     }
 }(window.nbviz = window.nbviz || {}));</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">És ezzel mondhatni végeztünk a Nobel-vizualizációnkkal, ezután már csak az
                         apróbb hibákat javítjuk ki, valamint felkészítsük arra is, hogy mi történne abban az esetben, ha ezt
                         valahol, mint működő weboldalon publikálni szeretnénk.</p>
                 </section>
             </section>
 
-            <!-- ötödik része vége -->
+            <!-- hatodik része vége -->
 
             <div class="my-8 flex content-center">
                 <button
-                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in rounded-md"><a
+                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in"><a
                         class="block px-4 py-2"
                         href="5.html"><span class="inline-block font-normal transform group-hover:-translate-x-1 transition
                             duration-100 ease-in">&larr;</span>
                         Előző</a></button>
-                <!-- <button class="flex-auto w-24 ml-4 py-2 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
-                    ease-in rounded-md"><a class="block px-4"
-                        href="5.html">Következő
+                <button class="flex-auto w-24 ml-4 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
+                    ease-in"><a class="block px-4 py-2"
+                        href="7.html">Következő
                         <span
-                            class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button> -->
+                            class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button>
             </div>
         </main>
 
@@ -3074,8 +3148,6 @@ nbviz.filterByCategory = function (cat) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
         <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
-        <!-- cross-platform megoldás a smooth-scroll-ra, jQuery használatával -->
-        <script src="../javascript/smooth.js"></script>
         <script src="../javascript/main.js"></script>
         <script src="../javascript/introd3.js"></script>
     </body>

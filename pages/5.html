@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-    class="text-black text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+    class="text-black text-base antialiased leading-relaxed tracking-normal break-normal bg-white">
 
     <head>
         <meta charset="UTF-8">
@@ -33,11 +33,67 @@
             <div class="pushy-content">
                 <ul>
                     <li class="pushy-link"><a href="../index.html">1 Bevezetés</a></li>
-                    <li class="pushy-link"><a href="2.html">2 Első lépések az adatvizualizációban</a></li>
-                    <li class="pushy-link"><a href="3.html">3 Az adatok megszerzése</a></li>
-                    <li class="pushy-link"><a href="4.html">4 Az adatok tisztítása és feldolgozása</a></li>
-                    <li class="pushy-link"><a href="5.html">5 Az adatok eljuttatása</a></li>
-                    <li class="pushy-link"><a href="6.html">6 Az adatok ábrázolása</a></li>
+                    <li class="pushy-submenu">
+                        <button>2 Első lépések az adatvizualizációban</button>
+                        <ul>
+                            <li class="pushy-link"><a href="2.html#2adviz">Az adatvizualizáció folyamata</a></li>
+                            <li class="pushy-link"><a href="2.html#2prog">A programozási nyelvek, amelyekkel dolgozunk</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2progkul">Különbségeik a gyakorlati felhasználásban</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2python">Adatok írása és olvasása Python-al</a>
+                            </li>
+                            <li class="pushy-link"><a href="2.html#2webd">Webdev 101</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>3 Az adatok megszerzése</button>
+                        <ul>
+                            <li class="pushy-link"><a href="3.html#3python">Szerezzük meg az adatot a netről Python-nal</a>
+                            </li>
+                            <li class="pushy-link"><a href="3.html#3scrapy">A komoly scrapelés Scrapy-vel</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>4 Az adatok tisztítása és feldolgozása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="4.html#4numpy">Bevezetés a NumPy-ba</a></li>
+                            <li class="pushy-link"><a href="4.html#4pandas">Bevezetés a Pandas-ba</a></li>
+                            <li class="pushy-link"><a href="4.html#4cleaning">Tisztítsuk meg az adatunkat Pandas-al</a></li>
+                            <li class="pushy-link"><a href="4.html#4visualizing">Vizualizáljuk adatunkat Matplotlib-el</a>
+                            </li>
+                            <li class="pushy-link"><a href="4.html#4explore">Fedezzük fel az adatunkat Pandas-al</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>5 Az adatok eljuttatása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="5.html#5staticvsdynamic">Az adatok eljuttatása</a></li>
+                            <li class="pushy-link"><a href="5.html#5datawithflask">Folytassuk a RESTful API-t</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>6 Az adatok ábrázolása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="6.html#6imaginingnobelvizualization">Tervezzük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="6.html#6buildingvizualization">Építsük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3bar">Munka a D3-al és az oszlopdiagram</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3time">Az idővonal</a></li>
+                            <li class="pushy-link"><a href="6.html#6d3map">Térképkészítés a D3-al</a></li>
+                            <li class="pushy-link"><a href="6.html#d3individual">Az egyéni nyertesek vizualizációja</a></li>
+                            <li class="pushy-link"><a href="6.html#d3menu">A menübar</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>7 Végső simítások</button>
+                        <ul>
+                            <li class="pushy-link"><a href="7.html#7adatok">Első hiba: a Nobel-adatok</a></li>
+                            <li class="pushy-link"><a href="7.html#7design">Második hiba: a Nobel-vizalizáció dizájna</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -46,18 +102,21 @@
         <div class="site-overlay"></div>
 
         <main id="container"
-            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
+            class="container p-8 lg:px-6 lg:pb-6 lg:pt-2 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
             <button id="menu"
-                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in rounded-md">&#9776;
+                class="menu-btn px-4 pb-2 pt-6 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
                 Menü</button>
 
-            <!-- negyedik része eleje -->
+            <!-- ötödik része eleje -->
 
             <section class="pb-8">
                 <h1 class="text-3xl md:text-4xl py-8 text-gray-900 font-semibold">5 Az adatok eljuttatása</h1>
 
                 <section id="5staticvsdynamic">
-                    <h2 class="text-2xl pb-4 font-semibold text-gray-800">Az adatok eljuttatása</h2>
+                    <h2 class="text-2xl pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Az adatok eljuttatása</h2>
                     <p id="firstPar"
                         class="text-lg font-normal pb-3">Miután megszereztük az adatunkat és fel is dolgoztuk, megfigyelve belőle
                         az érdekes részeket a tisztítás után, nincs más dolguk a valódi vizualizáció előtt, minthogy valamilyen
@@ -95,7 +154,7 @@
                         rendelkezésünkre áll a Flask, ha nem, akkor egy egyszerű pip telepítéssel elérhetővé válik:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install flask</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután megszereztük a Flask módult, semmi más dolgunk, minthogy néhány sornyi
                         kóddal felállítsuk a szerverünket:
                     </p>
@@ -112,7 +171,7 @@ def hello():
 # a debug módban pedig a Flask hasznos logokat fog kiírni a képernyőre, és error esetén egy böngésző-alapú jelentést fog adni
 if __name__ == "__main__":
     app.run(port=8000, debug=True)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Következő lépésben belépve abba a mappába, ahol az előbb létrehozott Python
                         kódunk van lefuttatjuk:
                     </p>
@@ -126,7 +185,7 @@ if __name__ == "__main__":
  * Debugger is active!
  * Debugger PIN: 343-620-977
  * Running on http://127.0.0.1:8000/ (Press CTRL+C to quit)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Ezután a fenti weboldalra felmenve, meg is kapjuk a kívánt eredményt.
                         Fontos
                         kitérni arra, hogy alapértelmezetten a Flask a nagyon kiterjedt és eléggé intuitív Jinja2 templatelési
@@ -207,7 +266,7 @@ if __name__ == "__main__":
     &#60;/body>
 
 &#60;/html></code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Az említett adatunk, a JSON állomány beolvasásához szükségünk lesz egy AJAX
                         hívásra a szerverünkre. Mind a jQuery, de a D3 is rendelkezik natívan függvénnyekkel ennek megejtéséhez. A
                         D3 formátum szerint (JSON, CSV, TSV) rendelkezik egy metódussal, a következő példa azt mutatja be, hogy
@@ -227,14 +286,14 @@ if __name__ == "__main__":
     // az adatunk tartalmára, a null paraméterrel azt határozzuk meg, hogy nincs egy függvény, amely átalakítja a tartalmat,
     // a 4-es paraméterrel pedig annak indentációját állítjuk be, szóközökben pontosítva, a könnyebb olvashatóság miatt
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ezután dönthetünk, hogy Flask-al, vagy valamilyen egysoros HTTP szerverrel
                         akarjuk futtatni a fent írt kódunkat. Az egyszerűség, és a Flask tudatlanságom miatt jelenleg elégséges
                         lesz az egyszerű megoldás, futtatva a következő parancssori kódot az 'index.html' fájlt tartalmazó
                         mappában:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ python -m http.server</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ha minden jól ment, akkor láthatjuk is az oldalra kinyomva a JSON állományunk
                         tartalmát, olvashatóan rendezve. Fontos megemlíteni azt, hogy jelen esetben a Nobel-győzteseket tartalmazó
                         adatsorunk nem túl nagy, de ha megpróbálnánk a képeket és életrajzi adatokat tartalmazó állományt
@@ -252,7 +311,7 @@ df_winners = pd.read_json('../data/winners_cleaned.json')
 for name, group in df_winners.groupby('country'):
     group.to_json('../data/winners_by_country/{}.json'.format(name), orient='records')
 # nem hozza létre a mappát, ha nincs még létrehozva error-t dob</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, a fenti kód létrehoz néhány tucatnyi új JSON állományt a
                         'winners_by_country' almappán belül. Képesek vagyunk tehát mostmár országra lebontva lehívni az annak
                         megfelelő állományt, megkímélve magunkat attól, hogy a teljes nehéz állományt minden alkalommal betöltsük:
@@ -270,7 +329,7 @@ for name, group in df_winners.groupby('country'):
 
 // egyszerűen a függvénnyel lehívhatjuk az érdekelt ország Nobel-adatait
 loadWinnersCountryJson('Saint Lucia');</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A megfelelően rugalmas vizualizációhoz elengedhetetlen a szortírozás,
                         ahogy azt
                         a fenti példa bemutatja, hogy elkerüljük a felesleges lekérdezéseket, egyúttal elkerülve azt is, hogy
@@ -333,7 +392,7 @@ def get_country_data():
 
 if __name__ == '__main__':
     app.run(port=8000, debug=True)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, a fenti app-unk lekér néhány győztest az adatbázis dokumentumjából vagy
                         táblájából, a megadott argumentumok alapján. Nézzük is meg az API-nkat működés közben, először a korábban
                         is használt módon elindítjuk az API-nkat:
@@ -348,7 +407,7 @@ if __name__ == '__main__':
  * Debugger is active!
  * Debugger PIN: 343-620-977
  * Running on http://127.0.0.1:8000/ (Press CTRL+C to quit)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Majd használva a Python interpreterjét megkezdjük a lekérdezéseket:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">import requests
@@ -356,18 +415,18 @@ if __name__ == '__main__':
 response = response.get('http://127.0.0.1:8000/api/winners', params={'country': 'Australia'})
 response.json()
 # ...</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mivel a Flask-unk Debug módban fut, ezért érdekes részleteket figyelhetünk meg
                         a parancssorban a lekérdezésünkről:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">[13/Jul/2020 23:22:10] "GET /api/winners?country=Australia HTTP/1.1" 200 -</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Nem úgy, mint a statikus adataink esetén az előző részből, most nem vagyunk
                         egyetlen dimenzióra korlátozva, egyszerűen tehetünk olyant, hogy lekérjük az összes kémia Nobel-győztest
                         Németországból:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">response = requests.get('http://127.0.0.1:8000/api/winners', params={'country': 'Germany', 'category': 'Chemistry'})</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Bekapcsolva az SQL adatbázisunkat, képesek vagyunk a fenti megközelítést SQL
                         adatbázisokra is adaptálni:
                     </p>
@@ -400,7 +459,7 @@ def get_country_data():
 
 if __name__ == '__main__':
     app.run(port=8000, debug=True)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A lekérdezések ugyanúgy működnek, mint a korábbi példában. Mostmár
                         elmondható, hogy elkészítettük életünk első RESTful API-ját, amellyel lekérdezhetjük saját adatbázisukban
                         tárolt adatsorunkat. Számos módon kilehetne egészíteni, mondhatni, ez csak a jéghegy csúcsa. Azonban, az
@@ -423,7 +482,10 @@ if __name__ == '__main__':
                 </section>
 
                 <section id="5datawithflask">
-                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800">Folytassuk a RESTful API-t</h2>
+                    <h2 class="text-2xl pt-8 pb-4 font-semibold text-gray-800"
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false">Folytassuk a RESTful API-t</h2>
                     <p class="text-lg font-normal pb-3">Korábban megismerkedtünk azzal, hogy hogyan tudunk egy egyszerű
                         webszervert létrehozni Flask-al, egy olyan RESTful API-val, amely kizárólag GET lekérdezésekre van
                         korlátozva. A legtöbb egyszerű munkához és vizualizációhoz ez a fajta megközelítés bőven elegendő, legtöbb
@@ -446,7 +508,7 @@ if __name__ == '__main__':
                     <p class="text-lg font-normal">Mivel a Flask Eve nem képezi az alap Anaconda csomag részét, egy egyszerű
                         parancssori kóddal feltelepíthetjük:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install eve</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután telepítettük, képesek vagyunk a létező MongoDB 'nobel_prize'
                         adatbázisunkat egy teljes értékű RESTful API-val felvértezni, mindössze az által, hogy létrehozunk egy
                         <em>settings.py</em> állományt. Ehhez ajánlott, hogy létrehozzunk egy új mappát a 'flask_project'-en
@@ -475,7 +537,7 @@ DOMAIN = {'winners_cleaned': {
 }}
 # a schema lehetővé teszi, hogy 'felfedjük' azokat a mezőket a winners_cleaned dokumentumunkból, amelyeket elérhetővé akarunk tenni
 # valamint, azt is lehetővé teszi, hogy 'data validation'-t végezzünk</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A használtakon kívül még rengeteg paramétert vagyunk képesek beírni a
                         settings.py-ba, ezek mind megtalálhatók magyarázatokkal együtt a dokumentációban, ahol egy kiterjedt rész
                         a DOMAIN konfigurációnak van lefoglalva. Miután meghatároztuk a beállításainkat, nincs más dolgunk, mint
@@ -488,11 +550,11 @@ app = Eve()
 
 if __name__ == '__main__':
     app.run(debug=True)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Aztán képesek vagyunk szerverünket futtatni az api könyvtárba belépve a
                         következőképpen:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ ipython server_eve.py</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Mostmár lekérhetjük az összes német Nobel-győztest, használva a where kikötést,
                         hogy meghatározzuk a lekérdezésünket, mindezt egy Python interpreterrel. Fontos megjegyezni, hogy ebben az
                         esetben a lekérdezésünk kikötéseit mégegyszer a where-el határozzuk meg, és nem a params-el, a params
@@ -501,13 +563,13 @@ if __name__ == '__main__':
                         egyidejűleg az összeset, hanem mindössze 25 győztest fog visszatéríteni, és a többit oldalanként lehet
                         elérni:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">resp = requests.get('http://127.0.0.1:5000/api/winners_cleaned/?where={"country": "Germany"}')</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Valamint a Flask Eve teljes mértékben támogatja a MongoDB query document-et és
                         minden operátorját, lehetővé téve azt, hogy nagyon lebontva meghatározzuk azt, hogy mit is szeretnénk
                         megkapni, példaképpen kérjük le az összes olyan győztest, aki idősebb volt, mint 75 év, amikor megkapta a
                         díjat:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">resp = requests.get('http://127.0.0.1:5000/api/winners_cleaned/?where={"award_age": {"$gt": 75}}')</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Tehát, eddig használtuk a szokásos módot arra, hogy leellenőrízzük azt, hogy az
                         Eve API-nk azt csinálja, amit mi szeretnénk, hogy csináljon. A következőkben nézzük meg azt is, hogyan
                         tudjuk ezt az egészet hasznosítani AJAX lekérdezéseken keresztül a böngészőben, vagyis a Javascriptben.
@@ -530,7 +592,7 @@ def root():
 
 if __name__ == '__main__':
     app.run(port=8000)</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Valamint, hozzuk létre az index.html állományt is, amely tartalmazni fog néhány
                         placeholdert a lekérdezés és válasz adatainak, valamit hozzáadja az állományhoz a jQuery és D3
                         könyvtárakat is, együtt a script.js állománnyal, amely tartalmazni fogja az AJAX hívásunkat:</p>
@@ -564,7 +626,7 @@ if __name__ == '__main__':
     &#60;/body>
 
 &#60;/html></code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ahhoz, hogy megejtsük az AJAX GET lekérdezést, használni fogjuk a D3 könyvtár
                         egyik request metódusát, hogy létrehozzunk egy XMLHttpRequest-et, vagy XHR-t. A korábban használt json
                         metódus kifejezetten XHR létrehozására szakosodott, de azokon keresztül JSON állományokat érhet el. Ha a
@@ -594,11 +656,11 @@ let query = '/winners_cleaned?where=' + JSON.stringify({
 });
 
 displayJSON(query);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután minden a helyén van, el is indíthatjuk az új szerverünket, amellyel
                         élőben is tesztelhetjük a létrehozott API-nkat:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ ipython nobel_viz.py</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Aztán megnyitva a szerverünk elérését, megfigyelhetjük azt, hogy a lehívás
                         nem
                         sikerült. Megnyitva a böngésző ablakát észrevehetjük, hogy az API lekérdezésünk a CORS korlátozás miatt
@@ -618,7 +680,7 @@ displayJSON(query);</code><button id="copy"
                         a hívások jöhetnek. Tehát, a mi esetünkben meghatározzuk azt az elérést, amelyen az index.html fájlunk van
                         megjelenítve, és ahol kudarcot vallott a lekérdezés:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="python">X_DOMAINS = 'http://127.0.0.1:8000'</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">De az előbb említett logika mentén, akár *-ra is állíthattuk volna,
                         lehetővé
                         téve bárhonnan az API elérését. Miután ezt a beállítást megejtettük, újraindíthatjuk mindkét szerverünket,
@@ -682,7 +744,7 @@ HATEOAS = False
 # jelen esetben tudjuk, nincs szükség ezekre
 PAGINATION = False
 # minden eredményt egy állományban adjon vissza, nincs szükség oldalakra szedni őket</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Ugyanazt a szerver összetételt fogjuk használni, mint az előző teszt
                         példában, felhasználva a <em>displayJSON</em> metódusunkat, hogy elküldjön egy URL-t és némi lekérdezési
                         adatot egy AJAX GET lekérdezésbe. Ha a lekérdezés pedig sikeres, abban az esetben meg is jeleníti a
@@ -698,7 +760,7 @@ PAGINATION = False
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="javascript">let query = '/winners?projection=' + JSON.stringify({
     "mini_bio": 0
 });</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Kis kiutaló az előző helyzetre. Alapvetően, problémába ütkőztem amikor
                         megpróbáltam a lekérdezést megcsinálni, hiszen minden esetben egy <em>unexpected token</em> hibába
                         futottam a böngésző console-jában. A probléma az volt, hogy azon esetekkor, amikor nem volt a győzteshez
@@ -722,7 +784,7 @@ PAGINATION = False
 // /api/winners/5f0dcfe5b7fb6ee9b727573f
 const albert_id = '5f0dcfe5b7fb6ee9b727573f'
 let query = '/winners/' + albert_id</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">Tehát, már rendelkezünk azzal a RESTful API-val, amelynek használatával
                         eljuthatunk a Nobel-díjas adatsorunk bármely részéhez. Azonban, ez még mindig csak az egyik plugin volt,
                         amiről ebben a részben beszélnünk kellett, következzen tehát a Flask-Restless, amely egy SQL-képes plugin,
@@ -730,11 +792,11 @@ let query = '/winners/' + albert_id</code><button id="copy"
                     <p class="text-lg font-normal">A Flask-Restless nem képezi az Anaconda csomag részét, de a megszokott módon
                         könnyen telepíthető:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install flask-restless</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Azonban a Flask-Restless megfelelő működéséhez a Flask-SQLAlchemy pluginra is
                         szükségünk lesz, tehát azt is telepítjük:</p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install flask-sqlalchemy</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután telepítettük a módulunkat, létre is hozhatjuk az API-t felhasználva a
                         MySQL adatbázisunkat, ahová egy másolata a korábban az Eve esetében használt adatsornak megtalálható. A
                         'winners_cleaned_w_bios' tábla tartalmazza a megtisztított adatunkat az életrajzzal együtt, tehát ezt
@@ -785,13 +847,13 @@ manager.create_api(Winners, methods=['GET'], max_results_per_page=1000)
 
 # elindítjuk a Flask loopot
 app.run()</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">A következőkben a CORS-al is foglalkoznunk kell megint. Természetesen
                         production során valamilyen szerver intézi el ezt nekünk, azonban fejlesztés során mégis jól jön, ha mi
                         magunk tudjuk beállítani a megengedett domaineket, azonban ehhez egy újabb Flask pluginra lesz szükségünk:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ pip install flask-cors</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután telepítettük csak néhány sorral kell kiegészítsük az előbbi
                         szerverünket, hogy megkapjuk a CORS támogatást:
                     </p>
@@ -848,12 +910,12 @@ cors = CORS(app)
 
 # elindítjuk a Flask loopot
 app.run()</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Miután mindent felállítottunk a működéshez, nincs más dolgunk mint elindítani a
                         RESTful szerverünket:
                     </p>
                     <pre class="my-4 text-sm md:text-md font-semibold rounded-md overflow-auto text-gray-200"><code class="shell">$ python server_flask_restless.py</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal pb-3">A szerverünk mostmár sikeresen fut, a Flask-Restless API a lekérdezési
                         operátorok széles körét támogatja, lehetővé téve, hogy egész pontosan meghatározd azokat az adatokat,
                         amelyeket megakarnál szerezni. A Flask-Restless lekérdezési motorja nagyjából leköveti a szabvány SQL
@@ -879,7 +941,7 @@ let order_by = [ {"field": "year", "direction": "asc"}];
 let query = '/winners?' + 'q=' + JSON.stringify({'filters': filters, 'order_by': order_by});
 
 displayJSON(query);</code><button id="copy"
-    class="text-sm md:text-md font-semibold">Másold</button></pre>
+    class="text-sm md:text-md font-semibold"><img src="../img/copy.svg" alt="Másolás gomb"></button></pre>
                     <p class="text-lg font-normal">Ha minden jól működött a weboldalon megkell jelenjenek a 2000 után győzött női
                         Nobel-győztesek. Érdekességként megfigyelhetjük azt, hogy sem metaadata, sem HATEOS linkek nem szerepelnek
                         a lekérdezés válaszában, csakis azok a mezők, amelyeket az SQLAlchemy modellben meghatároztunk. Ez
@@ -892,13 +954,13 @@ displayJSON(query);</code><button id="copy"
 
             <div class="my-8 flex content-center">
                 <button
-                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in rounded-md"><a
+                    class="flex-auto w-24 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in"><a
                         class="block px-4 py-2"
                         href="4.html"><span class="inline-block font-normal transform group-hover:-translate-x-1 transition
                             duration-100 ease-in">&larr;</span>
                         Előző</a></button>
-                <button class="flex-auto w-24 ml-4 py-2 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
-                    ease-in rounded-md"><a class="block px-4"
+                <button class="flex-auto w-24 ml-4 bg-gray-900 text-white group hover:bg-blue-800 transition duration-75
+                    ease-in"><a class="block px-4 py-2"
                         href="6.html">Következő
                         <span
                             class="inline-block font-normal transform group-hover:translate-x-1 transition duration-100 ease-in">&rarr;</span></a></button>
@@ -915,8 +977,6 @@ displayJSON(query);</code><button id="copy"
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
         <script src="../tools/pushy-1.3.0/js/pushy.min.js"></script>
-        <!-- cross-platform megoldás a smooth-scroll-ra, jQuery használatával -->
-        <script src="../javascript/smooth.js"></script>
         <script src="../javascript/main.js"></script>
         <script src="../javascript/introd3.js"></script>
     </body>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-    class="text-black text-base md:text-lg antialiased leading-relaxed tracking-normal break-normal bg-white">
+    class="text-black text-base antialiased leading-relaxed tracking-normal break-normal bg-white">
 
     <head>
         <meta charset="UTF-8">
@@ -33,11 +33,66 @@
             <div class="pushy-content">
                 <ul>
                     <li class="pushy-link"><a href="index.html">1 Bevezetés</a></li>
-                    <li class="pushy-link"><a href="pages/2.html">2 Első lépések az adatvizualizációban</a></li>
-                    <li class="pushy-link"><a href="pages/3.html">3 Az adatok megszerzése</a></li>
-                    <li class="pushy-link"><a href="pages/4.html">4 Az adatok tisztítása és feldolgozása</a></li>
-                    <li class="pushy-link"><a href="pages/5.html">5 Az adatok eljuttatása</a></li>
-                    <li class="pushy-link"><a href="pages/6.html">6 Az adatok ábrázolása</a></li>
+                    <li class="pushy-submenu">
+                        <button>2 Első lépések az adatvizualizációban</button>
+                        <ul>
+                            <li class="pushy-link"><a href="pages/2.html#2adviz">Az adatvizualizáció folyamata</a></li>
+                            <li class="pushy-link"><a href="pages/2.html#2prog">A programozási nyelvek, amelyekkel dolgozunk</a>
+                            </li>
+                            <li class="pushy-link"><a href="pages/2.html#2progkul">Különbségeik a gyakorlati felhasználásban</a>
+                            </li>
+                            <li class="pushy-link"><a href="pages/2.html#2python">Adatok írása és olvasása Python-al</a>
+                            </li>
+                            <li class="pushy-link"><a href="pages/2.html#2webd">Webdev 101</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>3 Az adatok megszerzése</button>
+                        <ul>
+                            <li class="pushy-link"><a href="pages/3.html#3python">Szerezzük meg az adatot a netről Python-nal</a>
+                            </li>
+                            <li class="pushy-link"><a href="pages/3.html#3scrapy">A komoly scrapelés Scrapy-vel</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>4 Az adatok tisztítása és feldolgozása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="pages/4.html#4numpy">Bevezetés a NumPy-ba</a></li>
+                            <li class="pushy-link"><a href="pages/4.html#4pandas">Bevezetés a Pandas-ba</a></li>
+                            <li class="pushy-link"><a href="pages/4.html#4cleaning">Tisztítsuk meg az adatunkat Pandas-al</a></li>
+                            <li class="pushy-link"><a href="pages/4.html#4visualizing">Vizualizáljuk adatunkat Matplotlib-el</a>
+                            </li>
+                            <li class="pushy-link"><a href="pages/4.html#4explore">Fedezzük fel az adatunkat Pandas-al</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>5 Az adatok eljuttatása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="pages/5.html#5staticvsdynamic">Az adatok eljuttatása</a></li>
+                            <li class="pushy-link"><a href="pages/5.html#5datawithflask">Folytassuk a RESTful API-t</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>6 Az adatok ábrázolása</button>
+                        <ul>
+                            <li class="pushy-link"><a href="pages/6.html#6imaginingnobelvizualization">Tervezzük meg a
+                                    vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="pages/6.html#6buildingvizualization">Építsük meg a vizualizációnkat</a></li>
+                            <li class="pushy-link"><a href="pages/6.html#6d3bar">Munka a D3-al és az oszlopdiagram</a></li>
+                            <li class="pushy-link"><a href="pages/6.html#6d3time">Az idővonal</a></li>
+                            <li class="pushy-link"><a href="pages/6.html#6d3map">Térképkészítés a D3-al</a></li>
+                            <li class="pushy-link"><a href="pages/6.html#d3individual">Az egyéni nyertesek vizualizációja</a></li>
+                            <li class="pushy-link"><a href="pages/6.html#d3menu">A menübar</a></li>
+                        </ul>
+                    </li>
+                    <li class="pushy-submenu">
+                        <button>7 Végső simítások</button>
+                        <ul>
+                            <li class="pushy-link"><a href="pages/7.html#7adatok">Első hiba: a Nobel-adatok</a></li>
+                            <li class="pushy-link"><a href="pages/7.html#7design">Második hiba: a Nobel-vizalizáció dizájna</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -46,17 +101,17 @@
         <div class="site-overlay"></div>
 
         <main id="container"
-            class="container p-8 md:p-6 max-w-2xl md:max-w-4xl min-h-screen mx-auto xl:ml-64">
+            class="container p-8 lg:px-6 lg:pb-6 lg:pt-2 max-w-2xl md:max-w-3xl min-h-screen mx-auto xl:ml-64">
 
             <button
-                class="menu-btn px-4 py-2 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in rounded-md">&#9776;
+                class="menu-btn px-4 pb-2 pt-6 bg-gray-900 text-white hover:bg-blue-800 transition duration-75 ease-in">&#9776;
                 Menü</button>
 
             <!-- alapvető adatok -->
 
             <!-- frissítve JavaScript-ből -->
             <p id="modified"
-                class="text-md my-8 text-gray-900 font-light text-right"></p>
+                class="text-md my-8 text-gray-900 text-right"></p>
 
             <hr>
 
@@ -91,7 +146,7 @@
 
             <div class="my-8 flex content-center">
                 <button
-                    class="flex-auto bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in rounded-md"><a
+                    class="flex-auto bg-gray-900 text-white group hover:bg-blue-800 transition duration-75 ease-in"><a
                         class="block px-4 py-2"
                         href="pages/2.html">Következő
                         <span
