@@ -3,9 +3,9 @@
 
     const chartHolder = d3.select('#nobel-time');
     const margin = {
-        top: 20,
+        top: 0,
         right: 20,
-        bottom: 30,
+        bottom: 50,
         left: 40
     };
 
@@ -18,7 +18,7 @@
 
     const MAX_WINNERS_PER_YEAR = 15
     const xScale = d3.scaleBand().range([0, width]).padding(0.1).domain(d3.range(1900, 2021));
-    const yScale = d3.scalePoint().range([height, 0]).domain(d3.range(MAX_WINNERS_PER_YEAR));
+    const yScale = d3.scalePoint().range([height, 60]).domain(d3.range(MAX_WINNERS_PER_YEAR));
 
     const xAxis = d3.axisBottom().scale(xScale).tickValues(xScale.domain().filter(function (d, i) {
         return !(d % 10);
@@ -29,18 +29,18 @@
             .call(xAxis).call(function (g) {
                 return g.select('.domain').remove();
             }).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em').attr('dy', '.15em')
-            .attr('transform', 'rotate(-65)');
+            .attr('transform', 'rotate(-65)').style('font-size', '1.2rem');
 
         const catLabels = chartHolder.select('svg').append('g')
             .attr('transform', 'translate(10, 10)').attr('class', 'labels')
             .selectAll('label').data(nbviz.CATEGORIES)
             .enter().append('g').attr('transform', function (d, i) {
-                return 'translate(0,' + i * 10 + ')';
+                return 'translate(0,' + i * 16 + ')';
             });
 
         catLabels.append('circle')
             .attr('fill', nbviz.categoryFill)
-            .attr('r', xScale.bandwidth() / 2);
+            .attr('r', xScale.bandwidth() / 1.5);
 
         catLabels.append('text')
             .text(function (d) {
@@ -48,12 +48,21 @@
             })
             .attr('dy', '.4em')
             .attr('x', 10)
-            .style('font-size', 10);
+            .style('font-size', '1.3rem');
     }, nbviz.TRANS_DURATION);
 
     nbviz.updateTimeChart = function (data) {
-        data.sort()
+        data.forEach(function (d) {
+            d.values.sort(function (a, b) {
+                if (a.category < b.category) {
+                    return -1;
+                } else if (a.category > b.category) {
+                    return 1;
+                }
 
+                return 0;
+            });
+        });
         // hozzákössük az adatot a neki megfelelő évoszlopnak, nem index, hanem év szerint, így az esetleges
         // hézagok nem okoznak megjelenítésbeli hibákat, amikoris az index megváltozik
         const years = svg.selectAll('.year')
@@ -69,7 +78,7 @@
                 return d.key;
             })
             .attr('transform', function (year) {
-                return "translate(" + xScale(+year.key) + ",-3)"; // azért használjuk a +year-t, hogy átalakítsuk az str-t int-té
+                return "translate(" + xScale(+year.key) + ",-5)"; // azért használjuk a +year-t, hogy átalakítsuk az str-t int-té
             });
 
         // töröl minden olyan évoszlopot, amelyhez nem került adat hozzákötésre

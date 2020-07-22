@@ -7,7 +7,7 @@
     const width = boundingRect.width;
     const height = boundingRect.height;
 
-    const svg = mapContainer.append('svg');
+    const svg = mapContainer.append('svg').attr('height', height).attr('width', width);
 
     // a scalefaktor lineárisan megfelel a kivetített pontok közötti távolsággal,
     // alapértelmezetten a magasság 480, míg a scalefaktor 153, a mi scalefaktorunk ennél nagyobb 193, és a magasságunk kisebb,
@@ -119,14 +119,20 @@
             // ha csak 1 győztes van az adott országban
             const prize_string = (cData.number === 1) ? ' prize in ' : ' prizes in ';
 
+            // beállítja a tooltip kategóriájának színét
+            const textColor = (nbviz.activeCategory === nbviz.ALL_CATS) ? 'goldenrod' : nbviz.categoryFill(nbviz.activeCategory);
+
             // beállítjuk a tooltip fejlécét és szövegét
             tooltip.select('h2').text(cData.name);
-            tooltip.select('p').text(cData.number + prize_string + nbviz.activeCategory);
+            tooltip.select('p').text(cData.number + prize_string + nbviz.activeCategory).style('color', textColor);
 
             // beállítja a tooltip keretszínét, a kategóriának megfelelően
-            const borderColor = (nbviz.activeCategory === nbviz.ALL_CATS) ? 'goldenrod' : nbviz.categoryFill(nbviz.activeCategory);
+            /* const borderColor = (nbviz.activeCategory === nbviz.ALL_CATS) ? 'goldenrod' : nbviz.categoryFill(nbviz.activeCategory);
 
-            tooltip.style('border-color', borderColor);
+            tooltip.style('border-color', borderColor); */
+
+            
+
 
             const mouseCoords = d3.mouse(this);
 
@@ -157,6 +163,9 @@
             return d.name;
         });
 
+        // beállítja a centroid színet kategóriának megfelelően
+        const centroidColor = (nbviz.activeCategory === nbviz.ALL_CATS) ? 'goldenrod' : nbviz.categoryFill(nbviz.activeCategory);
+
         centroids.enter().append('circle').attr('class', 'centroid').merge(centroids)
             .attr('name', function (d) {
                 return d.name;
@@ -174,7 +183,7 @@
             .style('opacity', 1)
             .attr('r', function (d) {
                 return radiusScale(+d.number)
-            });
+            }).style('fill', centroidColor);
 
         centroids.exit().transition().duration(nbviz.TRANS_DURATION).style('opacity', 0);
     };

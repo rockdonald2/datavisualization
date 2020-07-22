@@ -1,146 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+    line-height: 1.5;
+    letter-spacing: .5px;
+}
+
+html {
+    font-size: 10px;
+    /* 1rem */
+}
+
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* beállítjuk a fontot */
-    background: #fefefe;
-    /* beállítjuk a hátteret */
-    width: 1150px;
-    /* a vizualizációnk szélességét */
+    font-family: 'Noto Serif',
+        serif;
     margin: 0 auto;
-    /* felső és alsó margók 0px, még a szélsők auto-k, így középre rendeződik a vizualizációnk */
-}
-
-a:link {
-    color: royalblue;
-    text-decoration: none;
-    /* linkek esetén megváltoztatjuk azok színét és kivesszük az aláhúzást */
-}
-
-a:hover {
-    text-decoration: underline;
-    /* hover esetén aláhúzodnak a linkek */
+    background: #fff;
+    padding-top: 5rem;
+    width: 125rem;
+    height: 215rem;
+    color: #2d3436;
 }
 
 #chart {
     position: relative;
-}
-
-#nbviz {
-    position: absolute;
-    top: 70px;
-    width: 100%;
-}
-
-#title {
-    position: absolute;
-    font-size: 26px;
-    font-weight: 100;
-    top: 15px;
-}
-
-#chart-holder {
-    width: 100%;
-    height: 750px;
-    position: relative;
-}
-
-#chart-holder svg {
     width: 100%;
     height: 100%;
-    /* erre azért van szükség, mert azt akarjuk, hogy az SVG elemek kontextusa a konténer teljes egészét elfoglalják */
+    display: grid;
+    grid-template-columns: repeat(125, 1rem);
+    grid-template-rows: repeat(210, 1rem);
 }
 
-#nobel-map,
-#nobel-winner,
-#nobel-bar,
-#nobel-time,
-#nobel-list {
-    position: absolute;
-}
-
-#nobel-time {
-    top: 0;
-    height: 165px;
-    width: 100%;
-}
-
-#nobel-map {
-    background: azure;
-    top: 175px;
-    width: 800px;
-    height: 350px;
-}
-
-#nobel-winner {
-    top: 525px;
-    left: 800px;
-    height: 250px;
-    width: 350px;
-}
-
-#nobel-bar {
-    top: 525px;
-    height: 250px;
-    width: 800px;
-}
-
-#nobel-list {
-    top: 175px;
-    height: 350px;
-    width: 340px;
-    left: 800px;
-    padding-left: 10px;
-    /* azért van szükség erre, hogy elválassza a térképtől */
-}
-
-
-
-/* Nobel-Chart elemek stílusa, kivétel dimenziók */
-
-.yaxis,
-.xaxis {
-    font-size: 10px;
-    font-family: sans-serif;
-}
-
-.yaxis path,
-.xaxis path,
-.yaxis line,
-.xaxis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-}
-
-.xaxis .domain {
-    display: none;
-}
-
-/* Nobel-Menu elemek stílusa, kivétel dimenziók */
-
-#nobel-menu {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-#nobel-menu div {
-    display: flex;
-    flex-direction: column;
+#title,
+#info {
     text-align: center;
 }
 
-#nobel-menu div select,
-#nobel-menu div form {
-    margin-top: 5px;
+#title {
+    width: 200px;
+    height: 150px;
+    font-size: 1.8rem;
+    grid-column: 9 / 29;
+    grid-row: 6 / 21;
 }
 
-/* Nobel-Map elemek stílusa, kivétel dimenziók */
+#title span {
+    font-size: 2.4rem;
+    display: block;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#info {
+    width: 650px;
+    height: 200px;
+    font-size: 1.6rem;
+    grid-column: 53 / 108;
+    grid-row: 6 / 21;
+}
+
+#nobel-menu {
+    width: 109rem;
+    height: 5rem;
+    display: flex;
+    grid-column: 9 / 119;
+    grid-row: 31 / 36;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+#gender-select,
+#cat-select,
+#country-select {
+    margin: 0 1rem;
+}
+
+#nobel-menu select {
+    width: 15rem;
+    padding: .5rem;
+    background-color: #ececec;
+    border: none;
+    border-radius: 1rem;
+    color: #777;
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+#nobel-time {
+    width: 115rem;
+    height: 25rem;
+    grid-column: 6 / 120;
+    grid-row: 41 / 66;
+}
+
+#nobel-map {
+    width: 115rem;
+    height: 45rem;
+    grid-column: 6 / 120;
+    grid-row: 72 / 118;
+    position: relative;
+}
 
 .graticule {
     fill: none;
     stroke: #777;
     stroke-width: .5px;
     stroke-opacity: .5;
+    display: none;
 }
 
 .land {
@@ -161,11 +132,18 @@ a:hover {
     font-size: 12px;
     opacity: 0.7;
     background: #222;
-    border: 2px solid #555;
-    border-color: goldenrod;
+    /* border: 2px solid #555; */
+    /* border-color: goldenrod; */
     padding: 10px;
     left: -9999px;
-    /* jelenleg nem fog látszódni a pozíció miatt */
+    border-radius: 5px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+        0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+        0 12.5px 10px rgba(0, 0, 0, 0.06),
+        0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+        0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+        0 100px 80px rgba(0, 0, 0, 0.12)
+        /* jelenleg nem fog látszódni a pozíció miatt */
 }
 
 #map-tooltip h2 {
@@ -187,92 +165,248 @@ a:hover {
 }
 
 .centroid {
-    fill: red;
+    /* fill: red; */
     fill-opacity: .3;
     pointer-events: none;
     /* ez ahhoz kell, hogy a kör ellenére is kilehessen választani majd az országot */
 }
 
 .centroid.active {
-    fill: goldenrod;
+    fill: goldenrod !important;
     fill-opacity: .6;
 }
 
-/* Nobel-List elemek stílusa, kivétel dimenziók */
+#nobel-bar {
+    width: 115rem;
+    height: 30rem;
+    grid-column: 6 / 120;
+    grid-row: 124 / 156;
+    position: relative;
+}
+
+#nobel-bar .xaxis .domain {
+    display: none;
+}
+
+#nobel-bar #metric-radio {
+    position: absolute;
+    top: 0;
+    right: 5rem;
+    text-align: center;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+}
+
+#nobel-bar #metric-radio form {
+    display: flex;
+    margin-left: .5rem;
+}
+
+#nobel-bar #metric-radio form label {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#nobel-bar #metric-radio form label:nth-child(2) {
+    margin-left: 1rem;
+}
+
+#nobel-bar #metric-radio form label input[type="radio"] {
+    margin-left: .5rem;
+}
+
+#nobel-bar #metric-radio form label input {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.btn-radio {
+    width: 1.6rem;
+    height: 1.6rem;
+
+    border: 1px solid hsl(0, 0%, 14%);
+    border-radius: 100%;
+    margin-right: .5rem;
+}
+
+.btn-radio::before,
+.btn-radio::after {
+    content: "";
+    display: block;
+
+    width: inherit;
+    height: inherit;
+
+    border-radius: inherit;
+
+    position: absolute;
+    transform: scale(0);
+    transform-origin: center center;
+
+    opacity: 0;
+    transition: all .3s;
+}
+
+.btn-radio::before {
+    background: hsl(0, 0%, 14%);
+}
+
+.btn-radio::after {
+    background: hsl(0, 0%, 60%);
+    opacity: .4;
+    transition: all .6s;
+}
+
+input:checked+.btn-radio::before {
+    opacity: 1;
+    transform: scale(.6);
+}
+
+input:hover+.btn-radio,
+input:focus+.btn-radio {
+    border: 1px solid hsl(0, 0%, 60%);
+}
+
+input:hover~.radio-text {
+    color: hsl(0, 0%, 60%);
+}
+
+input:focus+.btn-radio::after,
+input:active+.btn-radio::after {
+    opacity: .1;
+    transform: scale(1.8);
+}
 
 #nobel-list {
-    overflow: scroll;
-    overflow-x: hidden;
+    width: 40rem;
+    height: 45rem;
+    grid-column: 10 / 52;
+    grid-row: 160 / 205;
+    font-size: 1.2rem;
 }
 
 #nobel-list table {
-    font-size: 10px;
+    margin-top: 2rem;
     text-align: center;
 }
 
-#nobel-list table th#year {
-    width: 30px;
+.wrapper {
+    width: 100%;
 }
 
-#nobel-list table th#category {
-    width: 120px;
+#nobel-list table tbody {
+    display: block;
+    height: 37rem;
+    overflow: auto;
 }
 
-#nobel-list table th#name {
-    width: 120px;
+#nobel-list table tbody>tr>td:nth-child(1) {
+    width: 8rem;
 }
 
-#nobel-list h2 {
-    font-size: 14px;
-    margin: 8px;
-    text-align: center;
+#nobel-list table tbody>tr>td:nth-child(2) {
+    width: 16rem;
+}
+
+#nobel-list table tbody>tr>td:nth-child(3) {
+    width: 16rem;
+}
+
+#nobel-list table thead>tr {
+    position: relative;
+    display: block;
+}
+
+
+#nobel-list #year {
+    width: 7.25rem;
+}
+
+#nobel-list #category {
+    width: 14.75rem;
+}
+
+#nobel-list #name {
+    width: 15rem;
 }
 
 #nobel-list tr:hover {
+    color: hsl(0, 0%, 60%);
     cursor: pointer;
-    background: lightblue;
 }
 
-/* Nobel-Winner elemek stílusa, kivétel dimenziók */
-
 #nobel-winner {
-    font-size: 11px;
-    overflow: auto;
-    overflow-x: hidden;
-    border-top: 4px solid;
+    width: 60rem;
+    height: 45rem;
+    grid-column: 60 / 121;
+    grid-row: 160 / 205;
+    display: grid;
+    grid-template-rows: repeat(45, 1rem);
+    grid-template-columns: repeat(60, 1rem);
+}
+
+#nobel-winner #picbox {
+    grid-column: 37 / -8;
+    grid-row: 1 / 25;
+}
+
+#nobel-winner #picbox img {
+    width: 100%;
+    height: 14rem;
+    border-radius: 50%;
+    vertical-align: middle;
 }
 
 #nobel-winner #winner-title {
-    font-size: 12px;
-    text-align: center;
-    padding: 2px;
+    font-size: 2rem;
     font-weight: bold;
+    grid-column: 5 / 30;
+    grid-row: 2 / 5;
+    text-align: center;
 }
 
-#nobel-winner #infobox .label {
-    display: inline-block;
-    width: 60px;
+#nobel-winner #infobox {
+    grid-column: 5 / 30;
+    grid-row: 8 / 13;
+}
+
+#nobel-winner .property {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.2rem;
+}
+
+#nobel-winner .property .label {
     font-weight: bold;
 }
 
 #nobel-winner #biobox {
-    font-size: 11px;
+    grid-column: 5 / -5;
+    grid-row: 17 / -5;
+    font-size: 1.3rem;
+    overflow: auto;
+    overflow-x: hidden;
 }
 
-#nobel-winner #biobox p {
-    text-align: justify;
-}
-
-#nobel-winner #picbox {
-    float: right;
-    margin-left: 5px;
-}
-
-#nobel-winner #picbox img {
-    width: 100px;
+#nobel-winner #biobox p:not(:nth-child(1)) {
+    margin-top: 1rem;
 }
 
 #nobel-winner #readmore {
-    font-weight: bold;
-    text-align: center;
+    grid-column: 5 / -5;
+    grid-row: 44 / -1;
+    text-align: right;
+    font-size: 1.3rem;
+}
+
+#nobel-winner #readmore a {
+    text-decoration: none;
+}
+
+#nobel-winner #readmore a:hover {
+    text-decoration: underline;
 }

@@ -18,7 +18,15 @@
 
     nbviz.CATEGORIES = [
         "Physiology or Medicine", "Chemistry", "Economics", "Literature", "Peace", "Physics"
-    ];
+    ].sort((function (a, b) {
+        if (a < b) {
+            return 1;
+        } else if (a > b) {
+            return -1;
+        }
+
+        return 0;
+    }));
 
     nbviz.categoryFill = function (category) {
         let i = nbviz.CATEGORIES.indexOf(category);

@@ -5,8 +5,8 @@
     const margin = {
         top: 20,
         right: 20,
-        bottom: 35,
-        left: 40
+        bottom: 45,
+        left: 60
     };
     const boundingRect = chartHolder.node().getBoundingClientRect();
 
@@ -34,7 +34,7 @@
 
     svg.append('g').attr('class', 'xaxis').attr('transform', 'translate(0,' + height + ')');
     svg.append('g').attr('class', 'yaxis').append('text').attr('id', 'y-axis-label').attr('transform', 'rotate(-90)')
-        .attr('y', 6).attr('dy', '.71em').style('text-anchor', 'end');
+        .attr('y', 6).attr('dy', '1em').attr('dx', '-.5em').style('text-anchor', 'end');
 
 
     nbviz.updateBarChart = function (data) {
@@ -50,15 +50,17 @@
             return +d.value
         })]);
 
-        svg.select('.xaxis').transition().duration(nbviz.TRANS_DURATION)
-            .call(xAxis).selectAll('text').style('text-anchor', 'end').attr('dx', '-.8em')
+        svg.select('.xaxis')
+            .call(xAxis).selectAll('text').style('font-size', '1.2rem')/* .transition().duration(nbviz.TRANS_DURATION) */.style('text-anchor', 'end').attr('dx', '-.8em')
             .attr('dy', '.15em').attr('transform', 'rotate(-65)');
-        svg.select('.yaxis').transition().duration(nbviz.TRANS_DURATION)
-            .call(yAxis);
+        svg.select('.yaxis')
+            .call(yAxis).selectAll('text').style('font-size', '1.2rem')/* .transition().duration(nbviz.TRANS_DURATION) */;
 
         const bars = svg.selectAll('.bar').data(data, function (d) {
             return d.code;
         });
+
+        const colColor = (nbviz.activeCategory === nbviz.ALL_CATS) ? 'goldenrod' : nbviz.categoryFill(nbviz.activeCategory);
 
         bars.enter().append('rect').classed('bar', true)
             .attr('x', 2 * xPaddingLeft)
@@ -74,12 +76,12 @@
             }).attr('width', xScale.bandwidth())
             .attr('height', function (d) {
                 return height - yScale(d.value);
-            }).style('fill', '#0048ab');
+            }).style('fill', colColor);
 
         bars.exit().remove();
 
         setTimeout(function () {
-            const yLabel = svg.select('#y-axis-label').text('Number of Winners').style('fill', '#000');
+            const yLabel = svg.select('#y-axis-label').text('Number of Winners').style('fill', '#000').style('font-size', '1.2rem');
         }, nbviz.TRANS_DURATION);
     };
 

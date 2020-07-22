@@ -12,108 +12,118 @@
 
     <body>
         <div id="chart">
-            <div id="title">Visualizing the Nobel Prize</div>
+            <!-- Bevezető -->
+            <div id="title">Visualizing the <span>Nobel Prize</span> a brief overview of its history</div>
+            <div id="info">The Nobel Prize is a set of annual international awards bestowed in several categories by Swedish and
+                Norwegian institutions in recognition of academic, cultural, or scientific advances. The prize is awarded for
+                outstanding contributions for humanity in chemistry, literature, peace, physics, and physiology or medicine.
+                Later, in 1968 Sweden’s central bank established the Sveriges Riksbank Prize in Economic Sciences in Memory of
+                Alfred Nobel, this means that the Nobel Prize in Economics is not technically a Nobel Prize, but it is awarded
+                according to the same principles.</div>
 
-            <div id="nbviz">
-                <!-- Menü bar kezdése -->
-                <div id="nobel-menu">
-                    <div id="cat-select">
-                        Category
-                        <select name=""
-                            id=""></select>
+            <!-- Menü -->
+            <div id="nobel-menu">
+                <p>I want my Nobel-list filtered by</p>
+                <div id="cat-select">
+                    <select name=""
+                        id=""></select>
+                </div>
+                <p>category, by</p>
+                <div id="gender-select">
+                    <select name=""
+                        id="">
+                        <option value="All">All</option>
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+                <p>gender, and finally by</p>
+                <div id="country-select">
+                    <select name=""
+                        id=""></select>
+                </div>
+                <p>country.</p>
+            </div>
+
+            <!-- Idősor -->
+            <div id="nobel-time"></div>
+
+            <!-- Térkép és tooltip -->
+            <div id="nobel-map">
+                <div id="map-tooltip">
+                    <h2></h2>
+                    <p></p>
+                </div>
+            </div>
+
+            <!-- Nobel oszlopdiagram -->
+            <div id="nobel-bar">
+                <div id="metric-radio">
+                    Number of Winners:&nbsp;
+                    <form>
+                        <label>
+                            <input type="radio"
+                                name="mode"
+                                value="0"
+                                checked>
+                            <span class="btn-radio"></span>
+                            <span class="radio-text">absolute</span>
+                        </label>
+                        <label>
+                            <input type="radio"
+                                name="mode"
+                                value="1">
+                            <span class="btn-radio"></span>
+                            <span class="radio-text">per-capita</span>
+                        </label>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Győztesek listája -->
+            <div id="nobel-list">
+                <h2>Selected winners</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th id="year">Year</th>
+                            <th id="category">Category</th>
+                            <th id="name">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Életrajzi doboz -->
+            <div id="nobel-winner">
+                <div id="picbox"><img></div>
+                <div id="winner-title"></div>
+                <div id="infobox">
+                    <div class="property">
+                        <div class="label">Category</div>
+                        <span name="category"></span>
                     </div>
-                    <div id="gender-select">
-                        Gender
-                        <select name=""
-                            id="">
-                            <option value="All">All</option>
-                            <option value="female">Female</option>
-                            <option value="male">Male</option>
-                        </select>
+                    <div class="property">
+                        <div class="label">Year</div>
+                        <span name="year"></span>
                     </div>
-                    <div id="country-select">
-                        Country
-                        <select name=""
-                            id=""></select>
-                    </div>
-                    <div id="metric-radio">
-                        Number of Winners:&nbsp;
-                        <form action="">
-                            <label>absolute
-                                <input type="radio"
-                                    name="mode"
-                                    value="0"
-                                    checked>
-                            </label>
-                            <label>per-capita
-                                <input type="radio"
-                                    name="mode"
-                                    value="1">
-                            </label>
-                        </form>
+                    <div class="property">
+                        <div class="label">Country</div>
+                        <span name="country"></span>
                     </div>
                 </div>
-                <!-- Menü bar vége -->
-
-                <!-- Nobel komponensek kezdete -->
-                <div id="chart-holder"
-                    class="_dev">
-                    <!-- Idősor -->
-                    <div id="nobel-time"></div>
-                    <!-- Térkép és tooltip -->
-                    <div id="nobel-map">
-                        <div id="map-tooltip">
-                            <h2></h2>
-                            <p></p>
-                        </div>
-                    </div>
-                    <!-- Győztesek listája -->
-                    <div id="nobel-list">
-                        <h2>Selected winners</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th id="year">Year</th>
-                                    <th id="category">Category</th>
-                                    <th id="name">Name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Életrajzi doboz -->
-                    <div id="nobel-winner">
-                        <div id="picbox"><img></div>
-                        <div id="winner-title"></div>
-                        <div id="infobox">
-                            <div class="property">
-                                <div class="label">Category</div>
-                                <span name="category"></span>
-                            </div>
-                            <div class="property">
-                                <div class="label">Year</div>
-                                <span name="year"></span>
-                            </div>
-                            <div class="property">
-                                <div class="label">Country</div>
-                                <span name="country"></span>
-                            </div>
-                        </div>
-                        <div id="biobox"></div>
-                        <div id="readmore">
-                            <a href="#">Read more at Wikipedia</a>
-                        </div>
-                    </div>
-                    <!-- Nobel oszlopdiagram -->
-                    <div id="nobel-bar"></div>
+                <div id="biobox"></div>
+                <div id="readmore">
+                    <a href="#">Read more at Wikipedia</a>
                 </div>
-                <!-- Nobel komponensek vége -->
             </div>
         </div>
 
         <!-- könyvtárak -->
-        <script src="https://d3js.org/d3.v4.min.js"></script> <!-- D3 könyvtár -->
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <!-- D3 könyvtár -->
         <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
         <!-- topojson könyvtár, amely a GeoJSON kiegészítője, topológiát enkódol -->
         <script src="https://d3js.org/d3-queue.v3.min.js"></script>

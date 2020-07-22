@@ -43,7 +43,7 @@
 
             const nw = d3.select('#nobel-winner');
 
-            nw.style('border-color', nbviz.categoryFill(wData.category));
+            /* nw.style('border-color', nbviz.categoryFill(wData.category)); */
             nw.select('#winner-title').text(wData.name);
 
             nw.selectAll('.property span').text(function (d) {
